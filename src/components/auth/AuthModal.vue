@@ -129,9 +129,10 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     "
                   >
                     <div
-                      v-for="f in state.mode === 'register' ? registerFields : loginFields"
+                      v-for="(f, i) in state.mode === 'register' ? registerFields : loginFields"
                       :key="f.id"
-                      class="relative"
+                      class="relative motion-safe:animate-fadeUp"
+                      :style="{ animationDelay: `${i * 55}ms` }"
                     >
                       <AppIcon
                         :name="f.icon"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import RotatingCrownRing from './RotatingCrownRing.vue'
 import FloorSmoke from './FloorSmoke.vue'
@@ -12,6 +12,23 @@ const heading = ref<HTMLElement | null>(null)
 const sub = ref<HTMLElement | null>(null)
 const ctas = ref<HTMLElement | null>(null)
 const backdrop = ref<HTMLElement | null>(null)
+const content = ref<HTMLElement | null>(null)
+
+let ticking = false
+function onScroll() {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(() => {
+    const y = window.scrollY
+    // Background drifts slowest; foreground lifts and fades out.
+    if (backdrop.value) backdrop.value.style.transform = `translateY(${y * 0.25}px) scale(1.05)`
+    if (content.value) {
+      content.value.style.transform = `translateY(${y * -0.1}px)`
+      content.value.style.opacity = String(Math.max(0, 1 - y / 500))
+    }
+    ticking = false
+  })
+}
 
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -27,7 +44,11 @@ onMounted(() => {
     )
     .from(sub.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.5')
     .from(ctas.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
+
+  window.addEventListener('scroll', onScroll, { passive: true })
 })
+
+onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
@@ -70,7 +91,7 @@ onMounted(() => {
     <RotatingCrownRing variant="sparkle" />
 
     <!-- Top: title block, seated in the dark upper band above the throne -->
-    <div class="container-royal relative z-10 flex flex-col items-center text-center">
+    <div ref="content" class="container-royal relative z-10 flex flex-col items-center text-center">
       <div
         ref="eyebrow"
         class="mb-2 text-gold-bright drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
