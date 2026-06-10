@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import GoldButton from '@/components/ui/GoldButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { assets } from '@/data/assets'
+import { useReveal } from '@/composables/useReveal'
+
+const root = ref<HTMLElement | null>(null)
+useReveal(root)
+</script>
+
+<template>
+  <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
+    <div
+      class="group relative flex min-h-[220px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-card-glow"
+      data-reveal
+    >
+      <!-- Wide 21:6 image layer (clearly visible; only the left fades to black for text) -->
+      <div
+        class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+        :style="{
+          backgroundImage: `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 18%, rgba(5,5,5,0.28) 38%, rgba(5,5,5,0) 56%), url('${assets.treasuryBanner.src}')`,
+          backgroundColor: '#0d0b07',
+        }"
+      />
+
+      <div class="relative z-10 max-w-xl px-7 py-10 sm:px-12">
+        <h2
+          class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient sm:text-4xl"
+        >
+          The Treasury
+        </h2>
+        <p class="eyebrow mt-3">Exclusive Prizes</p>
+        <div class="mt-7">
+          <GoldButton variant="solid" size="md">
+            View Treasury <AppIcon name="arrowRight" :size="14" />
+          </GoldButton>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

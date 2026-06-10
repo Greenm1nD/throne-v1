@@ -1,0 +1,99 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import CrownLogo from '@/components/ui/CrownLogo.vue'
+import GoldButton from '@/components/ui/GoldButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { primaryNav } from '@/data/navigation'
+import { useAuthModal } from '@/composables/useAuthModal'
+
+const { open } = useAuthModal()
+const bar = ref<HTMLElement | null>(null)
+const menuOpen = ref(false)
+
+onMounted(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduce) return
+  gsap.from(bar.value, { y: -72, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.1 })
+})
+</script>
+
+<template>
+  <header
+    ref="bar"
+    class="glass-panel sticky top-0 z-50 h-[72px] w-full border-b border-border-gold"
+  >
+    <div class="container-royal flex h-full items-center justify-between gap-6">
+      <!-- Left: logo -->
+      <CrownLogo :size="34" :tagline="false" />
+
+      <!-- Center: nav -->
+      <nav class="hidden items-center gap-7 xl:flex">
+        <a
+          v-for="item in primaryNav"
+          :key="item.label"
+          :href="item.href"
+          class="group relative font-sans text-[13px] font-medium tracking-wide text-ink-muted transition-colors hover:text-ink"
+        >
+          {{ item.label }}
+          <span
+            class="absolute -bottom-1.5 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full"
+          />
+        </a>
+      </nav>
+
+      <!-- Right: actions -->
+      <div class="flex items-center gap-3">
+        <GoldButton variant="outline" size="sm" class="hidden sm:inline-flex" @click="open('login')">
+          Log In
+        </GoldButton>
+        <GoldButton variant="solid" size="sm" class="hidden md:inline-flex" @click="open('register')">
+          Join the Kingdom
+        </GoldButton>
+
+        <!-- Mobile menu toggle -->
+        <button
+          class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-champagne xl:hidden"
+          :aria-expanded="menuOpen"
+          aria-label="Toggle menu"
+          @click="menuOpen = !menuOpen"
+        >
+          <AppIcon :name="menuOpen ? 'x' : 'plus'" :size="18" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0 -translate-y-2"
+      leave-active-class="transition duration-200 ease-in"
+      leave-to-class="opacity-0 -translate-y-2"
+    >
+      <div
+        v-if="menuOpen"
+        class="glass-panel absolute inset-x-0 top-[72px] border-b border-border-gold xl:hidden"
+      >
+        <nav class="container-royal flex flex-col py-4">
+          <a
+            v-for="item in primaryNav"
+            :key="item.label"
+            :href="item.href"
+            class="border-b border-white/5 py-3 font-sans text-sm tracking-wide text-ink-muted transition-colors hover:text-gold-bright"
+            @click="menuOpen = false"
+          >
+            {{ item.label }}
+          </a>
+          <div class="mt-4 flex flex-col gap-3 pb-2">
+            <GoldButton variant="outline" size="md" block @click="open('login'); menuOpen = false">
+              Log In
+            </GoldButton>
+            <GoldButton variant="solid" size="md" block @click="open('register'); menuOpen = false">
+              Join the Kingdom
+            </GoldButton>
+          </div>
+        </nav>
+      </div>
+    </Transition>
+  </header>
+</template>
