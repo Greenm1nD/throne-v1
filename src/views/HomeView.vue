@@ -9,6 +9,7 @@ import FeatureGrid from '@/components/home/FeatureGrid.vue'
 import TreasuryBanner from '@/components/home/TreasuryBanner.vue'
 import RoyalTreasures from '@/components/home/RoyalTreasures.vue'
 import TheCourt from '@/components/home/TheCourt.vue'
+import RoyalDivider from '@/components/ui/RoyalDivider.vue'
 import { useReveal } from '@/composables/useReveal'
 
 // Bottom row (Treasures + Court) shares one reveal pass.
@@ -24,6 +25,10 @@ useReveal(communityRow, { stagger: 0.14 })
       <KingdomStatus />
       <RoyalCollection />
       <FeatureGrid />
+
+      <div class="container-royal pt-16 sm:pt-20">
+        <RoyalDivider />
+      </div>
       <TreasuryBanner />
 
       <!-- Royal Treasures + The Court, side by side -->

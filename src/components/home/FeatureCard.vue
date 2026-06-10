@@ -11,15 +11,33 @@ const img = assets[props.feature.image]
 <template>
   <article
     class="card-lux group relative flex h-[300px] flex-col justify-between overflow-hidden p-6"
+    :class="feature.vip && 'border-border-gold shadow-[0_0_0_1px_rgba(212,175,55,0.4),0_24px_60px_-28px_rgba(0,0,0,0.9)]'"
     data-reveal
   >
     <!-- 16:9 image layer -->
     <div
       class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
       :style="{
-        backgroundImage: `linear-gradient(180deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.25) 40%, rgba(5,5,5,0.85)), url('${img.src}')`,
+        backgroundImage: `linear-gradient(180deg, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.25) 42%, rgba(5,5,5,0.9)), url('${img.src}')`,
         backgroundColor: '#0d0d10',
       }"
+    />
+
+    <!-- VIP badge -->
+    <span
+      v-if="feature.vip"
+      class="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full border border-border-gold bg-black/50 px-3 py-1 font-sans text-[9px] font-semibold uppercase tracking-[0.2em] text-gold-bright backdrop-blur"
+    >
+      <AppIcon name="crown" :size="11" /> Invite Only
+    </span>
+
+    <!-- Reflection sweep on hover -->
+    <span
+      class="pointer-events-none absolute inset-y-0 left-0 z-0 w-1/3 opacity-0 group-hover:opacity-100"
+      style="
+        background: linear-gradient(100deg, transparent, rgba(245, 215, 122, 0.2), transparent);
+        animation: lightSweep 1.5s ease-out;
+      "
     />
 
     <!-- Top-left: title, subtitle, CTA -->

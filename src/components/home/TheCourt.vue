@@ -2,6 +2,7 @@
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
+import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import { courtChannels } from '@/data/rewards'
 </script>
 
@@ -22,13 +23,14 @@ import { courtChannels } from '@/data/rewards'
       </div>
     </div>
 
-    <!-- Center: crest -->
-    <div class="hidden shrink-0 place-items-center md:grid">
+    <!-- Center: crest with orbiting particles -->
+    <div class="relative hidden shrink-0 place-items-center md:grid">
+      <ParticleLayer :count="12" />
       <div
         class="relative grid h-24 w-24 place-items-center rounded-full border border-border-gold"
-        style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)"
+        style="background: radial-gradient(circle, rgba(212,175,55,0.14), transparent 70%)"
       >
-        <div class="absolute inset-3 animate-ringRotate rounded-full border border-dashed border-gold/20" />
+        <div class="absolute inset-3 animate-ringRotate rounded-full border border-dashed border-gold/25" />
         <CrownLogo :size="52" :with-text="false" />
       </div>
     </div>

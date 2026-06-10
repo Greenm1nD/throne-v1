@@ -44,10 +44,22 @@ onMounted(() => {
 
       <!-- Right: actions -->
       <div class="flex items-center gap-3">
+        <button
+          class="group hidden h-10 w-10 place-items-center rounded-full border border-white/10 text-ink-muted transition-all duration-300 hover:border-gold hover:text-gold-bright sm:grid"
+          aria-label="Search"
+        >
+          <AppIcon name="search" :size="17" class="transition-transform duration-500 group-hover:rotate-[18deg]" />
+        </button>
+
         <GoldButton variant="outline" size="sm" class="hidden sm:inline-flex" @click="open('login')">
           Log In
         </GoldButton>
-        <GoldButton variant="solid" size="sm" class="hidden md:inline-flex" @click="open('register')">
+        <GoldButton
+          variant="solid"
+          size="sm"
+          class="hidden animate-softGlow md:inline-flex"
+          @click="open('register')"
+        >
           Join the Kingdom
         </GoldButton>
 

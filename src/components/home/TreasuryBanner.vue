@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import { assets } from '@/data/assets'
 import { useReveal } from '@/composables/useReveal'
 
@@ -12,7 +13,7 @@ useReveal(root)
 <template>
   <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
     <div
-      class="group relative flex min-h-[220px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-card-glow"
+      class="group relative flex min-h-[220px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)]"
       data-reveal
     >
       <!-- Wide 21:6 image layer (clearly visible; only the left fades to black for text) -->
@@ -22,6 +23,18 @@ useReveal(root)
           backgroundImage: `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 18%, rgba(5,5,5,0.28) 38%, rgba(5,5,5,0) 56%), url('${assets.treasuryBanner.src}')`,
           backgroundColor: '#0d0b07',
         }"
+      />
+
+      <!-- Floating gold particles -->
+      <ParticleLayer :count="14" />
+
+      <!-- Cinematic light sweep on hover -->
+      <span
+        class="pointer-events-none absolute inset-y-0 left-0 w-1/3 opacity-0 group-hover:opacity-100"
+        style="
+          background: linear-gradient(100deg, transparent, rgba(245, 215, 122, 0.22), transparent);
+          animation: lightSweep 1.6s ease-out;
+        "
       />
 
       <div class="relative z-10 max-w-xl px-7 py-10 sm:px-12">

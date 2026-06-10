@@ -13,6 +13,8 @@ export interface Feature {
   cta: string
   href: string
   meta: FeatureMeta[]
+  /** Highlights the card as the most exclusive (extra gold treatment) */
+  vip?: boolean
 }
 
 export const features: Feature[] = [
@@ -44,5 +46,6 @@ export const features: Feature[] = [
     cta: 'Explore VIP',
     href: '#vip',
     meta: [],
+    vip: true,
   },
 ]

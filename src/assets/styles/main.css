@@ -192,3 +192,54 @@
     transform: scale(1.15);
   }
 }
+
+@keyframes lightSweep {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+@layer utilities {
+  /* Soft radial champagne-gold glow anchored to the top of a section */
+  .section-glow {
+    position: relative;
+  }
+  .section-glow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -10%;
+    width: 80%;
+    height: 60%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: radial-gradient(60% 60% at 50% 0%, rgba(212, 175, 55, 0.08), transparent 70%);
+    z-index: 0;
+  }
+
+  /* Faint marble veining overlay for large dark surfaces */
+  .veined {
+    position: relative;
+  }
+  .veined::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(120% 80% at 0% 0%, rgba(212, 175, 55, 0.05), transparent 45%),
+      radial-gradient(120% 80% at 100% 100%, rgba(212, 175, 55, 0.04), transparent 45%);
+  }
+}

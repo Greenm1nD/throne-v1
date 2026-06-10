@@ -14,7 +14,9 @@ const footerSocials = [
 </script>
 
 <template>
-  <footer class="marble mt-20 border-t border-border-gold">
+  <footer class="marble veined relative mt-20 border-t border-border-gold">
+    <!-- top gold accent line -->
+    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
     <div class="container-royal py-16">
       <div class="grid grid-cols-2 items-start gap-10 lg:grid-cols-3">
         <!-- Left links -->
