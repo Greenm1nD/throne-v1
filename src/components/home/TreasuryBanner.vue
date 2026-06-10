@@ -26,14 +26,8 @@ useReveal(root)
       <!-- Floating gold particles -->
       <ParticleLayer :count="14" />
 
-      <!-- Cinematic light sweep on hover -->
-      <span
-        class="pointer-events-none absolute inset-y-0 left-0 w-1/3 opacity-0 group-hover:opacity-100"
-        style="
-          background: linear-gradient(100deg, transparent, rgba(245, 215, 122, 0.22), transparent);
-          animation: lightSweep 1.6s ease-out;
-        "
-      />
+      <!-- Cinematic hover shine -->
+      <span class="shine-beam" />
 
       <div class="relative z-10 max-w-xl px-7 py-10 sm:px-12">
         <h2

@@ -29,14 +29,8 @@ const img = assets[props.feature.image]
       <AppIcon name="crown" :size="11" /> Invite Only
     </span>
 
-    <!-- Reflection sweep on hover -->
-    <span
-      class="pointer-events-none absolute inset-y-0 left-0 z-0 w-1/3 opacity-0 group-hover:opacity-100"
-      style="
-        background: linear-gradient(100deg, transparent, rgba(245, 215, 122, 0.2), transparent);
-        animation: lightSweep 1.5s ease-out;
-      "
-    />
+    <!-- Hover shine -->
+    <span class="shine-beam z-0" />
 
     <!-- Top-left: title, subtitle, CTA -->
     <div class="relative z-10 flex flex-col items-start gap-3">

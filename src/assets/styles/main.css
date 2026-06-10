@@ -210,6 +210,38 @@
   }
 }
 
+/* Hover-triggered shine: a single diagonal beam that sweeps across and exits.
+   Sits inside a `.group` card; only runs on hover, never leaves residue. */
+@keyframes shineSweep {
+  0% {
+    transform: translateX(-160%) skewX(-14deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(280%) skewX(-14deg);
+    opacity: 0;
+  }
+}
+.shine-beam {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(245, 215, 122, 0.22),
+    transparent
+  );
+}
+.group:hover .shine-beam {
+  animation: shineSweep 0.85s ease-out;
+}
+
 /* Accessibility: silence decorative animation for reduced-motion users */
 @media (prefers-reduced-motion: reduce) {
   *,

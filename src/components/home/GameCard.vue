@@ -90,14 +90,8 @@ function stop() {
         "
       />
 
-      <!-- Reflection sweep on hover -->
-      <span
-        class="pointer-events-none absolute inset-y-0 left-0 w-1/3 opacity-0 group-hover:opacity-100"
-        style="
-          background: linear-gradient(100deg, transparent, rgba(245, 215, 122, 0.28), transparent);
-          animation: lightSweep 1.4s ease-out;
-        "
-      />
+      <!-- Hover shine -->
+      <span class="shine-beam z-10" />
 
       <!-- Play Now appears on hover -->
       <div
