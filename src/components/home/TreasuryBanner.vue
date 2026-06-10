@@ -18,11 +18,9 @@ useReveal(root)
     >
       <!-- Wide 21:6 image layer (clearly visible; only the left fades to black for text) -->
       <div
+        v-lazybg="`linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 18%, rgba(5,5,5,0.28) 38%, rgba(5,5,5,0) 56%), url('${assets.treasuryBanner.src}')`"
         class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-        :style="{
-          backgroundImage: `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 18%, rgba(5,5,5,0.28) 38%, rgba(5,5,5,0) 56%), url('${assets.treasuryBanner.src}')`,
-          backgroundColor: '#0d0b07',
-        }"
+        :style="{ backgroundColor: '#0d0b07' }"
       />
 
       <!-- Floating gold particles -->

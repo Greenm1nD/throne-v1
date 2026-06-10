@@ -16,11 +16,9 @@ const img = assets[props.feature.image]
   >
     <!-- 16:9 image layer -->
     <div
+      v-lazybg="`linear-gradient(180deg, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.25) 42%, rgba(5,5,5,0.9)), url('${img.src}')`"
       class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-      :style="{
-        backgroundImage: `linear-gradient(180deg, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.25) 42%, rgba(5,5,5,0.9)), url('${img.src}')`,
-        backgroundColor: '#0d0d10',
-      }"
+      :style="{ backgroundColor: '#0d0d10' }"
     />
 
     <!-- VIP badge -->

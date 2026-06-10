@@ -57,8 +57,9 @@ function stop() {
     <div class="relative flex-1 overflow-hidden">
       <!-- Static image (default) -->
       <div
+        v-lazybg="`url('${img.src}')`"
         class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-        :style="{ backgroundImage: `url('${img.src}')`, backgroundColor: '#0d0d10' }"
+        :style="{ backgroundColor: '#0d0d10' }"
       />
 
       <!-- Hover video: fades in and plays on hover -->

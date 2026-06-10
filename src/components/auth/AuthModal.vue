@@ -82,7 +82,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
           <div class="relative my-6 w-full max-w-5xl">
             <!-- Ornate crown badge over the top edge (outside the clip) -->
             <div class="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
-              <CrownBadge :size="92" />
+              <CrownBadge :size="174" />
             </div>
 
             <!-- Clipped modal body -->
