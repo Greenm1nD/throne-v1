@@ -1,20 +1,31 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import PageHero from '@/components/page/PageHero.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import CrownBadge from '@/components/ui/CrownBadge.vue'
 import { kingdomPage as page } from '@/data/pages'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { useRevealEach } from '@/composables/useReveal'
 
 const { open } = useAuthModal()
 
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
+
 const xpPct = computed(() => Math.round((page.status.xp / page.status.next) * 100))
 const activeIndex = page.ranks.findIndex((r) => r.active)
+const N = page.ranks.length
+// Rank centres sit at (i+0.5)/N of the rail width (equal grid cells).
+const railStart = 100 / (N * 2)
+const fillWidth = (activeIndex / N) * 100
+
+const statusCrown = computed(
+  () => page.ranks.find((r) => r.name === page.status.level)?.crown ?? page.ranks[0].crown,
+)
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" @primary="open('register')" />
 
     <!-- Rise through the ranks -->
@@ -27,14 +38,18 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
         </h3>
 
         <div class="relative overflow-x-auto py-2 [scrollbar-width:none] lg:overflow-visible">
-          <div class="pointer-events-none absolute inset-x-6 top-[40px] hidden h-px bg-white/10 lg:block" />
+          <!-- Track + fill run through the crown centres (36px = half of h-[72px]) -->
           <div
-            class="pointer-events-none absolute left-6 top-[40px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
-            :style="{ width: `${(activeIndex / (page.ranks.length - 1)) * 90}%` }"
+            class="pointer-events-none absolute top-[38px] hidden h-px bg-white/10 lg:block"
+            :style="{ left: `${railStart}%`, right: `${railStart}%` }"
           />
-          <ol class="relative flex items-start justify-between gap-6">
-            <li v-for="(r, i) in page.ranks" :key="r.name" class="flex shrink-0 flex-col items-center gap-2">
-              <div class="flex h-[72px] items-center">
+          <div
+            class="pointer-events-none absolute top-[38px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
+            :style="{ left: `${railStart}%`, width: `${fillWidth}%` }"
+          />
+          <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-4">
+            <li v-for="(r, i) in page.ranks" :key="r.name" class="flex flex-col items-center gap-2">
+              <div class="relative z-10 flex h-[72px] items-center">
                 <img
                   :src="r.crown"
                   :alt="`${r.name} crown`"
@@ -48,13 +63,17 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
               >
                 {{ r.name }}
               </span>
-              <span class="font-sans text-[10px] tabular-nums text-ink-dim">{{ r.range }}</span>
+              <span class="whitespace-nowrap font-sans text-[10px] tabular-nums text-ink-dim">{{ r.range }}</span>
             </li>
           </ol>
         </div>
 
-        <div class="flex shrink-0 flex-col items-center gap-3 text-center lg:max-w-[200px]">
-          <CrownBadge :size="84" />
+        <div class="flex shrink-0 flex-col items-center gap-3 text-center lg:max-w-[210px]">
+          <img
+            src="/assets/images/crown-duke.png"
+            alt=""
+            class="h-16 w-auto drop-shadow-[0_4px_16px_rgba(212,175,55,0.5)]"
+          />
           <p class="font-sans text-[11px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-champagne">
             The higher you rise,<br />the greater your rewards.
           </p>
@@ -65,7 +84,7 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
 
     <!-- Benefits + status -->
     <section class="container-royal grid gap-5 pt-12 sm:pt-16 lg:grid-cols-[2.2fr_1fr]">
-      <div class="card-lux p-7 hover:translate-y-0 sm:p-8">
+      <div class="card-lux p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
           Exclusive Kingdom Benefits
         </h3>
@@ -86,9 +105,13 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
       </div>
 
       <!-- Your kingdom status -->
-      <div class="card-lux flex flex-col items-center justify-center gap-3 p-7 text-center hover:translate-y-0 sm:p-8">
-        <CrownBadge :size="92" />
-        <p class="eyebrow">Your Kingdom Status</p>
+      <div class="card-lux flex flex-col items-center justify-center gap-3 p-7 text-center hover:translate-y-0 sm:p-8" data-reveal>
+        <img
+          :src="statusCrown"
+          alt=""
+          class="h-16 w-auto drop-shadow-[0_0_18px_rgba(245,215,122,0.6)]"
+        />
+        <p class="eyebrow mt-1">Your Kingdom Status</p>
         <p class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient">
           {{ page.status.level }}
         </p>
@@ -114,6 +137,7 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
         v-for="c in page.cards"
         :key="c.title"
         class="card-lux group relative flex min-h-[240px] flex-col justify-end overflow-hidden p-7"
+        data-reveal
       >
         <div
           v-lazybg="`linear-gradient(180deg, rgba(8,8,10,0.55), rgba(5,5,5,0.9)), url('${c.image}'), url('${c.fallback}')`"
@@ -137,6 +161,7 @@ const activeIndex = page.ranks.findIndex((r) => r.active)
       <div
         class="flex flex-col items-center justify-between gap-6 rounded-2xl border border-border-gold bg-card/80 px-8 py-7 sm:flex-row"
         style="background-image: linear-gradient(90deg, rgba(13,13,16,0.9), rgba(8,8,10,0.95)), url('/assets/images/texture-marble.webp'); background-size: cover"
+        data-reveal
       >
         <div class="flex items-center gap-5">
           <img src="/assets/images/throne-logo-mark.png" alt="" class="h-12 w-auto opacity-90" />

@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import PageHero from '@/components/page/PageHero.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import CrownBadge from '@/components/ui/CrownBadge.vue'
 import { rewardsPage as page, kingdomPage } from '@/data/pages'
+import { useRevealEach } from '@/composables/useReveal'
 
 // Loyalty tiers reuse the kingdom rank ladder (same levels, same crowns).
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
+
 const ranks = kingdomPage.ranks
 const activeIndex = ranks.findIndex((r) => r.active)
+const railStart = 100 / (ranks.length * 2)
+const fillWidth = (activeIndex / ranks.length) * 100
 
 const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 100))
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" />
 
     <!-- Loyalty tiers ladder -->
@@ -31,14 +36,17 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
 
         <div class="relative overflow-x-auto py-2 [scrollbar-width:none] lg:overflow-visible">
-          <div class="pointer-events-none absolute inset-x-6 top-[40px] hidden h-px bg-white/10 lg:block" />
           <div
-            class="pointer-events-none absolute left-6 top-[40px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
-            :style="{ width: `${(activeIndex / (ranks.length - 1)) * 90}%` }"
+            class="pointer-events-none absolute top-[38px] hidden h-px bg-white/10 lg:block"
+            :style="{ left: `${railStart}%`, right: `${railStart}%` }"
           />
-          <ol class="relative flex items-start justify-between gap-6">
-            <li v-for="(r, i) in ranks" :key="r.name" class="flex shrink-0 flex-col items-center gap-2">
-              <div class="flex h-[72px] items-center">
+          <div
+            class="pointer-events-none absolute top-[38px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
+            :style="{ left: `${railStart}%`, width: `${fillWidth}%` }"
+          />
+          <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-4">
+            <li v-for="(r, i) in ranks" :key="r.name" class="flex flex-col items-center gap-2">
+              <div class="relative z-10 flex h-[72px] items-center">
                 <img
                   :src="r.crown"
                   :alt="`${r.name} crown`"
@@ -58,7 +66,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
 
         <div class="flex shrink-0 flex-col items-center gap-3 text-center lg:max-w-[190px]">
-          <img src="/assets/images/crown-duke.png" alt="" class="h-9 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
+          <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_4px_16px_rgba(212,175,55,0.5)]" />
           <p class="font-sans text-[11px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-champagne">
             {{ page.tiers.note }}
           </p>
@@ -72,7 +80,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
     <!-- Redeem + summary -->
     <section class="container-royal grid gap-5 pt-12 sm:pt-16 lg:grid-cols-[2.2fr_1fr]">
       <!-- Redeem panel -->
-      <div class="card-lux p-6 hover:translate-y-0 sm:p-7">
+      <div class="card-lux p-6 hover:translate-y-0 sm:p-7" data-reveal>
         <div class="mb-5 flex items-center justify-between gap-4">
           <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
             Redeem Amazing Rewards
@@ -111,9 +119,9 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
       </div>
 
       <!-- Your rewards summary -->
-      <div class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8">
+      <div class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <div class="flex items-center gap-4">
-          <CrownBadge :size="76" />
+          <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
           <div class="flex-1">
             <p class="eyebrow">Your Rewards Summary</p>
             <p class="font-display text-2xl font-bold tracking-[0.12em] text-gold-gradient">

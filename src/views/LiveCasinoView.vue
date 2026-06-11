@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { livePage as page } from '@/data/pages'
+
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero">
       <template #below>
         <!-- Mini feature row under the CTAs -->
@@ -37,7 +42,7 @@ import { livePage as page } from '@/data/pages'
     <!-- Top games + exclusive -->
     <section class="container-royal grid gap-5 pt-12 sm:pt-16 lg:grid-cols-[1.7fr_1fr]">
       <!-- Top games panel -->
-      <div class="card-lux p-6 hover:translate-y-0 sm:p-7">
+      <div class="card-lux p-6 hover:translate-y-0 sm:p-7" data-reveal>
         <div class="mb-5 flex items-center justify-between">
           <h3 class="font-display text-sm font-semibold uppercase tracking-[0.22em] text-champagne">
             Top Games
@@ -87,7 +92,7 @@ import { livePage as page } from '@/data/pages'
       </div>
 
       <!-- Exclusive experiences -->
-      <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8">
+      <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <div
           v-lazybg="`linear-gradient(110deg, rgba(8,8,10,0.94) 42%, rgba(8,8,10,0.5)), url('${page.exclusive.image}'), url('${page.exclusive.fallback}')`"
           class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -107,6 +112,6 @@ import { livePage as page } from '@/data/pages'
       </div>
     </section>
 
-    <FeatureBand :items="page.band" />
+    <FeatureBand :items="page.band" data-reveal />
   </main>
 </template>

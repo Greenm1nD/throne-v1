@@ -64,3 +64,53 @@ export function useReveal(root: Ref<HTMLElement | null>, options: { stagger?: nu
     if (fallback) clearTimeout(fallback)
   })
 }
+
+/**
+ * Per-element variant: every `[data-reveal]` inside the root gets its own
+ * observer, so sections fade up as the user scrolls to them (used by the
+ * section pages, where one root spans the whole page).
+ */
+export function useRevealEach(root: Ref<HTMLElement | null>, options: { y?: number } = {}) {
+  const { y = 28 } = options
+  let observer: IntersectionObserver | null = null
+  let fallback: number | undefined
+
+  onMounted(() => {
+    const el = root.value
+    if (!el) return
+    const targets = Array.from(el.querySelectorAll<HTMLElement>('[data-reveal]'))
+    if (!targets.length) return
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      gsap.set(targets, { opacity: 1, y: 0 })
+      return
+    }
+
+    gsap.set(targets, { opacity: 0, y })
+
+    observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' })
+          obs.unobserve(entry.target)
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    )
+    targets.forEach((t) => observer!.observe(t))
+
+    // Safety net — nothing stays invisible.
+    fallback = window.setTimeout(() => {
+      const hidden = targets.filter((t) => Number(gsap.getProperty(t, 'opacity')) < 1)
+      if (hidden.length) gsap.to(hidden, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 })
+      observer?.disconnect()
+    }, 6000)
+  })
+
+  onBeforeUnmount(() => {
+    observer?.disconnect()
+    if (fallback) clearTimeout(fallback)
+  })
+}

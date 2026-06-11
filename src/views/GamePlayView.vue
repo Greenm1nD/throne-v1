@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useRevealEach } from '@/composables/useReveal'
 import { useRoute, useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
@@ -13,6 +14,9 @@ const game = computed(() => findGame(String(route.params.slug)) ?? lobbyGames[0]
 const playing = ref(false)
 const mode = ref<'real' | 'demo'>('real')
 const fav = ref(false)
+
+const rootEl = ref<HTMLElement | null>(null)
+useRevealEach(rootEl)
 
 // Switching to another game resets the session state.
 watch(() => route.params.slug, () => {
@@ -33,7 +37,7 @@ const controls = [
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="rootEl" class="pb-4">
     <div class="container-royal pt-6">
       <!-- Breadcrumb -->
       <nav class="flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.12em]" aria-label="Breadcrumb">
@@ -45,7 +49,7 @@ const controls = [
       </nav>
 
       <!-- Game frame -->
-      <div class="card-lux mt-5 overflow-hidden p-0 hover:translate-y-0">
+      <div class="card-lux mt-5 overflow-hidden p-0 hover:translate-y-0" data-reveal>
         <div class="relative aspect-video max-h-[680px] w-full overflow-hidden">
           <!-- Blurred art backdrop -->
           <div
@@ -141,7 +145,7 @@ const controls = [
       </div>
 
       <!-- Popular casino games -->
-      <div class="mt-12">
+      <div class="mt-12" data-reveal>
         <div class="mb-6 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="h-6 w-1 rounded-full bg-gold-gradient shadow-gold-soft" />

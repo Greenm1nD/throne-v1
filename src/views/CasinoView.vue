@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
@@ -8,20 +10,34 @@ import { casinoPage as page } from '@/data/pages'
 import { useAuthModal } from '@/composables/useAuthModal'
 
 const { open } = useAuthModal()
+
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
+
+// Progressive jackpot ticks upward while the page is open.
+const jackpot = ref(10_892_750)
+let tick: number | undefined
+onMounted(() => {
+  tick = window.setInterval(() => {
+    jackpot.value += 41 + Math.floor(Math.random() * 210)
+  }, 1300)
+})
+onBeforeUnmount(() => clearInterval(tick))
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" :cta="page.hero.cta" />
 
     <CategoryStrip :items="page.categories" />
 
-    <GamesLobby />
+    <GamesLobby data-reveal />
 
     <!-- Progressive jackpot banner -->
     <section class="container-royal pt-12 sm:pt-16">
       <div
         class="group relative flex min-h-[210px] flex-col justify-center gap-5 overflow-hidden rounded-2xl border border-border-gold px-7 py-8 shadow-card-glow sm:flex-row sm:items-center sm:gap-10 sm:px-10 lg:min-h-[260px]"
+        data-reveal
       >
         <!-- Artwork shown in FULL (contain, anchored right) — the crown is never cropped -->
         <div
@@ -49,7 +65,7 @@ const { open } = useAuthModal()
         <span class="relative z-10 hidden h-14 w-px bg-white/10 sm:block" />
         <div class="relative z-10 flex flex-1 flex-col gap-4">
           <p class="font-display text-4xl font-bold tracking-[0.06em] text-gold-gradient sm:text-5xl">
-            {{ page.jackpot.amount }}
+            €{{ jackpot.toLocaleString('en-US') }}
           </p>
           <GoldButton variant="outline" size="sm" class="self-start">
             {{ page.jackpot.cta }} <AppIcon name="arrowRight" :size="13" />
@@ -62,6 +78,7 @@ const { open } = useAuthModal()
     <section class="container-royal pt-12 sm:pt-16">
       <div
         class="grid gap-8 rounded-2xl border border-white/5 bg-card/70 px-8 py-8 lg:grid-cols-[auto_1fr_auto] lg:items-center"
+        data-reveal
         style="background-image: linear-gradient(180deg, rgba(13,13,16,0.85), rgba(8,8,10,0.92)), url('/assets/images/texture-marble.webp'); background-size: cover"
       >
         <div>

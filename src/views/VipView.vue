@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
@@ -8,17 +10,20 @@ import { vipPage as page } from '@/data/pages'
 import { useAuthModal } from '@/composables/useAuthModal'
 
 const { open } = useAuthModal()
+
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" @primary="open('register')" />
 
     <CategoryStrip :items="page.benefits" />
 
     <!-- VIP tiers + lounge -->
     <section class="container-royal grid gap-5 pt-14 sm:pt-20 lg:grid-cols-[2.4fr_1fr]">
-      <div>
+      <div data-reveal>
         <!-- Title with flanking flourishes -->
         <div class="mb-8 flex items-center justify-center gap-4">
           <AppIcon name="arrowRight" :size="14" class="text-gold/60" />
@@ -67,7 +72,7 @@ const { open } = useAuthModal()
       </div>
 
       <!-- VIP lounge card -->
-      <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8 lg:mt-[68px]">
+      <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8 lg:mt-[68px]" data-reveal>
         <div
           v-lazybg="`linear-gradient(180deg, rgba(8,8,10,0.75), rgba(8,8,10,0.35) 45%, rgba(8,8,10,0.85)), url('${page.lounge.image}'), url('${page.lounge.fallback}')`"
           class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -89,6 +94,6 @@ const { open } = useAuthModal()
       </div>
     </section>
 
-    <FeatureBand :items="page.band" />
+    <FeatureBand :items="page.band" data-reveal />
   </main>
 </template>

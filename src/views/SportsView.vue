@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
@@ -10,17 +11,20 @@ import { sportsPage as page } from '@/data/pages'
 import { royalCollection } from '@/data/games'
 
 const provider = ref(0)
+
+const root = ref<HTMLElement | null>(null)
+useRevealEach(root)
 </script>
 
 <template>
-  <main class="pb-4">
+  <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" />
 
     <CategoryStrip :items="page.sports" />
 
     <!-- ── The Arena: provider sportsbook frame, dressed in THRONE ── -->
     <section class="container-royal pt-12 sm:pt-16">
-      <div class="card-lux overflow-hidden p-0 hover:translate-y-0">
+      <div class="card-lux overflow-hidden p-0 hover:translate-y-0" data-reveal>
         <!-- Frame chrome -->
         <div
           class="flex flex-col gap-4 border-b border-white/5 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
@@ -135,6 +139,7 @@ const provider = ref(0)
     <section class="container-royal pt-12 sm:pt-16">
       <div
         class="group relative flex min-h-[210px] flex-col justify-center overflow-hidden rounded-2xl border border-border-gold px-7 py-8 shadow-card-glow sm:px-10 lg:min-h-[240px]"
+        data-reveal
       >
         <div
           v-lazybg="`url('${page.boost.image}')`"
@@ -184,6 +189,6 @@ const provider = ref(0)
       </div>
     </section>
 
-    <FeatureBand :items="page.band" />
+    <FeatureBand :items="page.band" data-reveal />
   </main>
 </template>

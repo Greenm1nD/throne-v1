@@ -40,7 +40,7 @@ export const casinoPage = {
     { label: 'Baccarat', font: 'card-baccarat' },
     { label: 'Poker', font: 'card-poker' },
     { label: 'Table Games', font: 'games' },
-    { label: 'Jackpots', font: 'jackpot' },
+    { label: 'Jackpots', font: 'jackpot-1' },
     { label: 'Live Casino', font: 'nav-casino' },
   ],
   jackpot: {
@@ -133,7 +133,7 @@ export const livePage = {
     ],
   },
   categories: <StripItem[]>[
-    { label: 'All Games', font: 'crown', active: true },
+    { label: 'All Games', font: 'win-crown', active: true },
     { label: 'Blackjack', font: 'card-blackjack' },
     { label: 'Roulette', font: 'card-roulette' },
     { label: 'Baccarat', font: 'card-baccarat' },
