@@ -15,7 +15,10 @@ const footerSocials = [
 </script>
 
 <template>
-  <footer class="marble veined relative mt-20 border-t border-border-gold">
+  <footer
+    class="veined relative mt-20 border-t border-border-gold bg-cover bg-center"
+    style="background-image: linear-gradient(180deg, rgba(5,5,5,0.86), rgba(5,5,5,0.94)), url('/assets/images/texture-marble.webp'); background-color: #08080a"
+  >
     <!-- top gold accent line -->
     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 

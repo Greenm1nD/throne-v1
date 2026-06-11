@@ -6,6 +6,8 @@ export interface KingStat {
   /** AppIcon glyph key */
   icon: string
   cta: string
+  /** Cinematic card background */
+  image: string
 }
 
 export const hallOfKings: KingStat[] = [
@@ -15,6 +17,7 @@ export const hallOfKings: KingStat[] = [
     detail: 'Imperial Roulette · single spin',
     icon: 'trophy',
     cta: 'See the Win',
+    image: '/assets/images/hall-highest-win.webp',
   },
   {
     label: 'Biggest Jackpot',
@@ -22,6 +25,7 @@ export const hallOfKings: KingStat[] = [
     detail: 'Monarch Slots · royal pot',
     icon: 'sparkle',
     cta: 'Chase It',
+    image: '/assets/images/hall-biggest-jackpot.webp',
   },
   {
     label: 'VIP Member',
@@ -29,6 +33,7 @@ export const hallOfKings: KingStat[] = [
     detail: 'Sovereign tier · 3 years crowned',
     icon: 'crown',
     cta: 'Meet the Court',
+    image: '/assets/images/hall-vip-member.webp',
   },
   {
     label: 'Monthly Champion',
@@ -36,5 +41,6 @@ export const hallOfKings: KingStat[] = [
     detail: 'June leaderboard sovereign',
     icon: 'swords',
     cta: 'View Leaderboard',
+    image: '/assets/images/hall-monthly-champion.webp',
   },
 ]

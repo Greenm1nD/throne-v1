@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import IconBadge from '@/components/ui/IconBadge.vue'
 import { royalTreasures } from '@/data/rewards'
 </script>
 
@@ -18,7 +17,13 @@ import { royalTreasures } from '@/data/rewards'
         :key="r.title"
         class="group/reward flex flex-col items-center gap-3 rounded-xl border border-transparent p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:border-border-gold hover:bg-gold/[0.04]"
       >
-        <IconBadge :icon="r.icon" size="md" />
+        <img
+          :src="r.image"
+          :alt="r.title"
+          loading="lazy"
+          decoding="async"
+          class="h-14 w-14 object-contain drop-shadow-[0_4px_14px_rgba(212,175,55,0.35)] transition-transform duration-300 group-hover/reward:scale-110"
+        />
         <div>
           <h4
             class="font-sans text-[11px] font-semibold uppercase leading-tight tracking-[0.16em] text-ink-muted transition-colors group-hover/reward:text-gold-bright"
