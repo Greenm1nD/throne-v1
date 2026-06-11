@@ -181,6 +181,38 @@
   }
 }
 
+/* Ambient gold dust: slow rise with a gentle sway, fading in and out.
+   Long durations + negative delays keep the field continuously alive. */
+@keyframes dustRise {
+  0% {
+    transform: translate3d(0, 12vh, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--dust-peak, 0.3);
+  }
+  88% {
+    opacity: var(--dust-peak, 0.3);
+  }
+  100% {
+    transform: translate3d(var(--dust-sway, 18px), -88vh, 0);
+    opacity: 0;
+  }
+}
+
+/* Very slow ambient glow breathing behind everything */
+@keyframes ambientBreath {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
 @keyframes twinkle {
   0%,
   100% {
