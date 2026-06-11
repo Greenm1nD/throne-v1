@@ -12,10 +12,10 @@ const ready = ref(false)
 <template>
   <LoadingScreen v-if="!ready" @done="ready = true" />
   <AmbientBackground />
-  <div v-show="ready" class="min-h-screen">
-    <AppHeader />
+  <AppHeader v-show="ready" />
+  <div v-show="ready" class="min-h-[60vh]">
     <RouterView />
-    <AppFooter />
   </div>
+  <AppFooter v-show="ready" />
   <AuthModal />
 </template>
