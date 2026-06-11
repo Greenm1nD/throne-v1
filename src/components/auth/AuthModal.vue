@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import gsap from 'gsap'
-import { playRoyalChime } from '@/utils/sfx'
+import { playRoyalGate } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import CrownBadge from '@/components/ui/CrownBadge.vue'
@@ -25,7 +25,7 @@ watch(
   () => state.open,
   async (open) => {
     if (!open) return
-    playRoyalChime()
+    playRoyalGate()
     await nextTick()
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })

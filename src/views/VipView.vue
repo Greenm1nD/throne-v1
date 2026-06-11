@@ -22,16 +22,18 @@ useRevealEach(root)
     <CategoryStrip :items="page.benefits" />
 
     <!-- VIP tiers + lounge -->
-    <section class="container-royal grid gap-5 pt-14 sm:pt-20 lg:grid-cols-[2.4fr_1fr]">
+    <section class="container-royal pt-14 sm:pt-20">
+      <!-- Title with flanking flourishes -->
+      <div class="mb-8 flex items-center justify-center gap-4">
+        <AppIcon name="arrowRight" :size="14" class="text-gold/60" />
+        <h2 class="font-display text-2xl font-semibold tracking-[0.2em] text-gold-gradient">
+          VIP Tiers
+        </h2>
+        <AppIcon name="arrowLeft" :size="14" class="text-gold/60" />
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-[2.4fr_1fr]">
       <div data-reveal>
-        <!-- Title with flanking flourishes -->
-        <div class="mb-8 flex items-center justify-center gap-4">
-          <AppIcon name="arrowRight" :size="14" class="text-gold/60" />
-          <h2 class="font-display text-2xl font-semibold tracking-[0.2em] text-gold-gradient">
-            VIP Tiers
-          </h2>
-          <AppIcon name="arrowLeft" :size="14" class="text-gold/60" />
-        </div>
 
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
           <article
@@ -66,18 +68,18 @@ useRevealEach(root)
                 {{ p }}
               </li>
             </ul>
-            <span class="mt-5 h-1.5 w-1.5 rotate-45" :class="t.featured ? 'bg-gold-bright' : 'bg-gold/50'" />
+            <span class="mt-auto pt-5"><span class="block h-1.5 w-1.5 rotate-45" :class="t.featured ? 'bg-gold-bright' : 'bg-gold/50'" /></span>
           </article>
         </div>
       </div>
 
       <!-- VIP lounge card -->
-      <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8 lg:mt-[68px]" data-reveal>
+      <div class="card-lux group relative h-full overflow-hidden p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <div
           v-lazybg="`linear-gradient(180deg, rgba(8,8,10,0.75), rgba(8,8,10,0.35) 45%, rgba(8,8,10,0.85)), url('${page.lounge.image}'), url('${page.lounge.fallback}')`"
           class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
         />
-        <div class="relative z-10 flex h-full min-h-[300px] flex-col items-center justify-between gap-4 text-center">
+        <div class="relative z-10 flex h-full min-h-[200px] flex-col items-center justify-between gap-4 text-center">
           <div>
             <img src="/assets/images/crown-duke.png" alt="" class="mx-auto h-9 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
             <h3 class="mt-2 font-display text-2xl font-semibold tracking-[0.16em] text-gold-gradient">
@@ -91,6 +93,7 @@ useRevealEach(root)
             {{ page.lounge.cta }} <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>
+      </div>
       </div>
     </section>
 
