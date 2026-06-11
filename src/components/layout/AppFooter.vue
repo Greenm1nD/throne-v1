@@ -49,10 +49,20 @@ const footerSocials = [
               <span class="h-1.5 w-1.5 rotate-45 bg-gold/70" />
             </div>
 
-            <div class="relative grid place-items-center">
-              <div class="absolute h-[124px] w-[124px] animate-ringRotate rounded-full border border-dashed border-gold/25" />
-              <div class="absolute h-[138px] w-[138px] animate-ringRotateReverse rounded-full border border-gold/10" />
-              <CrownBadge :size="112" />
+            <!-- Fixed box: halo rings centred; badge offset so its gold CIRCLE
+                 (centre ≈47% of the finial-topped PNG) sits on the ring centre -->
+            <div class="relative h-[170px] w-[170px]">
+              <!-- centring wrapper ≠ rotating element (keyframe transform would
+                   override the -translate-1/2 if put on the same node) -->
+              <div class="absolute left-1/2 top-1/2 h-[100px] w-[100px] -translate-x-1/2 -translate-y-1/2">
+                <div class="h-full w-full animate-ringRotate rounded-full border border-dashed border-gold/25" />
+              </div>
+              <div class="absolute left-1/2 top-1/2 h-[116px] w-[116px] -translate-x-1/2 -translate-y-1/2">
+                <div class="h-full w-full animate-ringRotateReverse rounded-full border border-gold/10" />
+              </div>
+              <div class="absolute left-1/2 top-[5px] -translate-x-1/2">
+                <CrownBadge :size="170" />
+              </div>
             </div>
 
             <!-- right flourish -->

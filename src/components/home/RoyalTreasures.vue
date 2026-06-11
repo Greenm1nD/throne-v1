@@ -11,11 +11,11 @@ import { royalTreasures } from '@/data/rewards'
       Royal Treasures
     </h3>
 
-    <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3">
+    <div class="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-5">
       <article
         v-for="r in royalTreasures"
         :key="r.title"
-        class="group/reward flex flex-col items-center gap-3 rounded-xl border border-transparent p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:border-border-gold hover:bg-gold/[0.04]"
+        class="group/reward flex flex-col items-center gap-3 rounded-xl border border-transparent p-2 text-center transition-all duration-300 hover:-translate-y-1 hover:border-border-gold hover:bg-gold/[0.04]"
       >
         <img
           :src="r.image"
