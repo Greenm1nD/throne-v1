@@ -13,7 +13,7 @@ useReveal(root)
 <template>
   <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
     <div
-      class="group relative flex aspect-[1661/947] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)]"
+      class="group relative flex min-h-[200px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)] lg:aspect-[6/1]"
       data-reveal
     >
       <!-- Image at its native aspect ratio — shown in full, no crop.
@@ -65,7 +65,7 @@ useReveal(root)
         </span>
       </div>
 
-      <div class="relative z-10 max-w-xl self-start px-7 pt-10 sm:px-12 sm:pt-14">
+      <div class="relative z-10 max-w-xl px-7 py-8 sm:px-12">
         <h2
           class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient sm:text-4xl"
         >

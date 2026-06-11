@@ -57,7 +57,7 @@ onMounted(() => {
         <GoldButton
           variant="solid"
           size="sm"
-          class="hidden animate-softGlow md:inline-flex"
+          class="cta-breathe hidden md:inline-flex"
           @click="open('register')"
         >
           Join the Kingdom

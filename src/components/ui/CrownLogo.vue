@@ -25,7 +25,7 @@ withDefaults(
       :src="assets.logoMark.src"
       :alt="assets.logoMark.alt"
       :style="{ height: `${size}px` }"
-      class="w-auto shrink-0 drop-shadow-[0_2px_12px_rgba(212,175,55,0.35)] transition-transform duration-500 group-hover:scale-105"
+      class="logo-breath w-auto shrink-0 transition-transform duration-500 group-hover:scale-105"
     />
 
     <!-- Wordmark as original gold artwork.
@@ -45,7 +45,7 @@ withDefaults(
       class="flex flex-col leading-none"
       :style="{ transform: `translateY(${Math.round(size * 0.15)}px)` }"
     >
-      <span class="font-display text-[20px] font-semibold tracking-[0.28em] text-gold-gradient">
+      <span class="text-gold-flow bg-clip-text font-display text-[20px] font-semibold tracking-[0.28em] text-transparent">
         THRONE
       </span>
       <span
