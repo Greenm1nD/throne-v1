@@ -15,9 +15,12 @@ const reveal = reactive<Record<string, boolean>>({})
 
 const cardEl = ref<HTMLElement | null>(null)
 const badgeEl = ref<HTMLElement | null>(null)
-const burstEl = ref<HTMLElement | null>(null)
+const photoEl = ref<HTMLElement | null>(null)
+const formEl = ref<HTMLElement | null>(null)
 
-// Royal entrance: chime + card rise-from-blur + badge bounce + gold shockwave.
+// Quiet luxury entrance (chime + choreography, no shape effects):
+// the card settles up softly, the two panels glide together from
+// opposite sides, the crown badge eases down last.
 watch(
   () => state.open,
   async (open) => {
@@ -25,23 +28,29 @@ watch(
     playRoyalChime()
     await nextTick()
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
     tl.fromTo(
       cardEl.value,
-      { opacity: 0, scale: 0.9, y: 28, filter: 'blur(12px)' },
-      { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: 0.55 },
+      { opacity: 0, y: 16, scale: 0.975 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.45 },
     )
       .fromTo(
-        badgeEl.value,
-        { opacity: 0, y: -48, scale: 0.4 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'back.out(2.4)' },
-        '-=0.28',
+        photoEl.value,
+        { opacity: 0, x: -24 },
+        { opacity: 1, x: 0, duration: 0.55 },
+        '-=0.22',
       )
       .fromTo(
-        burstEl.value,
-        { opacity: 0.9, scale: 0.3 },
-        { opacity: 0, scale: 2.8, duration: 0.85, ease: 'power2.out' },
+        formEl.value,
+        { opacity: 0, x: 24 },
+        { opacity: 1, x: 0, duration: 0.55 },
         '<',
+      )
+      .fromTo(
+        badgeEl.value,
+        { opacity: 0, y: -12 },
+        { opacity: 1, y: 0, duration: 0.45 },
+        '-=0.38',
       )
   },
 )
@@ -120,12 +129,6 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
         @mousedown.self="close"
       >
           <div ref="cardEl" class="relative my-6 w-full max-w-5xl">
-            <!-- Gold shockwave on open (margin-centred so GSAP owns transform) -->
-            <div
-              ref="burstEl"
-              class="pointer-events-none absolute left-1/2 top-1/2 z-0 h-48 w-48 rounded-full border-2 border-gold/70 opacity-0"
-              style="margin-left: -6rem; margin-top: -6rem; box-shadow: 0 0 70px 14px rgba(245, 215, 122, 0.35)"
-            />
             <!-- Ornate crown badge over the top edge (outside the clip) -->
             <div class="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
               <div ref="badgeEl">
@@ -150,12 +153,13 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
             <div class="grid lg:h-[660px] lg:grid-cols-2">
               <!-- Photo panel -->
               <div
+                ref="photoEl"
                 class="relative hidden h-full min-h-[560px] bg-cover bg-center lg:block"
                 :style="{ backgroundImage: panelBg, backgroundColor: '#07070a' }"
               />
 
               <!-- Form panel -->
-              <div class="flex flex-col px-6 py-8 sm:px-10 lg:h-full lg:overflow-y-auto">
+              <div ref="formEl" class="flex flex-col px-6 py-8 sm:px-10 lg:h-full lg:overflow-y-auto">
                 <!-- Brand -->
                 <div class="flex flex-col items-center text-center">
                   <img src="/assets/images/crown-duke.png" alt="" class="h-8 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
