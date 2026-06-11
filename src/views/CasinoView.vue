@@ -18,12 +18,23 @@ const { open } = useAuthModal()
     <!-- Progressive jackpot banner -->
     <section class="container-royal pt-12 sm:pt-16">
       <div
-        class="group relative flex min-h-[180px] flex-col justify-center gap-5 overflow-hidden rounded-2xl border border-border-gold px-7 py-8 shadow-card-glow sm:flex-row sm:items-center sm:gap-10 sm:px-10"
+        class="group relative flex min-h-[210px] flex-col justify-center gap-5 overflow-hidden rounded-2xl border border-border-gold px-7 py-8 shadow-card-glow sm:flex-row sm:items-center sm:gap-10 sm:px-10 lg:min-h-[260px]"
       >
+        <!-- Artwork shown in FULL (contain, anchored right) — the crown is never cropped -->
         <div
-          v-lazybg="`linear-gradient(90deg, rgba(5,5,5,0.94) 0%, rgba(5,5,5,0.75) 45%, rgba(5,5,5,0.25)), url('${page.jackpot.image}'), url('${page.jackpot.fallback}')`"
-          class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-105"
-          :style="{ backgroundColor: '#0d0b07' }"
+          v-lazybg="`url('${page.jackpot.image}')`"
+          class="absolute inset-0 transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+          :style="{
+            backgroundColor: '#050505',
+            backgroundSize: 'contain',
+            backgroundPosition: 'right center',
+            backgroundRepeat: 'no-repeat',
+          }"
+        />
+        <!-- Left scrim for the copy -->
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(90deg, rgba(5,5,5,0.95) 28%, rgba(5,5,5,0.55) 52%, rgba(5,5,5,0) 75%)"
         />
         <span class="shine-beam" />
 

@@ -31,6 +31,7 @@ export const casinoPage = {
     cta: 'Play Now',
     image: '/assets/images/page-casino-hero.webp',
     fallback: '/assets/images/game-roulette.webp',
+    posY: '62%',
   },
   categories: <StripItem[]>[
     { label: 'Roulette', font: 'card-roulette' },
@@ -74,6 +75,7 @@ export const sportsPage = {
     icon: 'trophy',
     image: '/assets/images/page-sports-hero.webp',
     fallback: '/assets/images/sportsbook-arena.webp',
+    posY: '58%',
   },
   sports: <StripItem[]>[
     { label: 'Soccer', font: 'football-ball', active: true },
@@ -134,6 +136,7 @@ export const livePage = {
     cta: 'Play Live Now',
     image: '/assets/images/page-live-hero.webp',
     fallback: '/assets/images/live-casino.webp',
+    posY: '32%',
     features: <BandItem[]>[
       { icon: 'user', title: 'Real Dealers' },
       { icon: 'chat', title: 'Live Chat' },
@@ -216,6 +219,7 @@ export const vipPage = {
     cta2: 'VIP Benefits',
     image: '/assets/images/page-vip-hero.webp',
     fallback: '/assets/images/vip-club.webp',
+    posY: '60%',
   },
   benefits: <StripItem[]>[
     { label: 'Dedicated Account Manager', icon: 'user' },
@@ -362,6 +366,7 @@ export const kingdomPage = {
     cta2: 'Kingdom Benefits',
     image: '/assets/images/page-kingdom-hero.webp',
     fallback: '/assets/images/hero-throne-room.webp',
+    posY: '55%',
   },
   ranks: [
     { name: 'Noble', range: '0 – 5,000 XP', crown: '/assets/images/crown-noble.png' },

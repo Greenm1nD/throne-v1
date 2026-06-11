@@ -18,8 +18,10 @@ const props = withDefaults(
     image: string
     fallback: string
     icon?: string
+    /** Vertical focal point of the artwork (background-position-y) */
+    posY?: string
   }>(),
-  { icon: 'crown' },
+  { icon: 'crown', posY: '50%' },
 )
 
 const emit = defineEmits<{ primary: []; secondary: [] }>()
@@ -43,11 +45,11 @@ onMounted(() => {
 
 <template>
   <section
-    class="grain relative flex min-h-[480px] items-center overflow-hidden lg:min-h-[540px]"
+    class="grain relative flex min-h-[500px] items-center overflow-hidden lg:min-h-[640px]"
   >
     <div
-      class="absolute inset-0 bg-cover bg-center"
-      :style="{ backgroundImage: bg, backgroundColor: '#07070a' }"
+      class="absolute inset-0 bg-cover"
+      :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
     />
 
     <div class="container-royal relative z-10">

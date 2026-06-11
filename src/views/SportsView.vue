@@ -78,8 +78,9 @@ import { sportsPage as page } from '@/data/pages'
       <!-- Boost card -->
       <div class="card-lux group relative overflow-hidden p-7 hover:translate-y-0 sm:p-8">
         <div
-          v-lazybg="`linear-gradient(110deg, rgba(8,8,10,0.94) 38%, rgba(8,8,10,0.45)), url('${page.boost.image}'), url('${page.boost.fallback}')`"
-          class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+          v-lazybg="`linear-gradient(110deg, rgba(8,8,10,0.92) 32%, rgba(8,8,10,0.35)), url('${page.boost.image}'), url('${page.boost.fallback}')`"
+          class="absolute inset-0 bg-cover transition-transform duration-700 group-hover:scale-105"
+          :style="{ backgroundPosition: '68% center' }"
         />
         <div class="relative z-10 flex h-full flex-col items-start justify-center gap-2">
           <h3 class="font-display text-xl font-semibold uppercase tracking-[0.1em] text-champagne">
