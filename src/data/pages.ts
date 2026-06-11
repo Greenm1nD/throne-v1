@@ -277,6 +277,81 @@ export const vipPage = {
   ],
 }
 
+// ── REWARDS ────────────────────────────────────────────────────────────
+export const rewardsPage = {
+  hero: {
+    title: 'Rewards',
+    tagline: 'Loyalty rewarded. Greatness recognized.',
+    sub: 'Every bet, every game, every moment brings you closer to exclusive rewards and unforgettable experiences.',
+    cta: 'Explore Rewards',
+    image: '/assets/images/page-rewards-hero.webp',
+    fallback: '/assets/images/treasury-banner.webp',
+  },
+  tiers: {
+    title: 'Loyalty Tiers',
+    sub: 'The more you play, the more you earn.',
+    note: 'The higher you rise, the greater your rewards.',
+    cta: 'View All Tiers',
+  },
+  redeem: [
+    {
+      title: 'Cashback',
+      sub: 'Up to 25%',
+      tier: 'Duke+',
+      image: '/assets/images/reward-card-cashback.webp',
+      fallback: '/assets/images/hall-biggest-jackpot.webp',
+    },
+    {
+      title: 'VIP Experiences',
+      sub: 'Exclusive Events',
+      tier: 'Crown+',
+      image: '/assets/images/reward-card-vip.webp',
+      fallback: '/assets/images/vip-club.webp',
+    },
+    {
+      title: 'Luxury Travel',
+      sub: 'Dream Destinations',
+      tier: 'Sovereign',
+      image: '/assets/images/reward-card-travel.webp',
+      fallback: '/assets/images/treasury-banner.webp',
+    },
+    {
+      title: 'Special Bonuses',
+      sub: 'Free Bets & More',
+      tier: 'Noble+',
+      image: '/assets/images/reward-card-bonuses.webp',
+      fallback: '/assets/images/hall-vip-member.webp',
+    },
+    {
+      title: 'Premium Gifts',
+      sub: 'Handpicked for You',
+      tier: 'Duke+',
+      image: '/assets/images/reward-card-gifts.webp',
+      fallback: '/assets/images/hall-monthly-champion.webp',
+    },
+  ],
+  summary: {
+    level: 'Duke',
+    xp: 32450,
+    next: 50000,
+    toNext: '17,550 XP to reach CROWN',
+    stats: [
+      { icon: 'star', label: 'Available Points', value: '12,450' },
+      { icon: 'gift', label: 'Redeemed Rewards', value: '24' },
+      { icon: 'sparkle', label: 'Total Value', value: '€2,450' },
+    ],
+    cta: 'Go to Rewards Wallet',
+  },
+  band: <BandItem[]>[
+    { icon: 'star', title: 'Earn Points', sub: 'Earn points on every bet across all games' },
+    { icon: 'gift', title: 'Weekly Bonuses', sub: 'Exclusive bonuses every week' },
+    { icon: 'crown', title: 'Exclusive Offers', sub: 'Handpicked offers just for you' },
+    { icon: 'calendar', title: 'Birthday Rewards', sub: 'Special rewards on your special day' },
+    { icon: 'sparkle', title: 'Surprise Rewards', sub: 'Unlock surprises as you play' },
+    { icon: 'bolt', title: 'Unlock Experiences', sub: 'Access unforgettable luxury experiences' },
+  ],
+}
+
 // ── KINGDOM ────────────────────────────────────────────────────────────
 export const kingdomPage = {
   hero: {
