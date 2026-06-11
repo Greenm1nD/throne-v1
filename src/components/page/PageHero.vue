@@ -1,0 +1,79 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import GoldButton from '@/components/ui/GoldButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+
+/**
+ * Shared cinematic hero for section pages: right-weighted artwork,
+ * left text block (crown/icon, title, tagline, sub, CTAs).
+ */
+const props = withDefaults(
+  defineProps<{
+    title: string
+    tagline: string
+    sub?: string
+    cta: string
+    cta2?: string
+    image: string
+    fallback: string
+    icon?: string
+  }>(),
+  { icon: 'crown' },
+)
+
+const emit = defineEmits<{ primary: []; secondary: [] }>()
+
+const content = ref<HTMLElement | null>(null)
+const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%), url('${props.image}'), url('${props.fallback}')`
+
+onMounted(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduce || !content.value) return
+  gsap.from(content.value.children, {
+    opacity: 0,
+    y: 22,
+    duration: 0.8,
+    ease: 'power3.out',
+    stagger: 0.09,
+    delay: 0.1,
+  })
+})
+</script>
+
+<template>
+  <section
+    class="grain relative flex min-h-[480px] items-center overflow-hidden lg:min-h-[540px]"
+  >
+    <div
+      class="absolute inset-0 bg-cover bg-center"
+      :style="{ backgroundImage: bg, backgroundColor: '#07070a' }"
+    />
+
+    <div class="container-royal relative z-10">
+      <div ref="content" class="max-w-xl py-16">
+        <AppIcon :name="icon" :size="30" class="text-gold-bright drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]" />
+        <h1
+          class="mt-3 font-display text-5xl font-bold tracking-[0.12em] text-gold-gradient sm:text-6xl"
+        >
+          {{ title }}
+        </h1>
+        <p class="mt-4 font-sans text-sm font-medium uppercase tracking-[0.3em] text-ink">
+          {{ tagline }}
+        </p>
+        <p v-if="sub" class="mt-4 max-w-md font-sans text-sm leading-relaxed text-ink-muted">
+          {{ sub }}
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <GoldButton variant="solid" size="lg" @click="emit('primary')">
+            {{ cta }} <AppIcon name="arrowRight" :size="15" />
+          </GoldButton>
+          <GoldButton v-if="cta2" variant="outline" size="lg" @click="emit('secondary')">
+            {{ cta2 }}
+          </GoldButton>
+        </div>
+        <slot name="below" />
+      </div>
+    </div>
+  </section>
+</template>

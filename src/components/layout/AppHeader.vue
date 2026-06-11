@@ -29,17 +29,26 @@ onMounted(() => {
 
       <!-- Center: nav -->
       <nav class="hidden items-center gap-7 xl:flex">
-        <a
+        <RouterLink
           v-for="item in primaryNav"
           :key="item.label"
-          :href="item.href"
-          class="group relative font-sans text-[13px] font-medium tracking-wide text-ink-muted transition-colors hover:text-ink"
+          :to="item.href"
+          custom
+          v-slot="{ href, navigate, isActive }"
         >
-          {{ item.label }}
-          <span
-            class="absolute -bottom-1.5 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full"
-          />
-        </a>
+          <a
+            :href="href"
+            class="group relative font-sans text-[13px] font-medium tracking-wide transition-colors hover:text-ink"
+            :class="isActive ? 'text-ink' : 'text-ink-muted'"
+            @click="navigate"
+          >
+            {{ item.label }}
+            <span
+              class="absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-300"
+              :class="isActive ? 'w-full' : 'w-0 group-hover:w-full'"
+            />
+          </a>
+        </RouterLink>
       </nav>
 
       <!-- Right: actions -->
@@ -87,15 +96,16 @@ onMounted(() => {
         class="glass-panel absolute inset-x-0 top-[72px] border-b border-border-gold xl:hidden"
       >
         <nav class="container-royal flex flex-col py-4">
-          <a
+          <RouterLink
             v-for="item in primaryNav"
             :key="item.label"
-            :href="item.href"
+            :to="item.href"
             class="border-b border-white/5 py-3 font-sans text-sm tracking-wide text-ink-muted transition-colors hover:text-gold-bright"
+            active-class="text-gold-bright"
             @click="menuOpen = false"
           >
             {{ item.label }}
-          </a>
+          </RouterLink>
           <div class="mt-4 flex flex-col gap-3 pb-2">
             <GoldButton variant="outline" size="md" block @click="open('login'); menuOpen = false">
               Log In

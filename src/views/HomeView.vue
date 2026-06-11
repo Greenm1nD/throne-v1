@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import AppHeader from '@/components/layout/AppHeader.vue'
-import AppFooter from '@/components/layout/AppFooter.vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
@@ -19,29 +17,25 @@ useReveal(communityRow, { stagger: 0.14 })
 </script>
 
 <template>
-  <div class="min-h-screen">
-    <AppHeader />
-    <main>
-      <HeroSection />
-      <KingdomStatus />
-      <HallOfKings />
-      <RoyalCollection />
-      <FeatureGrid />
+  <main>
+    <HeroSection />
+    <KingdomStatus />
+    <HallOfKings />
+    <RoyalCollection />
+    <FeatureGrid />
 
-      <div class="container-royal pt-16 sm:pt-20">
-        <RoyalDivider />
-      </div>
-      <TreasuryBanner />
+    <div class="container-royal pt-16 sm:pt-20">
+      <RoyalDivider />
+    </div>
+    <TreasuryBanner />
 
-      <!-- Royal Treasures + The Court, side by side -->
-      <section
-        ref="communityRow"
-        class="container-royal grid grid-cols-1 gap-5 pt-12 sm:pt-16 lg:grid-cols-2"
-      >
-        <RoyalTreasures />
-        <TheCourt />
-      </section>
-    </main>
-    <AppFooter />
-  </div>
+    <!-- Royal Treasures + The Court, side by side -->
+    <section
+      ref="communityRow"
+      class="container-royal grid grid-cols-1 gap-5 pt-12 sm:pt-16 lg:grid-cols-2"
+    >
+      <RoyalTreasures />
+      <TheCourt />
+    </section>
+  </main>
 </template>

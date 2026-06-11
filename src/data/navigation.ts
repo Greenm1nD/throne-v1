@@ -4,12 +4,12 @@ export interface NavItem {
 }
 
 export const primaryNav: NavItem[] = [
-  { label: 'Casino', href: '#casino' },
-  { label: 'Sports', href: '#sports' },
-  { label: 'Live Casino', href: '#live-casino' },
-  { label: 'VIP', href: '#vip' },
-  { label: 'Kingdom', href: '#kingdom' },
-  { label: 'Rewards', href: '#rewards' },
+  { label: 'Casino', href: '/casino' },
+  { label: 'Sports', href: '/sports' },
+  { label: 'Live Casino', href: '/live-casino' },
+  { label: 'VIP', href: '/vip' },
+  { label: 'Kingdom', href: '/kingdom' },
+  { label: 'Rewards', href: '/rewards' },
 ]
 
 export interface FooterLink {
