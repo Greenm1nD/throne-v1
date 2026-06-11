@@ -12,19 +12,24 @@ import { royalTreasures } from '@/data/rewards'
       Royal Treasures
     </h3>
 
-    <div class="mt-7 grid grid-cols-2 gap-6 sm:grid-cols-4">
-      <div
+    <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <article
         v-for="r in royalTreasures"
         :key="r.title"
-        class="flex flex-col items-center gap-3 text-center"
+        class="group/reward flex flex-col items-center gap-3 rounded-xl border border-transparent p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:border-border-gold hover:bg-gold/[0.04]"
       >
         <IconBadge :icon="r.icon" size="md" />
-        <h4
-          class="font-sans text-[11px] font-semibold uppercase leading-tight tracking-[0.16em] text-ink-muted"
-        >
-          {{ r.title }}
-        </h4>
-      </div>
+        <div>
+          <h4
+            class="font-sans text-[11px] font-semibold uppercase leading-tight tracking-[0.16em] text-ink-muted transition-colors group-hover/reward:text-gold-bright"
+          >
+            {{ r.title }}
+          </h4>
+          <p class="mt-1.5 font-sans text-[10px] leading-snug text-ink-dim">
+            {{ r.description }}
+          </p>
+        </div>
+      </article>
     </div>
   </div>
 </template>

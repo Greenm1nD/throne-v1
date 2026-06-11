@@ -23,6 +23,14 @@ useReveal(root)
         :style="{ backgroundColor: '#0d0b07' }"
       />
 
+      <!-- Pulsing skyline glow (center-right, over the city) -->
+      <div
+        class="pointer-events-none absolute right-[12%] top-0 h-full w-1/2 animate-goldenPulse"
+        style="
+          background: radial-gradient(45% 60% at 60% 45%, rgba(245, 215, 122, 0.18), transparent 70%);
+        "
+      />
+
       <!-- Floating gold particles -->
       <ParticleLayer :count="14" />
 
