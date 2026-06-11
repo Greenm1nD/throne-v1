@@ -23,9 +23,9 @@ const delay = (ms = 220) => new Promise((r) => setTimeout(r, ms))
 
 const demoUser: User = {
   id: 'u1',
-  name: 'Green Bet.',
-  handle: '@ponka1',
-  email: 'gr****@gmail.com',
+  name: 'KingMaker',
+  handle: '@kingmaker',
+  email: 'ki****@gmail.com',
   balance: 1240.5,
   currency: 'USD',
   tier: 'Duke',

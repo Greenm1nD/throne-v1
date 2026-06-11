@@ -6,16 +6,16 @@
  */
 
 export const user = {
-  name: 'Green Bet.',
-  handle: '@ponka1',
+  name: 'KingMaker',
+  handle: '@kingmaker',
   tier: 'Duke',
   avatar: '/assets/images/hall-vip-member.webp',
   memberSince: '01 Oct 2025',
   verified: false,
-  email: 'gr****@gmail.com',
+  email: 'ki****@gmail.com',
   phone: '+44 *** *** 4567',
-  firstName: 'Green',
-  lastName: 'Bet.',
+  firstName: 'Giorgi',
+  lastName: 'Mepe',
   dob: '05-03-1995',
   nationalId: '*******74',
   country: 'United Kingdom',
@@ -192,7 +192,7 @@ export const passwordRules = [
 
 /** Verification channels and their current state. */
 export const verificationStatus = [
-  { channel: 'Email Verification', detail: 'gr****@gmail.com', state: 'NOT VERIFIED' },
+  { channel: 'Email Verification', detail: 'ki****@gmail.com', state: 'NOT VERIFIED' },
   { channel: 'Phone Verification', detail: '+44 *** *** 4567', state: 'NOT VERIFIED' },
   { channel: 'Identity (KYC)', detail: 'Document verification status', state: 'NOT VERIFIED' },
   { channel: 'Two-Factor Auth', detail: 'Two-step login is off', state: 'DISABLED' },
