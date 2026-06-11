@@ -7,13 +7,13 @@
  * - half the motes hide on mobile (less GPU work)
  * - global prefers-reduced-motion guard silences it automatically
  */
-const motes = Array.from({ length: 26 }, (_, i) => ({
+const motes = Array.from({ length: 40 }, (_, i) => ({
   x: (i * 41 + 13) % 100, // vw
   y: (i * 67 + 29) % 100, // vh (start)
-  s: [1, 1.6, 2.2, 1.2, 2.6][i % 5],
-  peak: [0.16, 0.3, 0.22, 0.36, 0.12][i % 5],
+  s: [1, 1.6, 2.2, 1.2, 2.8][i % 5],
+  peak: [0.22, 0.38, 0.28, 0.45, 0.18][i % 5],
   sway: [14, -22, 30, -12, 20][i % 5],
-  dur: 26 + ((i * 7) % 22), // 26–47s
+  dur: 24 + ((i * 7) % 22), // 24–45s
   delay: -((i * 53) % 40), // pre-seeded across the loop
   mobile: i % 2 === 0, // only half render on small screens
 }))
