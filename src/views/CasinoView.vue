@@ -4,6 +4,7 @@ import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
+import RollingNumber from '@/components/ui/RollingNumber.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { casinoPage as page } from '@/data/pages'
@@ -64,8 +65,8 @@ onBeforeUnmount(() => clearInterval(tick))
         </h2>
         <span class="relative z-10 hidden h-14 w-px bg-white/10 sm:block" />
         <div class="relative z-10 flex flex-1 flex-col gap-4">
-          <p class="font-display text-4xl font-bold tracking-[0.06em] text-gold-gradient sm:text-5xl">
-            €{{ jackpot.toLocaleString('en-US') }}
+          <p class="font-display text-4xl font-bold tracking-[0.06em] sm:text-5xl">
+            <RollingNumber :value="jackpot" prefix="€" />
           </p>
           <GoldButton variant="outline" size="sm" class="self-start">
             {{ page.jackpot.cta }} <AppIcon name="arrowRight" :size="13" />
