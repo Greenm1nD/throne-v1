@@ -27,8 +27,8 @@ onMounted(() => {
       <!-- Left: logo -->
       <CrownLogo :size="34" :tagline="false" />
 
-      <!-- Center: nav -->
-      <nav class="hidden items-center gap-7 xl:flex">
+      <!-- Center: nav (visible from lg, 1024px) -->
+      <nav class="hidden items-center gap-5 lg:flex xl:gap-7">
         <RouterLink
           v-for="item in primaryNav"
           :key="item.label"
@@ -74,7 +74,7 @@ onMounted(() => {
 
         <!-- Mobile menu toggle -->
         <button
-          class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-champagne xl:hidden"
+          class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-champagne lg:hidden"
           :aria-expanded="menuOpen"
           aria-label="Toggle menu"
           @click="menuOpen = !menuOpen"
@@ -93,7 +93,7 @@ onMounted(() => {
     >
       <div
         v-if="menuOpen"
-        class="glass-panel absolute inset-x-0 top-[72px] border-b border-border-gold xl:hidden"
+        class="glass-panel absolute inset-x-0 top-[72px] border-b border-border-gold lg:hidden"
       >
         <nav class="container-royal flex flex-col py-4">
           <RouterLink
