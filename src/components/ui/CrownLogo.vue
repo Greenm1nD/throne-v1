@@ -28,17 +28,23 @@ withDefaults(
       class="w-auto shrink-0 drop-shadow-[0_2px_12px_rgba(212,175,55,0.35)] transition-transform duration-500 group-hover:scale-105"
     />
 
-    <!-- Wordmark as original gold artwork -->
+    <!-- Wordmark as original gold artwork.
+         The crown occupies the mark's upper half, so the wordmark is nudged
+         down to align with the T letterform's optical centre, not the image's. -->
     <img
       v-if="withText && wordmarkAsImage"
       :src="assets.logoWordmark.src"
       :alt="assets.logoWordmark.alt"
-      :style="{ height: `${size * 0.62}px` }"
+      :style="{ height: `${size * 0.62}px`, transform: `translateY(${Math.round(size * 0.15)}px)` }"
       class="w-auto"
     />
 
     <!-- Wordmark as crisp text -->
-    <span v-else-if="withText" class="flex flex-col leading-none">
+    <span
+      v-else-if="withText"
+      class="flex flex-col leading-none"
+      :style="{ transform: `translateY(${Math.round(size * 0.15)}px)` }"
+    >
       <span class="font-display text-[20px] font-semibold tracking-[0.28em] text-gold-gradient">
         THRONE
       </span>
