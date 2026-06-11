@@ -1,19 +1,31 @@
 <script setup lang="ts">
 import AccGlyph from './AccGlyph.vue'
 
-/** Top-row metric card: label, hero value, icon chip, key/value sublines. */
-defineProps<{
+/**
+ * Top-row metric card: label, hero value, icon chip, key/value sublines.
+ * `tone` drives the value accent from the design tokens:
+ * in → gold flow, out → muted, bonus → champagne, highlight → gold ring.
+ */
+const props = defineProps<{
   label: string
   value: string
   icon?: string
   font?: string
   rows?: Array<{ k: string; v: string }>
   accent?: boolean
+  tone?: 'in' | 'out' | 'neutral' | 'bonus' | 'highlight'
 }>()
+
+const valueClass = () => {
+  if (props.tone === 'in' || props.tone === 'highlight' || props.accent) return 'text-gold-gradient'
+  if (props.tone === 'bonus') return 'text-champagne'
+  if (props.tone === 'out') return 'text-ink-muted'
+  return 'text-ink'
+}
 </script>
 
 <template>
-  <div class="card-lux p-5 hover:translate-y-0 sm:p-6">
+  <div class="card-lux p-5 hover:translate-y-0 sm:p-6" :class="tone === 'highlight' && 'border-border-gold'">
     <div class="flex items-start justify-between gap-3">
       <p class="eyebrow">{{ label }}</p>
       <span
@@ -25,7 +37,7 @@ defineProps<{
     </div>
     <p
       class="mt-2 font-display text-2xl font-bold tabular-nums tracking-[0.04em]"
-      :class="accent ? 'text-gold-gradient' : 'text-ink'"
+      :class="valueClass()"
     >
       <slot name="value">{{ value }}</slot>
     </p>

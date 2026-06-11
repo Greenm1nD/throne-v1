@@ -5,8 +5,10 @@ import AccGlyph from '@/components/account/AccGlyph.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import { accountNav, user } from '@/data/account'
+import { useAuth } from '@/composables/useAuth'
 
 const router = useRouter()
+const auth = useAuth()
 const menuOpen = ref(false) // mobile sidebar
 const dropOpen = ref(false)
 
@@ -19,6 +21,7 @@ const dropdown = [
 
 function logout() {
   dropOpen.value = false
+  auth.logout()
   router.push('/')
 }
 </script>

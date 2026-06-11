@@ -29,6 +29,29 @@ import { verificationStatus } from '@/data/account'
       </ul>
     </AccountPanel>
 
+    <AccountPanel title="Documents (KYC)">
+      <p class="mb-5 font-sans text-[12px] text-ink-dim">Upload your documents — the court reviews each within 24 hours.</p>
+      <ul class="space-y-3">
+        <li v-for="doc in [
+            { name: 'Passport / National ID', sub: 'Both sides, all corners visible', state: 'Pending', tone: 'wait' },
+            { name: 'Proof of Address', sub: 'Utility bill or bank statement, under 3 months old', state: 'Rejected', tone: 'bad', note: 'Scan was blurry — please re-upload.' },
+            { name: 'Payment Method', sub: 'Card or wallet ownership confirmation', state: 'Not Uploaded', tone: 'none' },
+          ]" :key="doc.name"
+          class="flex flex-wrap items-center gap-4 rounded-xl border border-white/8 bg-black/30 p-4">
+          <div class="min-w-0 flex-1">
+            <p class="font-sans text-[13px] font-semibold text-ink">{{ doc.name }}</p>
+            <p class="font-sans text-[11px] text-ink-dim">{{ doc.sub }}</p>
+            <p v-if="doc.note" class="mt-1 font-sans text-[11px] text-champagne">{{ doc.note }}</p>
+          </div>
+          <span class="rounded-full border px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em]"
+            :class="doc.tone === 'wait' ? 'border-champagne/40 text-champagne' : 'border-white/15 text-ink-dim'">
+            {{ doc.state }}
+          </span>
+          <GoldButton variant="outline" size="sm">{{ doc.tone === 'none' ? 'Upload' : 'Re-upload' }}</GoldButton>
+        </li>
+      </ul>
+    </AccountPanel>
+
     <AccountPanel title="SMS Verification">
       <p class="mb-1 font-sans text-[13px] font-semibold text-ink">Phone not verified</p>
       <p class="mb-5 font-sans text-[12px] text-ink-dim">Please verify your mobile number — we'll send a code to your phone.</p>

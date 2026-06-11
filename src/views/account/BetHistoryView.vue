@@ -1,14 +1,48 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
-import { betHistory, betProviders } from '@/data/account'
+import HistoryRows from '@/components/account/HistoryRows.vue'
+import StatCard from '@/components/account/StatCard.vue'
+import { betHistory, betProviders, type HistoryRow } from '@/data/account'
+import { api } from '@/services/api'
+
+const rows = ref<HistoryRow[]>([])
+const loading = ref(true)
+
+onMounted(async () => {
+  rows.value = await api.getList(
+    betHistory.map((b) => ({
+      font: 'bet-history',
+      title: b.match,
+      sub: `${b.coupon} · ${b.time}`,
+      ago: b.time,
+      amount: b.payout,
+      amountTone: (b.status === 'WON' ? 'in' : b.status === 'LOST' ? 'out' : 'neutral') as 'in' | 'out' | 'neutral',
+      details: [
+        { label: 'Coupon', value: b.coupon },
+        { label: 'Placed', value: b.time },
+        { label: 'Payout', value: b.payout },
+        { label: 'Status', value: b.status },
+      ],
+    })),
+  )
+  loading.value = false
+})
 </script>
 
 <template>
   <div class="space-y-6">
     <div>
-      <p class="eyebrow mb-1">Activity</p>
+      <p class="eyebrow mb-1">History</p>
       <h1 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Bet History</h1>
       <p class="mt-1 font-sans text-[12px] text-ink-dim">Results and winnings across all sportsbook providers.</p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <StatCard label="Total Bets" value="4" icon="chart" tone="neutral" />
+      <StatCard label="Won" value="+ $420" icon="trophy" tone="in" />
+      <StatCard label="Lost" value="$20" icon="bolt" tone="out" />
+      <StatCard label="Pending" value="1 · Live" icon="clock" tone="highlight" />
     </div>
 
     <div class="flex flex-wrap gap-2">
@@ -19,23 +53,7 @@ import { betHistory, betProviders } from '@/data/account'
     </div>
 
     <AccountPanel>
-      <ul class="space-y-4">
-        <li v-for="b in betHistory" :key="b.coupon" class="rounded-xl border border-white/8 bg-black/30 p-5 transition-colors hover:border-border-gold/70">
-          <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p class="font-display text-[14px] font-semibold tracking-[0.06em] text-ink">{{ b.match }}</p>
-              <p class="mt-1 font-sans text-[12px] tabular-nums text-ink-dim">{{ b.coupon }} · {{ b.time }}</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <p class="font-sans text-[14px] font-bold tabular-nums" :class="b.status === 'WON' ? 'text-gold-bright' : 'text-ink-muted'">{{ b.payout }}</p>
-              <span class="rounded-full border px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em]"
-                :class="b.status === 'WON' ? 'border-border-gold text-gold-bright' : b.status === 'PENDING' ? 'border-champagne/40 text-champagne' : 'border-white/15 text-ink-dim'">
-                {{ b.status }}
-              </span>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <HistoryRows :rows="rows" :loading="loading" />
     </AccountPanel>
   </div>
 </template>

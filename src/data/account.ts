@@ -61,12 +61,11 @@ export const accountNav: AccNavSection[] = [
     items: [{ label: 'Dashboard', to: '/account', font: 'games' }],
   },
   {
-    title: 'My Account',
+    title: 'Account',
     items: [
       { label: 'Profile', to: '/account/profile', icon: 'user' },
-      { label: 'Security', to: '/account/security', icon: 'lock' },
+      { label: 'Password Security', to: '/account/security', icon: 'key' },
       { label: 'Verification', to: '/account/verification', font: 'verification' },
-      { label: 'Preferences', to: '/account/profile', icon: 'sparkle' },
     ],
   },
   {
@@ -75,7 +74,25 @@ export const accountNav: AccNavSection[] = [
       { label: 'Balance', to: '/account/balance', font: 'wallet' },
       { label: 'Deposit', to: '/account/deposit', font: 'deposit' },
       { label: 'Withdraw', to: '/account/withdraw', icon: 'bolt' },
-      { label: 'Transactions', to: '/account/transactions', font: 'finance-history' },
+    ],
+  },
+  {
+    title: 'History',
+    items: [
+      { label: 'Bet History', to: '/account/bet-history', font: 'bet-history' },
+      { label: 'Game History', to: '/account/game-history', font: 'session-history' },
+      { label: 'My Free Spins', to: '/account/free-spins', icon: 'sparkle' },
+      { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift' },
+    ],
+  },
+  {
+    title: 'Transactions',
+    items: [
+      { label: 'Financial History', to: '/account/transactions', font: 'finance-history' },
+      { label: 'Account Activity', to: '/account/account-activity', font: 'account-history' },
+      { label: 'Transfers', to: '/account/transfers', icon: 'arrowRight' },
+      { label: 'Game Balance', to: '/account/game-balance', icon: 'vault' },
+      { label: 'Statements', to: '/account/statements', icon: 'calendar' },
     ],
   },
   {
@@ -83,16 +100,23 @@ export const accountNav: AccNavSection[] = [
     items: [
       { label: 'VIP Progress', to: '/account/vip-progress', icon: 'crown' },
       { label: 'My Rewards', to: '/account/rewards', icon: 'gift' },
-      { label: 'Bonuses', to: '/account/bonuses', icon: 'star' },
       { label: 'Cashback', to: '/account/cashback', icon: 'percent' },
     ],
   },
   {
-    title: 'Activity',
+    title: 'Security',
     items: [
-      { label: 'Game History', to: '/account/game-history', font: 'session-history' },
-      { label: 'Bet History', to: '/account/bet-history', font: 'bet-history' },
-      { label: 'Statements', to: '/account/statements', font: 'account-history' },
+      { label: 'Two-Factor Auth', to: '/account/twofa', icon: 'lock' },
+      { label: 'My Devices', to: '/account/devices', icon: 'monitor' },
+      { label: 'Session History', to: '/account/sessions', icon: 'clock' },
+    ],
+  },
+  {
+    title: 'Responsible Gaming',
+    items: [
+      { label: 'Account Freeze', to: '/account/freeze', icon: 'shield' },
+      { label: 'Cooling-off', to: '/account/cooling-off', icon: 'clock' },
+      { label: 'Wager Limits', to: '/account/limits', icon: 'chart' },
     ],
   },
   {
@@ -141,30 +165,31 @@ export const quickActions = [
   { label: 'Support', to: '/account/contact', icon: 'headset' },
 ]
 
-export const paymentMethods = [
-  { name: 'Visa', time: 'Instant', limits: '$10 – $10,000', recommended: false },
-  { name: 'Mastercard', time: 'Instant', limits: '$10 – $10,000', recommended: false },
-  { name: 'Crypto (BTC · ETH · USDT)', time: '~10 min', limits: '$20 – $50,000', recommended: true },
-  { name: 'Skrill', time: 'Instant', limits: '$10 – $5,000', recommended: false },
-  { name: 'Apple Pay', time: 'Instant', limits: '$10 – $5,000', recommended: false },
-  { name: 'Bank Transfer', time: '1–2 days', limits: '$100 – $100,000', recommended: false },
-]
-
-export interface BonusItem {
+/** Payment methods for the Deposit / Withdraw panels (pm-card rows). */
+export interface PayMethod {
   name: string
-  amount: string
-  date: string
-  status: 'Active' | 'Pending' | 'Completed' | 'Expired'
+  cat: 'bank' | 'crypto' | 'card'
+  icon: string
+  time: string
+  min: string
+  max: string
 }
 
-export const bonusTotals = { active: 4, totalReceived: '$675', activeBalance: '$0' }
-
-export const bonuses: BonusItem[] = [
-  { name: '10% Cashback', amount: '$25', date: '11 Jun 2026 18:14', status: 'Completed' },
-  { name: '200% Casino Welcome', amount: '$500', date: '9 Jun 2026 00:14', status: 'Completed' },
-  { name: 'Mega Reward', amount: '$100', date: '5 Jun 2026 00:14', status: 'Completed' },
-  { name: 'Free spins package', amount: '$50', date: '31 May 2026 00:14', status: 'Completed' },
+export const DEPOSIT: PayMethod[] = [
+  { name: 'Visa', cat: 'card', icon: 'vault', time: 'Instant', min: '$10', max: '$10,000' },
+  { name: 'Mastercard', cat: 'card', icon: 'vault', time: 'Instant', min: '$10', max: '$10,000' },
+  { name: 'Fast Bank Transfer', cat: 'bank', icon: 'bolt', time: 'Instant', min: '$100', max: '$100,000' },
+  { name: 'Crypto (BTC · ETH · USDT)', cat: 'crypto', icon: 'sparkle', time: '~10 min', min: '$20', max: '$50,000' },
+  { name: 'Skrill', cat: 'bank', icon: 'globe', time: 'Instant', min: '$10', max: '$5,000' },
 ]
+
+export const WITHDRAW: PayMethod[] = [
+  { name: 'Fast Bank Transfer', cat: 'bank', icon: 'bolt', time: '~2 hours', min: '$100', max: '$100,000' },
+  { name: 'Crypto (BTC · ETH · USDT)', cat: 'crypto', icon: 'sparkle', time: '~10 min', min: '$20', max: '$50,000' },
+  { name: 'Skrill', cat: 'bank', icon: 'globe', time: '~2 hours', min: '$10', max: '$5,000' },
+]
+
+export const WITHDRAW_BANKS = ['Wise', 'Revolut', 'HSBC', 'Barclays']
 
 /** Trusted devices (Device Lock is ON). */
 export const devices = [
@@ -222,6 +247,153 @@ export const statements = [
   { period: 'May 2026', items: 7, net: '+ $320.00' },
   { period: 'April 2026', items: 12, net: '− $180.00' },
 ]
+
+/* ── Shared history machinery (StatTiles + HistoryRows) ───────────────── */
+
+export type Tone = 'in' | 'out' | 'neutral' | 'bonus' | 'highlight'
+
+export interface StatTile {
+  label: string
+  value: string
+  icon?: string
+  font?: string
+  tone?: Tone
+}
+
+export interface HistoryRow {
+  icon?: string
+  font?: string
+  title: string
+  sub: string
+  ago?: string
+  amount: string
+  amountTone?: 'in' | 'out' | 'neutral'
+  /** Filter key — matched against the active chip (status or type). */
+  tag?: string
+  details: Array<{ label: string; value: string }>
+  note?: { label: string; text: string }
+}
+
+export interface GenHistoryConfig {
+  title: string
+  desc: string
+  icon: string
+  filter: 'status' | 'type' | 'none'
+  filterOptions?: string[]
+  tiles: StatTile[]
+  rows: HistoryRow[]
+}
+
+/** Generic history panels — one component, many sections (see GenericHistoryView). */
+export const genericHistories: Record<string, GenHistoryConfig> = {
+  'free-spins': {
+    title: 'My Free Spins',
+    desc: 'Active and used free-spin rewards.',
+    icon: 'sparkle',
+    filter: 'status',
+    filterOptions: ['All', 'Active', 'Used'],
+    tiles: [
+      { label: 'Active Grants', value: '2', icon: 'sparkle', tone: 'highlight' },
+      { label: 'Spins Left', value: '56 / 85', icon: 'chart', tone: 'neutral' },
+      { label: 'Total Won', value: '$14.70', icon: 'trophy', tone: 'in' },
+    ],
+    rows: [
+      { icon: 'sparkle', title: 'Gates of Olympus', sub: '1304132351780142644 · 9 Jun 2026 00:18', ago: 'Jun 9', amount: '4/10', amountTone: 'neutral', tag: 'Active', details: [{ label: 'Game', value: 'Gates of Olympus' }, { label: 'Grant ID', value: '1304132351780142644' }, { label: 'Started', value: '9 Jun 2026 00:18' }, { label: 'Spins Used', value: '4 of 10' }, { label: 'Status', value: 'ACTIVE' }] },
+      { icon: 'sparkle', title: 'Sugar Rush', sub: '9211045882103492210 · 11 Jun 2026 00:18', ago: 'Jun 11', amount: '0/50', amountTone: 'neutral', tag: 'Active', details: [{ label: 'Game', value: 'Sugar Rush' }, { label: 'Grant ID', value: '9211045882103492210' }, { label: 'Started', value: '11 Jun 2026 00:18' }, { label: 'Spins Used', value: '0 of 50' }, { label: 'Status', value: 'ACTIVE' }] },
+      { icon: 'sparkle', title: 'Sweet Bonanza', sub: '7822910344019875422 · 3 Jun 2026 00:18', ago: 'Jun 3', amount: '25/25', amountTone: 'out', tag: 'Used', details: [{ label: 'Game', value: 'Sweet Bonanza' }, { label: 'Grant ID', value: '7822910344019875422' }, { label: 'Started', value: '3 Jun 2026 00:18' }, { label: 'Spins Used', value: '25 of 25' }, { label: 'Status', value: 'USED' }] },
+    ],
+  },
+  bonuses: {
+    title: 'My Bonuses',
+    desc: 'Track active, pending and completed bonuses.',
+    icon: 'gift',
+    filter: 'status',
+    filterOptions: ['All', 'Active', 'Pending', 'Completed', 'Expired'],
+    tiles: [
+      { label: 'Active Bonuses', value: '4', icon: 'star', tone: 'highlight' },
+      { label: 'Total Received', value: '$675', icon: 'gift', tone: 'bonus' },
+      { label: 'Active Balance', value: '$0', icon: 'vault', tone: 'neutral' },
+    ],
+    rows: [
+      { icon: 'gift', title: '10% Cashback', sub: 'Daily reward · +100%', ago: '6h ago', amount: '$25', amountTone: 'in', tag: 'Completed', details: [{ label: 'Bonus', value: '10% Cashback' }, { label: 'Boost', value: '+100%' }, { label: 'Granted', value: '11 Jun 2026 18:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'gift', title: '200% Casino Welcome', sub: 'Welcome offer · +100%', ago: 'Jun 9', amount: '$500', amountTone: 'in', tag: 'Completed', details: [{ label: 'Bonus', value: '200% Casino Welcome' }, { label: 'Boost', value: '+100%' }, { label: 'Granted', value: '9 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'gift', title: 'Mega Reward', sub: 'Daily reward · +100%', ago: 'Jun 5', amount: '$100', amountTone: 'in', tag: 'Completed', details: [{ label: 'Bonus', value: 'Mega Reward' }, { label: 'Boost', value: '+100%' }, { label: 'Granted', value: '5 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'gift', title: 'Free spins package', sub: 'Promotion · +100%', ago: 'May 31', amount: '$50', amountTone: 'in', tag: 'Completed', details: [{ label: 'Bonus', value: 'Free spins package' }, { label: 'Boost', value: '+100%' }, { label: 'Granted', value: '31 May 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+    ],
+  },
+  'financial-history': {
+    title: 'Financial History',
+    desc: 'Check your deposit, withdrawal and bonus history.',
+    icon: 'vault',
+    filter: 'type',
+    filterOptions: ['All', 'Deposit', 'Withdrawal', 'Bonus'],
+    tiles: [
+      { label: 'Total Events', value: '10', icon: 'chart', tone: 'neutral' },
+      { label: 'Total In', value: '$2,725', icon: 'vault', tone: 'in' },
+      { label: 'Total Out', value: '$950', icon: 'bolt', tone: 'out' },
+      { label: 'Net', value: '+$1,775', icon: 'percent', tone: 'highlight' },
+    ],
+    rows: transactions.map((t) => ({
+      icon: t.icon,
+      title: t.label,
+      sub: t.type === 'Withdraw' ? 'Withdrawal' : t.type,
+      ago: t.date,
+      amount: t.amount,
+      amountTone: (t.positive ? 'in' : 'out') as 'in' | 'out',
+      tag: t.type === 'Withdraw' ? 'Withdrawal' : t.type,
+      details: [
+        { label: 'Type', value: t.type === 'Withdraw' ? 'Withdrawal' : t.type },
+        { label: 'Method', value: t.label.split('·')[1]?.trim() ?? '—' },
+        { label: 'Date', value: t.date },
+        { label: 'Status', value: t.status.toUpperCase() },
+      ],
+    })),
+  },
+  'account-activity': {
+    title: 'Account Activity',
+    desc: "Track your account's activity across all games.",
+    icon: 'chart',
+    filter: 'none',
+    tiles: [
+      { label: 'Total Events', value: '10', icon: 'chart', tone: 'neutral' },
+      { label: 'Total In', value: '$2,725', icon: 'vault', tone: 'in' },
+      { label: 'Total Out', value: '$950', icon: 'bolt', tone: 'out' },
+      { label: 'Net', value: '+$1,775', icon: 'percent', tone: 'highlight' },
+    ],
+    rows: [
+      { icon: 'vault', title: 'Deposit Confirmed', sub: 'Deposit · Visa', ago: '2h ago', amount: '+ $500', amountTone: 'in', details: [{ label: 'Event', value: 'Deposit Confirmed' }, { label: 'Date', value: '11 Jun 2026 22:14' }, { label: 'Balance After', value: '$1,240.50' }] },
+      { icon: 'gift', title: 'Bonus Credited', sub: 'Daily reward · 10% Cashback', ago: '6h ago', amount: '+ $25', amountTone: 'in', details: [{ label: 'Event', value: 'Bonus Credited' }, { label: 'Date', value: '11 Jun 2026 18:14' }, { label: 'Balance After', value: '$740.50' }] },
+      { icon: 'bolt', title: 'Withdrawal Request', sub: 'Withdrawal · Bank Transfer', ago: 'Jun 11', amount: '− $200', amountTone: 'out', details: [{ label: 'Event', value: 'Withdrawal Request' }, { label: 'Date', value: '11 Jun 2026 00:14' }, { label: 'Balance After', value: '$715.50' }] },
+      { icon: 'vault', title: 'Deposit Confirmed', sub: 'Deposit · Crypto', ago: 'Jun 10', amount: '+ $1,000', amountTone: 'in', details: [{ label: 'Event', value: 'Deposit Confirmed' }, { label: 'Date', value: '10 Jun 2026 00:14' }, { label: 'Balance After', value: '$915.50' }] },
+      { icon: 'gift', title: 'Bonus Credited', sub: 'Bonus · 200% Casino Welcome', ago: 'Jun 9', amount: '+ $500', amountTone: 'in', details: [{ label: 'Event', value: 'Bonus Credited' }, { label: 'Date', value: '9 Jun 2026 00:14' }, { label: 'Balance After', value: '−$84.50' }] },
+      { icon: 'vault', title: 'Deposit Confirmed', sub: 'Deposit · Skrill', ago: 'Jun 8', amount: '+ $250', amountTone: 'in', details: [{ label: 'Event', value: 'Deposit Confirmed' }, { label: 'Date', value: '8 Jun 2026 00:14' }, { label: 'Balance After', value: '−$584.50' }] },
+      { icon: 'bolt', title: 'Withdrawal Request', sub: 'Withdrawal · Bitcoin', ago: 'Jun 6', amount: '− $750', amountTone: 'out', details: [{ label: 'Event', value: 'Withdrawal Request' }, { label: 'Date', value: '6 Jun 2026 00:14' }, { label: 'Balance After', value: '−$834.50' }] },
+      { icon: 'gift', title: 'Bonus Credited', sub: 'Daily reward · Mega Reward', ago: 'Jun 5', amount: '+ $100', amountTone: 'in', details: [{ label: 'Event', value: 'Bonus Credited' }, { label: 'Date', value: '5 Jun 2026 00:14' }, { label: 'Balance After', value: '−$84.50' }] },
+      { icon: 'vault', title: 'Deposit Confirmed', sub: 'Deposit · Bank Transfer', ago: 'Jun 3', amount: '+ $300', amountTone: 'in', details: [{ label: 'Event', value: 'Deposit Confirmed' }, { label: 'Date', value: '3 Jun 2026 00:14' }, { label: 'Balance After', value: '−$184.50' }] },
+      { icon: 'gift', title: 'Bonus Credited', sub: 'Bonus · Free spins package', ago: 'May 31', amount: '+ $50', amountTone: 'in', details: [{ label: 'Event', value: 'Bonus Credited' }, { label: 'Date', value: '31 May 2026 00:14' }, { label: 'Balance After', value: '−$234.50' }] },
+    ],
+  },
+  transfers: {
+    title: 'Transfers',
+    desc: 'Move funds between wallets instantly.',
+    icon: 'arrowRight',
+    filter: 'type',
+    filterOptions: ['All', 'To Game', 'To Main'],
+    tiles: [
+      { label: 'From Game', value: '$410', icon: 'vault', tone: 'in' },
+      { label: 'To Game', value: '$380', icon: 'bolt', tone: 'out' },
+      { label: 'Net', value: '+$30', icon: 'percent', tone: 'highlight' },
+    ],
+    rows: [
+      { icon: 'arrowRight', title: 'Main → Game Wallet', sub: 'Instant', ago: '2h ago', amount: '+ $500', amountTone: 'in', tag: 'To Game', details: [{ label: 'Route', value: 'Main → Game Wallet' }, { label: 'Date', value: '11 Jun 2026 22:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'arrowRight', title: 'Game Wallet → Main', sub: 'Instant', ago: 'Jun 11', amount: '− $200', amountTone: 'out', tag: 'To Main', details: [{ label: 'Route', value: 'Game Wallet → Main' }, { label: 'Date', value: '11 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'arrowRight', title: 'Main → Game Wallet', sub: 'Instant', ago: 'Jun 10', amount: '+ $1,000', amountTone: 'in', tag: 'To Game', details: [{ label: 'Route', value: 'Main → Game Wallet' }, { label: 'Date', value: '10 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'arrowRight', title: 'Main → Game Wallet', sub: 'Instant', ago: 'Jun 8', amount: '+ $250', amountTone: 'in', tag: 'To Game', details: [{ label: 'Route', value: 'Main → Game Wallet' }, { label: 'Date', value: '8 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'arrowRight', title: 'Game Wallet → Main', sub: 'Instant', ago: 'Jun 6', amount: '− $750', amountTone: 'out', tag: 'To Main', details: [{ label: 'Route', value: 'Game Wallet → Main' }, { label: 'Date', value: '6 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+      { icon: 'arrowRight', title: 'Main → Game Wallet', sub: 'Instant', ago: 'Jun 3', amount: '+ $300', amountTone: 'in', tag: 'To Game', details: [{ label: 'Route', value: 'Main → Game Wallet' }, { label: 'Date', value: '3 Jun 2026 00:14' }, { label: 'Status', value: 'COMPLETED' }] },
+    ],
+  },
+}
 
 export const faqs = [
   { q: 'How fast are Duke-tier withdrawals?', a: 'Priority processing — typically under 2 hours for e-wallets and crypto, 1–2 banking days for cards.' },
