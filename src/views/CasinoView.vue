@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
+import GamesLobby from '@/components/page/GamesLobby.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { casinoPage as page } from '@/data/pages'
@@ -14,6 +15,8 @@ const { open } = useAuthModal()
     <PageHero v-bind="page.hero" :cta="page.hero.cta" />
 
     <CategoryStrip :items="page.categories" />
+
+    <GamesLobby />
 
     <!-- Progressive jackpot banner -->
     <section class="container-royal pt-12 sm:pt-16">
