@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, reactive } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import gsap from 'gsap'
+import { playRoyalChime } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import CrownBadge from '@/components/ui/CrownBadge.vue'
@@ -10,6 +12,39 @@ const { state, close, setMode } = useAuthModal()
 
 // Per-field password reveal toggles (keyed by field id).
 const reveal = reactive<Record<string, boolean>>({})
+
+const cardEl = ref<HTMLElement | null>(null)
+const badgeEl = ref<HTMLElement | null>(null)
+const burstEl = ref<HTMLElement | null>(null)
+
+// Royal entrance: chime + card rise-from-blur + badge bounce + gold shockwave.
+watch(
+  () => state.open,
+  async (open) => {
+    if (!open) return
+    playRoyalChime()
+    await nextTick()
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    tl.fromTo(
+      cardEl.value,
+      { opacity: 0, scale: 0.9, y: 28, filter: 'blur(12px)' },
+      { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: 0.55 },
+    )
+      .fromTo(
+        badgeEl.value,
+        { opacity: 0, y: -48, scale: 0.4 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'back.out(2.4)' },
+        '-=0.28',
+      )
+      .fromTo(
+        burstEl.value,
+        { opacity: 0.9, scale: 0.3 },
+        { opacity: 0, scale: 2.8, duration: 0.85, ease: 'power2.out' },
+        '<',
+      )
+  },
+)
 
 // Escape closes the dialog.
 function onKeydown(e: KeyboardEvent) {
@@ -84,15 +119,18 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
         :aria-label="state.mode === 'register' ? 'Join the Kingdom' : 'Enter the Kingdom'"
         @mousedown.self="close"
       >
-        <Transition
-          enter-active-class="transition duration-300 ease-out"
-          enter-from-class="opacity-0 translate-y-4 scale-95"
-          appear
-        >
-          <div class="relative my-6 w-full max-w-5xl">
+          <div ref="cardEl" class="relative my-6 w-full max-w-5xl">
+            <!-- Gold shockwave on open (margin-centred so GSAP owns transform) -->
+            <div
+              ref="burstEl"
+              class="pointer-events-none absolute left-1/2 top-1/2 z-0 h-48 w-48 rounded-full border-2 border-gold/70 opacity-0"
+              style="margin-left: -6rem; margin-top: -6rem; box-shadow: 0 0 70px 14px rgba(245, 215, 122, 0.35)"
+            />
             <!-- Ornate crown badge over the top edge (outside the clip) -->
             <div class="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
-              <CrownBadge :size="174" />
+              <div ref="badgeEl">
+                <CrownBadge :size="174" />
+              </div>
             </div>
 
             <!-- Clipped modal body -->
@@ -267,7 +305,6 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
             </div>
             </div>
           </div>
-        </Transition>
       </div>
     </Transition>
   </Teleport>
