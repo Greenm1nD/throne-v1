@@ -13,21 +13,36 @@ useReveal(root)
 <template>
   <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
     <div
-      class="group relative flex min-h-[220px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)]"
+      class="group relative flex aspect-[1661/947] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)]"
       data-reveal
     >
-      <!-- Wide 21:6 image layer (clearly visible; only the left fades to black for text) -->
+      <!-- Image at its native aspect ratio — shown in full, no crop.
+           Only a light corner scrim keeps the title legible. -->
       <div
-        v-lazybg="`linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 18%, rgba(5,5,5,0.28) 38%, rgba(5,5,5,0) 56%), url('${assets.treasuryBanner.src}')`"
-        class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+        v-lazybg="`linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`"
+        class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
         :style="{ backgroundColor: '#0d0b07' }"
       />
 
-      <!-- Pulsing skyline glow (center-right, over the city) -->
+      <!-- Glow choreography: skyline · timepiece · jet, breathing out of phase -->
       <div
-        class="pointer-events-none absolute right-[12%] top-0 h-full w-1/2 animate-goldenPulse"
+        class="pointer-events-none absolute right-[10%] top-0 h-3/5 w-1/2 animate-goldenPulse"
+        style="background: radial-gradient(50% 55% at 55% 40%, rgba(245, 215, 122, 0.2), transparent 70%)"
+      />
+      <div
+        class="pointer-events-none absolute bottom-0 left-1/3 h-2/3 w-1/3 animate-goldenPulse"
         style="
-          background: radial-gradient(45% 60% at 60% 45%, rgba(245, 215, 122, 0.18), transparent 70%);
+          background: radial-gradient(45% 50% at 50% 60%, rgba(245, 215, 122, 0.16), transparent 70%);
+          animation-duration: 7.5s;
+          animation-delay: -2.5s;
+        "
+      />
+      <div
+        class="pointer-events-none absolute bottom-0 right-0 h-3/4 w-2/5 animate-goldenPulse"
+        style="
+          background: radial-gradient(50% 50% at 55% 55%, rgba(245, 215, 122, 0.13), transparent 72%);
+          animation-duration: 9s;
+          animation-delay: -4.5s;
         "
       />
 
@@ -50,7 +65,7 @@ useReveal(root)
         </span>
       </div>
 
-      <div class="relative z-10 max-w-xl px-7 py-10 sm:px-12">
+      <div class="relative z-10 max-w-xl self-start px-7 pt-10 sm:px-12 sm:pt-14">
         <h2
           class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient sm:text-4xl"
         >
