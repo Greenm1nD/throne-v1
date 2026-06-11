@@ -4,6 +4,8 @@ import AppIcon from './AppIcon.vue'
 
 /**
  * Site-wide ambient soundtrack with a mute toggle pinned bottom-left.
+ * - Track: "Frozen Star" — Kevin MacLeod (incompetech.com),
+ *   licensed under CC BY 4.0 (attribution required; see README).
  * - Expects /assets/audio/throne-ambience.mp3 (loops, soft volume).
  * - Browsers block autoplay with sound, so playback only ever starts from
  *   the user's click; the preference persists in localStorage.
