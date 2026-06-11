@@ -89,8 +89,8 @@ const crestFailed = ref(false)
           </template>
         </div>
 
-        <!-- Right columns -->
-        <div v-for="col in rightCols" :key="col.title">
+        <!-- Right columns: hug the right edge, mirroring the left side -->
+        <div v-for="col in rightCols" :key="col.title" class="lg:justify-self-end">
           <h4 class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-champagne">
             {{ col.title }}
           </h4>
