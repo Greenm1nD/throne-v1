@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { playRoyalGate } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -9,6 +10,13 @@ import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
 
 const { state, close, setMode } = useAuthModal()
+const router = useRouter()
+
+// Prototype login: both CTAs lead straight into the members area.
+function enterKingdom() {
+  close()
+  router.push('/account')
+}
 
 // Per-field password reveal toggles (keyed by field id).
 const reveal = reactive<Record<string, boolean>>({})
@@ -246,7 +254,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     </label>
                   </div>
 
-                  <GoldButton variant="solid" size="lg" block class="mt-3">
+                  <GoldButton variant="solid" size="lg" block class="mt-3" @click="enterKingdom">
                     {{ state.mode === 'register' ? 'Create My Account' : 'Enter the Kingdom' }}
                   </GoldButton>
                 </form>
