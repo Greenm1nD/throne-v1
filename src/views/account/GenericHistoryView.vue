@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AccountPanel from '@/components/account/AccountPanel.vue'
+import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import HistoryRows from '@/components/account/HistoryRows.vue'
 import StatCard from '@/components/account/StatCard.vue'
 import { genericHistories, type HistoryRow } from '@/data/account'
@@ -45,15 +46,14 @@ const visible = computed(() =>
       <StatCard v-for="t in cfg.tiles" :key="t.label" :label="t.label" :value="t.value" :icon="t.icon" :font="t.font" :tone="t.tone" />
     </div>
 
+    <HistoryFilter
+      :key="String(route.meta.gen)"
+      v-model="filter"
+      :type-label="cfg.filter === 'status' ? 'Status' : 'Type'"
+      :options="cfg.filter === 'none' ? undefined : cfg.filterOptions"
+    />
+
     <AccountPanel>
-      <template v-if="cfg.filter !== 'none'" #action>
-        <div class="flex flex-wrap gap-2">
-          <button v-for="f in cfg.filterOptions" :key="f"
-            class="rounded-full border px-4 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors"
-            :class="filter === f ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-border-gold/30 text-ink-muted hover:text-ink'"
-            @click="filter = f">{{ f }}</button>
-        </div>
-      </template>
       <HistoryRows :rows="visible" :loading="loading" />
     </AccountPanel>
   </div>

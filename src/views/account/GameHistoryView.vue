@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
+import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import HistoryRows from '@/components/account/HistoryRows.vue'
 import StatCard from '@/components/account/StatCard.vue'
 import { gameHistory, gameTotals, type HistoryRow } from '@/data/account'
@@ -8,6 +9,11 @@ import { api } from '@/services/api'
 
 const rows = ref<HistoryRow[]>([])
 const loading = ref(true)
+const filter = ref('All')
+
+const visible = computed(() =>
+  filter.value === 'All' ? rows.value : rows.value.filter((r) => r.tag === filter.value),
+)
 
 onMounted(async () => {
   rows.value = await api.getList(
@@ -17,6 +23,7 @@ onMounted(async () => {
       sub: `${g.provider} · ${g.date}`,
       amount: g.result,
       amountTone: (g.positive ? 'in' : 'out') as 'in' | 'out',
+      tag: g.provider === 'Evolution' ? 'Live' : 'Casino',
       details: [
         { label: 'Game', value: g.game },
         { label: 'Provider', value: g.provider },
@@ -45,8 +52,10 @@ onMounted(async () => {
       <StatCard label="Net" :value="gameTotals.net" icon="percent" tone="highlight" />
     </div>
 
+    <HistoryFilter v-model="filter" :options="['All', 'Casino', 'Live']" />
+
     <AccountPanel>
-      <HistoryRows :rows="rows" :loading="loading" />
+      <HistoryRows :rows="visible" :loading="loading" />
     </AccountPanel>
   </div>
 </template>

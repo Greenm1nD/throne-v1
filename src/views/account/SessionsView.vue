@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AccountPanel from '@/components/account/AccountPanel.vue'
+import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { sessions } from '@/data/account'
 </script>
@@ -11,6 +12,8 @@ import { sessions } from '@/data/account'
       <h1 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Session History</h1>
       <p class="mt-1 font-sans text-[12px] text-ink-dim">{{ sessions.length }} total sessions — a record of every login to your account.</p>
     </div>
+
+    <HistoryFilter />
 
     <AccountPanel>
       <ul class="divide-y divide-border-gold/20">

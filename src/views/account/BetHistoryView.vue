@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
+import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import HistoryRows from '@/components/account/HistoryRows.vue'
 import StatCard from '@/components/account/StatCard.vue'
 import { betHistory, betProviders, type HistoryRow } from '@/data/account'
@@ -8,6 +9,11 @@ import { api } from '@/services/api'
 
 const rows = ref<HistoryRow[]>([])
 const loading = ref(true)
+const filter = ref('All')
+
+const visible = computed(() =>
+  filter.value === 'All' ? rows.value : rows.value.filter((r) => r.tag === filter.value),
+)
 
 onMounted(async () => {
   rows.value = await api.getList(
@@ -18,6 +24,7 @@ onMounted(async () => {
       ago: b.time,
       amount: b.payout,
       amountTone: (b.status === 'WON' ? 'in' : b.status === 'LOST' ? 'out' : 'neutral') as 'in' | 'out' | 'neutral',
+      tag: b.status === 'WON' ? 'Won' : b.status === 'LOST' ? 'Lost' : 'Pending',
       details: [
         { label: 'Coupon', value: b.coupon },
         { label: 'Placed', value: b.time },
@@ -52,8 +59,10 @@ onMounted(async () => {
       </span>
     </div>
 
+    <HistoryFilter v-model="filter" type-label="Status" :options="['All', 'Won', 'Lost', 'Pending']" />
+
     <AccountPanel>
-      <HistoryRows :rows="rows" :loading="loading" />
+      <HistoryRows :rows="visible" :loading="loading" />
     </AccountPanel>
   </div>
 </template>

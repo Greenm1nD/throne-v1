@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AccountPanel from '@/components/account/AccountPanel.vue'
+import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import StatCard from '@/components/account/StatCard.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { balances, user } from '@/data/account'
@@ -33,6 +34,8 @@ const history = [
         <GoldButton variant="solid" size="md">Claim to Main Wallet</GoldButton>
       </div>
     </AccountPanel>
+
+    <HistoryFilter />
 
     <AccountPanel title="Weekly History">
       <div class="overflow-x-auto">
