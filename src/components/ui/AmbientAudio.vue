@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
 
 /**
@@ -13,9 +12,6 @@ import AppIcon from './AppIcon.vue'
  * - If the file is missing, the control hides itself.
  */
 const STORAGE = 'throne-audio'
-const route = useRoute()
-// The members area has a 264px sidebar pinned left — slide past it on desktop.
-const isAccount = computed(() => route.path.startsWith('/account'))
 const playing = ref(false)
 const missing = ref(false)
 let audio: HTMLAudioElement | null = null
@@ -79,11 +75,8 @@ onBeforeUnmount(() => audio?.pause())
 <template>
   <button
     v-if="!missing"
-    class="group fixed bottom-5 z-[90] grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
-    :class="[
-      playing ? 'border-gold/70 text-gold-bright' : 'text-ink-muted hover:text-champagne',
-      isAccount ? 'left-5 lg:left-[280px]' : 'left-5',
-    ]"
+    class="group fixed bottom-5 left-5 z-[90] grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
+    :class="playing ? 'border-gold/70 text-gold-bright' : 'text-ink-muted hover:text-champagne'"
     :aria-pressed="playing"
     :aria-label="playing ? 'Mute ambience' : 'Play ambience'"
     @click="toggle"
