@@ -92,11 +92,12 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
     <!-- Top: title block, seated in the dark upper band above the throne -->
     <div ref="content" class="container-royal relative z-10 flex flex-col items-center text-center">
-      <div
-        ref="eyebrow"
-        class="mb-2 text-gold-bright drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-      >
-        <AppIcon name="crown" :size="32" class="mx-auto" />
+      <div ref="eyebrow" class="mb-2">
+        <img
+          src="/assets/images/crown-duke.png"
+          alt=""
+          class="mx-auto h-12 w-auto drop-shadow-[0_4px_16px_rgba(212,175,55,0.5)]"
+        />
       </div>
 
       <h1

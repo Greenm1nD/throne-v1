@@ -120,7 +120,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
               <div class="flex flex-col px-6 py-8 sm:px-10 lg:h-full lg:overflow-y-auto">
                 <!-- Brand -->
                 <div class="flex flex-col items-center text-center">
-                  <AppIcon name="crown" :size="22" class="text-gold-bright" />
+                  <img src="/assets/images/crown-duke.png" alt="" class="h-8 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
                   <h2 class="mt-1 font-display text-3xl font-bold tracking-[0.18em] text-gold-gradient">
                     THRONE
                   </h2>

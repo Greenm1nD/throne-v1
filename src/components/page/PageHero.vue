@@ -54,7 +54,14 @@ onMounted(() => {
 
     <div class="container-royal relative z-10">
       <div ref="content" class="max-w-xl py-16">
-        <AppIcon :name="icon" :size="30" class="text-gold-bright drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]" />
+        <!-- Real gold crown emblem (line-art glyph kept for non-crown icons) -->
+        <img
+          v-if="icon === 'crown'"
+          src="/assets/images/crown-duke.png"
+          alt=""
+          class="h-11 w-auto drop-shadow-[0_4px_14px_rgba(212,175,55,0.45)]"
+        />
+        <AppIcon v-else :name="icon" :size="30" class="text-gold-bright drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]" />
         <h1
           class="mt-3 font-display text-5xl font-bold tracking-[0.12em] text-gold-gradient sm:text-6xl"
         >

@@ -74,7 +74,7 @@ const { open } = useAuthModal()
         />
         <div class="relative z-10 flex h-full min-h-[300px] flex-col items-center justify-between gap-4 text-center">
           <div>
-            <AppIcon name="crown" :size="22" class="mx-auto text-gold-bright" />
+            <img src="/assets/images/crown-duke.png" alt="" class="mx-auto h-9 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
             <h3 class="mt-2 font-display text-2xl font-semibold tracking-[0.16em] text-gold-gradient">
               VIP Lounge
             </h3>

@@ -58,7 +58,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
 
         <div class="flex shrink-0 flex-col items-center gap-3 text-center lg:max-w-[190px]">
-          <AppIcon name="crown" :size="24" class="text-gold-bright" />
+          <img src="/assets/images/crown-duke.png" alt="" class="h-9 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
           <p class="font-sans text-[11px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-champagne">
             {{ page.tiers.note }}
           </p>
