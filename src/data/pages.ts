@@ -88,29 +88,17 @@ export const sportsPage = {
     { label: 'Golf', icon: 'golf' },
     { label: 'Volleyball', icon: 'volleyball' },
   ],
-  matches: [
-    {
-      minute: "72'",
-      home: { name: 'Real Madrid', score: 2 },
-      away: { name: 'Manchester City', score: 1 },
-      odds: ['1.65', '3.90', '5.40'],
-      more: '+128',
-    },
-    {
-      minute: "45'",
-      home: { name: 'Liverpool', score: 1 },
-      away: { name: 'Bayern Munich', score: 0 },
-      odds: ['1.80', '3.75', '4.60'],
-      more: '+96',
-    },
-    {
-      minute: "63'",
-      home: { name: 'Paris Saint-Germain', score: 3 },
-      away: { name: 'Juventus', score: 0 },
-      odds: ['1.28', '5.40', '9.20'],
-      more: '+112',
-    },
-  ],
+  /**
+   * Third-party sportsbook embed. Set `src` to the provider's iframe URL
+   * (BetConstruct / Betradar / etc.) and the frame renders live; while it is
+   * empty, a THRONE-styled loading shell is shown instead.
+   */
+  sportsbook: {
+    src: '',
+    events: '1,313 Live Events',
+    providers: ['Throne Arena', 'BetConstruct', 'Betradar'],
+    note: 'The match list, odds and bet slip are served inside the provider frame — the THRONE shell (header, navigation, theming and footer) wraps around it.',
+  },
   boost: {
     title: 'Boost your winnings',
     amount: 'Up to 25%',
