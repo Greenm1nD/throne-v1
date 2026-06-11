@@ -69,14 +69,6 @@ export const accountNav: AccNavSection[] = [
     ],
   },
   {
-    title: 'Wallet',
-    items: [
-      { label: 'Balance', to: '/account/balance', font: 'wallet' },
-      { label: 'Deposit', to: '/account/deposit', font: 'deposit' },
-      { label: 'Withdraw', to: '/account/withdraw', icon: 'bolt' },
-    ],
-  },
-  {
     title: 'History',
     items: [
       { label: 'Bet History', to: '/account/bet-history', font: 'bet-history' },
@@ -109,22 +101,6 @@ export const accountNav: AccNavSection[] = [
       { label: 'Two-Factor Auth', to: '/account/twofa', icon: 'lock' },
       { label: 'My Devices', to: '/account/devices', icon: 'monitor' },
       { label: 'Session History', to: '/account/sessions', icon: 'clock' },
-    ],
-  },
-  {
-    title: 'Responsible Gaming',
-    items: [
-      { label: 'Account Freeze', to: '/account/freeze', icon: 'shield' },
-      { label: 'Cooling-off', to: '/account/cooling-off', icon: 'clock' },
-      { label: 'Wager Limits', to: '/account/limits', icon: 'chart' },
-    ],
-  },
-  {
-    title: 'Support',
-    items: [
-      { label: 'Help Center', to: '/account/help', icon: 'chat' },
-      { label: 'Contact Support', to: '/account/contact', icon: 'headset' },
-      { label: 'VIP Concierge', to: '/account/concierge', icon: 'crown' },
     ],
   },
 ]
