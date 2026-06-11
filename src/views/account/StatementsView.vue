@@ -13,7 +13,7 @@ import { statements } from '@/data/account'
     </div>
 
     <AccountPanel title="Monthly Ledgers">
-      <ul class="divide-y divide-white/5">
+      <ul class="divide-y divide-border-gold/20">
         <li v-for="s in statements" :key="s.period" class="flex items-center gap-4 py-4">
           <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
             <AppIcon name="calendar" :size="16" />
@@ -25,7 +25,7 @@ import { statements } from '@/data/account'
           <GoldButton variant="outline" size="sm">Download PDF</GoldButton>
         </li>
       </ul>
-      <p class="mt-5 border-t border-white/5 pt-4 font-sans text-[11px] text-ink-dim">
+      <p class="mt-5 border-t border-border-gold/20 pt-4 font-sans text-[11px] text-ink-dim">
         Ledgers are sealed monthly and retained for seven years, as the court records demand.
       </p>
     </AccountPanel>

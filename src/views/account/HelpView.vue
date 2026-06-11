@@ -15,7 +15,7 @@ const open = ref<number | null>(0)
     </div>
 
     <AccountPanel title="Frequently Asked">
-      <ul class="divide-y divide-white/5">
+      <ul class="divide-y divide-border-gold/20">
         <li v-for="(f, i) in faqs" :key="f.q">
           <button class="flex w-full items-center justify-between gap-4 py-4 text-left" @click="open = open === i ? null : i">
             <span class="font-sans text-[13px] font-semibold" :class="open === i ? 'text-gold-bright' : 'text-ink'">{{ f.q }}</span>

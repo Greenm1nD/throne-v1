@@ -41,7 +41,7 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
       </p>
     </div>
 
-    <p v-if="!isDeposit" class="flex items-center justify-between rounded-xl border border-white/8 bg-black/30 px-5 py-3.5">
+    <p v-if="!isDeposit" class="flex items-center justify-between rounded-xl border border-border-gold/30 bg-black/30 px-5 py-3.5">
       <span class="font-sans text-[11px] uppercase tracking-[0.18em] text-ink-dim">Available</span>
       <span class="font-display text-base font-bold tabular-nums text-gold-gradient">{{ balances.main }}</span>
     </p>
@@ -51,14 +51,14 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
         <div class="flex flex-wrap gap-2">
           <button v-for="[label, key] in CATS" :key="key"
             class="rounded-full border px-4 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors"
-            :class="cat === key ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-white/10 text-ink-muted hover:text-ink'"
+            :class="cat === key ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-border-gold/30 text-ink-muted hover:text-ink'"
             @click="cat = key">{{ label }}</button>
         </div>
       </template>
 
       <ul class="space-y-3">
-        <li v-for="m in visible" :key="m.name" class="rounded-xl border transition-colors"
-          :class="openName === m.name ? 'border-gold bg-gold/[0.04]' : 'border-white/8 bg-black/30 hover:border-border-gold/70'">
+        <li v-glow v-for="m in visible" :key="m.name" class="rounded-xl border transition-colors"
+          :class="openName === m.name ? 'border-gold bg-gold/[0.04]' : 'border-border-gold/30 bg-black/30 hover:border-border-gold/70'">
           <button class="flex w-full flex-wrap items-center gap-x-5 gap-y-2 px-5 py-4 text-left" @click="openName = openName === m.name ? null : m.name">
             <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
               <AppIcon :name="m.icon" :size="16" />
@@ -72,7 +72,7 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
             </span>
           </button>
 
-          <form v-if="openName === m.name" class="grid gap-4 border-t border-white/8 px-5 py-5 sm:grid-cols-2" @submit.prevent>
+          <form v-if="openName === m.name" class="grid gap-4 border-t border-border-gold/30 px-5 py-5 sm:grid-cols-2" @submit.prevent>
             <label v-if="!isDeposit" class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Select bank</span>
               <span class="relative block">

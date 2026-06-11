@@ -36,7 +36,7 @@ const recent = transactions.slice(0, 4)
     </AccountPanel>
 
     <AccountPanel title="Latest Movements">
-      <ul class="divide-y divide-white/5">
+      <ul class="divide-y divide-border-gold/20">
         <li v-for="t in recent" :key="t.date" class="flex items-center justify-between gap-4 py-3.5">
           <div>
             <p class="font-sans text-[13px] font-semibold text-ink">{{ t.label }}</p>

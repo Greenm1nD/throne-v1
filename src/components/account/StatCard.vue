@@ -25,7 +25,7 @@ const valueClass = () => {
 </script>
 
 <template>
-  <div class="card-lux p-5 hover:translate-y-0 sm:p-6" :class="tone === 'highlight' && 'border-border-gold'">
+  <div v-glow class="card-lux p-5 hover:translate-y-0 sm:p-6" :class="tone === 'highlight' && 'border-border-gold'">
     <div class="flex items-start justify-between gap-3">
       <p class="eyebrow">{{ label }}</p>
       <span
@@ -42,7 +42,7 @@ const valueClass = () => {
       <slot name="value">{{ value }}</slot>
     </p>
     <slot />
-    <dl v-if="rows?.length" class="mt-4 space-y-1.5 border-t border-white/5 pt-3">
+    <dl v-if="rows?.length" class="mt-4 space-y-1.5 border-t border-border-gold/20 pt-3">
       <div v-for="r in rows" :key="r.k" class="flex items-center justify-between">
         <dt class="font-sans text-[11px] text-ink-dim">{{ r.k }}</dt>
         <dd class="font-sans text-[12px] tabular-nums text-ink-muted">{{ r.v }}</dd>

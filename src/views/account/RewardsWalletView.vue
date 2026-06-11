@@ -27,7 +27,7 @@ const redeemables = [
 
     <AccountPanel title="Redeem from the Treasury">
       <div class="grid gap-4 sm:grid-cols-2">
-        <div v-for="r in redeemables" :key="r.name" class="group rounded-xl border border-white/8 bg-black/30 p-5 transition-all duration-300 hover:border-border-gold">
+        <div v-glow v-for="r in redeemables" :key="r.name" class="group rounded-xl border border-border-gold/30 bg-black/30 p-5 transition-all duration-300 hover:border-border-gold">
           <div class="flex items-start justify-between gap-3">
             <span class="grid h-11 w-11 place-items-center rounded-full border border-border-gold/60 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
               <AppIcon :name="r.icon" :size="17" />

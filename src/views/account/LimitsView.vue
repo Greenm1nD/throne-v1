@@ -19,7 +19,7 @@ const limits = [
 
     <AccountPanel title="My Limits">
       <div class="space-y-4">
-        <div v-for="l in limits" :key="l.label" class="grid items-end gap-3 rounded-xl border border-white/8 bg-black/30 p-5 sm:grid-cols-[1fr_1fr_auto]">
+        <div v-glow v-for="l in limits" :key="l.label" class="grid items-end gap-3 rounded-xl border border-border-gold/30 bg-black/30 p-5 sm:grid-cols-[1fr_1fr_auto]">
           <div>
             <p class="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">{{ l.label }}</p>
             <p class="mt-1 font-display text-lg font-bold tabular-nums" :class="l.current === 'No limit' ? 'text-ink-muted' : 'text-gold-gradient'">{{ l.current }}</p>

@@ -13,7 +13,7 @@ import { sessions } from '@/data/account'
     </div>
 
     <AccountPanel>
-      <ul class="divide-y divide-white/5">
+      <ul class="divide-y divide-border-gold/20">
         <li v-for="s in sessions" :key="s.time" class="flex items-center gap-3.5 py-4">
           <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
             <AppIcon name="globe" :size="15" />

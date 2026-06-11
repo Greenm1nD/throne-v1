@@ -15,16 +15,16 @@ import { verificationStatus } from '@/data/account'
     <AccountPanel title="Verification Status">
       <p class="mb-5 font-sans text-[12px] text-ink-dim">The channels confirmed on your account.</p>
       <ul class="space-y-3">
-        <li v-for="v in verificationStatus" :key="v.channel"
-          class="flex items-center gap-4 rounded-xl border border-white/8 bg-black/30 p-4">
-          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/15 text-ink-dim">
+        <li v-glow v-for="v in verificationStatus" :key="v.channel"
+          class="flex items-center gap-4 rounded-xl border border-border-gold/30 bg-black/30 p-4">
+          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border-gold/40 text-ink-dim">
             <AppIcon name="shield" :size="16" />
           </span>
           <div class="min-w-0 flex-1">
             <p class="font-sans text-[13px] font-semibold text-ink">{{ v.channel }}</p>
             <p class="font-sans text-[11px] tabular-nums text-ink-dim">{{ v.detail }}</p>
           </div>
-          <span class="rounded-full border border-white/15 px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em] text-ink-dim">{{ v.state }}</span>
+          <span class="rounded-full border border-border-gold/40 px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em] text-ink-dim">{{ v.state }}</span>
         </li>
       </ul>
     </AccountPanel>
@@ -32,19 +32,19 @@ import { verificationStatus } from '@/data/account'
     <AccountPanel title="Documents (KYC)">
       <p class="mb-5 font-sans text-[12px] text-ink-dim">Upload your documents — the court reviews each within 24 hours.</p>
       <ul class="space-y-3">
-        <li v-for="doc in [
+        <li v-glow v-for="doc in [
             { name: 'Passport / National ID', sub: 'Both sides, all corners visible', state: 'Pending', tone: 'wait' },
             { name: 'Proof of Address', sub: 'Utility bill or bank statement, under 3 months old', state: 'Rejected', tone: 'bad', note: 'Scan was blurry — please re-upload.' },
             { name: 'Payment Method', sub: 'Card or wallet ownership confirmation', state: 'Not Uploaded', tone: 'none' },
           ]" :key="doc.name"
-          class="flex flex-wrap items-center gap-4 rounded-xl border border-white/8 bg-black/30 p-4">
+          class="flex flex-wrap items-center gap-4 rounded-xl border border-border-gold/30 bg-black/30 p-4">
           <div class="min-w-0 flex-1">
             <p class="font-sans text-[13px] font-semibold text-ink">{{ doc.name }}</p>
             <p class="font-sans text-[11px] text-ink-dim">{{ doc.sub }}</p>
             <p v-if="doc.note" class="mt-1 font-sans text-[11px] text-champagne">{{ doc.note }}</p>
           </div>
           <span class="rounded-full border px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em]"
-            :class="doc.tone === 'wait' ? 'border-champagne/40 text-champagne' : 'border-white/15 text-ink-dim'">
+            :class="doc.tone === 'wait' ? 'border-champagne/40 text-champagne' : 'border-border-gold/40 text-ink-dim'">
             {{ doc.state }}
           </span>
           <GoldButton variant="outline" size="sm">{{ doc.tone === 'none' ? 'Upload' : 'Re-upload' }}</GoldButton>

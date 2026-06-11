@@ -50,7 +50,7 @@ const visible = computed(() =>
         <div class="flex flex-wrap gap-2">
           <button v-for="f in cfg.filterOptions" :key="f"
             class="rounded-full border px-4 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors"
-            :class="filter === f ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-white/10 text-ink-muted hover:text-ink'"
+            :class="filter === f ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-border-gold/30 text-ink-muted hover:text-ink'"
             @click="filter = f">{{ f }}</button>
         </div>
       </template>

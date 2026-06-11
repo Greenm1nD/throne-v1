@@ -37,7 +37,7 @@ const perks = [
         </div>
       </div>
 
-      <div class="relative border-t border-white/5 px-2 pt-8">
+      <div class="relative border-t border-border-gold/20 px-2 pt-8">
         <div class="pointer-events-none absolute inset-x-4 top-[76px] hidden h-px bg-white/10 md:block" />
         <div class="pointer-events-none absolute left-4 top-[76px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
           :style="{ width: `${(activeIndex / (vipLevels.length - 1)) * 100}%` }" />
@@ -55,7 +55,7 @@ const perks = [
     </AccountPanel>
 
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      <div v-for="(p, i) in perks" :key="p.tier"
+      <div v-glow v-for="(p, i) in perks" :key="p.tier"
         class="card-lux p-5"
         :class="i === activeIndex && 'border-gold shadow-gold-soft'">
         <div class="mb-3 flex items-center justify-between">

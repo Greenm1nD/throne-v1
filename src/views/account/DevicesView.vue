@@ -21,7 +21,7 @@ import { devices } from '@/data/account'
       </div>
 
       <ul class="space-y-3">
-        <li v-for="d in devices" :key="d.fingerprint" class="rounded-xl border border-white/8 bg-black/30 p-5 transition-colors hover:border-border-gold/70">
+        <li v-glow v-for="d in devices" :key="d.fingerprint" class="rounded-xl border border-border-gold/30 bg-black/30 p-5 transition-colors hover:border-border-gold/70">
           <div class="flex flex-wrap items-center gap-4">
             <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
               <AppIcon name="monitor" :size="17" />
@@ -37,7 +37,7 @@ import { devices } from '@/data/account'
                 <span><dt class="inline uppercase tracking-[0.12em]">Last seen</dt> <dd class="inline text-ink-muted">{{ d.lastSeen }}</dd></span>
               </dl>
             </div>
-            <button class="rounded-full border border-white/10 px-4 py-1.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted transition-colors hover:border-gold hover:text-gold-bright">
+            <button class="rounded-full border border-border-gold/30 px-4 py-1.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted transition-colors hover:border-gold hover:text-gold-bright">
               Remove Device
             </button>
           </div>

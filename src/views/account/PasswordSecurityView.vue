@@ -33,7 +33,7 @@ import { passwordRules } from '@/data/account'
             <AppIcon name="check" :size="12" class="text-gold/80" /> {{ r }}
           </li>
         </ul>
-        <p class="mt-6 border-t border-white/5 pt-4 font-sans text-[12px] leading-relaxed text-ink-dim">
+        <p class="mt-6 border-t border-border-gold/20 pt-4 font-sans text-[12px] leading-relaxed text-ink-dim">
           Never share your password with anyone. No one — including our support team — will ever ask you for it.
         </p>
       </AccountPanel>

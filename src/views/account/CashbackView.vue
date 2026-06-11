@@ -38,14 +38,14 @@ const history = [
       <div class="overflow-x-auto">
         <table class="w-full min-w-[480px] text-left">
           <thead>
-            <tr class="border-b border-white/8 font-sans text-[10px] uppercase tracking-[0.2em] text-ink-dim">
+            <tr class="border-b border-border-gold/30 font-sans text-[10px] uppercase tracking-[0.2em] text-ink-dim">
               <th class="pb-3 font-semibold">Period</th>
               <th class="pb-3 font-semibold">Wagered</th>
               <th class="pb-3 font-semibold">Rate</th>
               <th class="pb-3 text-right font-semibold">Cashback</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/5">
+          <tbody class="divide-y divide-border-gold/20">
             <tr v-for="h in history" :key="h.week">
               <td class="py-3.5 font-sans text-[13px] text-ink">{{ h.week }}</td>
               <td class="py-3.5 font-sans text-[13px] tabular-nums text-ink-muted">{{ h.wagered }}</td>

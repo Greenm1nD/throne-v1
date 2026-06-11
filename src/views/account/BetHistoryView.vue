@@ -47,7 +47,7 @@ onMounted(async () => {
 
     <div class="flex flex-wrap gap-2">
       <span v-for="p in betProviders" :key="p"
-        class="rounded-full border border-white/10 px-4 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+        class="rounded-full border border-border-gold/30 px-4 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
         {{ p }}
       </span>
     </div>

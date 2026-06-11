@@ -28,7 +28,7 @@ import { balances, gameWallets } from '@/data/account'
       </div>
 
       <ul class="space-y-3">
-        <li v-for="w in gameWallets" :key="w.provider" class="flex flex-wrap items-center gap-4 rounded-xl border border-white/8 bg-black/30 p-5 transition-colors hover:border-border-gold/70">
+        <li v-glow v-for="w in gameWallets" :key="w.provider" class="flex flex-wrap items-center gap-4 rounded-xl border border-border-gold/30 bg-black/30 p-5 transition-colors hover:border-border-gold/70">
           <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
             <AppIcon name="vault" :size="16" />
           </span>

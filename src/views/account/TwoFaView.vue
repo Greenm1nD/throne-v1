@@ -16,8 +16,8 @@ const enabled = ref(false)
     </div>
 
     <AccountPanel title="Enable & Disable Security">
-      <div class="flex items-start gap-4 rounded-xl border p-5" :class="enabled ? 'border-border-gold/50 bg-gold/[0.04]' : 'border-white/8 bg-black/30'">
-        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border" :class="enabled ? 'border-border-gold text-gold-bright' : 'border-white/15 text-ink-dim'">
+      <div v-glow class="flex items-start gap-4 rounded-xl border p-5" :class="enabled ? 'border-border-gold/50 bg-gold/[0.04]' : 'border-border-gold/30 bg-black/30'">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border" :class="enabled ? 'border-border-gold text-gold-bright' : 'border-border-gold/40 text-ink-dim'">
           <AppIcon name="shield" :size="19" />
         </span>
         <div class="flex-1">
@@ -39,7 +39,7 @@ const enabled = ref(false)
           </div>
 
           <div v-else class="mt-5 space-y-4">
-            <div class="flex flex-col items-center gap-3 rounded-xl border border-white/8 bg-black/40 p-5 sm:flex-row sm:items-center">
+            <div class="flex flex-col items-center gap-3 rounded-xl border border-border-gold/30 bg-black/40 p-5 sm:flex-row sm:items-center">
               <span class="grid h-28 w-28 shrink-0 place-items-center rounded-lg border border-border-gold/50 font-sans text-[9px] uppercase tracking-[0.2em] text-ink-dim">QR Code</span>
               <div>
                 <p class="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Secret Key</p>

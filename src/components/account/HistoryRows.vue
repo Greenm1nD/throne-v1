@@ -19,7 +19,7 @@ function toggle(i: number) {
 
 <template>
   <!-- Skeleton while the mock api resolves -->
-  <ul v-if="loading" class="divide-y divide-white/5" aria-hidden="true">
+  <ul v-if="loading" class="divide-y divide-border-gold/20" aria-hidden="true">
     <li v-for="i in 5" :key="i" class="flex items-center gap-3.5 py-4">
       <span class="h-10 w-10 shrink-0 animate-pulse rounded-full bg-white/5" />
       <span class="flex-1 space-y-2">
@@ -34,7 +34,7 @@ function toggle(i: number) {
     No records yet.
   </p>
 
-  <ul v-else class="divide-y divide-white/5">
+  <ul v-else class="divide-y divide-border-gold/20">
     <li v-for="(r, i) in rows" :key="r.title + r.sub">
       <button
         class="flex w-full items-center gap-3.5 py-4 text-left transition-colors hover:bg-gold/[0.02]"
@@ -56,14 +56,14 @@ function toggle(i: number) {
         <AppIcon name="chevronDown" :size="14" class="shrink-0 text-ink-dim transition-transform duration-300" :class="openId === i && 'rotate-180 text-gold-bright'" />
       </button>
 
-      <div v-show="openId === i" class="mb-4 rounded-xl border border-white/8 bg-black/30 p-4">
+      <div v-show="openId === i" class="mb-4 rounded-xl border border-border-gold/30 bg-black/30 p-4">
         <dl class="grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
           <div v-for="d in r.details" :key="d.label" class="flex items-baseline justify-between gap-3">
             <dt class="font-sans text-[10px] uppercase tracking-[0.18em] text-ink-dim">{{ d.label }}</dt>
             <dd class="text-right font-sans text-[12px] font-semibold tabular-nums text-ink">{{ d.value }}</dd>
           </div>
         </dl>
-        <p v-if="r.note" class="mt-3 border-t border-white/5 pt-3 font-sans text-[11px] leading-relaxed text-ink-dim">
+        <p v-if="r.note" class="mt-3 border-t border-border-gold/20 pt-3 font-sans text-[11px] leading-relaxed text-ink-dim">
           <span class="font-semibold uppercase tracking-[0.14em] text-champagne">{{ r.note.label }}:</span> {{ r.note.text }}
         </p>
       </div>

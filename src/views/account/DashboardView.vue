@@ -74,7 +74,7 @@ const recent = transactions.slice(0, 5)
           </ol>
         </div>
 
-        <p class="mt-6 border-t border-white/5 pt-4 font-sans text-[12px] text-ink-dim">
+        <p class="mt-6 border-t border-border-gold/20 pt-4 font-sans text-[12px] text-ink-dim">
           You're doing great — keep playing to reach {{ user.nextTier }}.
         </p>
         <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -98,7 +98,7 @@ const recent = transactions.slice(0, 5)
             <GoldButton variant="ghost" size="sm">View All <AppIcon name="arrowRight" :size="12" /></GoldButton>
           </RouterLink>
         </template>
-        <ul class="divide-y divide-white/5">
+        <ul class="divide-y divide-border-gold/20">
           <li v-for="t in recent" :key="t.date" class="flex items-center gap-3.5 py-3.5">
             <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border-gold/50 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
               <AccGlyph :icon="t.icon" :size="15" />
@@ -119,8 +119,8 @@ const recent = transactions.slice(0, 5)
     <!-- Quick actions -->
     <AccountPanel title="Quick Actions">
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
-        <RouterLink v-for="a in quickActions" :key="a.label" :to="a.to"
-          class="group flex flex-col items-center gap-2.5 rounded-xl border border-white/8 bg-black/30 px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-gold hover:bg-gold/[0.05]">
+        <RouterLink v-glow v-for="a in quickActions" :key="a.label" :to="a.to"
+          class="group flex flex-col items-center gap-2.5 rounded-xl border border-border-gold/30 bg-black/30 px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-gold hover:bg-gold/[0.05]">
           <span class="text-gold/80 transition-colors group-hover:text-gold-bright">
             <AccGlyph :icon="a.icon" :font="a.font" :size="20" />
           </span>

@@ -22,9 +22,9 @@ const presets = [
 
     <AccountPanel title="Choose a Period">
       <div class="grid gap-3 sm:grid-cols-2">
-        <button v-for="p in presets" :key="p.label"
+        <button v-glow v-for="p in presets" :key="p.label"
           class="rounded-xl border p-5 text-left transition-all duration-300"
-          :class="picked === p.label ? 'border-gold bg-gold/[0.07] shadow-gold-soft' : 'border-white/8 bg-black/30 hover:border-border-gold'"
+          :class="picked === p.label ? 'border-gold bg-gold/[0.07] shadow-gold-soft' : 'border-border-gold/30 bg-black/30 hover:border-border-gold'"
           @click="picked = p.label">
           <p class="font-display text-[15px] font-semibold tracking-[0.08em]" :class="picked === p.label ? 'text-gold-gradient' : 'text-ink'">{{ p.label }}</p>
           <p class="mt-1 font-sans text-[12px] text-ink-dim">{{ p.desc }}</p>

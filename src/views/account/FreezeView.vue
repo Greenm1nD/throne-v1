@@ -17,7 +17,7 @@ const options = [1, 3, 7, 14, 30]
     </div>
 
     <AccountPanel title="Freeze My Account">
-      <div class="flex items-start gap-4 rounded-xl border border-white/8 bg-black/30 p-5">
+      <div v-glow class="flex items-start gap-4 rounded-xl border border-border-gold/30 bg-black/30 p-5">
         <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-border-gold/60 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
           <AppIcon name="shield" :size="19" />
         </span>
@@ -29,7 +29,7 @@ const options = [1, 3, 7, 14, 30]
           <div class="mt-4 flex flex-wrap gap-2">
             <button v-for="d in options" :key="d"
               class="rounded-full border px-5 py-2 font-sans text-[12px] font-semibold tabular-nums transition-colors"
-              :class="days === d ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-white/10 text-ink-muted hover:text-ink'"
+              :class="days === d ? 'border-border-gold bg-gold/[0.08] text-gold-bright' : 'border-border-gold/30 text-ink-muted hover:text-ink'"
               @click="days = d">
               {{ d }} {{ d === 1 ? 'day' : 'days' }}
             </button>
