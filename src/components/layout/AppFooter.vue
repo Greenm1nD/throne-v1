@@ -66,25 +66,16 @@ const crestFailed = ref(false)
         <div
           class="order-first col-span-2 flex flex-col items-center px-4 text-center lg:order-none lg:col-span-1 lg:min-w-[280px]"
         >
-          <!-- Lion crest lockup; a periodic light band sweeps inside the gold
-               shapes via a mask of the artwork itself (no background glow) -->
-          <div v-if="!crestFailed" class="relative w-[280px]">
-            <img
-              :src="'/assets/images/footer-crest.png'"
-              alt="THRONE — Built for the Crowned"
-              class="w-full drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
-              loading="lazy"
-              decoding="async"
-              @error="crestFailed = true"
-            />
-            <span
-              class="crest-shine"
-              style="
-                -webkit-mask: url('/assets/images/footer-crest.png') center / contain no-repeat;
-                mask: url('/assets/images/footer-crest.png') center / contain no-repeat;
-              "
-            />
-          </div>
+          <!-- Lion crest lockup (static — no animation by design) -->
+          <img
+            v-if="!crestFailed"
+            :src="'/assets/images/footer-crest.png'"
+            alt="THRONE — Built for the Crowned"
+            class="w-[280px] drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
+            loading="lazy"
+            decoding="async"
+            @error="crestFailed = true"
+          />
           <!-- Fallback until the crest artwork lands -->
           <template v-else>
             <CrownBadge :size="210" />
