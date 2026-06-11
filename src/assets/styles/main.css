@@ -213,6 +213,21 @@
   }
 }
 
+/* Hero artwork: imperceptibly slow breathing zoom (Ken Burns) */
+@keyframes heroZoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+}
+.hero-zoom {
+  animation: heroZoom 38s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* Logo mark: slow breathing golden aura */
 @keyframes logoBreath {
   0%,

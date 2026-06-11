@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -27,6 +27,24 @@ const props = withDefaults(
 const emit = defineEmits<{ primary: []; secondary: [] }>()
 
 const content = ref<HTMLElement | null>(null)
+const bgEl = ref<HTMLElement | null>(null)
+
+// Scroll parallax: artwork drifts into depth, copy lifts away (as on Home).
+let ticking = false
+function onScroll() {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(() => {
+    const y = window.scrollY
+    if (bgEl.value) bgEl.value.style.transform = `translateY(${y * 0.25}px) scale(1.05)`
+    if (content.value) {
+      content.value.style.transform = `translateY(${y * -0.1}px)`
+      content.value.style.opacity = String(Math.max(0, 1 - y / 500))
+    }
+    ticking = false
+  })
+}
+
 const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%), url('${props.image}'), url('${props.fallback}')`
 
 onMounted(() => {
@@ -40,7 +58,10 @@ onMounted(() => {
     stagger: 0.09,
     delay: 0.1,
   })
+  window.addEventListener('scroll', onScroll, { passive: true })
 })
+
+onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
@@ -48,6 +69,7 @@ onMounted(() => {
     class="grain relative flex min-h-[500px] items-center overflow-hidden lg:min-h-[640px]"
   >
     <div
+      ref="bgEl"
       class="absolute inset-0 bg-cover"
       :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
     />

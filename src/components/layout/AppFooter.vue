@@ -71,7 +71,7 @@ const crestFailed = ref(false)
             v-if="!crestFailed"
             :src="'/assets/images/footer-crest.png'"
             alt="THRONE — Built for the Crowned"
-            class="w-[280px] drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
+            class="w-[280px]" style="animation: logoBreath 8s ease-in-out infinite"
             loading="lazy"
             decoding="async"
             @error="crestFailed = true"

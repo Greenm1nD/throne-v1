@@ -58,7 +58,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     <!-- Animated throne-room backdrop (video, poster = static fallback) -->
     <div ref="backdrop" class="absolute inset-0" style="background-color: #07070a">
       <video
-        class="h-full w-full object-cover"
+        class="hero-zoom h-full w-full object-cover"
         :poster="assets.heroThroneRoom.src"
         autoplay
         muted
