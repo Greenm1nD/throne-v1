@@ -31,6 +31,17 @@ export default {
       maxWidth: {
         royal: '1440px',
       },
+      /* Motion tokens — one vocabulary for all luxury movement */
+      transitionDuration: {
+        swift: '200ms',
+        smooth: '350ms',
+        stately: '700ms',
+        ceremonial: '1200ms',
+      },
+      transitionTimingFunction: {
+        royal: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        velvet: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
       boxShadow: {
         gold: '0 0 0 1px rgba(212, 175, 55, 0.35), 0 18px 50px -20px rgba(212, 175, 55, 0.25)',
         'gold-soft': '0 10px 40px -18px rgba(212, 175, 55, 0.45)',

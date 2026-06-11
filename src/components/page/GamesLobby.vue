@@ -100,6 +100,7 @@ function toggleFav(name: string) {
       <article
         v-for="g in shown"
         :key="g.name"
+        v-glow
         class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
         @click="navigable && router.push(`/casino/play/${gameSlug(g)}`)"
       >

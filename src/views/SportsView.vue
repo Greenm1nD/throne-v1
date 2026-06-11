@@ -175,9 +175,12 @@ useRevealEach(root)
     <!-- Popular right now — royal tables while the feed loads -->
     <section class="container-royal pt-12 sm:pt-16">
       <div class="mb-6 flex items-center justify-between">
-        <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
-          Popular Right Now
-        </h3>
+        <div>
+          <p class="eyebrow mb-1.5">While the odds settle — from the Royal Casino</p>
+          <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
+            Popular Right Now
+          </h3>
+        </div>
         <RouterLink to="/casino">
           <GoldButton variant="ghost" size="sm">
             Open Casino <AppIcon name="arrowRight" :size="14" />

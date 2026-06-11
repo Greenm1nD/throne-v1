@@ -26,6 +26,17 @@
     background-attachment: fixed;
   }
 
+  /* Keyboard focus: a clear champagne ring everywhere */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid rgba(245, 215, 122, 0.75);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   ::selection {
     background: rgba(212, 175, 55, 0.28);
     color: #f8f5ef;

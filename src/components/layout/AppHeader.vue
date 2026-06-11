@@ -47,6 +47,11 @@ onMounted(() => {
               class="absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-300"
               :class="(item.href === '/' ? isExactActive : isActive) ? 'w-full' : 'w-0 group-hover:w-full'"
             />
+            <!-- Gold diamond crowning the active underline -->
+            <span
+              v-if="item.href === '/' ? isExactActive : isActive"
+              class="absolute -bottom-[9px] left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 bg-gold-gradient shadow-[0_0_6px_rgba(245,215,122,0.8)]"
+            />
           </a>
         </RouterLink>
       </nav>
@@ -100,11 +105,12 @@ onMounted(() => {
             v-for="item in primaryNav"
             :key="item.label"
             :to="item.href"
-            class="border-b border-white/5 py-3 font-sans text-sm tracking-wide text-ink-muted transition-colors hover:text-gold-bright"
+            class="group flex items-center gap-3 border-b border-white/5 py-3.5 font-sans text-sm uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-gold-bright"
             :active-class="item.href === '/' ? '' : 'text-gold-bright'"
             exact-active-class="text-gold-bright"
             @click="menuOpen = false"
           >
+            <span class="h-1.5 w-1.5 rotate-45 bg-gold/40 transition-colors group-hover:bg-gold-bright" />
             {{ item.label }}
           </RouterLink>
           <div class="mt-4 flex flex-col gap-3 pb-2">
