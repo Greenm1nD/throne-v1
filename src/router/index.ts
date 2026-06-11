@@ -6,6 +6,11 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomeView },
     { path: '/casino', name: 'casino', component: () => import('@/views/CasinoView.vue') },
+    {
+      path: '/casino/play/:slug',
+      name: 'game-play',
+      component: () => import('@/views/GamePlayView.vue'),
+    },
     { path: '/sports', name: 'sports', component: () => import('@/views/SportsView.vue') },
     {
       path: '/live-casino',

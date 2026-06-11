@@ -4,6 +4,7 @@ export interface NavItem {
 }
 
 export const primaryNav: NavItem[] = [
+  { label: 'Home', href: '/' },
   { label: 'Casino', href: '/casino' },
   { label: 'Sports', href: '/sports' },
   { label: 'Live Casino', href: '/live-casino' },

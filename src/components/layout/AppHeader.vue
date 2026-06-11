@@ -34,18 +34,18 @@ onMounted(() => {
           :key="item.label"
           :to="item.href"
           custom
-          v-slot="{ href, navigate, isActive }"
+          v-slot="{ href, navigate, isActive, isExactActive }"
         >
           <a
             :href="href"
             class="group relative font-sans text-[13px] font-medium tracking-wide transition-colors hover:text-ink"
-            :class="isActive ? 'text-ink' : 'text-ink-muted'"
+            :class="(item.href === '/' ? isExactActive : isActive) ? 'text-ink' : 'text-ink-muted'"
             @click="navigate"
           >
             {{ item.label }}
             <span
               class="absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-300"
-              :class="isActive ? 'w-full' : 'w-0 group-hover:w-full'"
+              :class="(item.href === '/' ? isExactActive : isActive) ? 'w-full' : 'w-0 group-hover:w-full'"
             />
           </a>
         </RouterLink>
@@ -101,7 +101,8 @@ onMounted(() => {
             :key="item.label"
             :to="item.href"
             class="border-b border-white/5 py-3 font-sans text-sm tracking-wide text-ink-muted transition-colors hover:text-gold-bright"
-            active-class="text-gold-bright"
+            :active-class="item.href === '/' ? '' : 'text-gold-bright'"
+            exact-active-class="text-gold-bright"
             @click="menuOpen = false"
           >
             {{ item.label }}

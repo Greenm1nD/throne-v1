@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { lobbyGames, lobbyProviders } from '@/data/casinoGames'
+import { lobbyGames, lobbyProviders, gameSlug } from '@/data/casinoGames'
+
+const router = useRouter()
 
 /** THRONE casino lobby: searchable, filterable game grid with royal styling. */
 
@@ -90,7 +93,8 @@ function toggleFav(name: string) {
       <article
         v-for="g in shown"
         :key="g.name"
-        class="group cursor-pointer overflow-hidden rounded-xl border border-white/8 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-border-gold hover:shadow-card-lift"
+        class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
+        @click="router.push(`/casino/play/${gameSlug(g)}`)"
       >
         <div class="relative aspect-square overflow-hidden">
           <img
