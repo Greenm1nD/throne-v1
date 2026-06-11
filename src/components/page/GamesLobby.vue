@@ -3,9 +3,16 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { lobbyGames, lobbyProviders, gameSlug } from '@/data/casinoGames'
+import { lobbyGames, gameSlug, type LobbyGame } from '@/data/casinoGames'
+
+/** Reusable royal game lobby — defaults to the casino catalogue. */
+const props = withDefaults(
+  defineProps<{ title?: string; games?: LobbyGame[]; navigable?: boolean }>(),
+  { title: 'All Games', games: () => lobbyGames, navigable: true },
+)
 
 const router = useRouter()
+const providers = computed(() => [...new Set(props.games.map((g) => g.provider))])
 
 /** THRONE casino lobby: searchable, filterable game grid with royal styling. */
 
@@ -16,7 +23,7 @@ const visible = ref(12)
 const favs = ref(new Set<string>())
 
 const filtered = computed(() => {
-  let list = lobbyGames.filter(
+  let list = props.games.filter(
     (g) =>
       (provider.value === 'all' || g.provider === provider.value) &&
       g.name.toLowerCase().includes(query.value.trim().toLowerCase()),
@@ -39,7 +46,7 @@ function toggleFav(name: string) {
     <div class="mb-6 flex items-center gap-3">
       <span class="h-6 w-1 rounded-full bg-gold-gradient shadow-gold-soft" />
       <h2 class="font-display text-xl font-semibold tracking-[0.16em] text-gold-gradient">
-        All Games
+        {{ title }}
       </h2>
     </div>
 
@@ -66,7 +73,7 @@ function toggleFav(name: string) {
             class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold focus:outline-none"
           >
             <option value="all">All Providers</option>
-            <option v-for="p in lobbyProviders" :key="p" :value="p">{{ p }}</option>
+            <option v-for="p in providers" :key="p" :value="p">{{ p }}</option>
           </select>
           <AppIcon name="chevronDown" :size="14" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-dim" />
         </div>
@@ -94,7 +101,7 @@ function toggleFav(name: string) {
         v-for="g in shown"
         :key="g.name"
         class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
-        @click="router.push(`/casino/play/${gameSlug(g)}`)"
+        @click="navigable && router.push(`/casino/play/${gameSlug(g)}`)"
       >
         <div class="relative aspect-square overflow-hidden">
           <img
