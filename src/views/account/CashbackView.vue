@@ -5,10 +5,10 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { balances, user } from '@/data/account'
 
 const history = [
-  { week: 'Week of May 20', wagered: '€4,820', rate: '15%', back: '+ €72.30' },
-  { week: 'Week of May 13', wagered: '€6,150', rate: '15%', back: '+ €92.25' },
-  { week: 'Week of May 6', wagered: '€3,400', rate: '15%', back: '+ €51.00' },
-  { week: 'Week of Apr 29', wagered: '€9,010', rate: '15%', back: '+ €135.15' },
+  { week: 'Week of Jun 8', wagered: '$4,820', rate: '15%', back: '+ $72.30' },
+  { week: 'Week of Jun 1', wagered: '$6,150', rate: '15%', back: '+ $92.25' },
+  { week: 'Week of May 25', wagered: '$3,400', rate: '15%', back: '+ $51.00' },
+  { week: 'Week of May 18', wagered: '$9,010', rate: '15%', back: '+ $135.15' },
 ]
 </script>
 

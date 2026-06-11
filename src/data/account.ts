@@ -1,33 +1,49 @@
 /**
  * Authenticated area content — single source for the dashboard shell and all
  * account subpages. Pure prototype data: no backend, no real money.
+ * Figures mirror the GreenBet prototype (greenbet-five.vercel.app) so both
+ * projects present identical member information.
  */
 
 export const user = {
-  name: 'KingMaker',
+  name: 'Green Bet.',
+  handle: '@ponka1',
   tier: 'Duke',
   avatar: '/assets/images/hall-vip-member.webp',
-  memberSince: 'May 12, 2024',
-  verified: true,
-  email: 'kingmaker@throne.club',
-  phone: '+995 555 12 34 56',
-  firstName: 'Giorgi',
-  lastName: 'Mepe',
-  country: 'Georgia',
-  currency: 'EUR',
+  memberSince: '01 Oct 2025',
+  verified: false,
+  email: 'gr****@gmail.com',
+  phone: '+44 *** *** 4567',
+  firstName: 'Green',
+  lastName: 'Bet.',
+  dob: '05-03-1995',
+  nationalId: '*******74',
+  country: 'United Kingdom',
+  currency: 'USD',
   xp: 10550,
   xpNext: 15000,
   nextTier: 'Crown',
 }
 
 export const balances = {
-  total: '€12,450.00',
-  main: '€10,250.00',
-  bonus: '€2,200.00',
-  cashbackAvailable: '€350.75',
-  cashbackTotal: '€1,250.75',
+  total: '$1,240.50',
+  main: '$1,240.50',
+  bonus: '$675',
+  totalDeposits: '$2,050',
+  totalWithdrawals: '$950',
+  activeBonuses: 4,
+  activeBonusBalance: '$0',
+  cashbackAvailable: '$25.00',
+  cashbackTotal: '$125.00',
   rewardsPoints: '12,450',
 }
+
+/** Per-provider game wallets (GreenBet "Game Balance"). */
+export const gameWallets = [
+  { provider: 'Pragmatic Play', kind: 'Casino Wallet', balance: '$0' },
+  { provider: 'Evolution', kind: 'Live Casino', balance: '$0' },
+  { provider: 'BetConstruct', kind: 'Sportsbook', balance: '$0' },
+]
 
 export interface AccNavItem {
   label: string
@@ -90,7 +106,8 @@ export const accountNav: AccNavSection[] = [
 ]
 
 export interface Txn {
-  type: 'Deposit' | 'Withdraw' | 'Bonus' | 'Cashback' | 'Reward'
+  type: 'Deposit' | 'Withdraw' | 'Bonus'
+  label: string
   date: string
   amount: string
   positive: boolean
@@ -99,15 +116,20 @@ export interface Txn {
 }
 
 export const transactions: Txn[] = [
-  { type: 'Deposit', date: 'May 25, 2024 · 14:32', amount: '+ €500.00', positive: true, status: 'Completed', icon: 'vault' },
-  { type: 'Withdraw', date: 'May 24, 2024 · 09:15', amount: '− €300.00', positive: false, status: 'Completed', icon: 'bolt' },
-  { type: 'Bonus', date: 'May 24, 2024 · 08:45', amount: '+ €50.00', positive: true, status: 'Completed', icon: 'gift' },
-  { type: 'Cashback', date: 'May 23, 2024 · 12:30', amount: '+ €25.75', positive: true, status: 'Completed', icon: 'percent' },
-  { type: 'Deposit', date: 'May 22, 2024 · 16:20', amount: '+ €200.00', positive: true, status: 'Completed', icon: 'vault' },
-  { type: 'Reward', date: 'May 21, 2024 · 19:05', amount: '+ 450 pts', positive: true, status: 'Completed', icon: 'star' },
-  { type: 'Withdraw', date: 'May 20, 2024 · 11:48', amount: '− €750.00', positive: false, status: 'Completed', icon: 'bolt' },
-  { type: 'Deposit', date: 'May 18, 2024 · 21:12', amount: '+ €1,000.00', positive: true, status: 'Completed', icon: 'vault' },
+  { type: 'Deposit', label: 'Deposit · Visa', date: '11 Jun 2026 · 22:14', amount: '+ $500.00', positive: true, status: 'Completed', icon: 'vault' },
+  { type: 'Bonus', label: 'Daily reward · 10% Cashback', date: '11 Jun 2026 · 18:14', amount: '+ $25.00', positive: true, status: 'Completed', icon: 'gift' },
+  { type: 'Withdraw', label: 'Withdrawal · Bank Transfer', date: '11 Jun 2026 · 00:14', amount: '− $200.00', positive: false, status: 'Completed', icon: 'bolt' },
+  { type: 'Deposit', label: 'Deposit · Crypto', date: '10 Jun 2026 · 00:14', amount: '+ $1,000.00', positive: true, status: 'Completed', icon: 'vault' },
+  { type: 'Bonus', label: 'Bonus · 200% Casino Welcome', date: '9 Jun 2026 · 00:14', amount: '+ $500.00', positive: true, status: 'Completed', icon: 'gift' },
+  { type: 'Deposit', label: 'Deposit · Skrill', date: '8 Jun 2026 · 00:14', amount: '+ $250.00', positive: true, status: 'Completed', icon: 'vault' },
+  { type: 'Withdraw', label: 'Withdrawal · Bitcoin', date: '6 Jun 2026 · 00:14', amount: '− $750.00', positive: false, status: 'Completed', icon: 'bolt' },
+  { type: 'Bonus', label: 'Daily reward · Mega Reward', date: '5 Jun 2026 · 00:14', amount: '+ $100.00', positive: true, status: 'Completed', icon: 'gift' },
+  { type: 'Deposit', label: 'Deposit · Bank Transfer', date: '3 Jun 2026 · 00:14', amount: '+ $300.00', positive: true, status: 'Completed', icon: 'vault' },
+  { type: 'Bonus', label: 'Bonus · Free spins package', date: '31 May 2026 · 00:14', amount: '+ $50.00', positive: true, status: 'Completed', icon: 'gift' },
 ]
+
+/** Financial-history roll-up shown above the transactions table. */
+export const txnTotals = { events: 10, totalIn: '$2,725', totalOut: '$950', net: '+$1,775' }
 
 export const quickActions = [
   { label: 'Deposit', to: '/account/deposit', font: 'deposit' },
@@ -120,46 +142,85 @@ export const quickActions = [
 ]
 
 export const paymentMethods = [
-  { name: 'Visa', time: 'Instant', limits: '€10 – €10,000', recommended: false },
-  { name: 'Mastercard', time: 'Instant', limits: '€10 – €10,000', recommended: false },
-  { name: 'Crypto (BTC · ETH · USDT)', time: '~10 min', limits: '€20 – €50,000', recommended: true },
-  { name: 'Apple Pay', time: 'Instant', limits: '€10 – €5,000', recommended: false },
-  { name: 'Google Pay', time: 'Instant', limits: '€10 – €5,000', recommended: false },
-  { name: 'Bank Transfer', time: '1–2 days', limits: '€100 – €100,000', recommended: false },
+  { name: 'Visa', time: 'Instant', limits: '$10 – $10,000', recommended: false },
+  { name: 'Mastercard', time: 'Instant', limits: '$10 – $10,000', recommended: false },
+  { name: 'Crypto (BTC · ETH · USDT)', time: '~10 min', limits: '$20 – $50,000', recommended: true },
+  { name: 'Skrill', time: 'Instant', limits: '$10 – $5,000', recommended: false },
+  { name: 'Apple Pay', time: 'Instant', limits: '$10 – $5,000', recommended: false },
+  { name: 'Bank Transfer', time: '1–2 days', limits: '$100 – $100,000', recommended: false },
 ]
 
-export const bonuses = [
-  { name: 'Welcome Bonus', desc: '100% up to €500 + 200 royal spins', progress: 100, status: 'Completed' },
-  { name: 'Reload Bonus', desc: '50% up to €250 every Friday', progress: 62, status: 'Active' },
-  { name: 'Sports Bonus', desc: '€50 free bet on accumulator wins', progress: 30, status: 'Active' },
-  { name: 'Cashback Bonus', desc: 'Up to 25% weekly cashback, Duke tier', progress: 80, status: 'Active' },
-  { name: 'Seasonal Bonus', desc: 'Summer Court — exclusive June event', progress: 0, status: 'Upcoming' },
+export interface BonusItem {
+  name: string
+  amount: string
+  date: string
+  status: 'Active' | 'Pending' | 'Completed' | 'Expired'
+}
+
+export const bonusTotals = { active: 4, totalReceived: '$675', activeBalance: '$0' }
+
+export const bonuses: BonusItem[] = [
+  { name: '10% Cashback', amount: '$25', date: '11 Jun 2026 18:14', status: 'Completed' },
+  { name: '200% Casino Welcome', amount: '$500', date: '9 Jun 2026 00:14', status: 'Completed' },
+  { name: 'Mega Reward', amount: '$100', date: '5 Jun 2026 00:14', status: 'Completed' },
+  { name: 'Free spins package', amount: '$50', date: '31 May 2026 00:14', status: 'Completed' },
+]
+
+/** Trusted devices (Device Lock is ON). */
+export const devices = [
+  { device: 'Chrome 137 · macOS', fingerprint: 'd19b2139…40219c88', added: '03 Jun 2026 11:28', lastSeen: '03 Jun 2026 11:29', current: true },
+  { device: 'Safari · iOS', fingerprint: 'd29b2139…40219c88', added: '30 May 2026 19:32', lastSeen: '30 May 2026 19:32', current: false },
+  { device: 'Safari · iOS', fingerprint: 'd39b2139…40219c88', added: '30 May 2026 19:32', lastSeen: '30 May 2026 15:10', current: false },
 ]
 
 export const sessions = [
-  { device: 'MacBook Pro · Safari', place: 'Tbilisi, GE', time: 'Active now', current: true },
-  { device: 'iPhone 15 Pro · App', place: 'Tbilisi, GE', time: '2 hours ago', current: false },
-  { device: 'Windows · Chrome', place: 'Batumi, GE', time: 'May 21, 2024', current: false },
+  { ip: 'IP 92.40.··.··', time: '11 Jun 2026 23:48', ago: '30m ago' },
+  { ip: 'IP 92.40.··.··', time: '11 Jun 2026 22:18', ago: '2h ago' },
+  { ip: 'IP 188.116.··.··', time: '11 Jun 2026 00:18', ago: 'Jun 11' },
+  { ip: 'IP 92.40.··.··', time: '9 Jun 2026 00:18', ago: 'Jun 9' },
+  { ip: 'IP 178.62.··.··', time: '7 Jun 2026 00:18', ago: 'Jun 7' },
 ]
+
+export const passwordRules = [
+  'At least 8 characters',
+  'Upper & lowercase letters',
+  'At least 1 number',
+  'At least 1 special character (!?#@…)',
+  'Different from your old password',
+]
+
+/** Verification channels and their current state. */
+export const verificationStatus = [
+  { channel: 'Email Verification', detail: 'gr****@gmail.com', state: 'NOT VERIFIED' },
+  { channel: 'Phone Verification', detail: '+44 *** *** 4567', state: 'NOT VERIFIED' },
+  { channel: 'Identity (KYC)', detail: 'Document verification status', state: 'NOT VERIFIED' },
+  { channel: 'Two-Factor Auth', detail: 'Two-step login is off', state: 'DISABLED' },
+]
+
+export const gameTotals = { bet: '$150', win: '$542', refund: '$0.00', net: '+$392' }
 
 export const gameHistory = [
-  { game: 'Gates of Olympus', provider: 'Pragmatic Play', result: '+ €145.00', positive: true, duration: '24 min', date: 'May 25' },
-  { game: 'Blackjack Live', provider: 'Evolution', result: '− €60.00', positive: false, duration: '41 min', date: 'May 24' },
-  { game: 'Crazy Time', provider: 'Evolution', result: '+ €310.50', positive: true, duration: '18 min', date: 'May 24' },
-  { game: 'The Ultimate 5', provider: 'Pragmatic Play', result: '− €25.00', positive: false, duration: '12 min', date: 'May 23' },
-  { game: 'Roulette Live', provider: 'Evolution', result: '+ €80.00', positive: true, duration: '33 min', date: 'May 22' },
+  { game: 'Gates of Olympus', provider: 'Pragmatic Play', result: '+ $162.50', positive: true, kind: 'WIN', date: '11 Jun 2026 22:18' },
+  { game: 'Sugar Rush', provider: 'Pragmatic Play', result: '− $10.00', positive: false, kind: 'BET', date: '11 Jun 2026 20:18' },
+  { game: 'Starlight Princess', provider: 'Pragmatic Play', result: '+ $262.50', positive: true, kind: 'WIN', date: '11 Jun 2026 19:18' },
+  { game: 'Money Train 3', provider: 'Relax Gaming', result: '− $20.00', positive: false, kind: 'BET', date: '11 Jun 2026 02:18' },
+  { game: 'Big Bass Bonanza', provider: 'Pragmatic Play', result: '+ $27.00', positive: true, kind: 'WIN', date: '10 Jun 2026 22:18' },
+  { game: 'Sweet Bonanza', provider: 'Pragmatic Play', result: '− $30.00', positive: false, kind: 'BET', date: '9 Jun 2026 22:18' },
 ]
 
+export const betProviders = ['Upgaming', 'BetConstruct', 'BetRadar']
+
 export const betHistory = [
-  { match: 'Real Madrid — Manchester City', market: 'Match Winner · Real Madrid', odds: '1.65', stake: '€100', payout: '+ €165.00', won: true, date: 'May 24' },
-  { match: 'Liverpool — Bayern Munich', market: 'Over 2.5 Goals', odds: '1.80', stake: '€50', payout: '− €50.00', won: false, date: 'May 23' },
-  { match: 'PSG — Juventus', market: 'Both Teams to Score', odds: '1.72', stake: '€80', payout: '+ €137.60', won: true, date: 'May 21' },
+  { match: 'Real Madrid vs Barcelona · 1', coupon: 'C-8472', time: '2h ago', payout: '+ $225', status: 'WON' },
+  { match: 'Liverpool vs Arsenal · Over 2.5', coupon: 'C-8455', time: '1d ago', payout: '− $20', status: 'LOST' },
+  { match: 'Bayern Munich · 1', coupon: 'C-8431', time: '2d ago', payout: '+ $195', status: 'WON' },
+  { match: 'Manchester City vs Chelsea · BTTS', coupon: 'C-8410', time: 'Live', payout: '—', status: 'PENDING' },
 ]
 
 export const statements = [
-  { period: 'May 2024', items: 42, net: '+ €1,240.00' },
-  { period: 'April 2024', items: 57, net: '− €380.00' },
-  { period: 'March 2024', items: 38, net: '+ €920.00' },
+  { period: 'June 2026', items: 10, net: '+ $1,775.00' },
+  { period: 'May 2026', items: 7, net: '+ $320.00' },
+  { period: 'April 2026', items: 12, net: '− $180.00' },
 ]
 
 export const faqs = [

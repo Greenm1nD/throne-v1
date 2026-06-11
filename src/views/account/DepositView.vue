@@ -6,7 +6,7 @@ import { paymentMethods } from '@/data/account'
 
 const selected = ref('Crypto (BTC · ETH · USDT)')
 const amount = ref('')
-const presets = ['€50', '€100', '€250', '€500', '€1,000']
+const presets = ['$50', '$100', '$250', '$500', '$1,000']
 </script>
 
 <template>
@@ -33,7 +33,7 @@ const presets = ['€50', '€100', '€250', '€500', '€1,000']
       <AccountPanel title="Amount">
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Deposit Amount</span>
-          <input v-model="amount" placeholder="€0.00" inputmode="decimal"
+          <input v-model="amount" placeholder="$0.00" inputmode="decimal"
             class="h-14 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-center font-display text-xl tabular-nums text-gold-bright placeholder:text-ink-dim focus:border-gold focus:outline-none" />
         </label>
         <div class="mt-3 flex flex-wrap gap-2">

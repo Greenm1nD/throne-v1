@@ -6,9 +6,9 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { balances } from '@/data/account'
 
 const redeemables = [
-  { name: 'Royal Cashback', cost: '2,500 pts', desc: '€25 instant cashback to your main wallet', icon: 'percent' },
+  { name: 'Royal Cashback', cost: '2,500 pts', desc: '$25 instant cashback to your main wallet', icon: 'percent' },
   { name: '200 Royal Spins', cost: '4,000 pts', desc: 'On any slot from the Treasury collection', icon: 'sparkle' },
-  { name: 'Court Free Bet', cost: '5,000 pts', desc: '€50 free bet in the Sports Arena', icon: 'trophy' },
+  { name: 'Court Free Bet', cost: '5,000 pts', desc: '$50 free bet in the Sports Arena', icon: 'trophy' },
   { name: 'Concierge Evening', cost: '25,000 pts', desc: 'A private-table experience arranged by your host', icon: 'crown' },
 ]
 </script>

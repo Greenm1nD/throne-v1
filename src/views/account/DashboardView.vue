@@ -22,6 +22,7 @@ const recent = transactions.slice(0, 5)
         <h1 class="font-display text-3xl font-bold tracking-[0.06em] text-gold-gradient">{{ user.name }}</h1>
         <img src="/assets/images/crown-duke.png" alt="" class="h-7 w-auto" />
       </div>
+      <p class="mt-1 font-sans text-[12px] text-ink-dim">{{ user.handle }} · Member since {{ user.memberSince }}</p>
       <span class="mt-2 inline-flex items-center gap-2 rounded-full border border-border-gold px-3.5 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-gold-bright">
         <AppIcon name="crown" :size="12" /> {{ user.tier }}
       </span>
@@ -29,10 +30,10 @@ const recent = transactions.slice(0, 5)
 
     <!-- Stat row -->
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      <StatCard label="Total Balance" :value="balances.total" font="wallet" accent
-        :rows="[{ k: 'Main Wallet', v: balances.main }, { k: 'Bonus Wallet', v: balances.bonus }]" />
-      <StatCard label="Total Cashback" :value="balances.cashbackTotal" icon="percent" accent
-        :rows="[{ k: 'Available', v: balances.cashbackAvailable }, { k: 'Total Earned', v: balances.cashbackTotal }]" />
+      <StatCard label="Balance" :value="balances.total" font="wallet" accent
+        :rows="[{ k: 'Total Deposits', v: balances.totalDeposits }, { k: 'Total Withdrawals', v: balances.totalWithdrawals }]" />
+      <StatCard label="Bonus" :value="balances.bonus" icon="gift" accent
+        :rows="[{ k: 'Active Bonuses', v: String(balances.activeBonuses) }, { k: 'Active Balance', v: balances.activeBonusBalance }]" />
       <StatCard label="VIP Level" :value="user.tier" icon="crown" accent>
         <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
           <div class="h-full rounded-full bg-gold-gradient" :style="{ width: `${xpPct}%` }" />
@@ -41,9 +42,9 @@ const recent = transactions.slice(0, 5)
           {{ user.xp.toLocaleString() }} / {{ user.xpNext.toLocaleString() }} XP · Next: {{ user.nextTier.toUpperCase() }}
         </p>
       </StatCard>
-      <StatCard label="Account Status" value="Verified" icon="shield"
-        :rows="[{ k: 'Member since', v: user.memberSince }, { k: 'Protection', v: '2FA Enabled' }]">
-        <template #value><span class="text-champagne">Verified ✓</span></template>
+      <StatCard label="Account Status" value="Not Verified" icon="shield"
+        :rows="[{ k: 'Member since', v: user.memberSince }, { k: 'Two-Factor Auth', v: 'Disabled' }]">
+        <template #value><span class="text-ink-muted">Not Verified</span></template>
       </StatCard>
     </div>
 
@@ -103,7 +104,7 @@ const recent = transactions.slice(0, 5)
               <AccGlyph :icon="t.icon" :size="15" />
             </span>
             <div class="min-w-0 flex-1">
-              <p class="font-sans text-[13px] font-semibold text-ink">{{ t.type }}</p>
+              <p class="truncate font-sans text-[13px] font-semibold text-ink">{{ t.label }}</p>
               <p class="font-sans text-[11px] text-ink-dim">{{ t.date }}</p>
             </div>
             <div class="text-right">

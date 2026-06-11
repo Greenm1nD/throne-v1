@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
 import AccGlyph from '@/components/account/AccGlyph.vue'
-import { transactions } from '@/data/account'
+import StatCard from '@/components/account/StatCard.vue'
+import { transactions, txnTotals } from '@/data/account'
 
 const filter = ref<'All' | 'Deposit' | 'Withdraw' | 'Bonus'>('All')
 const tabs = ['All', 'Deposit', 'Withdraw', 'Bonus'] as const
@@ -14,6 +15,14 @@ const rows = computed(() => (filter.value === 'All' ? transactions : transaction
     <div>
       <p class="eyebrow mb-1">Wallet</p>
       <h1 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Transactions</h1>
+      <p class="mt-1 font-sans text-[12px] text-ink-dim">Check your deposit, withdrawal and bonus history.</p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <StatCard label="Total Events" :value="String(txnTotals.events)" icon="chart" />
+      <StatCard label="Total In" :value="txnTotals.totalIn" icon="vault" accent />
+      <StatCard label="Total Out" :value="txnTotals.totalOut" icon="bolt" />
+      <StatCard label="Net" :value="txnTotals.net" icon="percent" accent />
     </div>
 
     <AccountPanel>
@@ -32,7 +41,7 @@ const rows = computed(() => (filter.value === 'All' ? transactions : transaction
             <AccGlyph :icon="t.icon" :size="15" />
           </span>
           <div class="min-w-0 flex-1">
-            <p class="font-sans text-[13px] font-semibold text-ink">{{ t.type }}</p>
+            <p class="truncate font-sans text-[13px] font-semibold text-ink">{{ t.label }}</p>
             <p class="font-sans text-[11px] text-ink-dim">{{ t.date }}</p>
           </div>
           <span class="hidden rounded-full border border-white/10 px-2.5 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.16em] text-ink-dim sm:block">{{ t.status }}</span>

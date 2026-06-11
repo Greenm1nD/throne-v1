@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import AccountPanel from '@/components/account/AccountPanel.vue'
-import AppIcon from '@/components/ui/AppIcon.vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 import { user } from '@/data/account'
 
 const fields = [
-  { label: 'First Name', value: user.firstName, icon: 'user' },
-  { label: 'Last Name', value: user.lastName, icon: 'user' },
-  { label: 'Email Address', value: user.email, icon: 'mail' },
-  { label: 'Phone Number', value: user.phone, icon: 'chat' },
-  { label: 'Country', value: user.country, icon: 'globe' },
-  { label: 'Currency', value: user.currency, icon: 'vault' },
+  { label: 'First Name', value: user.firstName },
+  { label: 'Last Name', value: user.lastName },
+  { label: 'Date of Birth', value: user.dob },
+  { label: 'National ID', value: user.nationalId },
+  { label: 'Email Address', value: user.email },
+  { label: 'Phone Number', value: user.phone },
 ]
 </script>
 
@@ -22,34 +20,33 @@ const fields = [
     </div>
 
     <AccountPanel title="Royal Identity">
-      <div class="mb-7 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+      <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
         <div class="relative">
           <img :src="user.avatar" alt="" class="h-20 w-20 rounded-full border-2 border-border-gold object-cover shadow-gold-soft" />
           <img src="/assets/images/crown-duke.png" alt="" class="absolute -top-3 left-1/2 h-6 w-auto -translate-x-1/2" />
         </div>
         <div>
           <p class="font-display text-lg font-semibold tracking-[0.08em] text-ink">{{ user.name }}</p>
-          <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }} · Member since {{ user.memberSince }}</p>
+          <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }} · {{ user.handle }} · Member since {{ user.memberSince }}</p>
           <button class="mt-2 font-sans text-[11px] uppercase tracking-[0.14em] text-ink-muted underline-offset-4 transition-colors hover:text-gold-bright hover:underline">
             Change portrait
           </button>
         </div>
       </div>
+    </AccountPanel>
 
-      <div class="grid gap-4 sm:grid-cols-2">
-        <label v-for="f in fields" :key="f.label" class="block">
-          <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">{{ f.label }}</span>
-          <span class="relative block">
-            <AppIcon :name="f.icon" :size="15" class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gold/70" />
-            <input :value="f.value" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
-          </span>
-        </label>
-      </div>
-
-      <div class="mt-7 flex flex-wrap gap-3">
-        <GoldButton variant="solid" size="md">Save Changes</GoldButton>
-        <GoldButton variant="outline" size="md">Discard</GoldButton>
-      </div>
+    <AccountPanel title="Personal Information">
+      <p class="mb-5 font-sans text-[12px] text-ink-dim">For security, these fields can only be updated via support.</p>
+      <dl class="grid gap-x-6 gap-y-4 sm:grid-cols-2">
+        <div v-for="f in fields" :key="f.label" class="rounded-xl border border-white/8 bg-black/30 px-4 py-3">
+          <dt class="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">{{ f.label }}</dt>
+          <dd class="mt-1 font-sans text-[13px] font-semibold tabular-nums text-ink">{{ f.value }}</dd>
+        </div>
+      </dl>
+      <p class="mt-5 border-t border-white/5 pt-4 font-sans text-[12px] text-ink-dim">
+        To update email, phone or identity details, please
+        <RouterLink to="/account/contact" class="text-champagne underline-offset-4 transition-colors hover:text-gold-bright hover:underline">contact support</RouterLink>.
+      </p>
     </AccountPanel>
 
     <AccountPanel title="Preferences">

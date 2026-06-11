@@ -42,7 +42,7 @@ const amount = ref('')
         </p>
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Withdrawal Amount</span>
-          <input v-model="amount" placeholder="€0.00" inputmode="decimal"
+          <input v-model="amount" placeholder="$0.00" inputmode="decimal"
             class="h-14 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-center font-display text-xl tabular-nums text-gold-bright placeholder:text-ink-dim focus:border-gold focus:outline-none" />
         </label>
         <GoldButton variant="solid" size="lg" block class="mt-5">Request Withdrawal</GoldButton>
