@@ -18,6 +18,7 @@ useReveal(root, { stagger: 0.1 })
       <article
         v-for="stat in hallOfKings"
         :key="stat.label"
+        v-glow
         class="card-lux group flex flex-col items-center gap-4 p-6 text-center"
         data-reveal
       >

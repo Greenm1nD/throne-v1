@@ -55,14 +55,17 @@ onMounted(() => {
     })
     .catch(() => (missing.value = true))
 
-  // Returning listener who had it on: resume on their FIRST interaction
-  // anywhere (autoplay policies require a gesture).
-  if (localStorage.getItem(STORAGE) === '1') {
-    const resume = () => {
-      toggle()
-      window.removeEventListener('pointerdown', resume)
+  // ON by default — only an explicit mute ('0') keeps the hall silent.
+  // Browsers require a gesture for audible playback, so: try immediately
+  // (works on soft navigations), otherwise begin on the first interaction.
+  if (localStorage.getItem(STORAGE) !== '0') {
+    const begin = () => {
+      if (playing.value) return
+      void toggle()
     }
-    window.addEventListener('pointerdown', resume, { once: true })
+    begin()
+    window.addEventListener('pointerdown', begin, { once: true })
+    window.addEventListener('keydown', begin, { once: true })
   }
 })
 
@@ -73,13 +76,17 @@ onBeforeUnmount(() => audio?.pause())
   <button
     v-if="!missing"
     class="group fixed bottom-5 left-5 z-[90] grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
-    :class="playing ? 'text-gold-bright' : 'text-ink-muted hover:text-champagne'"
+    :class="playing ? 'border-gold/70 text-gold-bright' : 'text-ink-muted hover:text-champagne'"
     :aria-pressed="playing"
     :aria-label="playing ? 'Mute ambience' : 'Play ambience'"
     @click="toggle"
   >
-    <!-- Gentle pulse while playing -->
-    <span v-if="playing" class="absolute inset-0 animate-softGlow rounded-full" />
+    <!-- Slow inviting glow until the guest mutes it -->
+    <span
+      v-if="playing"
+      class="absolute inset-0 rounded-full"
+      style="animation: softGlow 5.5s ease-in-out infinite"
+    />
     <AppIcon :name="playing ? 'music' : 'musicOff'" :size="19" />
   </button>
 </template>

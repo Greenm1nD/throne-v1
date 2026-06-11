@@ -39,6 +39,7 @@ useRevealEach(root)
           <article
             v-for="t in page.tiers"
             :key="t.name"
+            v-glow
             class="relative flex flex-col items-center rounded-2xl border p-5 text-center transition-all duration-300"
             :class="
               t.featured
@@ -94,6 +95,40 @@ useRevealEach(root)
           </GoldButton>
         </div>
       </div>
+      </div>
+    </section>
+
+    <!-- Royal Concierge -->
+    <section class="container-royal pt-12 sm:pt-16">
+      <div
+        class="grid items-center gap-8 rounded-2xl border border-border-gold bg-card/80 px-8 py-9 lg:grid-cols-[auto_1fr_auto]"
+        style="background-image: linear-gradient(90deg, rgba(13,13,16,0.9), rgba(8,8,10,0.95)), url('/assets/images/texture-marble.webp'); background-size: cover"
+        data-reveal
+      >
+        <div
+          class="relative mx-auto grid h-20 w-20 place-items-center rounded-full border border-border-gold text-gold-bright"
+          style="background: radial-gradient(circle, rgba(212,175,55,0.14), transparent 70%)"
+        >
+          <div class="absolute inset-2 animate-ringRotate rounded-full border border-dashed border-gold/25" />
+          <AppIcon name="headset" :size="30" />
+        </div>
+
+        <div class="text-center lg:text-left">
+          <h3 class="font-display text-xl font-semibold tracking-[0.14em] text-gold-gradient">
+            Your Personal Concierge
+          </h3>
+          <p class="mx-auto mt-2 max-w-xl font-sans text-[13px] leading-relaxed text-ink-muted lg:mx-0">
+            A dedicated host on call around the clock — priority withdrawals arranged,
+            invitations to closed events, private lounge access and offers composed
+            personally for you.
+          </p>
+        </div>
+
+        <div class="flex justify-center">
+          <GoldButton variant="solid" size="md" @click="open('register')">
+            Request Your Host <AppIcon name="arrowRight" :size="14" />
+          </GoldButton>
+        </div>
       </div>
     </section>
 
