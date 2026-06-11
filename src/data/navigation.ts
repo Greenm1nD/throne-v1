@@ -12,24 +12,62 @@ export const primaryNav: NavItem[] = [
   { label: 'Rewards', href: '#rewards' },
 ]
 
-export interface FooterColumn {
-  title: string
-  links: string[]
+export interface FooterLink {
+  label: string
+  /** AppIcon glyph (left columns) */
+  icon?: string
+  /** FontIcon glyph from the fontello set (Connect column) */
+  fontIcon?: string
 }
 
-export const footerColumns: FooterColumn[] = [
+export interface FooterColumn {
+  title: string
+  links: FooterLink[]
+}
+
+/** Four link columns flanking the centre crest: Throne · Experience | Support · Connect */
+export const footerNav: FooterColumn[] = [
   {
     title: 'Throne',
-    links: ['About Throne', 'Fair Play', 'Security', 'Affiliates', 'Careers'],
+    links: [
+      { label: 'About Throne', icon: 'shield' },
+      { label: 'The Kingdom', icon: 'crown' },
+      { label: 'Royal Rewards', icon: 'gift' },
+      { label: 'VIP Club', icon: 'star' },
+      { label: 'The Court', icon: 'vault' },
+      { label: 'Careers', icon: 'user' },
+    ],
   },
   {
-    title: 'Information',
+    title: 'Experience',
     links: [
-      'Terms & Conditions',
-      'Privacy Policy',
-      'Responsible Gaming',
-      'Support',
-      'Contact Us',
+      { label: 'Casino' },
+      { label: 'Sports' },
+      { label: 'Live Casino' },
+      { label: 'Games' },
+      { label: 'Tournaments' },
+      { label: 'Promotions' },
+    ],
+  },
+  {
+    title: 'Support',
+    links: [
+      { label: 'Help Center' },
+      { label: 'Responsible Gaming' },
+      { label: 'Security' },
+      { label: 'Terms of Service' },
+      { label: 'Privacy Policy' },
+      { label: 'Cookie Policy' },
+    ],
+  },
+  {
+    title: 'Connect',
+    links: [
+      { label: 'Discord', fontIcon: 'discord' },
+      { label: 'Telegram', fontIcon: 'telegram' },
+      { label: 'Instagram', fontIcon: 'instagram-circle' },
+      { label: 'X (Twitter)', fontIcon: 'twitter-x' },
+      { label: 'YouTube', fontIcon: 'youtube-play' },
     ],
   },
 ]
@@ -37,7 +75,7 @@ export const footerColumns: FooterColumn[] = [
 export const paymentMethods: string[] = [
   'Visa',
   'Mastercard',
-  'Apple Pay',
+  'PayPal',
   'Bitcoin',
   'Tether',
   'Ethereum',
