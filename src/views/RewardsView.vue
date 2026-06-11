@@ -13,8 +13,7 @@ useRevealEach(root)
 
 const ranks = kingdomPage.ranks
 const activeIndex = ranks.findIndex((r) => r.active)
-const railStart = 100 / (ranks.length * 2)
-const fillWidth = (activeIndex / ranks.length) * 100
+const fillWidth = (activeIndex / (ranks.length - 1)) * 100
 
 const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 100))
 </script>
@@ -36,17 +35,14 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
 
         <div class="relative overflow-x-auto py-2 [scrollbar-width:none] lg:overflow-visible">
+          <div class="pointer-events-none absolute inset-x-2 top-[78px] hidden h-px bg-white/10 lg:block" />
           <div
-            class="pointer-events-none absolute top-[38px] hidden h-px bg-white/10 lg:block"
-            :style="{ left: `${railStart}%`, right: `${railStart}%` }"
-          />
-          <div
-            class="pointer-events-none absolute top-[38px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
-            :style="{ left: `${railStart}%`, width: `${fillWidth}%` }"
+            class="pointer-events-none absolute left-2 top-[78px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
+            :style="{ width: `${fillWidth}%` }"
           />
           <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-4">
             <li v-for="(r, i) in ranks" :key="r.name" class="flex flex-col items-center gap-2">
-              <div class="relative z-10 flex h-[72px] items-center">
+              <div class="relative z-10 flex h-[72px] items-end">
                 <img
                   :src="r.crown"
                   :alt="`${r.name} crown`"

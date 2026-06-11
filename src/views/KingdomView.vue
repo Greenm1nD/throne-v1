@@ -14,10 +14,7 @@ useRevealEach(root)
 
 const xpPct = computed(() => Math.round((page.status.xp / page.status.next) * 100))
 const activeIndex = page.ranks.findIndex((r) => r.active)
-const N = page.ranks.length
-// Rank centres sit at (i+0.5)/N of the rail width (equal grid cells).
-const railStart = 100 / (N * 2)
-const fillWidth = (activeIndex / N) * 100
+const fillWidth = (activeIndex / (page.ranks.length - 1)) * 100
 
 const statusCrown = computed(
   () => page.ranks.find((r) => r.name === page.status.level)?.crown ?? page.ranks[0].crown,
@@ -39,17 +36,14 @@ const statusCrown = computed(
 
         <div class="relative overflow-x-auto py-2 [scrollbar-width:none] lg:overflow-visible">
           <!-- Track + fill run through the crown centres (36px = half of h-[72px]) -->
+          <div class="pointer-events-none absolute inset-x-2 top-[78px] hidden h-px bg-white/10 lg:block" />
           <div
-            class="pointer-events-none absolute top-[38px] hidden h-px bg-white/10 lg:block"
-            :style="{ left: `${railStart}%`, right: `${railStart}%` }"
-          />
-          <div
-            class="pointer-events-none absolute top-[38px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
-            :style="{ left: `${railStart}%`, width: `${fillWidth}%` }"
+            class="pointer-events-none absolute left-2 top-[78px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
+            :style="{ width: `${fillWidth}%` }"
           />
           <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-4">
             <li v-for="(r, i) in page.ranks" :key="r.name" class="flex flex-col items-center gap-2">
-              <div class="relative z-10 flex h-[72px] items-center">
+              <div class="relative z-10 flex h-[72px] items-end">
                 <img
                   :src="r.crown"
                   :alt="`${r.name} crown`"

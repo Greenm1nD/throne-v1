@@ -66,27 +66,66 @@ useRevealEach(root)
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
-          <article v-for="t in page.tables" :key="t.name" class="group cursor-pointer">
-            <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 transition-colors group-hover:border-border-gold">
-              <div
-                v-lazybg="`url('${t.image}'), url('${t.fallback}')`"
-                class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                :style="{ backgroundColor: '#0d0d10' }"
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+          <article
+            v-for="t in page.tables"
+            :key="t.name"
+            class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
+          >
+            <div class="relative aspect-[4/3] overflow-hidden">
+              <img
+                :src="t.image"
+                :alt="t.name"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
+              <!-- LIVE chip -->
               <span
                 class="absolute left-2 top-2 flex items-center gap-1.5 rounded bg-black/70 px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-wider text-gold-bright backdrop-blur"
               >
                 <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-gold-bright" /> Live
               </span>
+              <!-- Royal badges -->
+              <span
+                v-if="t.hot"
+                class="absolute right-2 top-2 flex items-center gap-1 rounded bg-gold-gradient px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-[#1a1407] shadow-gold-soft"
+              >
+                <AppIcon name="crown" :size="10" /> Hot
+              </span>
+              <span
+                v-else-if="t.isNew"
+                class="absolute right-2 top-2 rounded border border-gold/60 bg-black/60 px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright backdrop-blur"
+              >
+                New
+              </span>
+              <!-- Hover play overlay -->
+              <div
+                class="absolute inset-0 flex items-center justify-center bg-black/55 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100"
+              >
+                <GoldButton variant="solid" size="sm">
+                  <AppIcon name="play" :size="12" /> Join Table
+                </GoldButton>
+              </div>
+              <span class="shine-beam" />
             </div>
-            <p class="mt-2.5 font-sans text-[12px] font-semibold uppercase tracking-[0.08em] text-ink transition-colors group-hover:text-gold-bright">
-              {{ t.name }}
-            </p>
-            <p class="mt-0.5 flex items-center justify-between font-sans text-[10px] text-ink-dim">
-              <span class="tabular-nums">{{ t.stakes }}</span>
-              <span class="flex items-center gap-1"><AppIcon name="user" :size="10" /> {{ t.players }}</span>
-            </p>
+
+            <div class="px-3 py-3">
+              <div class="flex items-center justify-between gap-2">
+                <p class="truncate font-sans text-[12px] font-semibold text-ink transition-colors group-hover:text-gold-bright">
+                  {{ t.name }}
+                </p>
+                <span class="flex shrink-0 items-center gap-1 font-sans text-[10px] tabular-nums text-ink-dim">
+                  <AppIcon name="user" :size="10" /> {{ t.players }}
+                </span>
+              </div>
+              <p class="mt-1 flex items-center justify-between font-sans text-[10px] text-ink-dim">
+                <span class="flex items-center gap-1.5">
+                  <span class="h-1 w-1 rounded-full bg-gold/70" /> {{ t.provider }}
+                </span>
+                <span class="tabular-nums">{{ t.stakes }}</span>
+              </p>
+            </div>
           </article>
         </div>
       </div>
