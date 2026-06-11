@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import LoadingScreen from '@/components/home/LoadingScreen.vue'
 import AuthModal from '@/components/auth/AuthModal.vue'
+import TwoFaModal from '@/components/auth/TwoFaModal.vue'
 import AmbientBackground from '@/components/ui/AmbientBackground.vue'
 import AmbientAudio from '@/components/ui/AmbientAudio.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
@@ -24,4 +25,5 @@ const isAccount = computed(() => route.path.startsWith('/account'))
   <AppFooter v-show="ready && !isAccount" />
   <AmbientAudio />
   <AuthModal />
+  <TwoFaModal />
 </template>

@@ -1,15 +1,38 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { primaryNav } from '@/data/navigation'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { useAuth } from '@/composables/useAuth'
+import { user as member } from '@/data/account'
 
 const { open } = useAuthModal()
+const { isLoggedIn, user, balance, logout } = useAuth()
+const router = useRouter()
 const bar = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
+const accOpen = ref(false)
+
+const balanceLabel = computed(() =>
+  `$${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+)
+
+const accLinks = [
+  { label: 'Dashboard', to: '/account', icon: 'crown' },
+  { label: 'Wallet', to: '/account/balance', icon: 'vault' },
+  { label: 'Bet History', to: '/account/bet-history', icon: 'trophy' },
+  { label: 'VIP Club', to: '/account/vip-progress', icon: 'star' },
+]
+
+function signOut() {
+  accOpen.value = false
+  logout()
+  router.push('/')
+}
 
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -65,17 +88,68 @@ onMounted(() => {
           <AppIcon name="search" :size="17" class="transition-transform duration-500 group-hover:rotate-[18deg]" />
         </button>
 
-        <GoldButton variant="outline" size="sm" class="hidden sm:inline-flex" @click="open('login')">
-          Log In
-        </GoldButton>
-        <GoldButton
-          variant="solid"
-          size="sm"
-          class="cta-breathe hidden md:inline-flex"
-          @click="open('register')"
-        >
-          Join the Kingdom
-        </GoldButton>
+        <!-- Guest cluster -->
+        <template v-if="!isLoggedIn">
+          <GoldButton variant="outline" size="sm" class="hidden sm:inline-flex" @click="open('login')">
+            Log In
+          </GoldButton>
+          <GoldButton
+            variant="solid"
+            size="sm"
+            class="cta-breathe hidden md:inline-flex"
+            @click="open('register')"
+          >
+            Join the Kingdom
+          </GoldButton>
+        </template>
+
+        <!-- Logged-in cluster: balance pill + avatar dropdown -->
+        <template v-else>
+          <div class="hidden items-center gap-1 rounded-full border border-border-gold/60 py-1 pl-4 pr-1 sm:flex">
+            <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
+            <RouterLink to="/account/deposit">
+              <GoldButton variant="solid" size="sm">Deposit</GoldButton>
+            </RouterLink>
+          </div>
+
+          <div class="relative">
+            <button
+              class="flex items-center gap-2 rounded-full border border-white/10 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
+              :aria-expanded="accOpen"
+              aria-label="Account menu"
+              @click="accOpen = !accOpen"
+            >
+              <img :src="member.avatar" alt="" class="h-8 w-8 rounded-full border border-border-gold object-cover" />
+              <span class="hidden font-sans text-[12px] font-semibold text-ink md:block">{{ user?.name }}</span>
+              <AppIcon name="chevronDown" :size="13" class="text-ink-dim transition-transform" :class="accOpen && 'rotate-180'" />
+            </button>
+
+            <Transition
+              enter-active-class="transition duration-200"
+              enter-from-class="opacity-0 -translate-y-1"
+              leave-active-class="transition duration-150"
+              leave-to-class="opacity-0 -translate-y-1"
+            >
+              <div v-if="accOpen" class="glass-panel absolute right-0 top-[calc(100%+10px)] w-52 overflow-hidden rounded-xl border border-border-gold/60 py-1.5 shadow-card-glow">
+                <RouterLink
+                  v-for="l in accLinks"
+                  :key="l.label"
+                  :to="l.to"
+                  class="flex items-center gap-2.5 px-4 py-2.5 font-sans text-[12px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
+                  @click="accOpen = false"
+                >
+                  <AppIcon :name="l.icon" :size="14" class="text-gold/70" /> {{ l.label }}
+                </RouterLink>
+                <button
+                  class="flex w-full items-center gap-2.5 border-t border-white/5 px-4 py-2.5 font-sans text-[12px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
+                  @click="signOut"
+                >
+                  <AppIcon name="x" :size="14" class="text-gold/70" /> Log out
+                </button>
+              </div>
+            </Transition>
+          </div>
+        </template>
 
         <!-- Mobile menu toggle -->
         <button
@@ -113,12 +187,26 @@ onMounted(() => {
             <span class="h-1.5 w-1.5 rotate-45 bg-gold/40 transition-colors group-hover:bg-gold-bright" />
             {{ item.label }}
           </RouterLink>
-          <div class="mt-4 flex flex-col gap-3 pb-2">
+          <div v-if="!isLoggedIn" class="mt-4 flex flex-col gap-3 pb-2">
             <GoldButton variant="outline" size="md" block @click="open('login'); menuOpen = false">
               Log In
             </GoldButton>
             <GoldButton variant="solid" size="md" block @click="open('register'); menuOpen = false">
               Join the Kingdom
+            </GoldButton>
+          </div>
+          <div v-else class="mt-4 flex flex-col gap-3 pb-2">
+            <div class="flex items-center justify-between rounded-full border border-border-gold/60 py-1.5 pl-4 pr-1.5">
+              <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
+              <RouterLink to="/account/deposit" @click="menuOpen = false">
+                <GoldButton variant="solid" size="sm">Deposit</GoldButton>
+              </RouterLink>
+            </div>
+            <RouterLink to="/account" @click="menuOpen = false">
+              <GoldButton variant="outline" size="md" block>My Kingdom</GoldButton>
+            </RouterLink>
+            <GoldButton variant="ghost" size="md" block @click="signOut(); menuOpen = false">
+              Log out
             </GoldButton>
           </div>
         </nav>

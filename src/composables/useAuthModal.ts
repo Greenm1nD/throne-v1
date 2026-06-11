@@ -5,6 +5,8 @@ export type AuthMode = 'login' | 'register'
 const state = reactive({
   open: false,
   mode: 'login' as AuthMode,
+  /** Second step of the login chain — the 2FA code dialog. */
+  twofaOpen: false,
 })
 
 /** Tiny shared store for the auth modal — no Pinia needed for one dialog. */
@@ -22,6 +24,14 @@ export function useAuthModal() {
     },
     setMode(mode: AuthMode) {
       state.mode = mode
+    },
+    openTwofa() {
+      state.twofaOpen = true
+      document.documentElement.style.overflow = 'hidden'
+    },
+    closeTwofa() {
+      state.twofaOpen = false
+      document.documentElement.style.overflow = ''
     },
   }
 }

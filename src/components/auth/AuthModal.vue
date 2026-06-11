@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { playRoyalGate } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -9,13 +8,12 @@ import CrownBadge from '@/components/ui/CrownBadge.vue'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
 
-const { state, close, setMode } = useAuthModal()
-const router = useRouter()
+const { state, close, setMode, openTwofa } = useAuthModal()
 
-// Prototype login: both CTAs lead straight into the members area.
+// Login chain: credentials → 2FA seal → auth.login() (see TwoFaModal).
 function enterKingdom() {
   close()
-  router.push('/account')
+  openTwofa()
 }
 
 // Per-field password reveal toggles (keyed by field id).
