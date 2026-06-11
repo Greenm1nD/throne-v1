@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import CrownBadge from '@/components/ui/CrownBadge.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
@@ -11,6 +12,10 @@ const { open } = useAuthModal()
 // Column order around the centre crest: [Throne, Experience] crest [Support, Connect]
 const leftCols = footerNav.slice(0, 2)
 const rightCols = footerNav.slice(2)
+
+// Lion crest artwork (includes THRONE + tagline baked in). Until the file is
+// dropped at /assets/images/footer-crest.png we fall back to badge + text.
+const crestFailed = ref(false)
 </script>
 
 <template>
@@ -59,16 +64,29 @@ const rightCols = footerNav.slice(2)
 
         <!-- Centre crest -->
         <div
-          class="order-first col-span-2 flex flex-col items-center px-4 text-center lg:order-none lg:col-span-1 lg:min-w-[260px]"
+          class="order-first col-span-2 flex flex-col items-center px-4 text-center lg:order-none lg:col-span-1 lg:min-w-[280px]"
         >
-          <CrownBadge :size="210" />
-          <p class="-mt-2 font-display text-3xl font-bold tracking-[0.22em] text-gold-gradient">
-            THRONE
-          </p>
-          <p class="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.4em] text-champagne/80">
-            Built for the Crowned
-          </p>
-          <span class="mt-3 h-1.5 w-1.5 rotate-45 bg-gold/60" />
+          <!-- Lion crest lockup (wordmark + tagline are part of the artwork) -->
+          <img
+            v-if="!crestFailed"
+            :src="'/assets/images/footer-crest.png'"
+            alt="THRONE — Built for the Crowned"
+            class="w-[280px] drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
+            loading="lazy"
+            decoding="async"
+            @error="crestFailed = true"
+          />
+          <!-- Fallback until the crest artwork lands -->
+          <template v-else>
+            <CrownBadge :size="210" />
+            <p class="-mt-2 font-display text-3xl font-bold tracking-[0.22em] text-gold-gradient">
+              THRONE
+            </p>
+            <p class="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.4em] text-champagne/80">
+              Built for the Crowned
+            </p>
+            <span class="mt-3 h-1.5 w-1.5 rotate-45 bg-gold/60" />
+          </template>
         </div>
 
         <!-- Right columns -->

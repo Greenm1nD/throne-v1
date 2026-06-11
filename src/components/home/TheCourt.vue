@@ -9,7 +9,8 @@ import { courtChannels } from '@/data/rewards'
 <template>
   <div
     id="vip"
-    class="card-lux flex h-full flex-col items-center gap-8 p-7 hover:translate-y-0 hover:shadow-card-glow sm:p-8 lg:flex-row lg:justify-between"
+    class="card-lux flex h-full flex-col items-center gap-8 bg-cover bg-center p-7 hover:translate-y-0 hover:shadow-card-glow sm:p-8 lg:flex-row lg:justify-between"
+    style="background-image: linear-gradient(180deg, rgba(13,13,16,0.82), rgba(8,8,10,0.9)), url('/assets/images/texture-marble.webp')"
     data-reveal
   >
     <!-- Left: title + CTA -->

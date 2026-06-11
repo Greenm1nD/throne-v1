@@ -4,7 +4,8 @@ import { royalTreasures } from '@/data/rewards'
 
 <template>
   <div
-    class="card-lux h-full p-7 hover:translate-y-0 hover:shadow-card-glow sm:p-8"
+    class="card-lux h-full bg-cover bg-center p-7 hover:translate-y-0 hover:shadow-card-glow sm:p-8"
+    style="background-image: linear-gradient(180deg, rgba(13,13,16,0.82), rgba(8,8,10,0.9)), url('/assets/images/texture-marble.webp')"
     data-reveal
   >
     <h3 class="font-display text-xl font-semibold tracking-[0.14em] text-gold-gradient">
