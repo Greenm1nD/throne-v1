@@ -10,6 +10,7 @@ export const royalTreasures: Reward[] = [
   { title: 'Treasury Rewards', description: 'Cashback drawn from the vault', icon: 'vault' },
   { title: 'Crown Benefits', description: 'Privileges that scale with your rank', icon: 'shield' },
   { title: 'Exclusive Promotions', description: 'Members-only seasonal events', icon: 'sparkle' },
+  { title: 'Daily Rewards', description: 'A tribute paid every single day', icon: 'calendar' },
 ]
 
 export interface CourtChannel {

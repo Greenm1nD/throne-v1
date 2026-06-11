@@ -37,6 +37,19 @@ useReveal(root)
       <!-- Cinematic hover shine -->
       <span class="shine-beam" />
 
+      <!-- Hot-zone labels over the prize segments -->
+      <div
+        class="pointer-events-none absolute bottom-4 right-5 z-10 hidden items-center gap-2 lg:flex"
+      >
+        <span
+          v-for="zone in ['Royal Motors', 'Timepieces', 'Private Jets', 'Royal Destinations']"
+          :key="zone"
+          class="rounded-full border border-border-gold/60 bg-black/55 px-3 py-1 font-sans text-[9px] font-medium uppercase tracking-[0.18em] text-champagne backdrop-blur transition-colors duration-300 group-hover:border-gold/80 group-hover:text-gold-bright"
+        >
+          {{ zone }}
+        </span>
+      </div>
+
       <div class="relative z-10 max-w-xl px-7 py-10 sm:px-12">
         <h2
           class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient sm:text-4xl"

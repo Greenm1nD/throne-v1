@@ -4,6 +4,7 @@ import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
+import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
 import FeatureGrid from '@/components/home/FeatureGrid.vue'
 import TreasuryBanner from '@/components/home/TreasuryBanner.vue'
@@ -23,6 +24,7 @@ useReveal(communityRow, { stagger: 0.14 })
     <main>
       <HeroSection />
       <KingdomStatus />
+      <HallOfKings />
       <RoyalCollection />
       <FeatureGrid />
 

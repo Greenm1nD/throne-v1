@@ -46,7 +46,11 @@ const footerSocials = [
               <span class="h-1.5 w-1.5 rotate-45 bg-gold/70" />
             </div>
 
-            <CrownBadge :size="112" />
+            <div class="relative grid place-items-center">
+              <div class="absolute h-[124px] w-[124px] animate-ringRotate rounded-full border border-dashed border-gold/25" />
+              <div class="absolute h-[138px] w-[138px] animate-ringRotateReverse rounded-full border border-gold/10" />
+              <CrownBadge :size="112" />
+            </div>
 
             <!-- right flourish -->
             <div class="hidden items-center gap-2 text-gold/60 sm:flex">

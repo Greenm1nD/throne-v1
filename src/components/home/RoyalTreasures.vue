@@ -12,7 +12,7 @@ import { royalTreasures } from '@/data/rewards'
       Royal Treasures
     </h3>
 
-    <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3">
       <article
         v-for="r in royalTreasures"
         :key="r.title"

@@ -11,7 +11,7 @@ const img = assets[props.feature.image]
 <template>
   <article
     class="card-lux group relative flex h-[300px] flex-col justify-between overflow-hidden p-6"
-    :class="feature.vip && 'border-border-gold shadow-[0_0_0_1px_rgba(212,175,55,0.4),0_24px_60px_-28px_rgba(0,0,0,0.9)]'"
+    :class="feature.vip && 'animate-softGlow border-border-gold'"
     data-reveal
   >
     <!-- 16:9 image layer -->

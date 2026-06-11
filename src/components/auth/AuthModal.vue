@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onBeforeUnmount, onMounted, reactive } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import CrownBadge from '@/components/ui/CrownBadge.vue'
@@ -10,6 +10,13 @@ const { state, close, setMode } = useAuthModal()
 
 // Per-field password reveal toggles (keyed by field id).
 const reveal = reactive<Record<string, boolean>>({})
+
+// Escape closes the dialog.
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && state.open) close()
+}
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 interface Field {
   id: string
@@ -72,6 +79,9 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
       <div
         v-if="state.open"
         class="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="state.mode === 'register' ? 'Join the Kingdom' : 'Enter the Kingdom'"
         @mousedown.self="close"
       >
         <Transition
