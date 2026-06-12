@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 
 /**
  * Record-filter bar used above every history list: optional type/status
@@ -84,9 +83,13 @@ function search() {
         Last 30 days
       </button>
 
-      <GoldButton variant="solid" size="md" @click="search">
+      <!-- Same height + radius as the fields beside it -->
+      <button
+        class="shimmer-host group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gold-gradient px-6 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#1a1407] shadow-gold-soft transition-all duration-300 hover:shadow-gold hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 active:scale-[0.98]"
+        @click="search"
+      >
         <AppIcon name="search" :size="14" /> Search
-      </GoldButton>
+      </button>
     </div>
 
     <p class="mt-3 flex items-center gap-1.5 font-sans text-[11px] text-ink-dim">
