@@ -31,6 +31,7 @@ export const casinoPage = {
     cta: 'Play Now',
     image: '/assets/images/page-casino-hero.webp',
     fallback: '/assets/images/game-roulette.webp',
+    video: '/assets/images/page-casino-hero-video.mp4',
     posY: '62%',
   },
   categories: <StripItem[]>[

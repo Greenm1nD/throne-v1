@@ -20,14 +20,17 @@ const props = withDefaults(
     icon?: string
     /** Vertical focal point of the artwork (background-position-y) */
     posY?: string
+    /** Optional ambient mp4 — loops over the still, which stays as poster/fallback */
+    video?: string
   }>(),
-  { icon: 'crown', posY: '50%' },
+  { icon: 'crown', posY: '50%', video: undefined },
 )
 
 const emit = defineEmits<{ primary: []; secondary: [] }>()
 
 const content = ref<HTMLElement | null>(null)
 const bgEl = ref<HTMLElement | null>(null)
+const vid = ref<HTMLVideoElement | null>(null)
 
 // Scroll parallax: artwork drifts into depth, copy lifts away (as on Home).
 let ticking = false
@@ -49,6 +52,7 @@ const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rg
 
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (!reduce) vid.value?.play().catch(() => {})
   if (reduce || !content.value) return
   gsap.from(content.value.children, {
     opacity: 0,
@@ -72,7 +76,26 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       ref="bgEl"
       class="absolute inset-0 bg-cover"
       :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
-    />
+    >
+      <template v-if="video">
+        <!-- Ambient loop over the still; the same scrim re-painted on top -->
+        <video
+          ref="vid"
+          :src="video"
+          :poster="image"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          class="absolute inset-0 h-full w-full object-cover"
+          :style="{ objectPosition: `center ${posY}` }"
+        />
+        <div
+          class="pointer-events-none absolute inset-0"
+          style="background: linear-gradient(90deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.62) 32%, rgba(5, 5, 5, 0.18) 58%, rgba(5, 5, 5, 0.35) 100%)"
+        />
+      </template>
+    </div>
 
     <div class="container-royal relative z-10">
       <div ref="content" class="max-w-xl py-16">
