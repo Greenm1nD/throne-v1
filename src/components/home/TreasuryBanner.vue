@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
@@ -8,6 +8,47 @@ import { useReveal } from '@/composables/useReveal'
 
 const root = ref<HTMLElement | null>(null)
 useReveal(root)
+
+/**
+ * Ping-pong video loop: browsers can't play <video> backwards natively,
+ * so on 'ended' we scrub currentTime back to 0 via rAF, then play forward
+ * again. Reduced-motion users just see the poster frame.
+ */
+const vid = ref<HTMLVideoElement | null>(null)
+let raf = 0
+let last = 0
+
+function reverseStep(now: number) {
+  const v = vid.value
+  if (!v) return
+  const dt = Math.min((now - last) / 1000, 0.05)
+  last = now
+  if (v.currentTime <= 0.06) {
+    v.currentTime = 0
+    v.play().catch(() => {})
+    return
+  }
+  v.currentTime = Math.max(0, v.currentTime - dt)
+  raf = requestAnimationFrame(reverseStep)
+}
+
+function onEnded() {
+  last = performance.now()
+  raf = requestAnimationFrame(reverseStep)
+}
+
+onMounted(() => {
+  const v = vid.value
+  if (!v) return
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  v.addEventListener('ended', onEnded)
+  v.play().catch(() => {})
+})
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(raf)
+  vid.value?.removeEventListener('ended', onEnded)
+})
 </script>
 
 <template>
@@ -16,12 +57,21 @@ useReveal(root)
       class="group relative flex min-h-[200px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)] lg:aspect-[6/1]"
       data-reveal
     >
-      <!-- Image at its native aspect ratio — shown in full, no crop.
-           Only a light corner scrim keeps the title legible. -->
+      <!-- Ambient video, ping-pong looped (see script). Poster = old still. -->
+      <video
+        ref="vid"
+        :src="'/assets/images/treasury-banner-viedo.mp4'"
+        :poster="assets.treasuryBanner.src"
+        muted
+        playsinline
+        preload="auto"
+        class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+        style="background-color: #0d0b07"
+      />
+      <!-- Corner scrim keeps the title legible over the moving footage -->
       <div
-        v-lazybg="`linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`"
-        class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-        :style="{ backgroundColor: '#0d0b07' }"
+        class="pointer-events-none absolute inset-0"
+        style="background: linear-gradient(100deg, rgba(5, 5, 5, 0.62) 0%, rgba(5, 5, 5, 0.22) 24%, rgba(5, 5, 5, 0) 46%)"
       />
 
       <!-- Glow choreography: skyline · timepiece · jet, breathing out of phase -->
