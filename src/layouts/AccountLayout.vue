@@ -61,8 +61,8 @@ function logout() {
               v-for="item in sec.items"
               :key="item.label + item.to"
               :to="item.to"
-              class="group mb-0.5 flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
-              :exact-active-class="'router-link-exact-active border-border-gold bg-gold/[0.07] text-gold-bright shadow-[inset_2px_0_0_0_rgba(245,215,122,0.8)]'"
+              class="group relative mb-0.5 flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
+              :exact-active-class="'router-link-exact-active border-border-gold text-gold-bright bg-gradient-to-r from-gold/[0.13] via-gold/[0.04] to-transparent shadow-[inset_0_0_0_1px_rgba(245,215,122,0.18),0_0_20px_-6px_rgba(245,215,122,0.5)] before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rotate-45 before:bg-gold-gradient before:shadow-[0_0_8px_rgba(245,215,122,0.9)] after:absolute after:-right-1 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rotate-45 after:bg-gold-gradient after:shadow-[0_0_8px_rgba(245,215,122,0.9)]'"
               @click="menuOpen = false"
             >
               <span
