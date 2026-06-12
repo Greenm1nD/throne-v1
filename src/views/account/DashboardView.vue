@@ -120,11 +120,11 @@ const recent = transactions.slice(0, 5)
     <AccountPanel title="Quick Actions">
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
         <RouterLink v-glow v-for="a in quickActions" :key="a.label" :to="a.to"
-          class="group flex flex-col items-center gap-2.5 rounded-xl border border-border-gold/30 bg-black/30 px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-gold hover:bg-gold/[0.05]">
-          <span class="text-gold/80 transition-colors group-hover:text-gold-bright">
-            <AccGlyph :icon="a.icon" :font="a.font" :size="20" />
+          class="group flex flex-col items-center gap-2.5 rounded-xl border border-border-gold/30 bg-black/30 px-2 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-gold hover:bg-gold/[0.05]">
+          <span class="opacity-80 saturate-[0.9] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_7px_rgba(245,215,122,0.65)]">
+            <AccGlyph :icon="a.icon" :font="a.font" :img="a.img" :size="a.img ? 36 : 20" />
           </span>
-          <span class="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-muted transition-colors group-hover:text-ink">{{ a.label }}</span>
+          <span class="whitespace-nowrap font-sans text-[10px] font-semibold uppercase tracking-[0.06em] text-ink-muted transition-colors group-hover:text-ink">{{ a.label }}</span>
         </RouterLink>
       </div>
     </AccountPanel>

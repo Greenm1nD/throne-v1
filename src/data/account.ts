@@ -139,13 +139,13 @@ export const transactions: Txn[] = [
 export const txnTotals = { events: 10, totalIn: '$2,725', totalOut: '$950', net: '+$1,775' }
 
 export const quickActions = [
-  { label: 'Deposit', to: '/account/deposit', font: 'deposit' },
-  { label: 'Withdraw', to: '/account/withdraw', icon: 'bolt' },
-  { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift' },
-  { label: 'Transactions', to: '/account/transactions', font: 'finance-history' },
-  { label: 'Game History', to: '/account/game-history', font: 'session-history' },
-  { label: 'VIP Lounge', to: '/account/concierge', icon: 'crown' },
-  { label: 'Support', to: '/account/contact', icon: 'headset' },
+  { label: 'Deposit', to: '/account/deposit', font: 'deposit', img: '/assets/images/account/icon-game-balance.png' },
+  { label: 'Withdraw', to: '/account/withdraw', icon: 'bolt', img: '/assets/images/account/icon-transfers.png' },
+  { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift', img: '/assets/images/account/icon-bonuses.png' },
+  { label: 'Transactions', to: '/account/transactions', font: 'finance-history', img: '/assets/images/account/icon-financial.png' },
+  { label: 'Game History', to: '/account/game-history', font: 'session-history', img: '/assets/images/account/icon-game-history.png' },
+  { label: 'VIP Lounge', to: '/account/concierge', icon: 'crown', img: '/assets/images/account/icon-vip-progress.png' },
+  { label: 'Support', to: '/account/contact', icon: 'headset', img: '/assets/images/account/icon-concierge.png' },
 ]
 
 /** Payment methods for the Deposit / Withdraw panels (pm-card rows). */
