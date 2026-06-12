@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AccGlyph from '@/components/account/AccGlyph.vue'
-import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { accountNav, balances, user } from '@/data/account'
@@ -63,11 +62,13 @@ function logout() {
               :key="item.label + item.to"
               :to="item.to"
               class="group mb-0.5 flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
-              :exact-active-class="'border-border-gold bg-gold/[0.07] text-gold-bright shadow-[inset_2px_0_0_0_rgba(245,215,122,0.8)]'"
+              :exact-active-class="'router-link-exact-active border-border-gold bg-gold/[0.07] text-gold-bright shadow-[inset_2px_0_0_0_rgba(245,215,122,0.8)]'"
               @click="menuOpen = false"
             >
-              <span class="grid w-5 place-items-center text-gold/70 transition-colors group-hover:text-gold-bright">
-                <AccGlyph :icon="item.icon" :font="item.font" :size="15" />
+              <span
+                class="grid w-6 place-items-center text-gold/70 opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)] group-[.router-link-exact-active]:opacity-100 group-[.router-link-exact-active]:saturate-100 group-[.router-link-exact-active]:drop-shadow-[0_0_7px_rgba(245,215,122,0.75)]"
+              >
+                <AccGlyph :icon="item.icon" :font="item.font" :img="item.img" :size="item.img ? 22 : 15" />
               </span>
               {{ item.label }}
             </RouterLink>
@@ -77,8 +78,8 @@ function logout() {
             class="group mt-2 flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
             @click="logout"
           >
-            <span class="grid w-5 place-items-center text-gold/70 transition-colors group-hover:text-gold-bright">
-              <AppIcon name="x" :size="15" />
+            <span class="grid w-6 place-items-center opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)]">
+              <AccGlyph img="/assets/images/account/icon-logout.png" :size="22" />
             </span>
             Log out
           </button>
@@ -89,9 +90,11 @@ function logout() {
           style="background: linear-gradient(160deg, rgba(212,175,55,0.08), rgba(8,8,10,0.6))"
         >
           <div class="flex items-center gap-3">
-            <span class="grid h-10 w-10 place-items-center rounded-full border border-border-gold text-gold-bright">
-              <AppIcon name="headset" :size="17" />
-            </span>
+            <img
+              src="/assets/images/account/icon-concierge.png"
+              alt=""
+              class="h-10 w-10 object-contain drop-shadow-[0_0_8px_rgba(245,215,122,0.45)]"
+            />
             <div>
               <p class="font-display text-[12px] font-semibold uppercase tracking-[0.14em] text-champagne">Royal Concierge</p>
               <p class="font-sans text-[10px] text-ink-dim">24/7 dedicated assistance</p>

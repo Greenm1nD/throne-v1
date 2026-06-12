@@ -50,6 +50,8 @@ export interface AccNavItem {
   to: string
   icon?: string
   font?: string
+  /** Custom royal PNG glyph — wins over icon/font when present. */
+  img?: string
 }
 export interface AccNavSection {
   title?: string
@@ -58,49 +60,49 @@ export interface AccNavSection {
 
 export const accountNav: AccNavSection[] = [
   {
-    items: [{ label: 'Dashboard', to: '/account', font: 'games' }],
+    items: [{ label: 'Dashboard', to: '/account', font: 'games', img: '/assets/images/account/icon-dashboard.png' }],
   },
   {
     title: 'Account',
     items: [
-      { label: 'Profile', to: '/account/profile', icon: 'user' },
-      { label: 'Password Security', to: '/account/security', icon: 'key' },
-      { label: 'Verification', to: '/account/verification', font: 'verification' },
+      { label: 'Profile', to: '/account/profile', icon: 'user', img: '/assets/images/account/icon-profile.png' },
+      { label: 'Password Security', to: '/account/security', icon: 'key', img: '/assets/images/account/icon-password.png' },
+      { label: 'Verification', to: '/account/verification', font: 'verification', img: '/assets/images/account/icon-verification.png' },
     ],
   },
   {
     title: 'History',
     items: [
-      { label: 'Bet History', to: '/account/bet-history', font: 'bet-history' },
-      { label: 'Game History', to: '/account/game-history', font: 'session-history' },
-      { label: 'My Free Spins', to: '/account/free-spins', icon: 'sparkle' },
-      { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift' },
+      { label: 'Bet History', to: '/account/bet-history', font: 'bet-history', img: '/assets/images/account/icon-bet-history.png' },
+      { label: 'Game History', to: '/account/game-history', font: 'session-history', img: '/assets/images/account/icon-game-history.png' },
+      { label: 'My Free Spins', to: '/account/free-spins', icon: 'sparkle', img: '/assets/images/account/icon-free-spins.png' },
+      { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift', img: '/assets/images/account/icon-bonuses.png' },
     ],
   },
   {
     title: 'Transactions',
     items: [
-      { label: 'Financial History', to: '/account/transactions', font: 'finance-history' },
-      { label: 'Account Activity', to: '/account/account-activity', font: 'account-history' },
-      { label: 'Transfers', to: '/account/transfers', icon: 'arrowRight' },
-      { label: 'Game Balance', to: '/account/game-balance', icon: 'vault' },
-      { label: 'Statements', to: '/account/statements', icon: 'calendar' },
+      { label: 'Financial History', to: '/account/transactions', font: 'finance-history', img: '/assets/images/account/icon-financial.png' },
+      { label: 'Account Activity', to: '/account/account-activity', font: 'account-history', img: '/assets/images/account/icon-activity.png' },
+      { label: 'Transfers', to: '/account/transfers', icon: 'arrowRight', img: '/assets/images/account/icon-transfers.png' },
+      { label: 'Game Balance', to: '/account/game-balance', icon: 'vault', img: '/assets/images/account/icon-game-balance.png' },
+      { label: 'Statements', to: '/account/statements', icon: 'calendar', img: '/assets/images/account/icon-statements.png' },
     ],
   },
   {
     title: 'Rewards',
     items: [
-      { label: 'VIP Progress', to: '/account/vip-progress', icon: 'crown' },
-      { label: 'My Rewards', to: '/account/rewards', icon: 'gift' },
-      { label: 'Cashback', to: '/account/cashback', icon: 'percent' },
+      { label: 'VIP Progress', to: '/account/vip-progress', icon: 'crown', img: '/assets/images/account/icon-vip-progress.png' },
+      { label: 'My Rewards', to: '/account/rewards', icon: 'gift', img: '/assets/images/account/icon-rewards.png' },
+      { label: 'Cashback', to: '/account/cashback', icon: 'percent', img: '/assets/images/account/icon-cashback.png' },
     ],
   },
   {
     title: 'Security',
     items: [
-      { label: 'Two-Factor Auth', to: '/account/twofa', icon: 'lock' },
-      { label: 'My Devices', to: '/account/devices', icon: 'monitor' },
-      { label: 'Session History', to: '/account/sessions', icon: 'clock' },
+      { label: 'Two-Factor Auth', to: '/account/twofa', icon: 'lock', img: '/assets/images/account/icon-twofa.png' },
+      { label: 'My Devices', to: '/account/devices', icon: 'monitor', img: '/assets/images/account/icon-devices.png' },
+      { label: 'Session History', to: '/account/sessions', icon: 'clock', img: '/assets/images/account/icon-sessions.png' },
     ],
   },
 ]

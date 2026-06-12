@@ -2,11 +2,23 @@
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 
-/** Renders either an AppIcon (`icon`) or a fontello glyph (`font`). */
-withDefaults(defineProps<{ icon?: string; font?: string; size?: number }>(), { size: 16 })
+/**
+ * Renders the richest glyph available: a custom royal PNG (`img`),
+ * a fontello glyph (`font`), or an AppIcon stroke (`icon`).
+ */
+withDefaults(defineProps<{ icon?: string; font?: string; img?: string; size?: number }>(), {
+  size: 16,
+})
 </script>
 
 <template>
-  <FontIcon v-if="font" :name="font" :style="{ fontSize: `${size}px` }" />
+  <img
+    v-if="img"
+    :src="img"
+    alt=""
+    class="object-contain"
+    :style="{ width: `${size}px`, height: `${size}px` }"
+  />
+  <FontIcon v-else-if="font" :name="font" :style="{ fontSize: `${size}px` }" />
   <AppIcon v-else-if="icon" :name="icon" :size="size" />
 </template>
