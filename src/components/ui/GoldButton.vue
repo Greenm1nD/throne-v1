@@ -24,12 +24,12 @@ const sizeMap = {
 
 <template>
   <button
-    class="shimmer-host group inline-flex items-center justify-center gap-2 rounded-full font-sans font-semibold uppercase tracking-[0.18em] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+    class="shimmer-host group inline-flex items-center justify-center gap-2 rounded-full font-sans font-semibold uppercase tracking-[0.18em] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
     :class="[
       sizeMap[size],
       block && 'w-full',
       variant === 'solid' &&
-        'bg-gold-gradient text-[#1a1407] shadow-gold-soft hover:shadow-gold hover:brightness-110 active:scale-[0.98]',
+        'bg-gold-gradient text-[#1a1407] shadow-gold-soft brightness-100 hover:shadow-gold hover:brightness-110 active:scale-[0.98]',
       variant === 'outline' &&
         'border border-border-gold bg-white/[0.02] text-champagne hover:border-gold hover:bg-gold/10 hover:text-gold-bright',
       variant === 'ghost' && 'text-ink-muted hover:text-gold-bright',

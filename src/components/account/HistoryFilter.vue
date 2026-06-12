@@ -85,7 +85,7 @@ function search() {
 
       <!-- Same height + radius as the fields beside it -->
       <button
-        class="shimmer-host group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gold-gradient px-6 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#1a1407] shadow-gold-soft transition-all duration-300 hover:shadow-gold hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 active:scale-[0.98]"
+        class="shimmer-host group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gold-gradient px-6 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#1a1407] shadow-gold-soft brightness-100 transition duration-300 hover:shadow-gold hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 active:scale-[0.98]"
         @click="search"
       >
         <AppIcon name="search" :size="14" /> Search
