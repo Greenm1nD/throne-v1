@@ -66,9 +66,9 @@ function logout() {
               @click="menuOpen = false"
             >
               <span
-                class="grid w-6 place-items-center text-gold/70 opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)] group-[.router-link-exact-active]:opacity-100 group-[.router-link-exact-active]:saturate-100 group-[.router-link-exact-active]:drop-shadow-[0_0_7px_rgba(245,215,122,0.75)]"
+                class="grid w-8 place-items-center text-gold/70 opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)] group-[.router-link-exact-active]:opacity-100 group-[.router-link-exact-active]:saturate-100 group-[.router-link-exact-active]:drop-shadow-[0_0_7px_rgba(245,215,122,0.75)]"
               >
-                <AccGlyph :icon="item.icon" :font="item.font" :img="item.img" :size="item.img ? 22 : 15" />
+                <AccGlyph :icon="item.icon" :font="item.font" :img="item.img" :size="item.img ? 30 : 15" />
               </span>
               {{ item.label }}
             </RouterLink>
@@ -78,8 +78,8 @@ function logout() {
             class="group mt-2 flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
             @click="logout"
           >
-            <span class="grid w-6 place-items-center opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)]">
-              <AccGlyph img="/assets/images/account/icon-logout.png" :size="22" />
+            <span class="grid w-8 place-items-center opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)]">
+              <AccGlyph img="/assets/images/account/icon-logout.png" :size="30" />
             </span>
             Log out
           </button>
