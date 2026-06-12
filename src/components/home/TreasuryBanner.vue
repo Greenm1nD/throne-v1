@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
         muted
         playsinline
         preload="auto"
-        class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+        class="absolute inset-0 h-full w-full object-cover object-[center_30%] transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
         style="background-color: #0d0b07"
       />
       <!-- Corner scrim keeps the title legible over the moving footage -->
