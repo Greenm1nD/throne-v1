@@ -63,43 +63,48 @@ export const accountNav: AccNavSection[] = [
     items: [{ label: 'Dashboard', to: '/account', font: 'games', img: '/assets/images/account/icon-dashboard.png' }],
   },
   {
+    // Identity first
     title: 'Account',
     items: [
       { label: 'Profile', to: '/account/profile', icon: 'user', img: '/assets/images/account/icon-profile.png' },
-      { label: 'Password Security', to: '/account/security', icon: 'key', img: '/assets/images/account/icon-password.png' },
       { label: 'Verification', to: '/account/verification', font: 'verification', img: '/assets/images/account/icon-verification.png' },
     ],
   },
   {
+    // Active money management
+    title: 'Wallet',
+    items: [
+      { label: 'Game Balance', to: '/account/game-balance', icon: 'vault', img: '/assets/images/account/icon-game-balance.png' },
+      { label: 'Transfers', to: '/account/transfers', icon: 'arrowRight', img: '/assets/images/account/icon-transfers.png' },
+    ],
+  },
+  {
+    // Everything gifted, in one place
+    title: 'Bonuses & Rewards',
+    items: [
+      { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift', img: '/assets/images/account/icon-bonuses.png' },
+      { label: 'My Free Spins', to: '/account/free-spins', icon: 'sparkle', img: '/assets/images/account/icon-free-spins.png' },
+      { label: 'Cashback', to: '/account/cashback', icon: 'percent', img: '/assets/images/account/icon-cashback.png' },
+      { label: 'My Rewards', to: '/account/rewards', icon: 'gift', img: '/assets/images/account/icon-rewards.png' },
+      { label: 'VIP Progress', to: '/account/vip-progress', icon: 'crown', img: '/assets/images/account/icon-vip-progress.png' },
+    ],
+  },
+  {
+    // Every record, in one place
     title: 'History',
     items: [
       { label: 'Bet History', to: '/account/bet-history', font: 'bet-history', img: '/assets/images/account/icon-bet-history.png' },
       { label: 'Game History', to: '/account/game-history', font: 'session-history', img: '/assets/images/account/icon-game-history.png' },
-      { label: 'My Free Spins', to: '/account/free-spins', icon: 'sparkle', img: '/assets/images/account/icon-free-spins.png' },
-      { label: 'My Bonuses', to: '/account/bonuses', icon: 'gift', img: '/assets/images/account/icon-bonuses.png' },
-    ],
-  },
-  {
-    title: 'Transactions',
-    items: [
       { label: 'Financial History', to: '/account/transactions', font: 'finance-history', img: '/assets/images/account/icon-financial.png' },
       { label: 'Account Activity', to: '/account/account-activity', font: 'account-history', img: '/assets/images/account/icon-activity.png' },
-      { label: 'Transfers', to: '/account/transfers', icon: 'arrowRight', img: '/assets/images/account/icon-transfers.png' },
-      { label: 'Game Balance', to: '/account/game-balance', icon: 'vault', img: '/assets/images/account/icon-game-balance.png' },
       { label: 'Statements', to: '/account/statements', icon: 'calendar', img: '/assets/images/account/icon-statements.png' },
     ],
   },
   {
-    title: 'Rewards',
-    items: [
-      { label: 'VIP Progress', to: '/account/vip-progress', icon: 'crown', img: '/assets/images/account/icon-vip-progress.png' },
-      { label: 'My Rewards', to: '/account/rewards', icon: 'gift', img: '/assets/images/account/icon-rewards.png' },
-      { label: 'Cashback', to: '/account/cashback', icon: 'percent', img: '/assets/images/account/icon-cashback.png' },
-    ],
-  },
-  {
+    // Protection united, rarely visited — last
     title: 'Security',
     items: [
+      { label: 'Password Security', to: '/account/security', icon: 'key', img: '/assets/images/account/icon-password.png' },
       { label: 'Two-Factor Auth', to: '/account/twofa', icon: 'lock', img: '/assets/images/account/icon-twofa.png' },
       { label: 'My Devices', to: '/account/devices', icon: 'monitor', img: '/assets/images/account/icon-devices.png' },
       { label: 'Session History', to: '/account/sessions', icon: 'clock', img: '/assets/images/account/icon-sessions.png' },
