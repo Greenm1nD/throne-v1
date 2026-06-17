@@ -21,6 +21,11 @@ const router = createRouter({
     },
     { path: '/vip', name: 'vip', component: () => import('@/views/VipView.vue') },
     { path: '/kingdom', name: 'kingdom', component: () => import('@/views/KingdomView.vue') },
+    {
+      path: '/kingdom/tournament/:slug',
+      name: 'tournament',
+      component: () => import('@/views/TournamentDetailView.vue'),
+    },
     { path: '/rewards', name: 'rewards', component: () => import('@/views/RewardsView.vue') },
     {
       path: '/account',
@@ -85,6 +90,7 @@ const TITLES: Record<string, string> = {
   'live-casino': 'Live Casino — The Royal Tables',
   vip: 'VIP Club — The Inner Circle',
   kingdom: 'The Kingdom — Hall of Kings',
+  tournament: 'Royal Tournament',
   rewards: 'Rewards & The Treasury',
   'not-found': 'Page Not Found',
 }

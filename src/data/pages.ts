@@ -365,15 +365,21 @@ export interface CourtNoble {
 }
 
 export interface Tournament {
+  slug: string
   name: string
   game: string
   status: 'live' | 'upcoming'
   prize: string
   entry: string
   players: number
+  cap: number
   when: string
   image: string
   fallback: string
+  desc: string
+  rules: string[]
+  prizeBreakdown: { place: string; amount: string }[]
+  board: { rank: number; name: string; points: number; you?: boolean }[]
 }
 
 export interface Decree {
@@ -381,6 +387,15 @@ export interface Decree {
   date: string
   title: string
   sub: string
+}
+
+export interface Quest {
+  id: string
+  title: string
+  reward: number
+  progress: number
+  goal: number
+  period: 'Daily' | 'Weekly' | 'Season'
 }
 
 export const kingdomPage = {
@@ -398,55 +413,147 @@ export const kingdomPage = {
     chapter: 'Season III',
     name: 'Season of the Lion',
     pool: '€250,000',
-    ends: '14d 06h 22m',
+    // Season runs 4 weeks; the live countdown is anchored per-device by useSeason().
+    lengthDays: 28,
     note: 'Every wager earns crowns toward the season throne. The highest noble when the season closes is crowned Champion of the Realm — and keeps the prize for life.',
   },
-  // The Royal Court — this season's live leaderboard.
-  court: <CourtNoble[]>[
-    { rank: 1, name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 1284500, change: 0 },
-    { rank: 2, name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 1090250, change: 1 },
-    { rank: 3, name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 980700, change: -1 },
-    { rank: 4, name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 742300, change: 2, you: true },
-    { rank: 5, name: 'IvoryTsar', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 698120, change: 0 },
-    { rank: 6, name: 'VelvetDuchess', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 511940, change: 3 },
-    { rank: 7, name: 'GoldenHawk', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 470310, change: -2 },
-    { rank: 8, name: 'NightProvost', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 388600, change: 1 },
+  // The Royal Court — leaderboard, three windows (Season / This Week / All-Time).
+  court: {
+    season: <CourtNoble[]>[
+      { rank: 1, name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 1284500, change: 0 },
+      { rank: 2, name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 1090250, change: 1 },
+      { rank: 3, name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 980700, change: -1 },
+      { rank: 4, name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 742300, change: 2, you: true },
+      { rank: 5, name: 'IvoryTsar', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 698120, change: 0 },
+      { rank: 6, name: 'VelvetDuchess', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 511940, change: 3 },
+      { rank: 7, name: 'GoldenHawk', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 470310, change: -2 },
+      { rank: 8, name: 'NightProvost', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 388600, change: 1 },
+    ],
+    week: <CourtNoble[]>[
+      { rank: 1, name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 184200, change: 4, you: true },
+      { rank: 2, name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 171050, change: 0 },
+      { rank: 3, name: 'VelvetDuchess', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 158900, change: 5 },
+      { rank: 4, name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 142300, change: -3 },
+      { rank: 5, name: 'GoldenHawk', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 121770, change: 1 },
+      { rank: 6, name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 118420, change: -2 },
+      { rank: 7, name: 'IvoryTsar', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 99860, change: 0 },
+      { rank: 8, name: 'SableCountess', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 88130, change: 2 },
+    ],
+    allTime: <CourtNoble[]>[
+      { rank: 1, name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 18420900, change: 0 },
+      { rank: 2, name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 14903200, change: 0 },
+      { rank: 3, name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 13117500, change: 1 },
+      { rank: 4, name: 'IvoryTsar', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 9982000, change: -1 },
+      { rank: 5, name: 'GoldenHawk', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 8470110, change: 0 },
+      { rank: 6, name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 6428300, change: 1, you: true },
+      { rank: 7, name: 'VelvetDuchess', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 5511940, change: 0 },
+      { rank: 8, name: 'NightProvost', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 4388600, change: 0 },
+    ],
+  },
+  // Royal Quests — earn crowns through daily / weekly / season feats.
+  quests: <Quest[]>[
+    { id: 'q-live3', title: 'Hold court at 3 live tables', reward: 500, progress: 3, goal: 3, period: 'Daily' },
+    { id: 'q-bj5', title: 'Win 5 hands of Blackjack', reward: 1200, progress: 3, goal: 5, period: 'Daily' },
+    { id: 'q-roul', title: 'Place 20 bets on Roulette', reward: 800, progress: 7, goal: 20, period: 'Daily' },
+    { id: 'q-stake', title: 'Wager €10,000 across the week', reward: 6000, progress: 6400, goal: 10000, period: 'Weekly' },
+    { id: 'q-tourn', title: 'Enter 3 royal tournaments', reward: 9000, progress: 1, goal: 3, period: 'Weekly' },
+    { id: 'q-season', title: 'Reach 1,000,000 season crowns', reward: 50000, progress: 742300, goal: 1000000, period: 'Season' },
   ],
   // Royal Tournaments — live & upcoming.
   tournaments: <Tournament[]>[
     {
+      slug: 'midnight-joust',
       name: 'The Midnight Joust',
       game: 'Live Blackjack',
       status: 'live',
       prize: '€50,000',
-      entry: '5,000 pts',
+      entry: '5,000 crowns',
       players: 412,
+      cap: 500,
       when: 'Ends in 1h 40m',
       image: '/assets/images/live-blackjack.webp',
       fallback: '/assets/images/hall-monthly-champion.webp',
+      desc: 'A fast knockout of nerve at the live tables. Highest net winnings before the clock strikes one takes the pot.',
+      rules: [
+        'Leaderboard by net winnings during the tournament window.',
+        'Live Blackjack tables only; minimum stake €25 per hand.',
+        'Ties broken by the noble who reached the score first.',
+      ],
+      prizeBreakdown: [
+        { place: '1st', amount: '€25,000' },
+        { place: '2nd', amount: '€12,500' },
+        { place: '3rd', amount: '€6,500' },
+        { place: '4th – 10th', amount: '€857 each' },
+      ],
+      board: [
+        { rank: 1, name: 'DonRaphael', points: 38400 },
+        { rank: 2, name: 'KingMaker', points: 31250, you: true },
+        { rank: 3, name: 'IvoryTsar', points: 27800 },
+        { rank: 4, name: 'GoldenHawk', points: 21100 },
+        { rank: 5, name: 'SableCountess', points: 18640 },
+      ],
     },
     {
+      slug: 'crown-roulette-royale',
       name: 'Crown Roulette Royale',
       game: 'Roulette',
       status: 'upcoming',
       prize: '€120,000',
-      entry: '12,000 pts',
+      entry: '12,000 crowns',
       players: 268,
+      cap: 1000,
       when: 'Starts in 3h 05m',
       image: '/assets/images/game-roulette.webp',
       fallback: '/assets/images/casino-jackpot.webp',
+      desc: 'A grand spin of fortune. Accumulate the most crowns across the session and rise above the court.',
+      rules: [
+        'Leaderboard by crowns earned during the session.',
+        'All Roulette variants count toward your score.',
+        'Re-entry permitted once; best score stands.',
+      ],
+      prizeBreakdown: [
+        { place: '1st', amount: '€60,000' },
+        { place: '2nd', amount: '€30,000' },
+        { place: '3rd', amount: '€18,000' },
+        { place: '4th – 20th', amount: '€706 each' },
+      ],
+      board: [],
     },
     {
+      slug: 'sovereigns-cup',
       name: "The Sovereign's Cup",
       game: 'High-Roller Slots',
       status: 'upcoming',
       prize: '€500,000',
       entry: 'Crown tier & above',
       players: 96,
+      cap: 200,
       when: 'Opens Friday, 20:00',
       image: '/assets/images/casino-jackpot.webp',
       fallback: '/assets/images/hall-biggest-jackpot.webp',
+      desc: 'The season showpiece. Reserved for Crown tier and above — the largest pot in the realm and a place in the Hall of Kings.',
+      rules: [
+        'Entry restricted to Crown tier and above.',
+        'Leaderboard by total multiplier across qualifying spins.',
+        'The champion is enshrined in the Hall of Kings.',
+      ],
+      prizeBreakdown: [
+        { place: '1st', amount: '€250,000' },
+        { place: '2nd', amount: '€125,000' },
+        { place: '3rd', amount: '€75,000' },
+        { place: '4th – 10th', amount: '€7,142 each' },
+      ],
+      board: [],
     },
+  ],
+  // Live activity ticker — the realm breathing in real time.
+  activity: [
+    { name: 'DonRaphael', action: 'won', amount: '€12,400', game: 'Crazy Time' },
+    { name: 'LadyAurelia', action: 'climbed to', amount: '#2', game: 'the Royal Court' },
+    { name: 'GoldenHawk', action: 'entered', amount: 'The Midnight Joust', game: '' },
+    { name: 'IvoryTsar', action: 'won', amount: '€8,900', game: 'Live Blackjack' },
+    { name: 'VelvetDuchess', action: 'claimed', amount: '6,000 crowns', game: 'a weekly quest' },
+    { name: 'BlackKingV', action: 'extended the lead to', amount: '1,284,500', game: 'crowns' },
   ],
   // Royal Decrees — kingdom news & happenings.
   decrees: <Decree[]>[
