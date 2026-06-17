@@ -2,7 +2,9 @@
 import FontIcon from '@/components/ui/FontIcon.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage } from '@/data/pages'
+import { useAuth } from '@/composables/useAuth'
 
+const { isLoggedIn } = useAuth()
 const masters = kingdomPage.gameMasters
 const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
 </script>
@@ -19,7 +21,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
         v-for="m in masters"
         :key="m.game"
         class="card-lux flex flex-col items-center gap-2 p-5 text-center hover:translate-y-0"
-        :class="m.you && 'ring-1 ring-gold/40'"
+        :class="m.you && isLoggedIn && 'ring-1 ring-gold/40'"
         data-reveal
       >
         <span class="text-[26px] leading-none text-gold/80"><FontIcon :name="m.font" /></span>
@@ -34,7 +36,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
 
         <p class="font-sans text-[13px] font-semibold text-ink">
           {{ m.name }}
-          <span v-if="m.you" class="ml-1 align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
+          <span v-if="m.you && isLoggedIn" class="ml-1 align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
         </p>
         <p class="flex items-center gap-1 font-display text-[13px] font-bold tabular-nums text-gold-gradient">
           <AppIcon name="crown" :size="12" class="text-gold/70" />{{ m.points.toLocaleString() }}

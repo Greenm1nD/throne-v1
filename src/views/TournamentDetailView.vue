@@ -6,11 +6,15 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage } from '@/data/pages'
 import { useTournaments } from '@/composables/useTournaments'
 import { useTournamentClocks } from '@/composables/useTournamentClocks'
+import { useAuth } from '@/composables/useAuth'
+import { useEnter } from '@/composables/useEnter'
 
 const route = useRoute()
 const router = useRouter()
 const { isEntered, toggle } = useTournaments()
 const { label: tClock } = useTournamentClocks(kingdomPage.tournaments)
+const { isLoggedIn } = useAuth()
+const { enter } = useEnter()
 
 const t = computed(() => kingdomPage.tournaments.find((x) => x.slug === route.params.slug))
 const fillPct = computed(() => (t.value ? Math.round((t.value.players / t.value.cap) * 100) : 0))
@@ -45,7 +49,10 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
           <p class="mt-3 max-w-xl font-sans text-[13px] leading-relaxed text-ink-muted">{{ t.desc }}</p>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
-            <GoldButton :variant="isEntered(t.slug) ? 'outline' : 'solid'" size="lg" @click="toggle(t.slug)">
+            <GoldButton v-if="!isLoggedIn" variant="solid" size="lg" @click="enter()">
+              <AppIcon name="crown" :size="15" /> Join to Enter
+            </GoldButton>
+            <GoldButton v-else :variant="isEntered(t.slug) ? 'outline' : 'solid'" size="lg" @click="toggle(t.slug)">
               <AppIcon :name="isEntered(t.slug) ? 'check' : 'crown'" :size="15" />
               {{ isEntered(t.slug) ? 'Entered — Leave' : (t.status === 'live' ? 'Enter Now' : 'Reserve My Seat') }}
             </GoldButton>
@@ -109,7 +116,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
               v-for="p in t.board"
               :key="p.name"
               class="flex items-center gap-3 rounded-lg px-3 py-2.5"
-              :class="p.you ? 'bg-gold/[0.06]' : ''"
+              :class="p.you && isLoggedIn ? 'bg-gold/[0.06]' : ''"
             >
               <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full font-display text-[12px] font-bold tabular-nums"
                 :class="p.rank <= 3 ? 'bg-gold-gradient text-bg' : 'border border-border-gold/40 text-ink-muted'">
@@ -120,7 +127,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
               </span>
               <span class="min-w-0 flex-1 truncate font-sans text-[13px] font-semibold text-ink">
                 {{ p.name }}
-                <span v-if="p.you" class="ml-1 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
+                <span v-if="p.you && isLoggedIn" class="ml-1 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
               </span>
               <span class="font-display text-[14px] font-bold tabular-nums text-gold-gradient">{{ p.points.toLocaleString() }}</span>
             </li>

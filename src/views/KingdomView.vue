@@ -24,7 +24,9 @@ const { isEntered } = useTournaments()
 const { label: tClock } = useTournamentClocks(page.tournaments)
 
 // Live tournaments the member has entered → a contextual "you're competing" strip.
-const liveEntries = computed(() => page.tournaments.filter((t) => t.status === 'live' && isEntered(t.slug)))
+const liveEntries = computed(() =>
+  isLoggedIn.value ? page.tournaments.filter((t) => t.status === 'live' && isEntered(t.slug)) : [],
+)
 const myRank = (t: (typeof page.tournaments)[number]) => t.board.find((b) => b.you)?.rank
 
 const root = ref<HTMLElement | null>(null)
@@ -230,7 +232,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
               <p class="mt-0.5 flex items-center gap-1 font-sans text-[10px] tracking-[0.06em] text-ink-dim">
                 <AppIcon name="shield" :size="10" class="text-gold/70" />
                 {{ meta(n.name).house || n.tier }}
-                <span v-if="n.you" class="ml-1 font-bold uppercase tracking-[0.12em] text-gold-bright">You</span>
+                <span v-if="n.you && isLoggedIn" class="ml-1 font-bold uppercase tracking-[0.12em] text-gold-bright">You</span>
               </p>
               <p
                 class="mt-2 font-display font-bold tabular-nums text-gold-gradient"
@@ -248,14 +250,14 @@ function claimQuest(q: (typeof page.quests)[number]) {
                 v-for="n in rest"
                 :key="n.name"
                 class="flex items-center gap-4 rounded-lg border-b border-white/5 px-3 py-3 transition-colors last:border-0"
-                :class="n.you ? 'bg-gold/[0.06]' : 'hover:bg-white/[0.02]'"
+                :class="(n.you && isLoggedIn) ? 'bg-gold/[0.06]' : 'hover:bg-white/[0.02]'"
               >
                 <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border-gold/40 font-display text-[12px] font-bold tabular-nums text-ink-muted">
                   {{ n.rank }}
                 </span>
                 <p class="min-w-0 flex-1 truncate font-sans text-[13px] font-semibold text-ink">
                   {{ n.name }}
-                  <span v-if="n.you" class="ml-1 align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
+                  <span v-if="n.you && isLoggedIn" class="ml-1 align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
                 </p>
                 <span
                   class="flex w-9 shrink-0 items-center justify-end gap-0.5 font-sans text-[11px] font-semibold tabular-nums"
@@ -310,7 +312,8 @@ function claimQuest(q: (typeof page.quests)[number]) {
           </div>
           <p class="font-sans text-[13px] font-semibold text-ink">{{ q.title }}</p>
 
-          <div class="mt-auto">
+          <!-- Member: live progress toward the quest -->
+          <div v-if="isLoggedIn" class="mt-auto">
             <div class="mb-1 flex justify-between font-sans text-[10px] tabular-nums text-ink-dim">
               <span>{{ Math.min(q.progress, q.goal).toLocaleString() }} / {{ q.goal.toLocaleString() }}</span>
               <span>{{ Math.min(100, Math.round((q.progress / q.goal) * 100)) }}%</span>
@@ -323,24 +326,31 @@ function claimQuest(q: (typeof page.quests)[number]) {
             </div>
           </div>
 
-          <button
-            v-if="isClaimed(q.id)"
-            class="mt-1 flex items-center justify-center gap-1.5 rounded-lg border border-border-gold/30 py-2 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-gold/70"
-            disabled
-          >
-            <AppIcon name="check" :size="13" /> Claimed
-          </button>
-          <GoldButton
-            v-else
-            :variant="claimable(q) ? 'solid' : 'outline'"
-            size="sm"
-            block
-            class="mt-1 transition-transform"
-            :class="justClaimed === q.id && 'scale-105'"
-            :disabled="!claimable(q)"
-            @click="claimQuest(q)"
-          >
-            {{ claimable(q) ? `Claim ${q.reward.toLocaleString()} Crowns` : 'In Progress' }}
+          <template v-if="isLoggedIn">
+            <button
+              v-if="isClaimed(q.id)"
+              class="mt-1 flex items-center justify-center gap-1.5 rounded-lg border border-border-gold/30 py-2 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-gold/70"
+              disabled
+            >
+              <AppIcon name="check" :size="13" /> Claimed
+            </button>
+            <GoldButton
+              v-else
+              :variant="claimable(q) ? 'solid' : 'outline'"
+              size="sm"
+              block
+              class="mt-1 transition-transform"
+              :class="justClaimed === q.id && 'scale-105'"
+              :disabled="!claimable(q)"
+              @click="claimQuest(q)"
+            >
+              {{ claimable(q) ? `Claim ${q.reward.toLocaleString()} Crowns` : 'In Progress' }}
+            </GoldButton>
+          </template>
+
+          <!-- Guest: join to start earning -->
+          <GoldButton v-else variant="outline" size="sm" block class="mt-auto" @click="enter()">
+            Join to Earn
           </GoldButton>
         </div>
       </div>

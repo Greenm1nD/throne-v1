@@ -2,7 +2,9 @@
 import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage } from '@/data/pages'
+import { useAuth } from '@/composables/useAuth'
 
+const { isLoggedIn } = useAuth()
 const houses = kingdomPage.houses
 const leader = computed(() => Math.max(...houses.map((h) => h.crowns)))
 </script>
@@ -25,7 +27,7 @@ const leader = computed(() => Math.max(...houses.map((h) => h.crowns)))
         v-for="(h, i) in houses"
         :key="h.name"
         class="card-lux flex w-[360px] shrink-0 snap-start items-center gap-4 p-5 hover:translate-y-0"
-        :class="h.you && 'ring-1 ring-gold/40'"
+        :class="h.you && isLoggedIn && 'ring-1 ring-gold/40'"
         data-reveal
       >
         <!-- Crest -->
@@ -42,7 +44,7 @@ const leader = computed(() => Math.max(...houses.map((h) => h.crowns)))
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2">
             <p class="truncate font-display text-[15px] font-semibold tracking-[0.04em] text-ink">{{ h.name }}</p>
-            <span v-if="h.you" class="shrink-0 rounded-full border border-gold/50 px-2 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-gold-bright">
+            <span v-if="h.you && isLoggedIn" class="shrink-0 rounded-full border border-gold/50 px-2 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-gold-bright">
               Pledged
             </span>
           </div>

@@ -6,6 +6,11 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { rewardsPage as page, vipPage } from '@/data/pages'
 import { useRevealEach } from '@/composables/useReveal'
+import { useAuth } from '@/composables/useAuth'
+import { useEnter } from '@/composables/useEnter'
+
+const { isLoggedIn } = useAuth()
+const { enter } = useEnter()
 
 // Loyalty tiers reuse the VIP tier ladder (same levels, same crowns).
 const root = ref<HTMLElement | null>(null)
@@ -117,8 +122,8 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
       </div>
 
-      <!-- Your rewards summary -->
-      <div class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
+      <!-- Member: personal rewards summary -->
+      <div v-if="isLoggedIn" class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <div class="flex items-center gap-4">
           <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
           <div class="flex-1">
@@ -159,6 +164,21 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
 
         <GoldButton variant="outline" size="md" block class="mt-auto">
           {{ page.summary.cta }} <AppIcon name="arrowRight" :size="14" />
+        </GoldButton>
+      </div>
+
+      <!-- Guest: join-to-earn teaser (no personal data) -->
+      <div v-else class="card-lux flex flex-col items-center justify-center gap-4 p-7 text-center hover:translate-y-0 sm:p-8" data-reveal>
+        <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
+        <div>
+          <p class="eyebrow">Your Treasury Awaits</p>
+          <p class="mt-2 max-w-xs font-sans text-[13px] leading-relaxed text-ink-muted">
+            Every wager earns points toward private jets, five-star escapes and bespoke gifts.
+            Join to open your rewards wallet and start collecting.
+          </p>
+        </div>
+        <GoldButton variant="solid" size="md" block class="mt-auto" @click="enter()">
+          Join the Kingdom <AppIcon name="arrowRight" :size="14" />
         </GoldButton>
       </div>
     </section>

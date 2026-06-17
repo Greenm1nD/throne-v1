@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import GoldButton from '@/components/ui/GoldButton.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import { vipLevels, playerStatus } from '@/data/vipLevels'
+import { useAuth } from '@/composables/useAuth'
+import { useEnter } from '@/composables/useEnter'
 
+const { isLoggedIn } = useAuth()
+const { enter } = useEnter()
+
+// Guests see the ladder with no personal position; members see their rank.
 const currentIndex = computed(() =>
-  Math.max(0, vipLevels.findIndex((l) => l.name === playerStatus.currentLevel)),
+  isLoggedIn.value
+    ? Math.max(0, vipLevels.findIndex((l) => l.name === playerStatus.currentLevel))
+    : -1,
 )
 const monarchIndex = vipLevels.length - 1
 
-// Filled portion of the rank line (up to the current rank).
-const lineTarget = computed(
-  () => (currentIndex.value / (vipLevels.length - 1)) * 100,
+// Filled portion of the rank line (up to the current rank) — empty for guests.
+const lineTarget = computed(() =>
+  isLoggedIn.value ? (currentIndex.value / (vipLevels.length - 1)) * 100 : 0,
 )
 const xpTarget = computed(() =>
   Math.min(100, Math.round((playerStatus.xp / playerStatus.nextThreshold) * 100)),
@@ -45,7 +54,8 @@ const xpLabel = computed(
         <h3
           class="shrink-0 font-display text-xs font-semibold uppercase leading-tight tracking-[0.22em] text-champagne sm:text-sm"
         >
-          Kingdom<br class="hidden lg:block" /> Status
+          <template v-if="isLoggedIn">Kingdom<br class="hidden lg:block" /> Status</template>
+          <template v-else>Rise Through<br class="hidden lg:block" /> The Ranks</template>
         </h3>
 
         <!-- Rail with connecting progress line -->
@@ -106,8 +116,9 @@ const xpLabel = computed(
           <AppIcon name="arrowRight" :size="16" class="shrink-0 text-ink-dim" />
         </div>
 
-        <!-- Your Level card -->
+        <!-- Member: personal level + progress -->
         <div
+          v-if="isLoggedIn"
           class="shrink-0 rounded-xl border border-border-gold bg-black/40 p-4 lg:w-72"
         >
           <div class="flex items-baseline justify-between">
@@ -125,6 +136,20 @@ const xpLabel = computed(
           <p class="mt-2 text-right font-sans text-[11px] tabular-nums text-ink-muted">
             {{ xpLabel }}
           </p>
+        </div>
+
+        <!-- Guest: aspirational join CTA (no personal data) -->
+        <div
+          v-else
+          class="shrink-0 rounded-xl border border-border-gold bg-black/40 p-4 text-center lg:w-72"
+        >
+          <p class="eyebrow">Begin your ascent</p>
+          <p class="mt-1.5 font-sans text-[12px] leading-relaxed text-ink-muted">
+            Claim your title and climb from Noble to Monarch.
+          </p>
+          <GoldButton variant="solid" size="sm" block class="mt-3" @click="enter()">
+            Join the Kingdom
+          </GoldButton>
         </div>
       </div>
     </div>

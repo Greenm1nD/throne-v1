@@ -8,8 +8,10 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { vipPage as page } from '@/data/pages'
 import { useEnter } from '@/composables/useEnter'
+import { useAuth } from '@/composables/useAuth'
 
 const { enter } = useEnter()
+const { isLoggedIn, user } = useAuth()
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -47,6 +49,12 @@ useRevealEach(root)
                 : 'border-white/5 bg-card/80 hover:border-border-gold'
             "
           >
+            <span
+              v-if="isLoggedIn && user?.tier === t.name"
+              class="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold-gradient px-2.5 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.16em] text-bg shadow-[0_0_12px_rgba(245,215,122,0.5)]"
+            >
+              Your Tier
+            </span>
             <div class="flex h-16 items-end justify-center">
               <img :src="t.crown" :alt="`${t.name} crown`" class="h-14 w-auto object-contain" :class="!t.featured && 'opacity-80'" />
             </div>
