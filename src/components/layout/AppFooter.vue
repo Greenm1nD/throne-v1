@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import CrownBadge from '@/components/ui/CrownBadge.vue'
+import Crown3D from '@/components/ui/Crown3D.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
@@ -12,10 +11,6 @@ const { open } = useAuthModal()
 // Column order around the centre crest: [Throne, Experience] crest [Support, Connect]
 const leftCols = footerNav.slice(0, 2)
 const rightCols = footerNav.slice(2)
-
-// Lion crest artwork (includes THRONE + tagline baked in). Until the file is
-// dropped at /assets/images/footer-crest.webp we fall back to badge + text.
-const crestFailed = ref(false)
 </script>
 
 <template>
@@ -66,27 +61,21 @@ const crestFailed = ref(false)
         <div
           class="order-first col-span-2 flex flex-col items-center px-4 text-center lg:order-none lg:col-span-1 lg:min-w-[280px]"
         >
-          <!-- Lion crest lockup (static — no animation by design) -->
-          <img
-            v-if="!crestFailed"
-            :src="'/assets/images/footer-crest.webp'"
-            alt="THRONE — Built for the Crowned"
-            class="w-[280px] drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
-            loading="lazy"
-            decoding="async"
-            @error="crestFailed = true"
+          <!-- Live 3D coin medallion (slow turntable) over the THRONE lockup -->
+          <Crown3D
+            src="/assets/models/coin.glb"
+            poster="/assets/images/throne-logo-mark.webp"
+            :size="190"
+            :radius="155"
+            :spin-deg="45"
           />
-          <!-- Fallback until the crest artwork lands -->
-          <template v-else>
-            <CrownBadge :size="210" />
-            <p class="-mt-2 font-display text-3xl font-bold tracking-[0.22em] text-gold-gradient">
-              THRONE
-            </p>
-            <p class="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.4em] text-champagne/80">
-              Built for the Crowned
-            </p>
-            <span class="mt-3 h-1.5 w-1.5 rotate-45 bg-gold/60" />
-          </template>
+          <p class="mt-2 font-display text-3xl font-bold tracking-[0.22em] text-gold-gradient">
+            THRONE
+          </p>
+          <p class="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.4em] text-champagne/80">
+            Built for the Crowned
+          </p>
+          <span class="mt-3 h-1.5 w-1.5 rotate-45 bg-gold/60" />
         </div>
 
         <!-- Right columns: hug the right edge, mirroring the left side -->

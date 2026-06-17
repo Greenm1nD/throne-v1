@@ -23,8 +23,10 @@ const props = withDefaults(
     centerDeg?: number
     /** Camera distance as % of auto-framing (higher = more padding, avoids edge clipping). */
     radius?: number
+    /** Turntable speed (deg/sec) when not in sway mode. */
+    spinDeg?: number
   }>(),
-  { size: 160, sway: false, swayDeg: 30, swaySeconds: 7, centerDeg: 0, radius: 110 },
+  { size: 160, sway: false, swayDeg: 30, swaySeconds: 7, centerDeg: 0, radius: 110, spinDeg: 20 },
 )
 
 const ready = ref(false)
@@ -77,7 +79,7 @@ onBeforeUnmount(() => cancelAnimationFrame(raf))
       disable-pan
       :auto-rotate="sway ? null : true"
       auto-rotate-delay="0"
-      rotation-per-second="20deg"
+      :rotation-per-second="`${spinDeg}deg`"
       interaction-prompt="none"
       :camera-orbit="`${centerDeg}deg 80deg ${radius}%`"
       min-camera-orbit="auto 80deg auto"
