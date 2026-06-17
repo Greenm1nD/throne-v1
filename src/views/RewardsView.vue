@@ -79,10 +79,10 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
       <div class="card-lux p-6 hover:translate-y-0 sm:p-7" data-reveal>
         <div class="mb-5 flex items-center justify-between gap-4">
           <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
-            Redeem Amazing Rewards
+            The Privilege Exchange
           </h3>
           <button class="flex shrink-0 items-center gap-1.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold/90 transition-colors hover:text-gold-bright">
-            View All Rewards <AppIcon name="arrowRight" :size="13" />
+            View All Privileges <AppIcon name="arrowRight" :size="13" />
           </button>
         </div>
 
@@ -105,9 +105,12 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
               </h4>
               <p class="mt-0.5 font-sans text-[10px] text-ink-dim">{{ r.sub }}</p>
             </div>
-            <div class="border-t border-white/5 bg-white/[0.02] py-1.5 text-center">
+            <div class="flex items-center justify-between gap-2 border-t border-white/5 bg-white/[0.02] px-3 py-1.5">
               <span class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold/90">
                 {{ r.tier }}
+              </span>
+              <span class="font-sans text-[9px] font-semibold tabular-nums tracking-[0.08em] text-champagne">
+                {{ r.points }}
               </span>
             </div>
           </article>
