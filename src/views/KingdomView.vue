@@ -13,6 +13,7 @@ import { useTournaments } from '@/composables/useTournaments'
 import { useCourt } from '@/composables/useCourt'
 import NobleHouses from '@/components/kingdom/NobleHouses.vue'
 import HallOfKings from '@/components/kingdom/HallOfKings.vue'
+import GameMasters from '@/components/kingdom/GameMasters.vue'
 
 const { isLoggedIn } = useAuth()
 const { enter, enterLabel } = useEnter()
@@ -239,6 +240,9 @@ function claimQuest(q: (typeof page.quests)[number]) {
         Crowns earned · top 8 of 4,210 nobles
       </p>
     </section>
+
+    <!-- Masters of the Games -->
+    <GameMasters />
 
     <!-- Royal Quests -->
     <section class="container-royal pt-12 sm:pt-16">

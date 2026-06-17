@@ -398,6 +398,16 @@ export interface Quest {
   period: 'Daily' | 'Weekly' | 'Season'
 }
 
+export interface GameMaster {
+  game: string
+  font: string
+  name: string
+  tier: string
+  crown: string
+  points: number
+  you?: boolean
+}
+
 export interface House {
   name: string
   sigil: string
@@ -476,6 +486,13 @@ export const kingdomPage = {
       { rank: 8, name: 'NightProvost', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 4388600, change: 0 },
     ],
   },
+  // Masters of the Games — the reigning leader of each game this season.
+  gameMasters: <GameMaster[]>[
+    { game: 'Blackjack', font: 'card-blackjack', name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 412800 },
+    { game: 'Roulette', font: 'card-roulette', name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 388100 },
+    { game: 'Slots', font: 'slots', name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 521400 },
+    { game: 'Baccarat', font: 'card-baccarat', name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 274900, you: true },
+  ],
   // Royal Quests — earn crowns through daily / weekly / season feats.
   quests: <Quest[]>[
     { id: 'q-live3', title: 'Hold court at 3 live tables', reward: 500, progress: 3, goal: 3, period: 'Daily' },
