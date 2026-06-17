@@ -74,8 +74,8 @@ function claimQuest(q: (typeof page.quests)[number]) {
     <!-- Season banner -->
     <section class="container-royal relative z-20 -mt-9">
       <div
-        class="grid items-center gap-6 rounded-2xl border border-border-gold bg-card/90 px-7 py-7 shadow-card-glow backdrop-blur sm:px-9 lg:grid-cols-[1fr_auto] lg:gap-10"
-        style="background-image: linear-gradient(90deg, rgba(13,13,16,0.94), rgba(8,8,10,0.82)), url('/assets/images/texture-marble.webp'); background-size: cover"
+        v-lazybg="`linear-gradient(90deg, rgba(10,10,13,0.96) 38%, rgba(8,8,10,0.62)), url('${page.season.image}'), url('/assets/images/texture-marble.webp')`"
+        class="grid items-center gap-6 rounded-2xl border border-border-gold bg-card/90 bg-cover bg-center px-7 py-7 shadow-card-glow backdrop-blur sm:px-9 lg:grid-cols-[1fr_auto] lg:gap-10"
         data-reveal
       >
         <div>

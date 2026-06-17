@@ -449,6 +449,7 @@ export const kingdomPage = {
     chapter: 'Season III',
     name: 'Season of the Lion',
     pool: '€250,000',
+    image: '/assets/images/season-lion.webp',
     // Season runs 4 weeks; the live countdown is anchored per-device by useSeason().
     lengthDays: 28,
     note: 'Every wager earns crowns toward the season throne. The highest noble when the season closes is crowned Champion of the Realm — and keeps the prize for life.',
@@ -514,8 +515,8 @@ export const kingdomPage = {
       players: 412,
       cap: 500,
       when: 'Ends in 1h 40m',
-      image: '/assets/images/live-blackjack.webp',
-      fallback: '/assets/images/hall-monthly-champion.webp',
+      image: '/assets/images/tournament-midnight-joust.webp',
+      fallback: '/assets/images/live-blackjack.webp',
       desc: 'A fast knockout of nerve at the live tables. Highest net winnings before the clock strikes one takes the pot.',
       rules: [
         'Leaderboard by net winnings during the tournament window.',
@@ -546,8 +547,8 @@ export const kingdomPage = {
       players: 268,
       cap: 1000,
       when: 'Starts in 3h 05m',
-      image: '/assets/images/game-roulette.webp',
-      fallback: '/assets/images/casino-jackpot.webp',
+      image: '/assets/images/tournament-roulette-royale.webp',
+      fallback: '/assets/images/game-roulette.webp',
       desc: 'A grand spin of fortune. Accumulate the most crowns across the session and rise above the court.',
       rules: [
         'Leaderboard by crowns earned during the session.',
@@ -572,8 +573,8 @@ export const kingdomPage = {
       players: 96,
       cap: 200,
       when: 'Opens Friday, 20:00',
-      image: '/assets/images/casino-jackpot.webp',
-      fallback: '/assets/images/hall-biggest-jackpot.webp',
+      image: '/assets/images/tournament-sovereigns-cup.webp',
+      fallback: '/assets/images/casino-jackpot.webp',
       desc: 'The season showpiece. Reserved for Crown tier and above — the largest pot in the realm and a place in the Hall of Kings.',
       rules: [
         'Entry restricted to Crown tier and above.',
