@@ -45,11 +45,9 @@ const TABS: { key: CourtTab; label: string }[] = [
 ]
 const court = useCourt(page.court)
 const list = computed(() => court[tab.value])
-// Podium order places #1 in the centre, #2 left, #3 right.
-const podium = computed(() => {
-  const t = list.value.slice(0, 3)
-  return [t[1], t[0], t[2]].filter(Boolean)
-})
+// Left-column podium: champion on top, the two runners-up beneath.
+const champion = computed(() => list.value[0])
+const runnersUp = computed(() => list.value.slice(1, 3))
 const rest = computed(() => list.value.slice(3))
 
 // ── Your standing (logged-in) ──────────────────────────────────────────
@@ -165,78 +163,93 @@ function claimQuest(q: (typeof page.quests)[number]) {
         </div>
       </div>
 
-      <!-- Podium (top 3) -->
-      <div class="mb-5 grid grid-cols-3 items-end gap-3 sm:gap-5" data-reveal>
-        <div
-          v-for="(n, i) in podium"
-          :key="n.name"
-          class="relative flex flex-col items-center rounded-2xl border px-2 py-5 text-center sm:px-4"
-          :class="i === 1
-            ? 'border-gold/70 bg-gold/[0.07] shadow-card-glow sm:-translate-y-3'
-            : 'border-white/5 bg-card/70'"
-        >
-          <span
-            class="absolute -top-3 grid h-7 w-7 place-items-center rounded-full font-display text-[12px] font-bold tabular-nums"
-            :class="n.rank === 1 ? 'bg-gold-gradient text-bg shadow-[0_0_12px_rgba(245,215,122,0.6)]' : 'border border-border-gold/50 bg-surface text-champagne'"
+      <div class="grid items-start gap-5 lg:grid-cols-2">
+        <!-- LEFT: top 3 -->
+        <div class="flex flex-col gap-3" data-reveal>
+          <!-- Champion -->
+          <div
+            v-if="champion"
+            class="relative flex items-center gap-4 rounded-2xl border border-gold/70 bg-gold/[0.07] px-5 py-4 shadow-card-glow"
+            :class="champion.you && 'ring-1 ring-gold/40'"
           >
-            {{ n.rank }}
-          </span>
-          <img :src="n.crown" alt="" class="mt-2 w-auto object-contain" :class="i === 1 ? 'h-12' : 'h-9'" />
-          <span
-            class="mt-2 grid place-items-center rounded-full border border-border-gold/50 font-display font-bold text-champagne"
-            :class="i === 1 ? 'h-12 w-12 text-[14px]' : 'h-10 w-10 text-[12px]'"
-            style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)"
-          >
-            {{ initials(n.name) }}
-          </span>
-          <p class="mt-2 max-w-full truncate font-sans text-[13px] font-semibold text-ink">{{ n.name }}</p>
-          <p class="font-sans text-[9px] uppercase tracking-[0.14em] text-ink-dim">{{ n.tier }}</p>
-          <p class="mt-1 font-display text-[14px] font-bold tabular-nums text-gold-gradient">{{ n.points.toLocaleString() }}</p>
-        </div>
-      </div>
-
-      <!-- Ranks 4+ -->
-      <div class="card-lux overflow-hidden p-0 hover:translate-y-0" data-reveal>
-        <ol>
-          <li
-            v-for="n in rest"
-            :key="n.name"
-            class="flex items-center gap-3 border-b border-white/5 px-4 py-3.5 transition-colors last:border-0 sm:gap-4 sm:px-6"
-            :class="n.you ? 'bg-gold/[0.06]' : 'hover:bg-white/[0.02]'"
-          >
-            <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border-gold/40 font-display text-[13px] font-bold tabular-nums text-ink-muted">
-              {{ n.rank }}
-            </span>
-            <span class="relative shrink-0">
-              <span
-                class="grid h-10 w-10 place-items-center rounded-full border border-border-gold/50 font-display text-[12px] font-bold text-champagne"
-                style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)"
-              >
-                {{ initials(n.name) }}
-              </span>
-              <img :src="n.crown" alt="" class="absolute -bottom-1 -right-1 h-4 w-auto drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
+            <span class="absolute -top-2.5 left-5 grid h-6 w-6 place-items-center rounded-full bg-gold-gradient font-display text-[11px] font-bold tabular-nums text-bg shadow-[0_0_12px_rgba(245,215,122,0.6)]">1</span>
+            <img :src="champion.crown" alt="" class="h-12 w-auto shrink-0 object-contain drop-shadow-[0_0_14px_rgba(245,215,122,0.6)]" />
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-border-gold/50 font-display text-[14px] font-bold text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.14), transparent 72%)">
+              {{ initials(champion.name) }}
             </span>
             <div class="min-w-0 flex-1">
-              <p class="truncate font-sans text-[13px] font-semibold text-ink">
-                {{ n.name }}
-                <span v-if="n.you" class="ml-1 align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
+              <p class="truncate font-display text-lg font-bold tracking-[0.04em] text-gold-gradient">
+                {{ champion.name }}
+                <span v-if="champion.you" class="align-middle font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
               </p>
-              <p class="font-sans text-[10px] uppercase tracking-[0.14em] text-ink-dim">{{ n.tier }}</p>
+              <p class="font-sans text-[9px] uppercase tracking-[0.16em] text-ink-dim">{{ champion.tier }} · Champion</p>
             </div>
-            <span
-              class="hidden w-10 shrink-0 items-center justify-end gap-0.5 font-sans text-[11px] font-semibold tabular-nums sm:flex"
-              :class="n.change > 0 ? 'text-[#5fbf7a]' : n.change < 0 ? 'text-[#c2603f]' : 'text-ink-dim'"
+            <p class="shrink-0 font-display text-[15px] font-bold tabular-nums text-gold-gradient">{{ champion.points.toLocaleString() }}</p>
+          </div>
+
+          <!-- Runners-up -->
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              v-for="n in runnersUp"
+              :key="n.name"
+              class="relative flex flex-col items-center rounded-xl border border-white/5 bg-card/70 px-3 py-4 text-center"
+              :class="n.you && 'ring-1 ring-gold/40'"
             >
-              <template v-if="n.change !== 0"><span class="text-[9px] leading-none">{{ n.change > 0 ? '▲' : '▼' }}</span>{{ Math.abs(n.change) }}</template>
-              <template v-else>—</template>
-            </span>
-            <span class="w-24 shrink-0 text-right font-display text-[14px] font-bold tabular-nums text-gold-gradient sm:w-28">
-              {{ n.points.toLocaleString() }}
-            </span>
-          </li>
-        </ol>
+              <span class="absolute -top-2.5 grid h-6 w-6 place-items-center rounded-full border border-border-gold/50 bg-surface font-display text-[11px] font-bold tabular-nums text-champagne">{{ n.rank }}</span>
+              <img :src="n.crown" alt="" class="mt-1 h-8 w-auto object-contain" />
+              <span class="mt-1.5 grid h-10 w-10 place-items-center rounded-full border border-border-gold/50 font-display text-[12px] font-bold text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)">
+                {{ initials(n.name) }}
+              </span>
+              <p class="mt-1.5 max-w-full truncate font-sans text-[12px] font-semibold text-ink">
+                {{ n.name }}
+                <span v-if="n.you" class="font-sans text-[8px] font-bold uppercase tracking-[0.12em] text-gold-bright">You</span>
+              </p>
+              <p class="font-sans text-[9px] uppercase tracking-[0.14em] text-ink-dim">{{ n.tier }}</p>
+              <p class="mt-0.5 font-display text-[13px] font-bold tabular-nums text-gold-gradient">{{ n.points.toLocaleString() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: tier list (ranks 4+) -->
+        <div class="card-lux overflow-hidden p-0 hover:translate-y-0" data-reveal>
+          <ol>
+            <li
+              v-for="n in rest"
+              :key="n.name"
+              class="flex items-center gap-3 border-b border-white/5 px-4 py-3 transition-colors last:border-0"
+              :class="n.you ? 'bg-gold/[0.06]' : 'hover:bg-white/[0.02]'"
+            >
+              <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border-gold/40 font-display text-[12px] font-bold tabular-nums text-ink-muted">
+                {{ n.rank }}
+              </span>
+              <span class="relative shrink-0">
+                <span class="grid h-9 w-9 place-items-center rounded-full border border-border-gold/50 font-display text-[11px] font-bold text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)">
+                  {{ initials(n.name) }}
+                </span>
+                <img :src="n.crown" alt="" class="absolute -bottom-1 -right-1 h-3.5 w-auto drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
+              </span>
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-sans text-[12px] font-semibold text-ink">
+                  {{ n.name }}
+                  <span v-if="n.you" class="ml-1 align-middle font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-gold-bright">You</span>
+                </p>
+                <p class="font-sans text-[9px] uppercase tracking-[0.14em] text-ink-dim">{{ n.tier }}</p>
+              </div>
+              <span
+                class="flex w-9 shrink-0 items-center justify-end gap-0.5 font-sans text-[10px] font-semibold tabular-nums"
+                :class="n.change > 0 ? 'text-[#5fbf7a]' : n.change < 0 ? 'text-[#c2603f]' : 'text-ink-dim'"
+              >
+                <template v-if="n.change !== 0"><span class="text-[8px] leading-none">{{ n.change > 0 ? '▲' : '▼' }}</span>{{ Math.abs(n.change) }}</template>
+                <template v-else>—</template>
+              </span>
+              <span class="w-20 shrink-0 text-right font-display text-[13px] font-bold tabular-nums text-gold-gradient">
+                {{ n.points.toLocaleString() }}
+              </span>
+            </li>
+          </ol>
+        </div>
       </div>
-      <p class="mt-3 text-center font-sans text-[10px] uppercase tracking-[0.18em] text-ink-dim">
+      <p class="mt-3 font-sans text-[10px] uppercase tracking-[0.18em] text-ink-dim">
         Crowns earned · top 8 of 4,210 nobles
       </p>
     </section>
