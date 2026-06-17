@@ -10,6 +10,7 @@ import { useRevealEach } from '@/composables/useReveal'
 import { useSeason } from '@/composables/useSeason'
 import { useQuests } from '@/composables/useQuests'
 import { useTournaments } from '@/composables/useTournaments'
+import { useCourt } from '@/composables/useCourt'
 import NobleHouses from '@/components/kingdom/NobleHouses.vue'
 import HallOfKings from '@/components/kingdom/HallOfKings.vue'
 
@@ -37,7 +38,8 @@ const TABS: { key: CourtTab; label: string }[] = [
   { key: 'week', label: 'This Week' },
   { key: 'allTime', label: 'All-Time' },
 ]
-const list = computed(() => page.court[tab.value])
+const court = useCourt(page.court)
+const list = computed(() => court[tab.value])
 // Podium order places #1 in the centre, #2 left, #3 right.
 const podium = computed(() => {
   const t = list.value.slice(0, 3)
@@ -380,6 +382,10 @@ function claimQuest(q: (typeof page.quests)[number]) {
           <div class="min-w-0 flex-1">
             <h4 class="font-display text-[15px] font-semibold tracking-[0.04em] text-ink transition-colors group-hover:text-gold-bright">
               {{ d.title }}
+              <span
+                v-if="d.date === 'Today'"
+                class="ml-1.5 align-middle rounded-full bg-gold-gradient px-1.5 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-bg"
+              >New</span>
             </h4>
             <p class="mt-0.5 font-sans text-[12px] leading-relaxed text-ink-dim">{{ d.sub }}</p>
           </div>
