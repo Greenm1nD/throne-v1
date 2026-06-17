@@ -11,6 +11,7 @@ import { useSeason } from '@/composables/useSeason'
 import { useQuests } from '@/composables/useQuests'
 import { useTournaments } from '@/composables/useTournaments'
 import { useCourt } from '@/composables/useCourt'
+import { useTournamentClocks } from '@/composables/useTournamentClocks'
 import NobleHouses from '@/components/kingdom/NobleHouses.vue'
 import HallOfKings from '@/components/kingdom/HallOfKings.vue'
 import GameMasters from '@/components/kingdom/GameMasters.vue'
@@ -20,6 +21,7 @@ const { enter, enterLabel } = useEnter()
 const { label: seasonEnds, finalDay } = useSeason()
 const { isClaimed, claim } = useQuests()
 const { isEntered } = useTournaments()
+const { label: tClock } = useTournamentClocks(page.tournaments)
 
 // Live tournaments the member has entered → a contextual "you're competing" strip.
 const liveEntries = computed(() => page.tournaments.filter((t) => t.status === 'live' && isEntered(t.slug)))
@@ -338,7 +340,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
           You're competing in <span class="font-semibold text-champagne">{{ t.name }}</span>
           <template v-if="myRank(t)"> — currently <span class="font-display font-bold text-gold-gradient">#{{ myRank(t) }}</span></template>
         </span>
-        <span class="font-sans text-[12px] text-ink-dim">{{ t.when }}</span>
+        <span class="font-sans text-[12px] tabular-nums text-ink-dim">{{ tClock(t) }}</span>
         <span class="ml-auto flex items-center gap-1 font-sans text-[11px] font-bold uppercase tracking-[0.12em] text-gold-bright">
           Open <AppIcon name="arrowRight" :size="12" />
         </span>
@@ -391,7 +393,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
             </div>
 
             <div class="mt-4 flex items-center justify-between gap-3">
-              <span class="font-sans text-[11px] font-medium text-ink-muted">{{ t.when }}</span>
+              <span class="font-sans text-[11px] font-medium tabular-nums text-ink-muted">{{ tClock(t) }}</span>
               <span class="flex items-center gap-1 font-sans text-[11px] font-bold uppercase tracking-[0.12em] text-gold-bright">
                 View <AppIcon name="arrowRight" :size="12" />
               </span>

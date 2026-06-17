@@ -374,6 +374,8 @@ export interface Tournament {
   players: number
   cap: number
   when: string
+  /** minutes until it ends (live) or starts (upcoming) → drives a live countdown; omit for a fixed `when` */
+  etaMin?: number
   image: string
   fallback: string
   desc: string
@@ -515,6 +517,7 @@ export const kingdomPage = {
       players: 412,
       cap: 500,
       when: 'Ends in 1h 40m',
+      etaMin: 100,
       image: '/assets/images/tournament-midnight-joust.webp',
       fallback: '/assets/images/live-blackjack.webp',
       desc: 'A fast knockout of nerve at the live tables. Highest net winnings before the clock strikes one takes the pot.',
@@ -547,6 +550,7 @@ export const kingdomPage = {
       players: 268,
       cap: 1000,
       when: 'Starts in 3h 05m',
+      etaMin: 185,
       image: '/assets/images/tournament-roulette-royale.webp',
       fallback: '/assets/images/game-roulette.webp',
       desc: 'A grand spin of fortune. Accumulate the most crowns across the session and rise above the court.',

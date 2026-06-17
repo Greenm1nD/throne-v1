@@ -5,10 +5,12 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage } from '@/data/pages'
 import { useTournaments } from '@/composables/useTournaments'
+import { useTournamentClocks } from '@/composables/useTournamentClocks'
 
 const route = useRoute()
 const router = useRouter()
 const { isEntered, toggle } = useTournaments()
+const { label: tClock } = useTournamentClocks(kingdomPage.tournaments)
 
 const t = computed(() => kingdomPage.tournaments.find((x) => x.slug === route.params.slug))
 const fillPct = computed(() => (t.value ? Math.round((t.value.players / t.value.cap) * 100) : 0))
@@ -47,7 +49,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
               <AppIcon :name="isEntered(t.slug) ? 'check' : 'crown'" :size="15" />
               {{ isEntered(t.slug) ? 'Entered — Leave' : (t.status === 'live' ? 'Enter Now' : 'Reserve My Seat') }}
             </GoldButton>
-            <span class="font-sans text-[12px] text-ink-muted">{{ t.when }}</span>
+            <span class="font-sans text-[12px] tabular-nums text-ink-muted">{{ tClock(t) }}</span>
           </div>
         </div>
       </div>
