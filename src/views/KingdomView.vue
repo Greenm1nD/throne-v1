@@ -10,6 +10,8 @@ import { useRevealEach } from '@/composables/useReveal'
 import { useSeason } from '@/composables/useSeason'
 import { useQuests } from '@/composables/useQuests'
 import { useTournaments } from '@/composables/useTournaments'
+import NobleHouses from '@/components/kingdom/NobleHouses.vue'
+import HallOfKings from '@/components/kingdom/HallOfKings.vue'
 
 const { open } = useAuthModal()
 const { isLoggedIn } = useAuth()
@@ -356,6 +358,9 @@ function claimQuest(q: (typeof page.quests)[number]) {
       </div>
     </section>
 
+    <!-- Noble Houses -->
+    <NobleHouses />
+
     <!-- Royal Decrees — kingdom news -->
     <section class="container-royal pt-12 sm:pt-16">
       <div class="mb-6">
@@ -382,6 +387,9 @@ function claimQuest(q: (typeof page.quests)[number]) {
         </article>
       </div>
     </section>
+
+    <!-- Hall of Kings -->
+    <HallOfKings />
 
     <!-- Finale CTA -->
     <section class="container-royal pt-12 sm:pt-16">

@@ -398,6 +398,32 @@ export interface Quest {
   period: 'Daily' | 'Weekly' | 'Season'
 }
 
+export interface House {
+  name: string
+  sigil: string
+  motto: string
+  accent: string
+  members: number
+  crowns: number
+  you?: boolean
+}
+
+export interface Champion {
+  season: string
+  name: string
+  tier: string
+  crown: string
+  prize: string
+  quote: string
+}
+
+export interface Order {
+  name: string
+  desc: string
+  icon: string
+  unlocked: boolean
+}
+
 export const kingdomPage = {
   hero: {
     title: 'The Kingdom',
@@ -554,6 +580,28 @@ export const kingdomPage = {
     { name: 'IvoryTsar', action: 'won', amount: '€8,900', game: 'Live Blackjack' },
     { name: 'VelvetDuchess', action: 'claimed', amount: '6,000 crowns', game: 'a weekly quest' },
     { name: 'BlackKingV', action: 'extended the lead to', amount: '1,284,500', game: 'crowns' },
+  ],
+  // Noble Houses — pledge to a house; its nobles' crowns combine for the House War.
+  houses: <House[]>[
+    { name: 'House Aurelian', sigil: 'A', motto: 'By gold, ascendant', accent: '#d4af37', members: 1284, crowns: 48200900 },
+    { name: 'House Corvin', sigil: 'C', motto: 'From shadow, dominion', accent: '#7c6bb0', members: 1142, crowns: 44170300, you: true },
+    { name: 'House Valebridge', sigil: 'V', motto: 'Unbroken, unbought', accent: '#3f8b6b', members: 1098, crowns: 41880750 },
+    { name: 'House Sablecourt', sigil: 'S', motto: 'Silent, then sovereign', accent: '#a33f4f', members: 972, crowns: 38640200 },
+  ],
+  // Hall of Kings — past champions, enshrined for eternity.
+  hallOfKings: <Champion[]>[
+    { season: 'Season II', name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', prize: '€250,000', quote: 'The table always bows to patience.' },
+    { season: 'Season I', name: 'EmpressVala', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', prize: '€180,000', quote: 'I came to play. I stayed to reign.' },
+    { season: 'Beta Court', name: 'IronViscount', tier: 'Duke', crown: '/assets/images/crown-duke.png', prize: '€90,000', quote: 'Fortune favours the relentless.' },
+  ],
+  // Orders of merit — permanent achievements.
+  orders: <Order[]>[
+    { name: 'First Blood', desc: 'Win your first royal tournament', icon: 'trophy', unlocked: true },
+    { name: 'Centurion', desc: 'Enter 100 tournaments', icon: 'crown', unlocked: true },
+    { name: 'Untouchable', desc: 'Hold #1 in the Court for a full week', icon: 'shield', unlocked: false },
+    { name: 'Highest Roller', desc: 'Wager €1,000,000 in a single season', icon: 'vault', unlocked: false },
+    { name: 'Season Champion', desc: 'Win a season and enter the Hall of Kings', icon: 'star', unlocked: false },
+    { name: 'House Lord', desc: 'Top your house leaderboard', icon: 'flag', unlocked: false },
   ],
   // Royal Decrees — kingdom news & happenings.
   decrees: <Decree[]>[
