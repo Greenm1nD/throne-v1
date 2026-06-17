@@ -5,6 +5,9 @@ import AccountPanel from '@/components/account/AccountPanel.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { DEPOSIT, WITHDRAW, WITHDRAW_BANKS, balances, type PayMethod } from '@/data/account'
+import { useDiscreet } from '@/composables/useDiscreet'
+
+const { mask } = useDiscreet()
 
 /**
  * Deposit and Withdraw share this panel — `route.meta.kind` flips the copy,
@@ -43,7 +46,7 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
 
     <p v-if="!isDeposit" class="flex items-center justify-between rounded-xl border border-border-gold/30 bg-black/30 px-5 py-3.5">
       <span class="font-sans text-[11px] uppercase tracking-[0.18em] text-ink-dim">Available</span>
-      <span class="font-display text-base font-bold tabular-nums text-gold-gradient">{{ balances.main }}</span>
+      <span class="font-display text-base font-bold tabular-nums text-gold-gradient">{{ mask(balances.main) }}</span>
     </p>
 
     <AccountPanel :title="isDeposit ? 'Choose Method' : 'Destination'">

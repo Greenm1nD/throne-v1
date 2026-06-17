@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import AccGlyph from './AccGlyph.vue'
+import { useDiscreet } from '@/composables/useDiscreet'
+
+const { mask } = useDiscreet()
 
 /**
  * Top-row metric card: label, hero value, icon chip, key/value sublines.
@@ -39,13 +42,13 @@ const valueClass = () => {
       class="mt-2 font-display text-2xl font-bold tabular-nums tracking-[0.04em]"
       :class="valueClass()"
     >
-      <slot name="value">{{ value }}</slot>
+      <slot name="value">{{ mask(value) }}</slot>
     </p>
     <slot />
     <dl v-if="rows?.length" class="mt-4 space-y-1.5 border-t border-border-gold/20 pt-3">
       <div v-for="r in rows" :key="r.k" class="flex items-center justify-between">
         <dt class="font-sans text-[11px] text-ink-dim">{{ r.k }}</dt>
-        <dd class="font-sans text-[12px] tabular-nums text-ink-muted">{{ r.v }}</dd>
+        <dd class="font-sans text-[12px] tabular-nums text-ink-muted">{{ mask(r.v) }}</dd>
       </div>
     </dl>
   </div>

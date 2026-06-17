@@ -6,6 +6,9 @@ import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { accountNav, balances, user } from '@/data/account'
 import { useAuth } from '@/composables/useAuth'
+import { useDiscreet } from '@/composables/useDiscreet'
+
+const { mask } = useDiscreet()
 
 /**
  * GreenBet-style mechanics: the account area renders INSIDE the site —
@@ -44,7 +47,7 @@ function logout() {
               <p class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }}</p>
             </div>
           </div>
-          <p class="mt-4 font-display text-xl font-bold tabular-nums text-gold-gradient">{{ balances.total }}</p>
+          <p class="mt-4 font-display text-xl font-bold tabular-nums text-gold-gradient">{{ mask(balances.total) }}</p>
           <div class="mt-3 grid grid-cols-2 gap-2">
             <RouterLink to="/account/deposit" @click="menuOpen = false">
               <GoldButton :variant="onWithdraw ? 'outline' : 'solid'" size="sm" block>Deposit</GoldButton>

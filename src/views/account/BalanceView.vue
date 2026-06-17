@@ -4,7 +4,9 @@ import StatCard from '@/components/account/StatCard.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { balances, transactions } from '@/data/account'
+import { useDiscreet } from '@/composables/useDiscreet'
 
+const { mask } = useDiscreet()
 const recent = transactions.slice(0, 4)
 </script>
 
@@ -22,7 +24,7 @@ const recent = transactions.slice(0, 4)
         :rows="[{ k: 'Active Balance', v: balances.activeBonusBalance }]" />
       <StatCard label="Lifetime" value=" " icon="chart"
         :rows="[{ k: 'Total Deposits', v: balances.totalDeposits }, { k: 'Total Withdrawals', v: balances.totalWithdrawals }]">
-        <template #value><span class="text-gold-gradient">{{ balances.totalDeposits }}</span></template>
+        <template #value><span class="text-gold-gradient">{{ mask(balances.totalDeposits) }}</span></template>
       </StatCard>
     </div>
 
@@ -42,7 +44,7 @@ const recent = transactions.slice(0, 4)
             <p class="font-sans text-[13px] font-semibold text-ink">{{ t.label }}</p>
             <p class="font-sans text-[11px] text-ink-dim">{{ t.date }}</p>
           </div>
-          <p class="font-sans text-[13px] font-bold tabular-nums" :class="t.positive ? 'text-gold-bright' : 'text-ink-muted'">{{ t.amount }}</p>
+          <p class="font-sans text-[13px] font-bold tabular-nums" :class="t.positive ? 'text-gold-bright' : 'text-ink-muted'">{{ mask(t.amount) }}</p>
         </li>
       </ul>
     </AccountPanel>

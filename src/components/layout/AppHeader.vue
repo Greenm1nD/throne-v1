@@ -8,17 +8,19 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { primaryNav } from '@/data/navigation'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAuth } from '@/composables/useAuth'
+import { useDiscreet } from '@/composables/useDiscreet'
 import { user as member } from '@/data/account'
 
 const { open } = useAuthModal()
 const { isLoggedIn, user, balance, logout } = useAuth()
+const { discreet, toggle: toggleDiscreet, mask } = useDiscreet()
 const router = useRouter()
 const bar = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
 const accOpen = ref(false)
 
 const balanceLabel = computed(() =>
-  `$${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+  mask(`$${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`),
 )
 
 const accLinks = [
@@ -105,7 +107,15 @@ onMounted(() => {
 
         <!-- Logged-in cluster: balance pill + avatar dropdown -->
         <template v-else>
-          <div class="hidden items-center gap-1 rounded-full border border-border-gold/60 py-1 pl-4 pr-1 sm:flex">
+          <div class="hidden items-center gap-1 rounded-full border border-border-gold/60 py-1 pl-3 pr-1 sm:flex">
+            <button
+              class="grid h-7 w-7 place-items-center rounded-full text-ink-dim transition-colors hover:text-gold-bright"
+              :aria-pressed="discreet"
+              :aria-label="discreet ? 'Show balance' : 'Hide balance (discreet mode)'"
+              @click="toggleDiscreet"
+            >
+              <AppIcon :name="discreet ? 'eyeOff' : 'eye'" :size="15" />
+            </button>
             <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
             <RouterLink to="/account/deposit">
               <GoldButton variant="solid" size="sm">Deposit</GoldButton>
@@ -196,8 +206,18 @@ onMounted(() => {
             </GoldButton>
           </div>
           <div v-else class="mt-4 flex flex-col gap-3 pb-2">
-            <div class="flex items-center justify-between rounded-full border border-border-gold/60 py-1.5 pl-4 pr-1.5">
-              <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
+            <div class="flex items-center justify-between rounded-full border border-border-gold/60 py-1.5 pl-3 pr-1.5">
+              <div class="flex items-center gap-2">
+                <button
+                  class="grid h-8 w-8 place-items-center rounded-full text-ink-dim transition-colors hover:text-gold-bright"
+                  :aria-pressed="discreet"
+                  :aria-label="discreet ? 'Show balance' : 'Hide balance (discreet mode)'"
+                  @click="toggleDiscreet"
+                >
+                  <AppIcon :name="discreet ? 'eyeOff' : 'eye'" :size="16" />
+                </button>
+                <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
+              </div>
               <RouterLink to="/account/deposit" @click="menuOpen = false">
                 <GoldButton variant="solid" size="sm">Deposit</GoldButton>
               </RouterLink>

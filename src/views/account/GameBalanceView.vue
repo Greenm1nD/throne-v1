@@ -3,6 +3,9 @@ import AccountPanel from '@/components/account/AccountPanel.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { balances, gameWallets } from '@/data/account'
+import { useDiscreet } from '@/composables/useDiscreet'
+
+const { mask } = useDiscreet()
 </script>
 
 <template>
@@ -24,7 +27,7 @@ import { balances, gameWallets } from '@/data/account'
             <p class="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-gold-bright">Primary</p>
           </div>
         </div>
-        <p class="font-display text-lg font-bold tabular-nums text-gold-gradient">{{ balances.main }}</p>
+        <p class="font-display text-lg font-bold tabular-nums text-gold-gradient">{{ mask(balances.main) }}</p>
       </div>
 
       <ul class="space-y-3">
@@ -36,7 +39,7 @@ import { balances, gameWallets } from '@/data/account'
             <p class="font-sans text-[13px] font-semibold text-ink">{{ w.provider }}</p>
             <p class="font-sans text-[11px] text-ink-dim">{{ w.kind }} · Provider balance</p>
           </div>
-          <p class="font-sans text-[14px] font-bold tabular-nums text-ink-muted">{{ w.balance }}</p>
+          <p class="font-sans text-[14px] font-bold tabular-nums text-ink-muted">{{ mask(w.balance) }}</p>
           <GoldButton variant="outline" size="sm">Transfer to Main</GoldButton>
         </li>
       </ul>

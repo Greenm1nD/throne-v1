@@ -7,7 +7,9 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { user, balances, transactions, quickActions } from '@/data/account'
 import { vipLevels } from '@/data/vipLevels'
+import { useDiscreet } from '@/composables/useDiscreet'
 
+const { mask } = useDiscreet()
 const activeIndex = computed(() => vipLevels.findIndex((l) => l.name === user.tier))
 const xpPct = computed(() => Math.round((user.xp / user.xpNext) * 100))
 const recent = transactions.slice(0, 5)
@@ -108,7 +110,7 @@ const recent = transactions.slice(0, 5)
               <p class="font-sans text-[11px] text-ink-dim">{{ t.date }}</p>
             </div>
             <div class="text-right">
-              <p class="font-sans text-[13px] font-bold tabular-nums" :class="t.positive ? 'text-gold-bright' : 'text-ink-muted'">{{ t.amount }}</p>
+              <p class="font-sans text-[13px] font-bold tabular-nums" :class="t.positive ? 'text-gold-bright' : 'text-ink-muted'">{{ mask(t.amount) }}</p>
               <p class="font-sans text-[10px] uppercase tracking-[0.1em] text-ink-dim">{{ t.status }}</p>
             </div>
           </li>
