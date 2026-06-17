@@ -65,10 +65,33 @@ const router = createRouter({
         { path: 'contact', name: 'acc-contact', component: () => import('@/views/account/ContactView.vue') },
       ],
     },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/NotFoundView.vue'),
+    },
   ],
   scrollBehavior() {
     return { top: 0 }
   },
+})
+
+// Per-route document title for SEO / shareability (SPA has one HTML shell).
+const TITLES: Record<string, string> = {
+  home: 'A Private Royal Gaming Kingdom',
+  casino: 'Casino — Where Fortune Bows to Kings',
+  'game-play': 'Casino',
+  sports: 'Sports Arena',
+  'live-casino': 'Live Casino — The Royal Tables',
+  vip: 'VIP Club — The Inner Circle',
+  kingdom: 'The Kingdom — Hall of Kings',
+  rewards: 'Rewards & The Treasury',
+  'not-found': 'Page Not Found',
+}
+router.afterEach((to) => {
+  const name = String(to.name ?? '')
+  const t = TITLES[name] ?? (name.startsWith('acc-') ? 'My Account' : '')
+  document.title = t ? `${t} · THRONE` : 'THRONE · VIP Gaming Club'
 })
 
 // Guests bouncing off a protected route land home with the login modal open.

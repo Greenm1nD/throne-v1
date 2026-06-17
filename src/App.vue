@@ -5,6 +5,7 @@ import AuthModal from '@/components/auth/AuthModal.vue'
 import TwoFaModal from '@/components/auth/TwoFaModal.vue'
 import AmbientBackground from '@/components/ui/AmbientBackground.vue'
 import AmbientAudio from '@/components/ui/AmbientAudio.vue'
+import AgeGate from '@/components/ui/AgeGate.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 
@@ -22,4 +23,5 @@ const ready = ref(false)
   <AmbientAudio />
   <AuthModal />
   <TwoFaModal />
+  <AgeGate v-if="ready" />
 </template>
