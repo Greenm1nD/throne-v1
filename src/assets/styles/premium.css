@@ -1,0 +1,46 @@
+/* ── Premium Motion UI Refresh ──────────────────────────────────────────────
+   Active ONLY when <html class="premium"> (set by App.vue behind the
+   VITE_ENABLE_PREMIUM_MOTION_REFRESH flag). With the flag off, the class is
+   never added and every rule here is inert — a clean, zero-risk revert.
+   Scoped, additive overrides only; no existing selectors are modified. */
+
+/* Atmospheric depth: a soft vignette layered over the existing gold radials so
+   no section reads as flat black. (Background layer → always behind content.) */
+html.premium body {
+  background-image:
+    radial-gradient(135% 105% at 50% 40%, transparent 50%, rgba(0, 0, 0, 0.58) 100%),
+    radial-gradient(1200px 600px at 50% -10%, rgba(212, 175, 55, 0.09), transparent 60%),
+    radial-gradient(900px 500px at 85% 20%, rgba(212, 175, 55, 0.05), transparent 55%),
+    radial-gradient(700px 500px at 10% 80%, rgba(212, 175, 55, 0.035), transparent 55%);
+}
+
+/* Global page transition: subtle fade + 16px lift (used with <Transition
+   name="pm-page" mode="out-in">). Motion-only — frozen for reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-page-enter-active {
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.premium .pm-page-enter-from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  html.premium .pm-page-leave-active {
+    transition: opacity 0.2s ease;
+  }
+  html.premium .pm-page-leave-to {
+    opacity: 0;
+  }
+}
+
+/* Floating Command Bar entrance (slide up + fade). */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-cmdbar-enter-active,
+  html.premium .pm-cmdbar-leave-active {
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.premium .pm-cmdbar-enter-from,
+  html.premium .pm-cmdbar-leave-to {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+}
