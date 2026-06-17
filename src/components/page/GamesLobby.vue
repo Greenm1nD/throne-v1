@@ -147,7 +147,7 @@ function toggleFav(name: string) {
             </p>
           </div>
           <button
-            class="shrink-0 transition-colors"
+            class="-mr-2 grid h-11 w-11 shrink-0 place-items-center transition-colors"
             :class="favs.has(g.name) ? 'text-gold-bright' : 'text-ink-dim hover:text-gold'"
             :aria-pressed="favs.has(g.name)"
             :aria-label="`Favorite ${g.name}`"

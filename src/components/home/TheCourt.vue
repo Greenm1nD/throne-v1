@@ -41,7 +41,7 @@ import { courtChannels } from '@/data/rewards'
       <li v-for="c in courtChannels" :key="c.label">
         <a
           :href="c.href"
-          class="group flex items-center gap-2.5 font-sans text-xs font-medium uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-gold-bright"
+          class="group flex min-h-[44px] items-center gap-2.5 font-sans text-xs font-medium uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-gold-bright sm:min-h-0"
         >
           <AppIcon
             :name="c.icon"

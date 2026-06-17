@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
+import { allow3D } from '@/utils/render3d'
 
 const emit = defineEmits<{ done: [] }>()
 
-// 3D crown fades in over the PNG poster once the model is ready.
+// 3D coin fades in over the PNG poster once the model is ready.
 const crownReady = ref(false)
+// On mobile / reduced-motion / save-data we keep the static poster (no WebGL).
+const use3D = ref(false)
 
 // Backstop: the intro must never stick, even if rAF/GSAP is starved (e.g. by
 // the WebGL crown decoding). Whichever fires first wins; finish is idempotent.
@@ -56,8 +59,11 @@ onMounted(() => {
     return
   }
 
-  // Define <model-viewer> ASAP; the poster covers any gap before it's ready.
-  import('@google/model-viewer')
+  // Light 3D coin on capable devices; phones keep the static poster.
+  if (allow3D()) {
+    use3D.value = true
+    import('@google/model-viewer')
+  }
 
   // Hard cap on the whole intro (timeline runs ~3.45s) — setTimeout fires even
   // when rAF is throttled, so the loader can never trap the user.
@@ -187,7 +193,7 @@ onBeforeUnmount(() => clearTimeout(safety))
         >
           <!-- Round champagne glow behind the coin (replaces the square-clipping drop-shadow) -->
           <span
-            v-if="crownReady"
+            v-if="use3D && crownReady"
             class="pointer-events-none absolute inset-0 z-0"
             style="background: radial-gradient(circle, rgba(245,215,122,0.4), rgba(245,215,122,0.1) 42%, transparent 64%); filter: blur(6px)"
             aria-hidden="true"
@@ -199,6 +205,7 @@ onBeforeUnmount(() => clearTimeout(safety))
             class="absolute inset-0 h-full w-full object-contain drop-shadow-[0_4px_24px_rgba(212,175,55,0.5)]"
           />
           <model-viewer
+            v-if="use3D"
             src="/assets/models/coin.glb"
             loading="eager"
             reveal="auto"

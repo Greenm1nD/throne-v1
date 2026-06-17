@@ -44,7 +44,7 @@ function stop() {
     <!-- Favorite star (brightens on hover) -->
     <button
       type="button"
-      class="absolute right-3 top-3 z-30 grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-black/50 backdrop-blur transition-all duration-300 hover:border-gold"
+      class="absolute right-2 top-2 z-30 grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-black/50 backdrop-blur transition-all duration-300 hover:border-gold"
       :class="fav ? 'text-gold-bright opacity-100' : 'text-ink-muted opacity-0 group-hover:opacity-100'"
       :aria-pressed="fav"
       :aria-label="`Favorite ${game.name}`"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { allow3D } from '@/utils/render3d'
 
 /**
  * Live 3D model rendered via <model-viewer> (lazy-loaded), wrapped in a
@@ -48,7 +49,7 @@ function onLoad() {
 }
 
 onMounted(async () => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (!allow3D()) return // mobile / reduced-motion / save-data → keep the poster
   await import('@google/model-viewer')
   ready.value = true
 })

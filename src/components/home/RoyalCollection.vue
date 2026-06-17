@@ -22,13 +22,13 @@ useReveal(root, { stagger: 0.12 })
       </GoldButton>
       <div class="flex gap-2">
         <button
-          class="grid h-9 w-9 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
+          class="grid h-11 w-11 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
           aria-label="Previous"
         >
           <AppIcon name="arrowLeft" :size="16" />
         </button>
         <button
-          class="grid h-9 w-9 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
+          class="grid h-11 w-11 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
           aria-label="Next"
         >
           <AppIcon name="arrowRight" :size="16" />

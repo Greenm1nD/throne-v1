@@ -39,11 +39,11 @@ const rightCols = footerNav.slice(2)
             <span class="h-px w-9 bg-gold/40" />
             <span class="h-1 w-1 rotate-45 bg-gold/60" />
           </div>
-          <ul class="mt-5 space-y-3.5">
+          <ul class="mt-5 space-y-1 sm:space-y-3.5">
             <li v-for="l in col.links" :key="l.label">
               <a
                 href="#"
-                class="group flex items-center gap-2.5 font-sans text-[13px] uppercase tracking-[0.08em] text-ink-muted transition-colors hover:text-gold-bright"
+                class="group flex items-center gap-2.5 min-h-[44px] font-sans text-[13px] uppercase tracking-[0.08em] text-ink-muted transition-colors hover:text-gold-bright sm:min-h-0"
               >
                 <AppIcon
                   v-if="l.icon"
@@ -87,11 +87,11 @@ const rightCols = footerNav.slice(2)
             <span class="h-px w-9 bg-gold/40" />
             <span class="h-1 w-1 rotate-45 bg-gold/60" />
           </div>
-          <ul class="mt-5 space-y-3.5">
+          <ul class="mt-5 space-y-1 sm:space-y-3.5">
             <li v-for="l in col.links" :key="l.label">
               <a
                 href="#"
-                class="group flex items-center gap-2.5 font-sans text-[13px] uppercase tracking-[0.08em] text-ink-muted transition-colors hover:text-gold-bright"
+                class="group flex items-center gap-2.5 min-h-[44px] font-sans text-[13px] uppercase tracking-[0.08em] text-ink-muted transition-colors hover:text-gold-bright sm:min-h-0"
               >
                 <FontIcon
                   v-if="l.fontIcon"

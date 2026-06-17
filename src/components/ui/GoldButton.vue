@@ -16,7 +16,7 @@ withDefaults(
 )
 
 const sizeMap = {
-  sm: 'h-9 px-4 text-[11px]',
+  sm: 'h-10 px-4 text-[11px]',
   md: 'h-11 px-6 text-xs',
   lg: 'h-[52px] px-9 text-[13px]',
 }
