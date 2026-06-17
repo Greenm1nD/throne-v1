@@ -7,7 +7,9 @@ import { ref } from 'vue'
  * the shoulder. The choice is app-wide (module-level ref) and persists.
  */
 const KEY = 'throne.discreet'
-const discreet = ref(localStorage.getItem(KEY) === '1')
+// Default ON: balances start masked for privacy. Only an explicit reveal ('0')
+// keeps them visible across sessions.
+const discreet = ref(localStorage.getItem(KEY) !== '0')
 
 export function useDiscreet() {
   function toggle() {

@@ -6,6 +6,7 @@ import TwoFaModal from '@/components/auth/TwoFaModal.vue'
 import AmbientBackground from '@/components/ui/AmbientBackground.vue'
 import AmbientAudio from '@/components/ui/AmbientAudio.vue'
 import AgeGate from '@/components/ui/AgeGate.vue'
+import WalletModal from '@/components/wallet/WalletModal.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 
@@ -23,5 +24,6 @@ const ready = ref(false)
   <AmbientAudio />
   <AuthModal />
   <TwoFaModal />
+  <WalletModal />
   <AgeGate v-if="ready" />
 </template>

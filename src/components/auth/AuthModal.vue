@@ -7,6 +7,7 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import Crown3D from '@/components/ui/Crown3D.vue'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
+import { INVITE_ONLY, joinCta } from '@/config'
 
 const { state, close, setMode, openTwofa } = useAuthModal()
 
@@ -125,15 +126,24 @@ interface Field {
   select?: boolean
 }
 
+// Ordered for a clear two-column read:
+//   Full Name | Username      (identity)
+//   Email     | Date of Birth (contact)
+//   Password  | Confirm       (credentials, side by side)
+//   Country   | Referral code
 const registerFields: Field[] = [
   { id: 'fullName', icon: 'user', placeholder: 'Full Name' },
-  { id: 'country', icon: 'globe', placeholder: 'Select Country', select: true },
+  { id: 'username', icon: 'user', placeholder: 'Username' },
   { id: 'email', icon: 'mail', placeholder: 'Email Address', type: 'email' },
   { id: 'dob', icon: 'calendar', placeholder: 'Date of Birth' },
   { id: 'password', icon: 'lock', placeholder: 'Password', password: true },
-  { id: 'username', icon: 'user', placeholder: 'Username' },
   { id: 'confirm', icon: 'lock', placeholder: 'Confirm Password', password: true },
-  { id: 'referral', icon: 'gift', placeholder: 'Invitation Code (Optional)' },
+  { id: 'country', icon: 'globe', placeholder: 'Select Country', select: true },
+  {
+    id: 'referral',
+    icon: 'gift',
+    placeholder: INVITE_ONLY ? 'Invitation Code (Optional)' : 'Referral Code (Optional)',
+  },
 ]
 
 const loginFields: Field[] = [
@@ -179,7 +189,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
         class="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
-        :aria-label="state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom'"
+        :aria-label="state.mode === 'register' ? joinCta : 'Enter the Kingdom'"
         @mousedown.self="close"
       >
           <div ref="cardEl" class="relative my-6 w-full max-w-5xl">
@@ -221,10 +231,10 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     THRONE
                   </h2>
                   <p class="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.45em] text-ink-muted">
-                    {{ state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom' }}
+                    {{ state.mode === 'register' ? joinCta : 'Enter the Kingdom' }}
                   </p>
                   <p
-                    v-if="state.mode === 'register'"
+                    v-if="state.mode === 'register' && INVITE_ONLY"
                     class="mt-3 max-w-xs font-sans text-[12px] leading-relaxed text-ink-dim"
                   >
                     Admission is by invitation. Submit your petition — the Court reviews every request, and the worthy are crowned within hours.
@@ -324,12 +334,12 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                   </div>
 
                   <GoldButton variant="solid" size="lg" block class="mt-3" @click="enterKingdom">
-                    {{ state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom' }}
+                    {{ state.mode === 'register' ? (INVITE_ONLY ? joinCta : 'Create My Account') : 'Enter the Kingdom' }}
                   </GoldButton>
                 </form>
 
-                <!-- Divider -->
-                <div class="my-5 flex items-center gap-4">
+                <!-- Divider (hidden when invite-only register has no social options) -->
+                <div v-if="!(state.mode === 'register' && INVITE_ONLY)" class="my-5 flex items-center gap-4">
                   <span class="h-px flex-1 bg-white/10" />
                   <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-ink-dim">
                     {{ state.mode === 'register' ? 'Or sign up with' : 'Or continue with' }}
@@ -337,8 +347,8 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                   <span class="h-px flex-1 bg-white/10" />
                 </div>
 
-                <!-- Socials -->
-                <div class="grid grid-cols-3 gap-3">
+                <!-- Socials (hidden under invite-only registration) -->
+                <div v-if="!(state.mode === 'register' && INVITE_ONLY)" class="grid grid-cols-3 gap-3">
                   <button
                     v-for="s in socials"
                     :key="s.label"
@@ -359,9 +369,9 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     </button>
                   </template>
                   <template v-else>
-                    Not yet admitted?
+                    {{ INVITE_ONLY ? 'Not yet admitted?' : 'Not a member yet?' }}
                     <button class="font-semibold uppercase tracking-[0.12em] text-gold-bright" @click="setMode('register')">
-                      Request an Invitation
+                      {{ joinCta }}
                     </button>
                   </template>
                 </p>

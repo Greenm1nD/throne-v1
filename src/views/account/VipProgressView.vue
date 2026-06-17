@@ -38,8 +38,8 @@ const perks = [
       </div>
 
       <div class="relative border-t border-border-gold/20 px-2 pt-8">
-        <div class="pointer-events-none absolute inset-x-4 top-[76px] hidden h-px bg-white/10 md:block" />
-        <div class="pointer-events-none absolute left-4 top-[76px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
+        <div class="pointer-events-none absolute inset-x-4 top-[80px] hidden h-px bg-white/10 md:block" />
+        <div class="pointer-events-none absolute left-4 top-[80px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
           :style="{ width: `${(activeIndex / (vipLevels.length - 1)) * 100}%` }" />
         <ol class="relative grid gap-6 sm:grid-cols-3 md:auto-cols-fr md:grid-flow-col md:gap-2">
           <li v-for="(lvl, i) in vipLevels" :key="lvl.name" class="flex flex-col items-center gap-1.5 text-center">

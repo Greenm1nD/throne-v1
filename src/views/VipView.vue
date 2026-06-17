@@ -44,7 +44,7 @@ useRevealEach(root)
             :class="
               t.featured
                 ? 'animate-softGlow border-gold/70 bg-gold/[0.05] xl:-translate-y-2'
-                : 'border-white/8 bg-card/80 hover:border-border-gold'
+                : 'border-white/5 bg-card/80 hover:border-border-gold'
             "
           >
             <div class="flex h-16 items-end justify-center">

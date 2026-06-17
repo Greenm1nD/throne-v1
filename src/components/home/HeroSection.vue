@@ -9,6 +9,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { useRouter } from 'vue-router'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
+import { joinCta } from '@/config'
 
 const router = useRouter()
 const { open } = useAuthModal()
@@ -177,7 +178,7 @@ onBeforeUnmount(() => {
 
       <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
         <GoldButton variant="solid" size="lg" @click="open('register')">
-          Request an Invitation
+          {{ joinCta }}
           <AppIcon name="arrowRight" :size="16" />
         </GoldButton>
         <GoldButton variant="outline" size="lg" @click="router.push('/vip')">Explore VIP</GoldButton>

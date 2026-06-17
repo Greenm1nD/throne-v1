@@ -6,6 +6,8 @@
  * layered underneath so pages look finished before the art is generated.
  */
 
+import { joinCta, finaleSub } from '@/config'
+
 export interface StripItem {
   label: string
   /** fontello glyph (preferred) */
@@ -62,7 +64,7 @@ export const casinoPage = {
       { icon: 'percent', title: 'Cashback Rewards' },
     ],
     ctaLead: 'Ready to become royalty?',
-    cta: 'Request an Invitation',
+    cta: joinCta,
   },
 }
 
@@ -352,7 +354,7 @@ export const kingdomPage = {
     title: 'The Kingdom',
     tagline: 'Built for the crowned',
     sub: 'The Kingdom is our exclusive loyalty universe. Rise through the ranks, unlock royal privileges, and reign over endless rewards.',
-    cta: 'Request an Invitation',
+    cta: joinCta,
     cta2: 'Kingdom Benefits',
     image: '/assets/images/page-kingdom-hero.webp',
     fallback: '/assets/images/hero-throne-room.webp',
@@ -405,7 +407,7 @@ export const kingdomPage = {
   ],
   finale: {
     title: "This isn't just loyalty. It's legacy.",
-    sub: 'Request your invitation. Claim your throne.',
-    cta: 'Request an Invitation',
+    sub: finaleSub,
+    cta: joinCta,
   },
 }

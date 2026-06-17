@@ -9,9 +9,12 @@ import { primaryNav } from '@/data/navigation'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAuth } from '@/composables/useAuth'
 import { useDiscreet } from '@/composables/useDiscreet'
+import { useWalletModal } from '@/composables/useWalletModal'
 import { user as member } from '@/data/account'
+import { joinCta } from '@/config'
 
 const { open } = useAuthModal()
+const { open: openWallet } = useWalletModal()
 const { isLoggedIn, user, balance, logout } = useAuth()
 const { discreet, toggle: toggleDiscreet, mask } = useDiscreet()
 const router = useRouter()
@@ -83,13 +86,6 @@ onMounted(() => {
 
       <!-- Right: actions -->
       <div class="flex items-center gap-3">
-        <button
-          class="group hidden h-10 w-10 place-items-center rounded-full border border-white/10 text-ink-muted transition-all duration-300 hover:border-gold hover:text-gold-bright sm:grid"
-          aria-label="Search"
-        >
-          <AppIcon name="search" :size="17" class="transition-transform duration-500 group-hover:rotate-[18deg]" />
-        </button>
-
         <!-- Guest cluster -->
         <template v-if="!isLoggedIn">
           <GoldButton variant="outline" size="sm" class="hidden sm:inline-flex" @click="open('login')">
@@ -101,7 +97,7 @@ onMounted(() => {
             class="cta-breathe hidden md:inline-flex"
             @click="open('register')"
           >
-            Request Invitation
+            {{ joinCta }}
           </GoldButton>
         </template>
 
@@ -117,9 +113,7 @@ onMounted(() => {
               <AppIcon :name="discreet ? 'eyeOff' : 'eye'" :size="15" />
             </button>
             <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
-            <RouterLink to="/account/deposit">
-              <GoldButton variant="solid" size="sm">Deposit</GoldButton>
-            </RouterLink>
+            <GoldButton variant="solid" size="sm" @click="openWallet('deposit')">Deposit</GoldButton>
           </div>
 
           <div class="relative">
@@ -202,7 +196,7 @@ onMounted(() => {
               Log In
             </GoldButton>
             <GoldButton variant="solid" size="md" block @click="open('register'); menuOpen = false">
-              Request an Invitation
+              {{ joinCta }}
             </GoldButton>
           </div>
           <div v-else class="mt-4 flex flex-col gap-3 pb-2">
@@ -218,9 +212,7 @@ onMounted(() => {
                 </button>
                 <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
               </div>
-              <RouterLink to="/account/deposit" @click="menuOpen = false">
-                <GoldButton variant="solid" size="sm">Deposit</GoldButton>
-              </RouterLink>
+              <GoldButton variant="solid" size="sm" @click="openWallet('deposit'); menuOpen = false">Deposit</GoldButton>
             </div>
             <RouterLink to="/account" @click="menuOpen = false">
               <GoldButton variant="outline" size="md" block>My Kingdom</GoldButton>

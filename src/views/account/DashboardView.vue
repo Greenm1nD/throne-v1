@@ -60,8 +60,8 @@ const recent = transactions.slice(0, 5)
         </template>
 
         <div class="relative px-2 pt-2">
-          <div class="pointer-events-none absolute inset-x-4 top-[44px] hidden h-px bg-white/10 md:block" />
-          <div class="pointer-events-none absolute left-4 top-[44px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
+          <div class="pointer-events-none absolute inset-x-4 top-[56px] hidden h-px bg-white/10 md:block" />
+          <div class="pointer-events-none absolute left-4 top-[56px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
             :style="{ width: `${(activeIndex / (vipLevels.length - 1)) * 100}%` }" />
           <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-2 overflow-x-auto [scrollbar-width:none]">
             <li v-for="(lvl, i) in vipLevels" :key="lvl.name" class="flex flex-col items-center gap-1.5">

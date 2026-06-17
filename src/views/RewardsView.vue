@@ -90,7 +90,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
           <article
             v-for="r in page.redeem"
             :key="r.title"
-            class="group cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/30 transition-all duration-300 hover:-translate-y-1 hover:border-border-gold"
+            class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border border-white/10 bg-black/30 transition-all duration-300 hover:-translate-y-1 hover:border-border-gold"
           >
             <div class="relative aspect-square overflow-hidden">
               <div
@@ -99,17 +99,17 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
                 :style="{ backgroundColor: '#0d0d10' }"
               />
             </div>
-            <div class="px-3 pb-3 pt-3 text-center">
+            <div class="flex flex-1 flex-col px-3 pb-3 pt-3 text-center">
               <h4 class="font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-champagne transition-colors group-hover:text-gold-bright">
                 {{ r.title }}
               </h4>
               <p class="mt-0.5 font-sans text-[10px] text-ink-dim">{{ r.sub }}</p>
             </div>
-            <div class="flex items-center justify-between gap-2 border-t border-white/5 bg-white/[0.02] px-3 py-1.5">
-              <span class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold/90">
+            <div class="mt-auto flex items-center justify-between gap-2 border-t border-white/5 bg-white/[0.02] px-3 py-1.5">
+              <span class="whitespace-nowrap font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold/90">
                 {{ r.tier }}
               </span>
-              <span class="font-sans text-[9px] font-semibold tabular-nums tracking-[0.08em] text-champagne">
+              <span class="whitespace-nowrap font-sans text-[9px] font-semibold tabular-nums tracking-[0.08em] text-champagne">
                 {{ r.points }}
               </span>
             </div>
