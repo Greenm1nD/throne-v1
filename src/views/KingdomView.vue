@@ -20,6 +20,10 @@ const { label: seasonEnds, finalDay } = useSeason()
 const { isClaimed, claim } = useQuests()
 const { isEntered } = useTournaments()
 
+// Live tournaments the member has entered → a contextual "you're competing" strip.
+const liveEntries = computed(() => page.tournaments.filter((t) => t.status === 'live' && isEntered(t.slug)))
+const myRank = (t: (typeof page.tournaments)[number]) => t.board.find((b) => b.you)?.rank
+
 const root = ref<HTMLElement | null>(null)
 const courtEl = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -302,6 +306,26 @@ function claimQuest(q: (typeof page.quests)[number]) {
         <p class="eyebrow mb-1">Compete for the realm</p>
         <h3 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Royal Tournaments</h3>
       </div>
+
+      <!-- Live HUD: you're competing now -->
+      <RouterLink
+        v-for="t in liveEntries"
+        :key="t.slug"
+        :to="`/kingdom/tournament/${t.slug}`"
+        class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-[#c2603f]/50 bg-gold/[0.05] px-5 py-3 transition-colors hover:border-gold"
+      >
+        <span class="flex items-center gap-1.5 rounded-full border border-[#c2603f]/60 bg-black/40 px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em] text-[#e89a7c]">
+          <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#e0552c] shadow-[0_0_8px_rgba(224,85,44,0.9)]" /> Live
+        </span>
+        <span class="font-sans text-[13px] text-ink-muted">
+          You're competing in <span class="font-semibold text-champagne">{{ t.name }}</span>
+          <template v-if="myRank(t)"> — currently <span class="font-display font-bold text-gold-gradient">#{{ myRank(t) }}</span></template>
+        </span>
+        <span class="font-sans text-[12px] text-ink-dim">{{ t.when }}</span>
+        <span class="ml-auto flex items-center gap-1 font-sans text-[11px] font-bold uppercase tracking-[0.12em] text-gold-bright">
+          Open <AppIcon name="arrowRight" :size="12" />
+        </span>
+      </RouterLink>
 
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <RouterLink
