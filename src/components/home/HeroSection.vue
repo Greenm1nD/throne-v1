@@ -15,6 +15,21 @@ const ctas = ref<HTMLElement | null>(null)
 const backdrop = ref<HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)
 
+// Scarcity signals — exclusivity is felt, not stated. A live presence count
+// that gently drifts, and a closing "intake" window, both tick on a timer.
+const online = ref(1247)
+const seatsLeft = ref(9)
+let secs = 2 * 3600 + 47 * 60 // ~2h47m until the next intake closes
+const countdown = ref('')
+let timer: ReturnType<typeof setInterval> | undefined
+
+function fmt() {
+  const h = Math.floor(secs / 3600)
+  const m = Math.floor((secs % 3600) / 60)
+  const s = secs % 60
+  countdown.value = `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`
+}
+
 let ticking = false
 function onScroll() {
   if (ticking) return
@@ -47,9 +62,24 @@ onMounted(() => {
     .from(ctas.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
 
   window.addEventListener('scroll', onScroll, { passive: true })
+
+  // Tick the live signals. Frozen for reduced-motion (still shown, just static).
+  fmt()
+  if (!reduce) {
+    timer = setInterval(() => {
+      if (secs > 0) secs--
+      fmt()
+      // Presence drifts within a tight band so it reads as live, not random.
+      const drift = Math.round((Math.random() - 0.45) * 4)
+      online.value = Math.min(1289, Math.max(1208, online.value + drift))
+    }, 1000)
+  }
 })
 
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (timer) clearInterval(timer)
+})
 </script>
 
 <template>
@@ -116,16 +146,37 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       </p>
     </div>
 
-    <!-- Bottom: CTAs over the marble floor -->
+    <!-- Bottom: scarcity signals + CTAs over the marble floor -->
     <div
       ref="ctas"
-      class="container-royal relative z-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+      class="container-royal relative z-10 flex flex-col items-center gap-5"
     >
-      <GoldButton variant="solid" size="lg">
-        Join the Kingdom
-        <AppIcon name="arrowRight" :size="16" />
-      </GoldButton>
-      <GoldButton variant="outline" size="lg">Explore VIP</GoldButton>
+      <!-- Live presence + closing intake window -->
+      <div
+        class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 rounded-full border border-border-gold/40 bg-black/45 px-5 py-2 backdrop-blur-sm"
+      >
+        <span class="flex items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-ink-muted">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] motion-safe:animate-pulse" />
+          <span class="font-semibold tabular-nums text-champagne">{{ online.toLocaleString() }}</span> nobles in the hall
+        </span>
+        <span class="hidden h-3 w-px bg-border-gold/40 sm:block" />
+        <span class="flex items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-ink-muted">
+          Next intake closes in
+          <span class="font-semibold tabular-nums text-champagne">{{ countdown }}</span>
+        </span>
+        <span class="hidden h-3 w-px bg-border-gold/40 sm:block" />
+        <span class="font-sans text-[11px] tracking-[0.04em] text-ink-muted">
+          Only <span class="font-semibold text-champagne">{{ seatsLeft }}</span> seats at the royal table
+        </span>
+      </div>
+
+      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+        <GoldButton variant="solid" size="lg">
+          Join the Kingdom
+          <AppIcon name="arrowRight" :size="16" />
+        </GoldButton>
+        <GoldButton variant="outline" size="lg">Explore VIP</GoldButton>
+      </div>
     </div>
   </section>
 </template>
