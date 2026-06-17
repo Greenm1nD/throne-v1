@@ -349,61 +349,110 @@ export const rewardsPage = {
 }
 
 // ── KINGDOM ────────────────────────────────────────────────────────────
+// The Kingdom is THRONE's living, competitive realm — a community hub of
+// leaderboards, tournaments, the running season and royal news. (The loyalty
+// programme itself — tiers & perks — lives on the VIP page; the points store
+// lives on Rewards.)
+export interface CourtNoble {
+  rank: number
+  name: string
+  tier: string
+  crown: string
+  points: number
+  /** places gained (+) or lost (−) since last update; 0 = held */
+  change: number
+  you?: boolean
+}
+
+export interface Tournament {
+  name: string
+  game: string
+  status: 'live' | 'upcoming'
+  prize: string
+  entry: string
+  players: number
+  when: string
+  image: string
+  fallback: string
+}
+
+export interface Decree {
+  tag: string
+  date: string
+  title: string
+  sub: string
+}
+
 export const kingdomPage = {
   hero: {
     title: 'The Kingdom',
-    tagline: 'Built for the crowned',
-    sub: 'The Kingdom is our exclusive loyalty universe. Rise through the ranks, unlock royal privileges, and reign over endless rewards.',
+    tagline: 'Where nobles compete for the crown',
+    sub: 'The living realm of THRONE. Climb the Royal Court, enter high-stakes tournaments, and carve your name into the season.',
     cta: joinCta,
-    cta2: 'Kingdom Benefits',
+    cta2: 'View the Court',
     image: '/assets/images/page-kingdom-hero.webp',
     fallback: '/assets/images/hero-throne-room.webp',
     posY: '55%',
   },
-  ranks: [
-    { name: 'Noble', range: '0 – 5,000 XP', crown: '/assets/images/crown-noble.png' },
-    { name: 'Baron', range: '5,001 – 15,000 XP', crown: '/assets/images/crown-baron.png' },
-    { name: 'Duke', range: '15,001 – 50,000 XP', crown: '/assets/images/crown-duke.png', active: true },
-    { name: 'Crown', range: '50,001 – 150,000 XP', crown: '/assets/images/crown-crown.png' },
-    { name: 'Sovereign', range: '150,001+ XP', crown: '/assets/images/crown-sovereign.png' },
-  ],
-  benefits: <BandItem[]>[
-    { icon: 'gift', title: 'Exclusive Bonuses', sub: 'Higher bonuses and tailored offers' },
-    { icon: 'percent', title: 'Cashback Rewards', sub: 'Up to 25% weekly cashback' },
-    { icon: 'bolt', title: 'Faster Payouts', sub: 'Priority withdrawals and processing' },
-    { icon: 'headset', title: 'VIP Support', sub: '24/7 priority dedicated support' },
-    { icon: 'trophy', title: 'Private Events', sub: 'Access to exclusive tournaments' },
-    { icon: 'calendar', title: 'Birthday Rewards', sub: 'Special gifts on your special day' },
-    { icon: 'star', title: 'Loyalty Points', sub: 'Earn points and climb the ranks' },
-  ],
-  status: {
-    level: 'Duke',
-    xp: 32450,
-    next: 50000,
-    toNext: '17,550 XP to reach CROWN',
+  season: {
+    chapter: 'Season III',
+    name: 'Season of the Lion',
+    pool: '€250,000',
+    ends: '14d 06h 22m',
+    note: 'Every wager earns crowns toward the season throne. The highest noble when the season closes is crowned Champion of the Realm — and keeps the prize for life.',
   },
-  cards: [
+  // The Royal Court — this season's live leaderboard.
+  court: <CourtNoble[]>[
+    { rank: 1, name: 'BlackKingV', tier: 'Sovereign', crown: '/assets/images/crown-sovereign.png', points: 1284500, change: 0 },
+    { rank: 2, name: 'LadyAurelia', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 1090250, change: 1 },
+    { rank: 3, name: 'DonRaphael', tier: 'Crown', crown: '/assets/images/crown-crown.png', points: 980700, change: -1 },
+    { rank: 4, name: 'KingMaker', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 742300, change: 2, you: true },
+    { rank: 5, name: 'IvoryTsar', tier: 'Duke', crown: '/assets/images/crown-duke.png', points: 698120, change: 0 },
+    { rank: 6, name: 'VelvetDuchess', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 511940, change: 3 },
+    { rank: 7, name: 'GoldenHawk', tier: 'Baron', crown: '/assets/images/crown-baron.png', points: 470310, change: -2 },
+    { rank: 8, name: 'NightProvost', tier: 'Noble', crown: '/assets/images/crown-noble.png', points: 388600, change: 1 },
+  ],
+  // Royal Tournaments — live & upcoming.
+  tournaments: <Tournament[]>[
     {
-      title: 'The Royal Vault',
-      sub: 'Collect loyalty points and exchange for extraordinary rewards.',
-      cta: 'Explore Rewards',
-      image: '/assets/images/kingdom-vault.webp',
-      fallback: '/assets/images/hall-biggest-jackpot.webp',
-    },
-    {
-      title: 'Exclusive Tournaments',
-      sub: 'Compete in high-stakes tournaments and win incredible prizes.',
-      cta: 'View Tournaments',
-      image: '/assets/images/kingdom-tournaments.webp',
+      name: 'The Midnight Joust',
+      game: 'Live Blackjack',
+      status: 'live',
+      prize: '€50,000',
+      entry: '5,000 pts',
+      players: 412,
+      when: 'Ends in 1h 40m',
+      image: '/assets/images/live-blackjack.webp',
       fallback: '/assets/images/hall-monthly-champion.webp',
     },
     {
-      title: 'Kingdom News',
-      sub: 'Stay updated with the latest news, offers and events.',
-      cta: 'Discover More',
-      image: '/assets/images/kingdom-news.webp',
-      fallback: '/assets/images/hall-vip-member.webp',
+      name: 'Crown Roulette Royale',
+      game: 'Roulette',
+      status: 'upcoming',
+      prize: '€120,000',
+      entry: '12,000 pts',
+      players: 268,
+      when: 'Starts in 3h 05m',
+      image: '/assets/images/game-roulette.webp',
+      fallback: '/assets/images/casino-jackpot.webp',
     },
+    {
+      name: "The Sovereign's Cup",
+      game: 'High-Roller Slots',
+      status: 'upcoming',
+      prize: '€500,000',
+      entry: 'Crown tier & above',
+      players: 96,
+      when: 'Opens Friday, 20:00',
+      image: '/assets/images/casino-jackpot.webp',
+      fallback: '/assets/images/hall-biggest-jackpot.webp',
+    },
+  ],
+  // Royal Decrees — kingdom news & happenings.
+  decrees: <Decree[]>[
+    { tag: 'Decree', date: 'Today', title: 'Season of the Lion has begun', sub: 'Crowns count double on every live table through the weekend.' },
+    { tag: 'Event', date: 'In 2 days', title: 'The Masquerade Ball returns', sub: 'An invite-only night for Crown tier and above — Vienna, June 28.' },
+    { tag: 'Champion', date: 'Last week', title: 'DonRaphael claimed the Diamond Joust', sub: 'A €75,000 pot and a place in the Hall of Kings.' },
   ],
   finale: {
     title: "This isn't just loyalty. It's legacy.",

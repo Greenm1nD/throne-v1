@@ -4,15 +4,15 @@ import PageHero from '@/components/page/PageHero.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { rewardsPage as page, kingdomPage } from '@/data/pages'
+import { rewardsPage as page, vipPage } from '@/data/pages'
 import { useRevealEach } from '@/composables/useReveal'
 
-// Loyalty tiers reuse the kingdom rank ladder (same levels, same crowns).
+// Loyalty tiers reuse the VIP tier ladder (same levels, same crowns).
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 
-const ranks = kingdomPage.ranks
-const activeIndex = ranks.findIndex((r) => r.active)
+const ranks = vipPage.tiers
+const activeIndex = ranks.findIndex((r) => r.featured)
 const fillWidth = (activeIndex / (ranks.length - 1)) * 100
 
 const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 100))
@@ -47,12 +47,12 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
                   :src="r.crown"
                   :alt="`${r.name} crown`"
                   class="w-auto object-contain transition-all"
-                  :class="r.active ? 'h-16 drop-shadow-[0_0_18px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-12' : 'h-12 opacity-60'"
+                  :class="i === activeIndex ? 'h-16 drop-shadow-[0_0_18px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-12' : 'h-12 opacity-60'"
                 />
               </div>
               <span
                 class="font-sans text-[11px] font-bold uppercase tracking-[0.18em]"
-                :class="r.active ? 'text-gold-bright' : 'text-ink-muted'"
+                :class="i === activeIndex ? 'text-gold-bright' : 'text-ink-muted'"
               >
                 {{ r.name }}
               </span>
