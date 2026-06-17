@@ -3,6 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import RotatingCrownRing from './RotatingCrownRing.vue'
 import FloorSmoke from './FloorSmoke.vue'
+import Crown3D from '@/components/ui/Crown3D.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { assets } from '@/data/assets'
@@ -93,10 +94,10 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     <!-- Top: title block, seated in the dark upper band above the throne -->
     <div ref="content" class="container-royal relative z-10 flex flex-col items-center text-center">
       <div ref="eyebrow" class="mb-2">
-        <img
-          src="/assets/images/crown-duke.png"
-          alt=""
-          class="mx-auto h-12 w-auto drop-shadow-[0_4px_16px_rgba(212,175,55,0.5)]"
+        <Crown3D
+          src="/assets/models/crown.glb"
+          poster="/assets/images/crown-duke.png"
+          :size="150"
         />
       </div>
 

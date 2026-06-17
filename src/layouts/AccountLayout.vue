@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import AccGlyph from '@/components/account/AccGlyph.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
@@ -13,8 +13,12 @@ import { useAuth } from '@/composables/useAuth'
  * flow (sticky on desktop, off-canvas drawer on mobile).
  */
 const router = useRouter()
+const route = useRoute()
 const auth = useAuth()
 const menuOpen = ref(false) // mobile drawer
+
+// The button for the page you're on reads as active (solid); the other is outline.
+const onWithdraw = computed(() => route.path === '/account/withdraw')
 
 function logout() {
   menuOpen.value = false
@@ -43,10 +47,10 @@ function logout() {
           <p class="mt-4 font-display text-xl font-bold tabular-nums text-gold-gradient">{{ balances.total }}</p>
           <div class="mt-3 grid grid-cols-2 gap-2">
             <RouterLink to="/account/deposit" @click="menuOpen = false">
-              <GoldButton variant="solid" size="sm" block>Deposit</GoldButton>
+              <GoldButton :variant="onWithdraw ? 'outline' : 'solid'" size="sm" block>Deposit</GoldButton>
             </RouterLink>
             <RouterLink to="/account/withdraw" @click="menuOpen = false">
-              <GoldButton variant="outline" size="sm" block>Withdraw</GoldButton>
+              <GoldButton :variant="onWithdraw ? 'solid' : 'outline'" size="sm" block>Withdraw</GoldButton>
             </RouterLink>
           </div>
         </div>

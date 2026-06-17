@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { playRoyalGate } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import CrownBadge from '@/components/ui/CrownBadge.vue'
+import Crown3D from '@/components/ui/Crown3D.vue'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
 
@@ -138,7 +138,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
             <!-- Ornate crown badge over the top edge (outside the clip) -->
             <div class="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
               <div ref="badgeEl">
-                <CrownBadge :size="174" />
+                <Crown3D src="/assets/models/coin.glb" poster="/assets/images/throne-logo-mark.webp" :size="130" :radius="155" />
               </div>
             </div>
 

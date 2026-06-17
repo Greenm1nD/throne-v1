@@ -17,7 +17,7 @@ export interface ImageAsset {
 
 export const assets = {
   logoMark: {
-    src: '/assets/images/throne-logo-mark.png',
+    src: '/assets/images/throne-logo-mark.webp',
     alt: 'THRONE crown and T monogram',
     recommended: 'transparent PNG, portrait ~315x373',
   },
@@ -37,7 +37,7 @@ export const assets = {
     recommended: '1920x720 — used as the hero video poster / fallback',
   },
   authBadge: {
-    src: '/assets/images/auth-badge.png',
+    src: '/assets/images/auth-badge.webp',
     alt: 'THRONE crown emblem',
     recommended: 'transparent PNG, square ~600x600, ornate gold ring + crown/T',
   },

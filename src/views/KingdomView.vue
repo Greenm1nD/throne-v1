@@ -158,7 +158,7 @@ const statusCrown = computed(
         data-reveal
       >
         <div class="flex items-center gap-5">
-          <img src="/assets/images/throne-logo-mark.png" alt="" class="h-12 w-auto opacity-90" />
+          <img src="/assets/images/throne-logo-mark.webp" alt="" class="h-12 w-auto opacity-90" />
           <div>
             <p class="font-display text-lg font-bold uppercase tracking-[0.12em] text-gold-gradient sm:text-xl">
               {{ page.finale.title }}

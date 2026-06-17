@@ -14,7 +14,7 @@ const leftCols = footerNav.slice(0, 2)
 const rightCols = footerNav.slice(2)
 
 // Lion crest artwork (includes THRONE + tagline baked in). Until the file is
-// dropped at /assets/images/footer-crest.png we fall back to badge + text.
+// dropped at /assets/images/footer-crest.webp we fall back to badge + text.
 const crestFailed = ref(false)
 </script>
 
@@ -69,7 +69,7 @@ const crestFailed = ref(false)
           <!-- Lion crest lockup (static — no animation by design) -->
           <img
             v-if="!crestFailed"
-            :src="'/assets/images/footer-crest.png'"
+            :src="'/assets/images/footer-crest.webp'"
             alt="THRONE — Built for the Crowned"
             class="w-[280px] drop-shadow-[0_10px_40px_rgba(212,175,55,0.25)]"
             loading="lazy"

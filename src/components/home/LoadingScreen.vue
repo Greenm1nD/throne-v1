@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
-import { assets } from '@/data/assets'
 
 const emit = defineEmits<{ done: [] }>()
+
+// 3D crown fades in over the PNG poster once the model is ready.
+const crownReady = ref(false)
+
+// Backstop: the intro must never stick, even if rAF/GSAP is starved (e.g. by
+// the WebGL crown decoding). Whichever fires first wins; finish is idempotent.
+let safety = 0
+let finished = false
+function finish() {
+  if (finished) return
+  finished = true
+  clearTimeout(safety)
+  emit('done')
+}
 
 const screen = ref<HTMLElement | null>(null)
 const stage = ref<HTMLElement | null>(null)
@@ -43,6 +56,13 @@ onMounted(() => {
     return
   }
 
+  // Define <model-viewer> ASAP; the poster covers any gap before it's ready.
+  import('@google/model-viewer')
+
+  // Hard cap on the whole intro (timeline runs ~3.45s) — setTimeout fires even
+  // when rAF is throttled, so the loader can never trap the user.
+  safety = window.setTimeout(finish, 4500)
+
   const root = stage.value!
   const dots = Array.from(root.querySelectorAll<HTMLElement>('.spark-dot'))
   const gems = Array.from(root.querySelectorAll<HTMLElement>('.crest-diamond'))
@@ -51,7 +71,7 @@ onMounted(() => {
   dots.forEach((d, i) => gsap.set(d, { x: particles[i].x, y: particles[i].y }))
   gsap.set(gems, { rotation: 45 })
 
-  const tl = gsap.timeline({ onComplete: () => emit('done') })
+  const tl = gsap.timeline({ onComplete: finish })
 
   // 1–2 · First spark
   tl.fromTo(spark.value, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' }, 0.1)
@@ -91,6 +111,8 @@ onMounted(() => {
   // 14–15 · Dissolve into the homepage
   tl.to(screen.value, { opacity: 0, duration: 0.45, ease: 'power2.in' }, 3.0)
 })
+
+onBeforeUnmount(() => clearTimeout(safety))
 </script>
 
 <template>
@@ -158,13 +180,46 @@ onMounted(() => {
           :style="{ top: d.top, left: d.left, marginLeft: '-6px', marginTop: '-6px', boxShadow: '0 0 8px rgba(245,215,122,0.6)' }"
         />
 
-        <!-- Crown + T monogram -->
-        <img
+        <!-- THRONE logo mark: live 3D over a PNG poster fallback -->
+        <div
           ref="mark"
-          :src="assets.logoMark.src"
-          alt=""
-          class="absolute left-1/2 top-1/2 h-[96px] w-auto -translate-x-1/2 -translate-y-1/2 opacity-0 drop-shadow-[0_4px_24px_rgba(212,175,55,0.5)]"
-        />
+          class="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 opacity-0"
+        >
+          <!-- Round champagne glow behind the coin (replaces the square-clipping drop-shadow) -->
+          <span
+            v-if="crownReady"
+            class="pointer-events-none absolute inset-0 z-0"
+            style="background: radial-gradient(circle, rgba(245,215,122,0.4), rgba(245,215,122,0.1) 42%, transparent 64%); filter: blur(6px)"
+            aria-hidden="true"
+          />
+          <img
+            v-show="!crownReady"
+            src="/assets/images/throne-logo-mark.webp"
+            alt=""
+            class="absolute inset-0 h-full w-full object-contain drop-shadow-[0_4px_24px_rgba(212,175,55,0.5)]"
+          />
+          <model-viewer
+            src="/assets/models/coin.glb"
+            loading="eager"
+            reveal="auto"
+            auto-rotate
+            auto-rotate-delay="0"
+            rotation-per-second="120deg"
+            interaction-prompt="none"
+            camera-orbit="0deg 80deg 155%"
+            min-camera-orbit="auto 80deg auto"
+            max-camera-orbit="auto 80deg auto"
+            shadow-intensity="0"
+            exposure="1.35"
+            tone-mapping="aces"
+            environment-image="neutral"
+            field-of-view="28deg"
+            class="absolute inset-0 z-[1] h-full w-full transition-opacity duration-500"
+            :class="crownReady ? 'opacity-100' : 'opacity-0'"
+            style="background: transparent; --poster-color: transparent"
+            @load="crownReady = true"
+          />
+        </div>
       </div>
 
       <!-- Tagline -->
