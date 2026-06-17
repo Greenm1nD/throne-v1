@@ -10,14 +10,52 @@ import { assets } from '@/data/assets'
 
 const { state, close, setMode, openTwofa } = useAuthModal()
 
+// Per-field password reveal toggles (keyed by field id).
+const reveal = reactive<Record<string, boolean>>({})
+
+// Lightweight client-side validation (prototype — the real backend revalidates).
+const values = reactive<Record<string, string>>({})
+const errors = reactive<Record<string, string>>({})
+const terms = ref(false)
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
+function clearError(id: string) {
+  if (errors[id]) delete errors[id]
+}
+
+function validate(): boolean {
+  Object.keys(errors).forEach((k) => delete errors[k])
+  const fields = state.mode === 'register' ? registerFields : loginFields
+  for (const f of fields) {
+    if (f.select) continue
+    const v = (values[f.id] ?? '').trim()
+    if (f.id === 'referral') continue // optional
+    if (!v) {
+      errors[f.id] = 'Required'
+      continue
+    }
+    if ((f.type === 'email' || f.id === 'loginEmail') && !EMAIL_RE.test(v)) {
+      errors[f.id] = 'Enter a valid email'
+    }
+    if (f.password && f.id === 'password' && v.length < 6) {
+      errors[f.id] = 'At least 6 characters'
+    }
+  }
+  if (state.mode === 'register') {
+    if (values.password && values.confirm && values.password !== values.confirm) {
+      errors.confirm = 'Passwords do not match'
+    }
+    if (!terms.value) errors.terms = 'Please accept the Terms to continue'
+  }
+  return Object.keys(errors).length === 0
+}
+
 // Login chain: credentials → 2FA seal → auth.login() (see TwoFaModal).
 function enterKingdom() {
+  if (!validate()) return
   close()
   openTwofa()
 }
-
-// Per-field password reveal toggles (keyed by field id).
-const reveal = reactive<Record<string, boolean>>({})
 
 const cardEl = ref<HTMLElement | null>(null)
 const badgeEl = ref<HTMLElement | null>(null)
@@ -31,6 +69,10 @@ watch(
   () => state.open,
   async (open) => {
     if (!open) return
+    // Fresh slate each open
+    Object.keys(errors).forEach((k) => delete errors[k])
+    Object.keys(values).forEach((k) => delete values[k])
+    terms.value = false
     playRoyalGate()
     await nextTick()
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -59,6 +101,12 @@ watch(
         '-=0.38',
       )
   },
+)
+
+// Clear validation when switching login ⇄ register.
+watch(
+  () => state.mode,
+  () => Object.keys(errors).forEach((k) => delete errors[k]),
 )
 
 // Escape closes the dialog.
@@ -210,10 +258,21 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                       </select>
                       <input
                         v-else
+                        v-model="values[f.id]"
                         :type="f.password ? (reveal[f.id] ? 'text' : 'password') : f.type ?? 'text'"
                         :placeholder="f.placeholder"
-                        class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-11 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none"
+                        :aria-invalid="!!errors[f.id]"
+                        class="h-12 w-full rounded-lg border bg-black/40 pl-11 pr-11 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
+                        :class="errors[f.id] ? 'border-[#c2603f] focus:border-[#d9774f]' : 'border-border-gold/60 focus:border-gold'"
+                        @input="clearError(f.id)"
                       />
+                      <!-- inline error -->
+                      <p
+                        v-if="errors[f.id]"
+                        class="mt-1 pl-1 font-sans text-[11px] text-[#d98a6a]"
+                      >
+                        {{ errors[f.id] }}
+                      </p>
                       <!-- select chevron -->
                       <AppIcon
                         v-if="f.select"
@@ -237,12 +296,18 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                   <!-- Register consents -->
                   <div v-if="state.mode === 'register'" class="mt-1 flex flex-col gap-2">
                     <label class="flex items-center gap-2.5 text-[13px] text-ink-muted">
-                      <input type="checkbox" class="peer sr-only" />
-                      <span class="grid h-4 w-4 place-items-center rounded border border-border-gold text-transparent peer-checked:bg-gold peer-checked:text-bg">
+                      <input v-model="terms" type="checkbox" class="peer sr-only" @change="clearError('terms')" />
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-transparent peer-checked:bg-gold peer-checked:text-bg"
+                        :class="errors.terms ? 'border-[#c2603f]' : 'border-border-gold'"
+                      >
                         <AppIcon name="check" :size="11" />
                       </span>
                       I agree to the <span class="text-gold-bright">Terms &amp; Conditions</span>
                     </label>
+                    <p v-if="errors.terms" class="pl-6 font-sans text-[11px] text-[#d98a6a]">
+                      {{ errors.terms }}
+                    </p>
                     <label class="flex items-center gap-2.5 text-[13px] text-ink-muted">
                       <input type="checkbox" class="peer sr-only" checked />
                       <span class="grid h-4 w-4 place-items-center rounded border border-border-gold text-transparent peer-checked:bg-gold peer-checked:text-bg">
