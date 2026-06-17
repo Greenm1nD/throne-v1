@@ -134,7 +134,7 @@ const rightCols = footerNav.slice(2)
             Enter a World of Privilege
           </p>
           <GoldButton variant="outline" size="md" @click="open('register')">
-            Join the Kingdom <AppIcon name="arrowRight" :size="14" />
+            Request an Invitation <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>
 

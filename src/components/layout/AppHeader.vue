@@ -101,7 +101,7 @@ onMounted(() => {
             class="cta-breathe hidden md:inline-flex"
             @click="open('register')"
           >
-            Join the Kingdom
+            Request Invitation
           </GoldButton>
         </template>
 
@@ -202,7 +202,7 @@ onMounted(() => {
               Log In
             </GoldButton>
             <GoldButton variant="solid" size="md" block @click="open('register'); menuOpen = false">
-              Join the Kingdom
+              Request an Invitation
             </GoldButton>
           </div>
           <div v-else class="mt-4 flex flex-col gap-3 pb-2">

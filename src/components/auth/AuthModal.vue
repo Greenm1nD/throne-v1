@@ -133,7 +133,7 @@ const registerFields: Field[] = [
   { id: 'password', icon: 'lock', placeholder: 'Password', password: true },
   { id: 'username', icon: 'user', placeholder: 'Username' },
   { id: 'confirm', icon: 'lock', placeholder: 'Confirm Password', password: true },
-  { id: 'referral', icon: 'gift', placeholder: 'Referral Code (Optional)' },
+  { id: 'referral', icon: 'gift', placeholder: 'Invitation Code (Optional)' },
 ]
 
 const loginFields: Field[] = [
@@ -179,7 +179,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
         class="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
-        :aria-label="state.mode === 'register' ? 'Join the Kingdom' : 'Enter the Kingdom'"
+        :aria-label="state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom'"
         @mousedown.self="close"
       >
           <div ref="cardEl" class="relative my-6 w-full max-w-5xl">
@@ -221,7 +221,13 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     THRONE
                   </h2>
                   <p class="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.45em] text-ink-muted">
-                    {{ state.mode === 'register' ? 'Join the Kingdom' : 'Enter the Kingdom' }}
+                    {{ state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom' }}
+                  </p>
+                  <p
+                    v-if="state.mode === 'register'"
+                    class="mt-3 max-w-xs font-sans text-[12px] leading-relaxed text-ink-dim"
+                  >
+                    Admission is by invitation. Submit your petition — the Court reviews every request, and the worthy are crowned within hours.
                   </p>
                 </div>
 
@@ -318,7 +324,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                   </div>
 
                   <GoldButton variant="solid" size="lg" block class="mt-3" @click="enterKingdom">
-                    {{ state.mode === 'register' ? 'Create My Account' : 'Enter the Kingdom' }}
+                    {{ state.mode === 'register' ? 'Request an Invitation' : 'Enter the Kingdom' }}
                   </GoldButton>
                 </form>
 
@@ -353,9 +359,9 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                     </button>
                   </template>
                   <template v-else>
-                    Not a member yet?
+                    Not yet admitted?
                     <button class="font-semibold uppercase tracking-[0.12em] text-gold-bright" @click="setMode('register')">
-                      Join the Kingdom
+                      Request an Invitation
                     </button>
                   </template>
                 </p>

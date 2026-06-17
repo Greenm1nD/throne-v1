@@ -6,7 +6,12 @@ import FloorSmoke from './FloorSmoke.vue'
 import Crown3D from '@/components/ui/Crown3D.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import { useRouter } from 'vue-router'
+import { useAuthModal } from '@/composables/useAuthModal'
 import { assets } from '@/data/assets'
+
+const router = useRouter()
+const { open } = useAuthModal()
 
 const eyebrow = ref<HTMLElement | null>(null)
 const heading = ref<HTMLElement | null>(null)
@@ -171,11 +176,11 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-        <GoldButton variant="solid" size="lg">
-          Join the Kingdom
+        <GoldButton variant="solid" size="lg" @click="open('register')">
+          Request an Invitation
           <AppIcon name="arrowRight" :size="16" />
         </GoldButton>
-        <GoldButton variant="outline" size="lg">Explore VIP</GoldButton>
+        <GoldButton variant="outline" size="lg" @click="router.push('/vip')">Explore VIP</GoldButton>
       </div>
     </div>
   </section>

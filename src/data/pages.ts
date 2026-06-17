@@ -62,7 +62,7 @@ export const casinoPage = {
       { icon: 'percent', title: 'Cashback Rewards' },
     ],
     ctaLead: 'Ready to become royalty?',
-    cta: 'Join the Kingdom',
+    cta: 'Request an Invitation',
   },
 }
 
@@ -347,7 +347,7 @@ export const kingdomPage = {
     title: 'The Kingdom',
     tagline: 'Built for the crowned',
     sub: 'The Kingdom is our exclusive loyalty universe. Rise through the ranks, unlock royal privileges, and reign over endless rewards.',
-    cta: 'Join the Kingdom',
+    cta: 'Request an Invitation',
     cta2: 'Kingdom Benefits',
     image: '/assets/images/page-kingdom-hero.webp',
     fallback: '/assets/images/hero-throne-room.webp',
@@ -400,7 +400,7 @@ export const kingdomPage = {
   ],
   finale: {
     title: "This isn't just loyalty. It's legacy.",
-    sub: 'Join the Kingdom. Claim your throne.',
-    cta: 'Join the Kingdom',
+    sub: 'Request your invitation. Claim your throne.',
+    cta: 'Request an Invitation',
   },
 }
