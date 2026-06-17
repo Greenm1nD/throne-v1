@@ -32,6 +32,19 @@ html.premium body {
   }
 }
 
+/* Card hover refinement: a softer lift + faint champagne glow instead of a hard
+   gold border, so cards read as premium and less repetitive. (Scoped to the
+   custom .card-lux class only — no utility overrides.) */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .card-lux:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 22px 60px -28px rgba(0, 0, 0, 0.9),
+      0 0 0 1px rgba(245, 215, 122, 0.22),
+      0 0 30px -6px rgba(245, 215, 122, 0.16);
+  }
+}
+
 /* Floating Command Bar entrance (slide up + fade). */
 @media (prefers-reduced-motion: no-preference) {
   html.premium .pm-cmdbar-enter-active,

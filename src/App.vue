@@ -10,6 +10,7 @@ import WalletModal from '@/components/wallet/WalletModal.vue'
 import FloatingCommandBar from '@/components/ui/FloatingCommandBar.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
+import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
 
 const ready = ref(false)
@@ -32,7 +33,8 @@ onMounted(() => {
       </Transition>
     </RouterView>
   </div>
-  <AppFooter v-show="ready" />
+  <AppFooterPremium v-if="premiumEnabled" v-show="ready" />
+  <AppFooter v-else v-show="ready" />
   <AmbientAudio />
   <AuthModal />
   <TwoFaModal />
