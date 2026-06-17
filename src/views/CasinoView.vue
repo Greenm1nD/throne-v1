@@ -8,9 +8,9 @@ import RollingNumber from '@/components/ui/RollingNumber.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { casinoPage as page } from '@/data/pages'
-import { useAuthModal } from '@/composables/useAuthModal'
+import { useEnter } from '@/composables/useEnter'
 
-const { open } = useAuthModal()
+const { enter } = useEnter()
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -111,7 +111,7 @@ onBeforeUnmount(() => clearInterval(tick))
           <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-champagne">
             {{ page.vipBand.ctaLead }}
           </p>
-          <GoldButton variant="solid" size="md" @click="open('register')">
+          <GoldButton variant="solid" size="md" @click="enter('/vip')">
             {{ page.vipBand.cta }} <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>

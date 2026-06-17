@@ -4,8 +4,8 @@ import PageHero from '@/components/page/PageHero.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage as page } from '@/data/pages'
-import { useAuthModal } from '@/composables/useAuthModal'
 import { useAuth } from '@/composables/useAuth'
+import { useEnter } from '@/composables/useEnter'
 import { useRevealEach } from '@/composables/useReveal'
 import { useSeason } from '@/composables/useSeason'
 import { useQuests } from '@/composables/useQuests'
@@ -13,8 +13,8 @@ import { useTournaments } from '@/composables/useTournaments'
 import NobleHouses from '@/components/kingdom/NobleHouses.vue'
 import HallOfKings from '@/components/kingdom/HallOfKings.vue'
 
-const { open } = useAuthModal()
 const { isLoggedIn } = useAuth()
+const { enter, enterLabel } = useEnter()
 const { label: seasonEnds, finalDay } = useSeason()
 const { isClaimed, claim } = useQuests()
 const { isEntered } = useTournaments()
@@ -62,7 +62,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
 
 <template>
   <main ref="root" class="pb-4">
-    <PageHero v-bind="page.hero" @primary="open('register')" @secondary="scrollToCourt" />
+    <PageHero v-bind="page.hero" @primary="enter()" @secondary="scrollToCourt" />
 
     <!-- Season banner -->
     <section class="container-royal relative z-20 -mt-9">
@@ -95,7 +95,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
               <p class="mt-1 font-display text-xl font-bold tabular-nums" :class="finalDay ? 'text-[#e89a7c]' : 'text-champagne'">{{ seasonEnds }}</p>
             </div>
           </div>
-          <GoldButton variant="solid" size="md" class="w-full lg:w-auto" @click="open('register')">
+          <GoldButton variant="solid" size="md" class="w-full lg:w-auto" @click="enter()">
             <AppIcon name="crown" :size="15" /> Enter the Season
           </GoldButton>
         </div>
@@ -241,11 +241,11 @@ function claimQuest(q: (typeof page.quests)[number]) {
         <h3 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Royal Quests</h3>
       </div>
 
-      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div class="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div
           v-for="q in page.quests"
           :key="q.id"
-          class="card-lux flex flex-col gap-3 p-5 hover:translate-y-0"
+          class="card-lux flex w-[290px] shrink-0 snap-start flex-col gap-3 p-5 hover:translate-y-0"
           data-reveal
         >
           <div class="flex items-start justify-between gap-3">
@@ -409,8 +409,8 @@ function claimQuest(q: (typeof page.quests)[number]) {
             </p>
           </div>
         </div>
-        <GoldButton variant="solid" size="lg" @click="open('register')">
-          <AppIcon name="crown" :size="16" /> {{ page.finale.cta }}
+        <GoldButton variant="solid" size="lg" @click="enter()">
+          <AppIcon name="crown" :size="16" /> {{ isLoggedIn ? enterLabel : page.finale.cta }}
         </GoldButton>
       </div>
     </section>

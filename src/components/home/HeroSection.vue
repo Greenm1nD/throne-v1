@@ -7,12 +7,11 @@ import Crown3D from '@/components/ui/Crown3D.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useRouter } from 'vue-router'
-import { useAuthModal } from '@/composables/useAuthModal'
+import { useEnter } from '@/composables/useEnter'
 import { assets } from '@/data/assets'
-import { joinCta } from '@/config'
 
 const router = useRouter()
-const { open } = useAuthModal()
+const { enter, enterLabel } = useEnter()
 
 const eyebrow = ref<HTMLElement | null>(null)
 const heading = ref<HTMLElement | null>(null)
@@ -177,8 +176,8 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-        <GoldButton variant="solid" size="lg" @click="open('register')">
-          {{ joinCta }}
+        <GoldButton variant="solid" size="lg" @click="enter()">
+          {{ enterLabel }}
           <AppIcon name="arrowRight" :size="16" />
         </GoldButton>
         <GoldButton variant="outline" size="lg" @click="router.push('/vip')">Explore VIP</GoldButton>

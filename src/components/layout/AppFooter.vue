@@ -4,10 +4,9 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { footerNav, paymentMethods } from '@/data/navigation'
-import { useAuthModal } from '@/composables/useAuthModal'
-import { joinCta } from '@/config'
+import { useEnter } from '@/composables/useEnter'
 
-const { open } = useAuthModal()
+const { enter, enterLabel } = useEnter()
 
 // Column order around the centre crest: [Throne, Experience] crest [Support, Connect]
 const leftCols = footerNav.slice(0, 2)
@@ -134,8 +133,8 @@ const rightCols = footerNav.slice(2)
           <p class="font-display text-xs font-semibold uppercase tracking-[0.3em] text-champagne">
             Enter a World of Privilege
           </p>
-          <GoldButton variant="outline" size="md" @click="open('register')">
-            {{ joinCta }} <AppIcon name="arrowRight" :size="14" />
+          <GoldButton variant="outline" size="md" @click="enter()">
+            {{ enterLabel }} <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>
 

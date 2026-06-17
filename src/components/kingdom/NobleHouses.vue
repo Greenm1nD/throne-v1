@@ -20,11 +20,11 @@ const leader = computed(() => Math.max(...houses.map((h) => h.crowns)))
       </p>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2">
+    <div class="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <div
         v-for="(h, i) in houses"
         :key="h.name"
-        class="card-lux flex items-center gap-4 p-5 hover:translate-y-0"
+        class="card-lux flex w-[360px] shrink-0 snap-start items-center gap-4 p-5 hover:translate-y-0"
         :class="h.you && 'ring-1 ring-gold/40'"
         data-reveal
       >

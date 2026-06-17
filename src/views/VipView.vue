@@ -7,9 +7,9 @@ import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { vipPage as page } from '@/data/pages'
-import { useAuthModal } from '@/composables/useAuthModal'
+import { useEnter } from '@/composables/useEnter'
 
-const { open } = useAuthModal()
+const { enter } = useEnter()
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -17,7 +17,7 @@ useRevealEach(root)
 
 <template>
   <main ref="root" class="pb-4">
-    <PageHero v-bind="page.hero" @primary="open('register')" />
+    <PageHero v-bind="page.hero" @primary="enter()" />
 
     <CategoryStrip :items="page.benefits" />
 
@@ -125,7 +125,7 @@ useRevealEach(root)
         </div>
 
         <div class="flex justify-center">
-          <GoldButton variant="solid" size="md" @click="open('register')">
+          <GoldButton variant="solid" size="md" @click="enter('/account/concierge')">
             Request Your Host <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>
