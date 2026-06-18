@@ -356,6 +356,8 @@ html.mobile-polish body {
   html.mobile-polish .treasury-content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     width: 100%;
     max-width: none;
     min-height: 360px;
