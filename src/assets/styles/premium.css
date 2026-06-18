@@ -45,6 +45,34 @@ html.premium body {
   }
 }
 
+/* Ambient hero light-sweep: a slow champagne gradient drifts across section-page
+   hero art so the static images feel alive — no video, no credits. Very low
+   contrast; desktop heroes only; frozen for reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-hero-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(245, 215, 122, 0.06) 50%,
+      transparent 60%
+    );
+    background-size: 240% 100%;
+    animation: pm-hero-sweep 16s ease-in-out infinite;
+  }
+  @keyframes pm-hero-sweep {
+    0% {
+      background-position: 150% 0;
+    }
+    100% {
+      background-position: -50% 0;
+    }
+  }
+}
+
 /* Floating Command Bar entrance (slide up + fade). */
 @media (prefers-reduced-motion: no-preference) {
   html.premium .pm-cmdbar-enter-active,

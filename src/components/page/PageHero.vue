@@ -3,6 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import { premiumEnabled } from '@/composables/usePremiumMotion'
 
 /**
  * Shared cinematic hero for section pages: right-weighted artwork,
@@ -50,9 +51,26 @@ function onScroll() {
 
 const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%), url('${props.image}'), url('${props.fallback}')`
 
+// Cinemagraph plays only with the premium flag + no reduced-motion, and only
+// while the hero is on screen (perf — paused below the fold). Poster (the still)
+// shows otherwise, so the stable design is unchanged.
+const cinemagraph = premiumEnabled && !!props.video
+let io: IntersectionObserver | null = null
+
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (!reduce) vid.value?.play().catch(() => {})
+  const desktop = window.matchMedia('(min-width: 768px)').matches
+  if (cinemagraph && !reduce && desktop && vid.value) {
+    io = new IntersectionObserver(
+      ([e]) => {
+        if (!vid.value) return
+        if (e.isIntersecting) vid.value.play().catch(() => {})
+        else vid.value.pause()
+      },
+      { threshold: 0.15 },
+    )
+    io.observe(vid.value)
+  }
   if (reduce || !content.value) return
   gsap.from(content.value.children, {
     opacity: 0,
@@ -65,7 +83,10 @@ onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
 })
 
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  io?.disconnect()
+})
 </script>
 
 <template>
@@ -77,7 +98,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       class="absolute inset-0 bg-cover"
       :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
     >
-      <template v-if="video">
+      <template v-if="cinemagraph">
         <!-- Ambient loop over the still; the same scrim re-painted on top -->
         <video
           ref="vid"
@@ -86,7 +107,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           muted
           loop
           playsinline
-          preload="auto"
+          preload="none"
           class="absolute inset-0 h-full w-full object-cover"
           :style="{ objectPosition: `center ${posY}` }"
         />
@@ -95,6 +116,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           style="background: linear-gradient(90deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.62) 32%, rgba(5, 5, 5, 0.18) 58%, rgba(5, 5, 5, 0.35) 100%)"
         />
       </template>
+
+      <!-- Ambient light-sweep (premium, CSS-only; static poster stays beneath) -->
+      <div v-if="premiumEnabled" class="pm-hero-sweep" aria-hidden="true" />
     </div>
 
     <div class="container-royal relative z-10">
