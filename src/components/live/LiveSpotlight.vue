@@ -33,14 +33,14 @@ const { enter } = useEnter()
       </div>
     </div>
 
-    <!-- Curated horizontal strip -->
-    <div class="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <!-- Curated grid — fills the row, equal-size cards -->
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
       <article
         v-for="t in tables"
         :key="t.name"
         v-glow
         data-reveal
-        class="card-lux group flex w-[280px] shrink-0 snap-start flex-col overflow-hidden p-0 hover:translate-y-0"
+        class="card-lux group flex flex-col overflow-hidden p-0 hover:translate-y-0"
       >
         <div class="relative aspect-[16/9] overflow-hidden">
           <img
