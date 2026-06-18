@@ -20,7 +20,13 @@ const primary = [
   { label: 'Kingdom', to: '/kingdom' },
   { label: 'Rewards', to: '/rewards' },
 ]
-const secondary = ['About', 'Help Center', 'Responsible Gaming', 'Terms', 'Privacy']
+const secondary = [
+  { label: 'About', to: '/about' },
+  { label: 'Help Center', to: '/help' },
+  { label: 'Responsible Gaming', to: '/responsible-gaming' },
+  { label: 'Terms', to: '/terms' },
+  { label: 'Privacy', to: '/privacy' },
+]
 const pays = paymentMethods.slice(0, 5)
 </script>
 
@@ -63,14 +69,14 @@ const pays = paymentMethods.slice(0, 5)
 
       <!-- Secondary links -->
       <nav class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-        <a
+        <RouterLink
           v-for="s in secondary"
-          :key="s"
-          href="#"
+          :key="s.to"
+          :to="s.to"
           class="font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim transition-colors hover:text-ink-muted"
         >
-          {{ s }}
-        </a>
+          {{ s.label }}
+        </RouterLink>
       </nav>
 
       <!-- Bottom bar -->

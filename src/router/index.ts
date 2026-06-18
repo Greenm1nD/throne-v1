@@ -27,6 +27,12 @@ const router = createRouter({
       component: () => import('@/views/TournamentDetailView.vue'),
     },
     { path: '/rewards', name: 'rewards', component: () => import('@/views/RewardsView.vue') },
+    // Static info / legal pages (shared InfoView, slug via meta.info)
+    { path: '/about', name: 'about', meta: { info: 'about' }, component: () => import('@/views/InfoView.vue') },
+    { path: '/help', name: 'help', meta: { info: 'help' }, component: () => import('@/views/InfoView.vue') },
+    { path: '/responsible-gaming', name: 'responsible-gaming', meta: { info: 'responsible-gaming' }, component: () => import('@/views/InfoView.vue') },
+    { path: '/terms', name: 'terms', meta: { info: 'terms' }, component: () => import('@/views/InfoView.vue') },
+    { path: '/privacy', name: 'privacy', meta: { info: 'privacy' }, component: () => import('@/views/InfoView.vue') },
     {
       path: '/account',
       meta: { requiresAuth: true },
