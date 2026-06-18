@@ -236,24 +236,13 @@
   }
 }
 
-/* Hero artwork: imperceptibly slow breathing zoom (Ken Burns).
-   scale3d promotes the video to its own GPU layer so the frame is composited
-   (smoothly bilinear-scaled) instead of re-rasterised each step — this removes
-   the shimmer/vibration that fine details showed during the zoom. */
-@keyframes heroZoom {
-  0%,
-  100% {
-    transform: scale3d(1, 1, 1);
-  }
-  50% {
-    transform: scale3d(1.04, 1.04, 1);
-  }
-}
+/* Hero artwork: the cinemagraph carries its own ambient motion (glowing ring,
+   light rays, drifting dust) with a locked camera, so no CSS Ken Burns zoom is
+   applied — a scaled video re-rasterises each step and shimmered. Kept as a
+   stable, GPU-composited layer with no transform animation. */
 .hero-zoom {
-  animation: heroZoom 46s ease-in-out infinite;
-  will-change: transform;
-  backface-visibility: hidden;
   transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Logo mark: slow breathing golden aura */
