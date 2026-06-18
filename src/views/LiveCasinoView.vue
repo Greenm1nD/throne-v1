@@ -9,6 +9,8 @@ import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
+import LiveSpotlight from '@/components/live/LiveSpotlight.vue'
+import { polishEnabled } from '@/composables/usePolish'
 import { livePage as page } from '@/data/pages'
 import type { LobbyGame } from '@/data/casinoGames'
 
@@ -54,6 +56,9 @@ const { enter } = useEnter()
     </PageHero>
 
     <CategoryStrip :items="page.categories" />
+
+    <!-- Live Now — curated spotlight (polish flag) -->
+    <LiveSpotlight v-if="polishEnabled" :tables="page.tables" />
 
     <!-- Top games + exclusive -->
     <section class="container-royal grid gap-5 pt-12 sm:pt-16 lg:grid-cols-[1.7fr_1fr]">
