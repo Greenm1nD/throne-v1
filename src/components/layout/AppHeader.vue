@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
@@ -20,6 +20,7 @@ const { discreet, toggle: toggleDiscreet, mask } = useDiscreet()
 const router = useRouter()
 const bar = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
+const scrolled = ref(false)
 const accOpen = ref(false)
 
 const balanceLabel = computed(() =>
@@ -39,17 +40,24 @@ function signOut() {
   router.push('/')
 }
 
+function onScroll() {
+  scrolled.value = window.scrollY > 24
+}
 onMounted(() => {
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (reduce) return
   gsap.from(bar.value, { y: -72, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.1 })
 })
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
   <header
     ref="bar"
-    class="glass-panel sticky top-0 z-50 h-[72px] w-full border-b border-border-gold"
+    class="app-header glass-panel sticky top-0 z-50 h-[72px] w-full border-b border-border-gold transition-colors duration-300"
+    :class="{ 'app-header--scrolled': scrolled }"
   >
     <div class="container-royal flex h-full items-center justify-between gap-6">
       <!-- Left: logo -->

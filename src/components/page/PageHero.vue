@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section
-    class="grain relative flex min-h-[500px] items-center overflow-hidden lg:min-h-[640px]"
+    class="page-hero grain relative flex min-h-[500px] items-center overflow-hidden lg:min-h-[640px]"
   >
     <div
       ref="bgEl"

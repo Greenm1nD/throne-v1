@@ -5,6 +5,7 @@ import { lazyBg } from './directives/lazyBg'
 import { magneticGlow } from './directives/magneticGlow'
 import './assets/styles/main.css'
 import './assets/styles/premium.css'
+import './assets/styles/polish.css'
 import './assets/fonts/fontello/fontello.css'
 
 createApp(App).use(router).directive('lazybg', lazyBg).directive('glow', magneticGlow).mount('#app')

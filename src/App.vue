@@ -13,6 +13,7 @@ import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
+import { polishEnabled } from '@/composables/usePolish'
 
 const ready = ref(false)
 const router = useRouter()
@@ -20,6 +21,7 @@ const router = useRouter()
 // Activates all premium-motion CSS (scoped under html.premium). Flag off → no
 // class → stable design, untouched. `data-page` drives the per-page atmosphere.
 onMounted(() => {
+  if (polishEnabled) document.documentElement.classList.add('polish')
   if (!premiumEnabled) return
   document.documentElement.classList.add('premium')
   const setPage = (name: unknown) => {

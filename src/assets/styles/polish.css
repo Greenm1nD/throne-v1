@@ -1,0 +1,48 @@
+/* ── THRONE UI/UX Polish Test ────────────────────────────────────────────────
+   Active ONLY when <html class="polish"> (set by App.vue behind
+   VITE_ENABLE_THRONE_POLISH_TEST). Layers on top of the premium design; with the
+   flag off the class is never added and every rule here is inert (clean revert).
+   Scoped, additive overrides only. */
+
+/* Readability — calmer letter-spacing on the wide eyebrow label, a touch brighter
+   so small uppercase text reads easily (was 0.35em / ink-dim). */
+html.polish .eyebrow {
+  letter-spacing: 0.2em;
+  color: #b8b2a8;
+}
+
+/* Lift muted body-copy contrast slightly for comfortable reading. */
+html.polish .text-ink-muted {
+  color: #b6b0a6;
+}
+
+/* More editorial, compact inner-page heroes (Home keeps its full cinematic hero —
+   it uses HeroSection, not .page-hero). */
+html.polish .page-hero {
+  min-height: 420px;
+}
+@media (min-width: 1024px) {
+  html.polish .page-hero {
+    min-height: 540px;
+  }
+}
+html.polish .page-hero .max-w-xl {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Header gains a stronger blur/contrast only after the page is scrolled, so it
+   sits quietly over the hero and firms up over content. */
+html.polish .app-header--scrolled {
+  background-color: rgba(7, 7, 9, 0.72);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom-color: rgba(212, 175, 55, 0.22);
+}
+
+/* Smoother nav active underline. */
+@media (prefers-reduced-motion: no-preference) {
+  html.polish .app-header a span[class*="bg-gold"] {
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
