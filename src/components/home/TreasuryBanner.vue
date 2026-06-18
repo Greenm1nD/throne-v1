@@ -19,7 +19,7 @@ const router = useRouter()
 const { lite } = useViewport()
 const bgImage = computed(() =>
   lite.value
-    ? `linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.55) 26%, rgba(5,5,5,0.1) 50%, rgba(5,5,5,0.6) 100%), url('/assets/images/treasury-mobile.webp?v=3')`
+    ? `linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.55) 26%, rgba(5,5,5,0.1) 50%, rgba(5,5,5,0.6) 100%), url('/assets/images/treasury-mobile.webp?v=4')`
     : `linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`,
 )
 
