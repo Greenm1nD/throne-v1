@@ -32,7 +32,7 @@ const pays = paymentMethods.slice(0, 5)
 
 <template>
   <footer
-    class="veined relative mt-20 bg-cover bg-center"
+    class="app-footer-premium veined relative mt-20 bg-cover bg-center"
     style="background-image: linear-gradient(180deg, rgba(5,5,5,0.86), rgba(5,5,5,0.94)), url('/assets/images/texture-marble.webp'); background-color: #08080a"
   >
     <!-- Thin top rule with centre diamond -->

@@ -59,3 +59,23 @@ html.polish aside nav a.router-link-exact-active::after {
     transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
+
+/* Footer: trim height a touch more and tighten rhythm (luxury brand footer). */
+html.polish .app-footer-premium {
+  margin-top: 4rem;
+}
+html.polish .app-footer-premium > .container-royal {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+
+/* Image-led inner heroes (Live Casino, Sports): a touch more scrim so the title
+   stays premium and legible over busy artwork. */
+html.polish .page-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(5, 5, 5, 0.55) 0%, rgba(5, 5, 5, 0.12) 38%, transparent 60%);
+  z-index: 0;
+}
