@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { gameImage, type Game } from '@/data/games'
 import { assets } from '@/data/assets'
+
+const router = useRouter()
 
 const props = defineProps<{ game: Game }>()
 const img = gameImage(props.game)
@@ -97,7 +100,7 @@ function stop() {
       <div
         class="absolute inset-x-0 bottom-4 z-20 flex translate-y-2 justify-center opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
       >
-        <GoldButton variant="solid" size="sm">
+        <GoldButton variant="solid" size="sm" @click="router.push('/casino')">
           <AppIcon name="play" :size="12" /> Play Now
         </GoldButton>
       </div>
