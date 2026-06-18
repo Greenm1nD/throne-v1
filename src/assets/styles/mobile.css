@@ -326,3 +326,41 @@ html.mobile-polish body {
     line-height: 1.1;
   }
 }
+
+/* ── Hero refinements (≤ 767px) ──────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Home hero: drop the scarcity pill on phones (too dense over the video). */
+  html.mobile-polish .hero-scarcity {
+    display: none !important;
+  }
+  /* Home hero CTAs: equal-width, comfortably sized stack. */
+  html.mobile-polish .hero-ctas {
+    width: 100%;
+    max-width: 330px;
+  }
+
+  /* Sections that overlap the hero with a negative top margin (CategoryStrip,
+     Season banner) shouldn't sit on top of the hero CTAs on phones — give the
+     buttons clear separation from the banner below. */
+  html.mobile-polish [class~="-mt-9"] {
+    margin-top: 1.25rem !important;
+  }
+}
+
+/* Treasury mobile: title at the dark top, CTA pushed to the bottom (clear of the
+   Rolls-Royce in the lower half of the crop). */
+@media (max-width: 767px) {
+  html.mobile-polish .treasury-banner {
+    min-height: 410px;
+  }
+  html.mobile-polish .treasury-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+    min-height: 360px;
+  }
+  html.mobile-polish .treasury-content .treasury-cta {
+    margin-top: auto;
+  }
+}

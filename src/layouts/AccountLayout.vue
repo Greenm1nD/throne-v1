@@ -35,8 +35,8 @@ function logout() {
     <div class="flex items-start gap-6">
       <!-- ── Sidebar (card on lg, off-canvas drawer below) ── -->
       <aside
-        class="fixed inset-y-0 left-0 z-40 w-[280px] -translate-x-full overflow-y-auto border-r border-border-gold/25 bg-surface/95 pt-[72px] backdrop-blur transition-transform duration-300 [scrollbar-width:none] lg:sticky lg:top-[88px] lg:z-auto lg:w-[264px] lg:shrink-0 lg:translate-x-0 lg:self-start lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border-gold/25 lg:bg-surface/60 lg:pt-0 lg:[max-height:calc(100vh-112px)]"
-        :class="menuOpen && 'translate-x-0'"
+        class="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-border-gold/25 bg-surface/95 pt-[68px] backdrop-blur transition-transform duration-300 [scrollbar-width:none] lg:sticky lg:right-auto lg:top-[88px] lg:z-auto lg:w-[264px] lg:shrink-0 lg:translate-x-0 lg:self-start lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border-gold/25 lg:bg-surface/60 lg:pt-0 lg:[max-height:calc(100vh-112px)]"
+        :class="menuOpen ? 'translate-x-0' : 'translate-x-full'"
       >
         <!-- Member + balance block -->
         <div class="border-b border-border-gold/25 p-5">

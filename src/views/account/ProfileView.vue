@@ -14,8 +14,17 @@ const fields = [
   { label: 'Phone Number', value: user.phone },
 ]
 
-// Ready-made royal portrait catalogue — members pick one, no uploads.
-const portraits = Array.from({ length: 8 }, (_, i) => `/assets/images/avatars/royal-${String(i + 1).padStart(2, '0')}.webp`)
+// Heraldic emblem avatars — clean gold symbols on dark, no faces, no uploads.
+const portraits = [
+  'emblem-01-crown',
+  'emblem-02-lion',
+  'emblem-03-shield',
+  'emblem-04-monogram',
+  'emblem-05-eagle',
+  'emblem-06-fleur',
+  'emblem-07-laurel',
+  'emblem-08-swords',
+].map((n) => `/assets/images/emblems/${n}.webp`)
 
 const current = ref(user.avatar)
 const showPicker = ref(false)
@@ -101,8 +110,8 @@ function apply() {
           <div class="card-lux relative z-10 w-full max-w-lg p-6 hover:translate-y-0 sm:p-7">
             <div class="mb-1 flex items-start justify-between gap-4">
               <div>
-                <p class="eyebrow">Choose your likeness</p>
-                <h3 class="mt-1 font-display text-xl font-semibold tracking-[0.1em] text-gold-gradient">Royal Portraits</h3>
+                <p class="eyebrow">Choose your emblem</p>
+                <h3 class="mt-1 font-display text-xl font-semibold tracking-[0.1em] text-gold-gradient">Royal Emblems</h3>
               </div>
               <button
                 class="grid h-9 w-9 place-items-center rounded-full border border-border-gold/40 text-ink-muted transition-colors hover:border-gold hover:text-gold-bright"
@@ -112,7 +121,7 @@ function apply() {
                 <AppIcon name="x" :size="14" />
               </button>
             </div>
-            <p class="mb-5 font-sans text-[12px] text-ink-dim">Pick a ready-made portrait from the court collection.</p>
+            <p class="mb-5 font-sans text-[12px] text-ink-dim">Pick a heraldic emblem for your royal identity.</p>
 
             <div class="grid grid-cols-3 gap-3 sm:grid-cols-4">
               <button
@@ -134,15 +143,12 @@ function apply() {
               </button>
             </div>
 
-            <div class="mt-6 flex items-center justify-end gap-3">
-              <button
-                class="font-sans text-[12px] uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-ink"
-                @click="showPicker = false"
-              >
+            <div class="mt-6 flex items-center justify-center gap-3">
+              <GoldButton variant="outline" size="md" class="flex-1" @click="showPicker = false">
                 Cancel
-              </button>
-              <GoldButton variant="solid" size="md" :disabled="draft === current" @click="apply">
-                Set Portrait <AppIcon name="check" :size="14" />
+              </GoldButton>
+              <GoldButton variant="solid" size="md" class="flex-1" :disabled="draft === current" @click="apply">
+                Set Emblem <AppIcon name="check" :size="14" />
               </GoldButton>
             </div>
           </div>

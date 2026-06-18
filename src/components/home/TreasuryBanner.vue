@@ -19,7 +19,7 @@ const router = useRouter()
 const { lite } = useViewport()
 const bgImage = computed(() =>
   lite.value
-    ? `linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.5) 28%, rgba(5,5,5,0) 52%), url('/assets/images/treasury-mobile.webp')`
+    ? `linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.55) 26%, rgba(5,5,5,0.1) 50%, rgba(5,5,5,0.6) 100%), url('/assets/images/treasury-mobile.webp?v=3')`
     : `linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`,
 )
 
@@ -123,14 +123,14 @@ onBeforeUnmount(() => io?.disconnect())
         </span>
       </div>
 
-      <div class="relative z-10 max-w-xl px-7 py-8 sm:px-12">
+      <div class="treasury-content relative z-10 max-w-xl px-7 py-8 sm:px-12">
         <h2
           class="font-display text-3xl font-bold tracking-[0.14em] text-gold-gradient sm:text-4xl"
         >
           The Treasury
         </h2>
         <p class="eyebrow mt-3">Exclusive Prizes</p>
-        <div class="mt-7">
+        <div class="treasury-cta mt-7">
           <GoldButton variant="solid" size="md" @click="router.push('/rewards')">
             View Treasury <AppIcon name="arrowRight" :size="14" />
           </GoldButton>

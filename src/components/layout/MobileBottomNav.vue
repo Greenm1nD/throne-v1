@@ -96,13 +96,13 @@ function onDeposit() {
 <style scoped>
 /* ── Floating capsule bar ────────────────────────────────────────────────── */
 .mobile-bottomnav {
-  background: linear-gradient(180deg, rgba(28, 25, 18, 0.92) 0%, rgba(5, 5, 5, 0.96) 100%);
-  backdrop-filter: blur(14px) saturate(1.05);
-  -webkit-backdrop-filter: blur(14px) saturate(1.05);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(20, 18, 12, 0.55) 0%, rgba(5, 5, 5, 0.62) 100%);
+  backdrop-filter: blur(22px) saturate(1.1);
+  -webkit-backdrop-filter: blur(22px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow:
-    0 18px 44px -18px rgba(0, 0, 0, 0.9),
-    inset 0 1px 0 rgba(245, 215, 122, 0.04);
+    0 18px 44px -18px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(245, 215, 122, 0.05);
 }
 /* Thin champagne-gold hairline across the top edge (the coin cuts into it) */
 .mobile-bottomnav::before {
@@ -120,15 +120,15 @@ function onDeposit() {
    Black & champagne-gold. Calm, restrained — a gold coin / watch-crown feel.
    GPU-only transforms (scale/translate/opacity), no layout shift. */
 .deposit-raise {
-  margin-top: -22px; /* raise above the bar (no layout shift; static) */
+  margin-top: -18px; /* raise above the bar (no layout shift; static) */
 }
 
 /* Soft breathing halo behind the coin (kept tight so it never covers nav items) */
 .deposit-halo {
   position: absolute;
   z-index: 0;
-  height: 112px;
-  width: 112px;
+  height: 92px;
+  width: 92px;
   border-radius: 9999px;
   background: radial-gradient(circle, rgba(245, 200, 90, 0.35), rgba(245, 200, 90, 0) 68%);
   opacity: 0.22;
@@ -142,8 +142,8 @@ function onDeposit() {
   z-index: 2;
   display: grid;
   place-items: center;
-  height: 76px;
-  width: 76px;
+  height: 64px;
+  width: 64px;
   border-radius: 9999px;
   overflow: hidden;
   color: #1a1407;
@@ -160,7 +160,7 @@ function onDeposit() {
 .deposit-sign {
   position: relative;
   z-index: 3;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   line-height: 1;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
@@ -170,8 +170,8 @@ function onDeposit() {
 .deposit-ring {
   position: absolute;
   z-index: 1;
-  height: 84px;
-  width: 84px;
+  height: 72px;
+  width: 72px;
   border-radius: 9999px;
   background: conic-gradient(
     from 0deg,

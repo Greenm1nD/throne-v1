@@ -175,9 +175,9 @@ onBeforeUnmount(() => {
       ref="ctas"
       class="container-royal relative z-10 flex flex-col items-center gap-5"
     >
-      <!-- Live presence + closing intake window -->
+      <!-- Live presence + closing intake window (hidden on phones) -->
       <div
-        class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 rounded-full border border-border-gold/40 bg-black/45 px-5 py-2 backdrop-blur-sm"
+        class="hero-scarcity flex flex-wrap items-center justify-center gap-x-5 gap-y-2 rounded-full border border-border-gold/40 bg-black/45 px-5 py-2 backdrop-blur-sm"
       >
         <span class="flex items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-ink-muted">
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] motion-safe:animate-pulse" />
@@ -194,12 +194,12 @@ onBeforeUnmount(() => {
         </span>
       </div>
 
-      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-        <GoldButton variant="solid" size="lg" @click="enter()">
+      <div class="hero-ctas flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
+        <GoldButton variant="solid" size="lg" block class="sm:w-auto" @click="enter()">
           {{ enterLabel }}
           <AppIcon name="arrowRight" :size="16" />
         </GoldButton>
-        <GoldButton variant="outline" size="lg" @click="router.push('/vip')">Explore VIP</GoldButton>
+        <GoldButton variant="outline" size="lg" block class="sm:w-auto" @click="router.push('/vip')">Explore VIP</GoldButton>
       </div>
     </div>
   </section>
