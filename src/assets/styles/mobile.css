@@ -198,7 +198,9 @@ html.mobile-polish body {
     height: 230px;
   }
 
-  /* Content-rich cards → horizontal snap carousel (peek the next card). */
+  /* Content-rich cards → horizontal snap carousel (peek the next card).
+     No edge bleed: the track stays inside the section padding so the first card
+     keeps a clear gap from the wall. */
   html.mobile-polish .feature-cards,
   html.mobile-polish .tourn-grid {
     display: flex !important;
@@ -208,8 +210,6 @@ html.mobile-polish body {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    margin-inline: -1rem;
-    padding-inline: 1rem;
     padding-bottom: 0.25rem;
   }
   html.mobile-polish .feature-cards::-webkit-scrollbar,
@@ -218,8 +218,21 @@ html.mobile-polish body {
   }
   html.mobile-polish .feature-cards > *,
   html.mobile-polish .tourn-grid > * {
-    flex: 0 0 82%;
+    flex: 0 0 80%;
     scroll-snap-align: start;
+  }
+  /* Feature cards run shorter on phones (the banner was too tall). */
+  html.mobile-polish .feature-cards > * {
+    height: 232px;
+  }
+
+  /* Component-level horizontal rails (Royal Quests etc.) use a -mx-4 bleed for
+     desktop; on phones keep them inset from the wall. */
+  html.mobile-polish .quest-rail {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   /* Royal Treasures: one compact scrollable row, smaller icons. */
@@ -269,5 +282,14 @@ html.mobile-polish body {
   }
   html.mobile-polish .rank-track > li {
     min-width: 62px;
+  }
+}
+
+/* Treasury banner: taller on phones with the title/CTA anchored to the dark top
+   (objects live in the lower half of the mobile crop). */
+@media (max-width: 767px) {
+  html.mobile-polish .treasury-banner {
+    min-height: 380px;
+    align-items: flex-start;
   }
 }

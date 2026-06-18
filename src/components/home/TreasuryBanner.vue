@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -7,10 +7,21 @@ import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import { assets } from '@/data/assets'
 import { useReveal } from '@/composables/useReveal'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
+import { useViewport } from '@/composables/useMobilePolish'
 
 const root = ref<HTMLElement | null>(null)
 useReveal(root)
 const router = useRouter()
+
+// Mobile/tablet: a portrait-friendly crop with the luxury objects in the lower
+// half and a dark top for the title/CTA (the wide desktop banner squeezes the
+// objects behind the text on a phone).
+const { lite } = useViewport()
+const bgImage = computed(() =>
+  lite.value
+    ? `linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.5) 28%, rgba(5,5,5,0) 52%), url('/assets/images/treasury-mobile.webp')`
+    : `linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`,
+)
 
 // Cinemagraph: the glow/fire behind the objects animates (loop). Premium flag +
 // desktop + no reduced-motion, played only while in view. Off → the static image
@@ -39,13 +50,12 @@ onBeforeUnmount(() => io?.disconnect())
 <template>
   <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
     <div
-      class="group relative flex min-h-[200px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)] lg:aspect-[6/1]"
+      class="treasury-banner group relative flex min-h-[200px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)] lg:aspect-[6/1]"
       data-reveal
     >
-      <!-- Image at its native aspect ratio — shown in full, no crop.
-           Only a light corner scrim keeps the title legible. -->
+      <!-- Image: wide desktop crop, portrait mobile crop (objects below the text). -->
       <div
-        v-lazybg="`linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%), url('${assets.treasuryBanner.src}')`"
+        v-lazybg="bgImage"
         class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
         :style="{ backgroundColor: '#0d0b07' }"
       />
@@ -53,7 +63,7 @@ onBeforeUnmount(() => io?.disconnect())
       <!-- Cinemagraph loop: animated glow/fire behind the objects (premium). The
            still image above is the poster/fallback. -->
       <video
-        v-if="cinemagraph"
+        v-if="cinemagraph && !lite"
         ref="vid"
         src="/assets/videos/cinemagraph-treasury.mp4"
         :poster="assets.treasuryBanner.src"

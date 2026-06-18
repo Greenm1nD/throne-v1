@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { primaryNav } from '@/data/navigation'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { user as member } from '@/data/account'
@@ -20,6 +19,17 @@ const router = useRouter()
 const { isLoggedIn, logout } = useAuth()
 const { open } = useAuthModal()
 const drawer = ref(false)
+
+// Primary pages with a fitting icon for the drawer.
+const navItems = [
+  { label: 'Home', href: '/', icon: 'crown' },
+  { label: 'Casino', href: '/casino', icon: 'sparkle' },
+  { label: 'Sports', href: '/sports', icon: 'trophy' },
+  { label: 'Live Casino', href: '/live-casino', icon: 'monitor' },
+  { label: 'VIP', href: '/vip', icon: 'star' },
+  { label: 'Kingdom', href: '/kingdom', icon: 'swords' },
+  { label: 'Rewards', href: '/rewards', icon: 'gift' },
+]
 
 const secondary = [
   { label: 'About', href: '/about' },
@@ -98,15 +108,17 @@ function signOut() {
         <!-- All pages -->
         <nav class="flex flex-col px-3 py-3">
           <RouterLink
-            v-for="item in primaryNav"
+            v-for="item in navItems"
             :key="item.href"
             :to="item.href"
-            class="flex items-center gap-3 rounded-xl px-3 py-3.5 font-sans text-[15px] font-medium tracking-[0.02em] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
+            class="flex items-center gap-3.5 rounded-xl px-3 py-3 font-sans text-[15px] font-medium tracking-[0.02em] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
             :active-class="item.href === '/' ? '' : 'bg-gold/[0.08] text-gold-bright'"
             exact-active-class="bg-gold/[0.08] text-gold-bright"
             @click="drawer = false"
           >
-            <span class="h-1.5 w-1.5 rotate-45 bg-gold/50" />
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-border-gold/30 bg-gold/[0.04] text-gold/80">
+              <AppIcon :name="item.icon" :size="17" />
+            </span>
             {{ item.label }}
           </RouterLink>
 
