@@ -6,25 +6,22 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { accountNav, balances, user } from '@/data/account'
 import { useAuth } from '@/composables/useAuth'
 import { useDiscreet } from '@/composables/useDiscreet'
-import { useAccountMenu } from '@/composables/useAccountMenu'
 
 const { mask } = useDiscreet()
 
 /**
- * GreenBet-style mechanics: the account area renders INSIDE the site —
- * the public header/footer stay, the sidebar is a card column in the page
- * flow (sticky on desktop, off-canvas drawer on mobile).
+ * The account area renders INSIDE the site. On desktop the sidebar is a sticky
+ * card column; on mobile it is hidden and the global MobileAccountMenu (opened
+ * from the top-bar profile button) provides the account navigation instead.
  */
 const router = useRouter()
 const route = useRoute()
 const auth = useAuth()
-const { open: menuOpen } = useAccountMenu() // mobile drawer (opened by the top-bar profile button)
 
 // The button for the page you're on reads as active (solid); the other is outline.
 const onWithdraw = computed(() => route.path === '/account/withdraw')
 
 function logout() {
-  menuOpen.value = false
   auth.logout()
   router.push('/')
 }
@@ -33,10 +30,9 @@ function logout() {
 <template>
   <div class="container-royal py-8 lg:py-10">
     <div class="flex items-start gap-6">
-      <!-- ── Sidebar (card on lg, off-canvas drawer below) ── -->
+      <!-- ── Sidebar — desktop only (mobile uses the global account menu) ── -->
       <aside
-        class="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-border-gold/25 bg-surface/95 pt-[68px] backdrop-blur transition-transform duration-300 [scrollbar-width:none] lg:sticky lg:right-auto lg:top-[88px] lg:z-auto lg:w-[264px] lg:shrink-0 lg:translate-x-0 lg:self-start lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border-gold/25 lg:bg-surface/60 lg:pt-0 lg:[max-height:calc(100vh-112px)]"
-        :class="menuOpen ? 'translate-x-0' : 'translate-x-full'"
+        class="hidden w-[264px] shrink-0 self-start overflow-y-auto rounded-2xl border border-border-gold/25 bg-surface/60 [max-height:calc(100vh-112px)] [scrollbar-width:none] lg:sticky lg:top-[88px] lg:block"
       >
         <!-- Member + balance block -->
         <div class="border-b border-border-gold/25 p-5">
@@ -49,10 +45,10 @@ function logout() {
           </div>
           <p class="mt-4 font-display text-xl font-bold tabular-nums text-gold-gradient">{{ mask(balances.total) }}</p>
           <div class="mt-3 grid grid-cols-2 gap-2">
-            <RouterLink to="/account/deposit" @click="menuOpen = false">
+            <RouterLink to="/account/deposit">
               <GoldButton :variant="onWithdraw ? 'outline' : 'solid'" size="sm" block>Deposit</GoldButton>
             </RouterLink>
-            <RouterLink to="/account/withdraw" @click="menuOpen = false">
+            <RouterLink to="/account/withdraw">
               <GoldButton :variant="onWithdraw ? 'solid' : 'outline'" size="sm" block>Withdraw</GoldButton>
             </RouterLink>
           </div>
@@ -70,7 +66,7 @@ function logout() {
               :to="item.to"
               class="group relative mb-0.5 flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 font-sans text-[13px] text-ink-muted transition-all hover:text-gold-bright"
               :exact-active-class="'router-link-exact-active border-border-gold text-gold-bright bg-gradient-to-r from-gold/[0.13] via-gold/[0.04] to-transparent shadow-[inset_0_0_0_1px_rgba(245,215,122,0.18),0_0_20px_-6px_rgba(245,215,122,0.5)] before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rotate-45 before:bg-gold-gradient before:shadow-[0_0_8px_rgba(245,215,122,0.9)] after:absolute after:-right-1 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rotate-45 after:bg-gold-gradient after:shadow-[0_0_8px_rgba(245,215,122,0.9)]'"
-              @click="menuOpen = false"
+             
             >
               <span
                 class="grid w-8 place-items-center text-gold/70 opacity-75 saturate-[0.85] transition-all duration-300 group-hover:opacity-100 group-hover:saturate-100 group-hover:drop-shadow-[0_0_6px_rgba(245,215,122,0.6)] group-[.router-link-exact-active]:opacity-100 group-[.router-link-exact-active]:saturate-100 group-[.router-link-exact-active]:drop-shadow-[0_0_7px_rgba(245,215,122,0.75)]"
@@ -110,16 +106,12 @@ function logout() {
           <RouterLink
             to="/account/concierge"
             class="mt-3 block rounded-full border border-border-gold py-1.5 text-center font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne transition-colors hover:border-gold hover:text-gold-bright"
-            @click="menuOpen = false"
+           
           >
             Summon
           </RouterLink>
         </div>
       </aside>
-
-      <!-- Mobile scrim -->
-      <div v-if="menuOpen" class="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm lg:hidden" @click="menuOpen = false" />
-
       <!-- ── Routed page ── (mobile account menu opens from the top-bar profile button) -->
       <main class="min-w-0 flex-1">
         <RouterView />

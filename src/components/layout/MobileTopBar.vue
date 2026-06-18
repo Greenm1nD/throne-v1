@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
-import { user as member } from '@/data/account'
 import { joinCta } from '@/config'
 
 /**
@@ -17,7 +16,6 @@ import { joinCta } from '@/config'
  * AppHeader is hidden < 768 via mobile.css so there is only one chrome.
  */
 const router = useRouter()
-const route = useRoute()
 const { isLoggedIn, logout } = useAuth()
 const { open } = useAuthModal()
 const { open: accountMenuOpen } = useAccountMenu()
@@ -47,14 +45,9 @@ function go(href: string) {
   router.push(href)
 }
 function profile() {
-  if (!isLoggedIn.value) {
-    open('login')
-    return
-  }
-  // On account pages the profile button opens the account menu; elsewhere it
-  // takes the member to their dashboard.
-  if (route.path.startsWith('/account')) accountMenuOpen.value = true
-  else router.push('/account')
+  // First tap opens the global account menu (members) or the login modal (guests).
+  if (isLoggedIn.value) accountMenuOpen.value = true
+  else open('login')
 }
 function signOut() {
   drawer.value = false
@@ -91,8 +84,7 @@ function signOut() {
         :aria-label="isLoggedIn ? 'Your account' : 'Log in or join'"
         @click="profile"
       >
-        <img v-if="isLoggedIn" :src="member.avatar" alt="" class="h-9 w-9 rounded-full object-cover" />
-        <AppIcon v-else name="user" :size="18" />
+        <AppIcon name="user" :size="18" />
       </button>
     </div>
   </header>
