@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
+import { mobilePolishEnabled } from '@/composables/useMobilePolish'
+
+// No ambient music on phones (flag on) — skip autoplay and hide the control.
+const noAudio =
+  mobilePolishEnabled &&
+  typeof window !== 'undefined' &&
+  window.matchMedia('(max-width: 767px)').matches
 
 /**
  * Site-wide ambient soundtrack with a mute toggle pinned bottom-left.
@@ -47,6 +54,7 @@ async function toggle() {
 }
 
 onMounted(() => {
+  if (noAudio) return
   // Hide the control entirely while the track file hasn't been added yet.
   fetch('/assets/audio/throne-ambience.mp3', { method: 'HEAD' })
     .then((r) => {
@@ -74,7 +82,7 @@ onBeforeUnmount(() => audio?.pause())
 
 <template>
   <button
-    v-if="!missing"
+    v-if="!missing && !noAudio"
     class="group fixed bottom-5 left-5 z-[90] grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
     :class="playing ? 'border-gold/70 text-gold-bright' : 'text-ink-muted hover:text-champagne'"
     :aria-pressed="playing"

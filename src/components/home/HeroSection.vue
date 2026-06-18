@@ -98,11 +98,11 @@ onBeforeUnmount(() => {
   <section
     class="home-hero cinematic-overlay grain relative flex min-h-[620px] w-full flex-col items-center justify-between overflow-hidden py-14 lg:h-[660px] lg:py-16"
   >
-    <!-- Animated throne-room backdrop (video on desktop; static poster on
-         mobile/tablet under the flag — no autoplay, no download) -->
+    <!-- Animated throne-room backdrop. The home cinemagraph is kept on mobile
+         too (it sits well and is locked-camera/lightweight); only the 3D crown
+         and particle layers are dropped on small screens. -->
     <div ref="backdrop" class="absolute inset-0" style="background-color: #07070a">
       <video
-        v-if="!lite"
         class="hero-zoom h-full w-full object-cover"
         :poster="assets.heroThroneRoom.src"
         autoplay
@@ -114,13 +114,6 @@ onBeforeUnmount(() => {
       >
         <source :src="assets.heroVideo.src" type="video/mp4" />
       </video>
-      <img
-        v-else
-        src="/assets/images/hero-mobile-home.webp"
-        alt=""
-        class="h-full w-full object-cover"
-        fetchpriority="high"
-      />
       <!-- Cinematic gradient scrim so the title/CTAs stay legible -->
       <div
         class="absolute inset-0"
