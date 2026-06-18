@@ -5,11 +5,14 @@ import AccountPanel from '@/components/account/AccountPanel.vue'
 import AccGlyph from '@/components/account/AccGlyph.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
+import { useRouter } from 'vue-router'
 import { user, balances, transactions, quickActions } from '@/data/account'
 import { vipLevels } from '@/data/vipLevels'
 import { useDiscreet } from '@/composables/useDiscreet'
+import { polishEnabled } from '@/composables/usePolish'
 
 const { mask } = useDiscreet()
+const router = useRouter()
 const activeIndex = computed(() => vipLevels.findIndex((l) => l.name === user.tier))
 const xpPct = computed(() => Math.round((user.xp / user.xpNext) * 100))
 const recent = transactions.slice(0, 5)
@@ -45,8 +48,17 @@ const recent = transactions.slice(0, 5)
         </p>
       </StatCard>
       <StatCard label="Account Status" value="Not Verified" icon="shield"
-        :rows="[{ k: 'Member since', v: user.memberSince }, { k: 'Two-Factor Auth', v: 'Disabled' }]">
-        <template #value><span class="text-ink-muted">Not Verified</span></template>
+        :rows="polishEnabled ? [] : [{ k: 'Member since', v: user.memberSince }, { k: 'Two-Factor Auth', v: 'Disabled' }]">
+        <template #value><span class="text-[#e89a7c]">Not Verified</span></template>
+        <!-- Polish: turn status into a clear action -->
+        <template v-if="polishEnabled">
+          <p class="mt-2 font-sans text-[11px] leading-relaxed text-ink-dim">
+            Verify your identity to unlock withdrawals and full membership.
+          </p>
+          <GoldButton variant="solid" size="sm" block class="mt-3" @click="router.push('/account/verification')">
+            Verify Account <AppIcon name="arrowRight" :size="13" />
+          </GoldButton>
+        </template>
       </StatCard>
     </div>
 

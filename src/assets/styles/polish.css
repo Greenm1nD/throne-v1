@@ -40,6 +40,19 @@ html.polish .app-header--scrolled {
   border-bottom-color: rgba(212, 175, 55, 0.22);
 }
 
+/* ── Account: private-banking calm ─────────────────────────────────────────
+   Quiet the heavy sidebar active state (glow + diamonds) down to a refined
+   left-bar, so the dashboard reads like a bank, not a game. */
+html.polish aside nav a.router-link-exact-active {
+  background: rgba(245, 215, 122, 0.05) !important;
+  box-shadow: inset 2px 0 0 rgba(245, 215, 122, 0.75) !important;
+  border-color: transparent !important;
+}
+html.polish aside nav a.router-link-exact-active::before,
+html.polish aside nav a.router-link-exact-active::after {
+  display: none !important;
+}
+
 /* Smoother nav active underline. */
 @media (prefers-reduced-motion: no-preference) {
   html.polish .app-header a span[class*="bg-gold"] {
