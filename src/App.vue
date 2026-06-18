@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import LoadingScreen from '@/components/home/LoadingScreen.vue'
 import AuthModal from '@/components/auth/AuthModal.vue'
 import TwoFaModal from '@/components/auth/TwoFaModal.vue'
@@ -14,11 +15,18 @@ import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
 
 const ready = ref(false)
+const router = useRouter()
 
 // Activates all premium-motion CSS (scoped under html.premium). Flag off → no
-// class → stable design, untouched.
+// class → stable design, untouched. `data-page` drives the per-page atmosphere.
 onMounted(() => {
-  if (premiumEnabled) document.documentElement.classList.add('premium')
+  if (!premiumEnabled) return
+  document.documentElement.classList.add('premium')
+  const setPage = (name: unknown) => {
+    document.documentElement.dataset.page = String(name ?? '')
+  }
+  setPage(router.currentRoute.value.name)
+  router.afterEach((to) => setPage(to.name))
 })
 </script>
 
