@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
       </video>
       <img
         v-else
-        :src="assets.heroThroneRoom.src"
+        src="/assets/images/hero-mobile-home.webp"
         alt=""
         class="h-full w-full object-cover"
         fetchpriority="high"

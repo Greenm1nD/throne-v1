@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
-import { mobilePolishEnabled } from '@/composables/useMobilePolish'
+import { mobilePolishEnabled, useViewport } from '@/composables/useMobilePolish'
 
 /**
  * Shared cinematic hero for section pages: right-weighted artwork,
@@ -24,8 +24,10 @@ const props = withDefaults(
     posY?: string
     /** Optional ambient mp4 — loops over the still, which stays as poster/fallback */
     video?: string
+    /** Optional portrait crop used on mobile/tablet under the mobile flag */
+    imageMobile?: string
   }>(),
-  { icon: 'crown', posY: '50%', video: undefined },
+  { icon: 'crown', posY: '50%', video: undefined, imageMobile: undefined },
 )
 
 const emit = defineEmits<{ primary: []; secondary: [] }>()
@@ -50,7 +52,19 @@ function onScroll() {
   })
 }
 
-const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%), url('${props.image}'), url('${props.fallback}')`
+// Mobile/tablet (flag on) prefer the portrait crop; a bottom-weighted scrim keeps
+// the title legible over a centred subject. Desktop keeps the left-weighted scrim.
+const { lite } = useViewport()
+const heroImg = computed(() =>
+  lite.value && props.imageMobile ? props.imageMobile : props.image,
+)
+const bg = computed(() => {
+  const scrim =
+    lite.value && props.imageMobile
+      ? 'linear-gradient(180deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.2) 38%, rgba(5,5,5,0.55) 78%, rgba(5,5,5,0.92) 100%)'
+      : 'linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%)'
+  return `${scrim}, url('${heroImg.value}'), url('${props.fallback}')`
+})
 
 // Cinemagraph loops seamlessly (clips are generated start-frame = end-frame).
 // Premium flag + no reduced-motion + desktop only, and only while on screen
@@ -106,7 +120,7 @@ onBeforeUnmount(() => {
       class="absolute inset-0 bg-cover"
       :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
     >
-      <template v-if="cinemagraph">
+      <template v-if="cinemagraph && !lite">
         <!-- Ambient loop over the still; the same scrim re-painted on top -->
         <video
           ref="vid"
