@@ -85,6 +85,53 @@ html.mobile-polish body {
   html.mobile-polish .kingdom-decrees .decree {
     padding-left: 2rem;
   }
+
+  /* ── Vertical rhythm: phones get very long pages because every section uses
+     pt-12 / pt-16. Compress section tops so the page is shorter and scannable
+     (the `pt-12` token is on most section wrappers). ───────────────────────── */
+  html.mobile-polish section[class*="pt-12"],
+  html.mobile-polish section[class*="pt-16"] {
+    padding-top: 2.25rem !important;
+  }
+  html.mobile-polish [class*="pt-16"][class*="sm:pt"] {
+    padding-top: 2.25rem !important;
+  }
+
+  /* Section headings: trim the big display sizes a touch so two-line titles
+     don't dominate the fold on a 390px screen. */
+  html.mobile-polish .container-royal h2[class*="text-2xl"],
+  html.mobile-polish .container-royal h3[class*="text-2xl"] {
+    font-size: 1.35rem;
+    line-height: 1.15;
+  }
+
+  /* Card grids: a hair more breathing room between 2-up cards on phones. */
+  html.mobile-polish .card-lux {
+    border-radius: 1rem;
+  }
+
+  /* Favorite / icon-only tap targets that render small — guarantee 44px. */
+  html.mobile-polish button[aria-label^="Favorite"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Royal Court podium: three avatars across is tight at 390 — pull the gap in
+     and let names wrap rather than overflow. */
+  html.mobile-polish .container-royal [class*="grid-cols-3"] {
+    gap: 0.5rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TABLET refinements (768 – 1023px)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Compress the desktop-sized section tops to a tablet rhythm (less than
+     desktop's 4rem, more than phone's 2.25rem). */
+  html.mobile-polish section[class*="pt-16"] {
+    padding-top: 3rem !important;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
