@@ -340,6 +340,14 @@ export const rewardsPage = {
       { icon: 'sparkle', label: 'Total Value', value: '€2,450' },
     ],
     cta: 'Go to Rewards Wallet',
+    // Wallet (polish): live balance, next unlock, recent activity
+    points: 12450,
+    nextUnlock: { name: 'Bespoke Gifts', cost: 60000 },
+    activity: [
+      { label: '+1,200 pts', detail: 'Live Blackjack', when: 'Today' },
+      { label: 'Redeemed', detail: 'Five-Star Escape', when: '2 days' },
+      { label: '+850 pts', detail: 'Roulette', when: '3 days' },
+    ],
   },
   band: <BandItem[]>[
     { icon: 'star', title: 'Earn Points', sub: 'Earn points on every bet across all games' },

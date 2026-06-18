@@ -8,9 +8,20 @@ import { rewardsPage as page, vipPage } from '@/data/pages'
 import { useRevealEach } from '@/composables/useReveal'
 import { useAuth } from '@/composables/useAuth'
 import { useEnter } from '@/composables/useEnter'
+import { polishEnabled } from '@/composables/usePolish'
+import { useRouter } from 'vue-router'
 
 const { isLoggedIn } = useAuth()
 const { enter } = useEnter()
+const router = useRouter()
+
+// Rewards Wallet (polish): progress toward the next redeemable privilege.
+const unlockPct = computed(() =>
+  Math.min(100, Math.round((page.summary.points / page.summary.nextUnlock.cost) * 100)),
+)
+const toUnlock = computed(() =>
+  Math.max(0, page.summary.nextUnlock.cost - page.summary.points).toLocaleString(),
+)
 
 // Loyalty tiers reuse the VIP tier ladder (same levels, same crowns).
 const root = ref<HTMLElement | null>(null)
@@ -126,8 +137,61 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
       </div>
 
-      <!-- Member: personal rewards summary -->
-      <div v-if="isLoggedIn" class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
+      <!-- Member + polish: Rewards Wallet -->
+      <div
+        v-if="isLoggedIn && polishEnabled"
+        class="card-lux flex flex-col gap-5 p-7 hover:translate-y-0 sm:p-8"
+        data-reveal
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="eyebrow">Rewards Wallet</p>
+            <p class="mt-1 font-display text-3xl font-bold tabular-nums text-gold-gradient">
+              {{ page.summary.points.toLocaleString() }}<span class="ml-1 align-baseline text-base text-champagne">pts</span>
+            </p>
+          </div>
+          <img src="/assets/images/crown-duke.png" alt="" class="h-12 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
+        </div>
+
+        <!-- Next unlock -->
+        <div>
+          <div class="mb-1.5 flex items-center justify-between font-sans text-[11px] text-ink-dim">
+            <span>Next unlock · <span class="text-champagne">{{ page.summary.nextUnlock.name }}</span></span>
+            <span class="tabular-nums">{{ unlockPct }}%</span>
+          </div>
+          <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div
+              class="h-full rounded-full bg-gold-gradient shadow-[0_0_12px_rgba(245,215,122,0.5)] transition-[width] duration-1000"
+              :style="{ width: `${unlockPct}%` }"
+            />
+          </div>
+          <p class="mt-1.5 font-sans text-[10px] uppercase tracking-[0.08em] text-ink-dim">{{ toUnlock }} pts to go</p>
+        </div>
+
+        <!-- Recent activity -->
+        <div>
+          <p class="eyebrow mb-2">Recent Activity</p>
+          <ul class="divide-y divide-white/5">
+            <li
+              v-for="a in page.summary.activity"
+              :key="a.detail"
+              class="flex items-center justify-between gap-3 py-2"
+            >
+              <span class="min-w-0 truncate font-sans text-[12px] text-ink-muted">
+                <span class="font-semibold text-gold-bright">{{ a.label }}</span> · {{ a.detail }}
+              </span>
+              <span class="shrink-0 font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">{{ a.when }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <GoldButton variant="outline" size="md" block class="mt-auto" @click="router.push('/account/rewards')">
+          {{ page.summary.cta }} <AppIcon name="arrowRight" :size="14" />
+        </GoldButton>
+      </div>
+
+      <!-- Member: personal rewards summary (stable / non-polish) -->
+      <div v-else-if="isLoggedIn" class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
         <div class="flex items-center gap-4">
           <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
           <div class="flex-1">
