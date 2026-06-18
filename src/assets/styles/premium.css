@@ -66,6 +66,15 @@ html.premium[data-page='rewards'] body {
   }
 }
 
+/* Reserve gold for accents: the muted default hairline (border-border-gold /
+   border-hairline) becomes a soft warm dark line, so champagne gold now reads
+   only on hover / active / featured / selected states (which use border-gold*).
+   Makes gold feel rare and premium. Scoped + reversible. */
+html.premium .border-border-gold,
+html.premium .border-hairline {
+  border-color: rgba(245, 238, 225, 0.08);
+}
+
 /* Card hover refinement: a softer lift + faint champagne glow instead of a hard
    gold border, so cards read as premium and less repetitive. (Scoped to the
    custom .card-lux class only — no utility overrides.) */
