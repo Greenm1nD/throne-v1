@@ -612,6 +612,32 @@ export const kingdomPage = {
       ],
       board: [],
     },
+    {
+      slug: 'emperors-gambit',
+      name: "The Emperor's Gambit",
+      game: 'Live Baccarat',
+      status: 'upcoming',
+      prize: '€80,000',
+      entry: '8,000 crowns',
+      players: 154,
+      cap: 400,
+      when: 'Opens Saturday, 18:00',
+      image: '/assets/images/live-baccarat.webp',
+      fallback: '/assets/images/game-baccarat.webp',
+      desc: 'A duel of composure at the baccarat shoe. Bank the steadiest run of coups and claim the emperor’s purse.',
+      rules: [
+        'Leaderboard by net winnings during the tournament window.',
+        'Live Baccarat tables only; minimum stake €20 per coup.',
+        'Ties broken by the noble who reached the score first.',
+      ],
+      prizeBreakdown: [
+        { place: '1st', amount: '€40,000' },
+        { place: '2nd', amount: '€20,000' },
+        { place: '3rd', amount: '€11,000' },
+        { place: '4th – 15th', amount: '€750 each' },
+      ],
+      board: [],
+    },
   ],
   // Live activity ticker — the realm breathing in real time.
   activity: [
