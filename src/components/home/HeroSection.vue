@@ -8,10 +8,15 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useRouter } from 'vue-router'
 import { useEnter } from '@/composables/useEnter'
+import { useViewport } from '@/composables/useMobilePolish'
 import { assets } from '@/data/assets'
 
 const router = useRouter()
 const { enter, enterLabel } = useEnter()
+
+// Lite hero on mobile/tablet (flag on): static poster instead of autoplay video,
+// crown image instead of the 3D model, no smoke/sparkles, no scroll parallax.
+const { lite } = useViewport()
 
 const eyebrow = ref<HTMLElement | null>(null)
 const heading = ref<HTMLElement | null>(null)
@@ -66,7 +71,9 @@ onMounted(() => {
     .from(sub.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.5')
     .from(ctas.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
 
-  window.addEventListener('scroll', onScroll, { passive: true })
+  // Continuous scroll parallax is a scroll-jank risk on touch devices — skip it
+  // in lite mode (the static hero stays put).
+  if (!lite.value) window.addEventListener('scroll', onScroll, { passive: true })
 
   // Tick the live signals. Frozen for reduced-motion (still shown, just static).
   fmt()
@@ -89,11 +96,13 @@ onBeforeUnmount(() => {
 
 <template>
   <section
-    class="cinematic-overlay grain relative flex min-h-[620px] w-full flex-col items-center justify-between overflow-hidden py-14 lg:h-[660px] lg:py-16"
+    class="home-hero cinematic-overlay grain relative flex min-h-[620px] w-full flex-col items-center justify-between overflow-hidden py-14 lg:h-[660px] lg:py-16"
   >
-    <!-- Animated throne-room backdrop (video, poster = static fallback) -->
+    <!-- Animated throne-room backdrop (video on desktop; static poster on
+         mobile/tablet under the flag — no autoplay, no download) -->
     <div ref="backdrop" class="absolute inset-0" style="background-color: #07070a">
       <video
+        v-if="!lite"
         class="hero-zoom h-full w-full object-cover"
         :poster="assets.heroThroneRoom.src"
         autoplay
@@ -105,6 +114,13 @@ onBeforeUnmount(() => {
       >
         <source :src="assets.heroVideo.src" type="video/mp4" />
       </video>
+      <img
+        v-else
+        :src="assets.heroThroneRoom.src"
+        alt=""
+        class="h-full w-full object-cover"
+        fetchpriority="high"
+      />
       <!-- Cinematic gradient scrim so the title/CTAs stay legible -->
       <div
         class="absolute inset-0"
@@ -120,19 +136,29 @@ onBeforeUnmount(() => {
       />
     </div>
 
-    <!-- Drifting smoke along the floor -->
-    <FloorSmoke />
-
-    <!-- Subtle rotating golden sparkles layered over the painted ring -->
-    <RotatingCrownRing variant="sparkle" />
+    <!-- Decorative motion — desktop only (skipped on mobile/tablet for perf) -->
+    <template v-if="!lite">
+      <!-- Drifting smoke along the floor -->
+      <FloorSmoke />
+      <!-- Subtle rotating golden sparkles layered over the painted ring -->
+      <RotatingCrownRing variant="sparkle" />
+    </template>
 
     <!-- Top: title block, seated in the dark upper band above the throne -->
     <div ref="content" class="container-royal relative z-10 flex flex-col items-center text-center">
       <div ref="eyebrow" class="mb-2">
+        <!-- 3D crown on desktop; lightweight static crown image on mobile/tablet -->
         <Crown3D
+          v-if="!lite"
           src="/assets/models/crown.glb"
           poster="/assets/images/crown-duke.png"
           :size="150"
+        />
+        <img
+          v-else
+          src="/assets/images/crown-duke.png"
+          alt=""
+          class="mx-auto h-[88px] w-auto drop-shadow-[0_4px_18px_rgba(212,175,55,0.5)]"
         />
       </div>
 

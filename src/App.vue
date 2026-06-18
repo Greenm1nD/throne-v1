@@ -14,6 +14,7 @@ import AppFooter from '@/components/layout/AppFooter.vue'
 import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
 import { polishEnabled } from '@/composables/usePolish'
+import { mobilePolishEnabled } from '@/composables/useMobilePolish'
 
 const ready = ref(false)
 const router = useRouter()
@@ -22,6 +23,7 @@ const router = useRouter()
 // class → stable design, untouched. `data-page` drives the per-page atmosphere.
 onMounted(() => {
   if (polishEnabled) document.documentElement.classList.add('polish')
+  if (mobilePolishEnabled) document.documentElement.classList.add('mobile-polish')
   if (!premiumEnabled) return
   document.documentElement.classList.add('premium')
   const setPage = (name: unknown) => {

@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
+import { mobilePolishEnabled } from '@/composables/useMobilePolish'
 
 /**
  * Shared cinematic hero for section pages: right-weighted artwork,
@@ -60,7 +61,10 @@ let io: IntersectionObserver | null = null
 
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const desktop = window.matchMedia('(min-width: 768px)').matches
+  // With the mobile flag on, tablets (768–1023) also use the static poster, so
+  // the ambient video plays on true desktop only.
+  const desktopMin = mobilePolishEnabled ? 1024 : 768
+  const desktop = window.matchMedia(`(min-width: ${desktopMin}px)`).matches
   if (cinemagraph && !reduce && desktop && vid.value) {
     io = new IntersectionObserver(
       ([e]) => {
@@ -81,7 +85,10 @@ onMounted(() => {
     stagger: 0.09,
     delay: 0.1,
   })
-  window.addEventListener('scroll', onScroll, { passive: true })
+  // Skip continuous scroll parallax on mobile/tablet (scroll-jank) under the flag.
+  if (!(mobilePolishEnabled && !desktop)) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+  }
 })
 
 onBeforeUnmount(() => {

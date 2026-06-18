@@ -1,0 +1,118 @@
+/* ── THRONE Mobile / Tablet UI/UX audit ──────────────────────────────────────
+   Active ONLY when <html class="mobile-polish"> (set by App.vue behind
+   VITE_ENABLE_MOBILE_TABLET_POLISH). Every rule is additive and scoped, so with
+   the flag off the class is never added and the stable responsive design is
+   fully restored. Heavy media (video/3D/particles) is gated in the components
+   themselves (HeroSection, PageHero) via useMobilePolish; this file handles
+   layout, rhythm, typography, touch targets and decorative weight. */
+
+/* ── Global guards (all viewports under the flag) ───────────────────────── */
+/* Kill any horizontal overflow from wide rails/banners without breaking
+   sticky/position contexts (clip, not hidden). */
+html.mobile-polish,
+html.mobile-polish body {
+  overflow-x: clip;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE  (≤ 767px)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Heroes: shorter, less dark empty space, CTA closer to the fold. */
+  html.mobile-polish .page-hero {
+    min-height: 360px !important;
+  }
+  html.mobile-polish .page-hero .max-w-xl {
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+  }
+  html.mobile-polish .home-hero {
+    min-height: 78vh !important;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  /* Hero title: impressive but not overflowing on a 390px screen. */
+  html.mobile-polish .page-hero h1 {
+    font-size: 2.5rem;
+    line-height: 1.05;
+    letter-spacing: 0.08em;
+  }
+
+  /* Readability: lift tiny uppercase labels, tame extreme tracking. */
+  html.mobile-polish .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+  html.mobile-polish [class*="tracking-[0.3em]"],
+  html.mobile-polish [class*="tracking-[0.4em]"],
+  html.mobile-polish [class*="tracking-[0.5em]"] {
+    letter-spacing: 0.22em;
+  }
+
+  /* Touch targets — guarantee ≥44px on the controls most likely to be small. */
+  html.mobile-polish .app-header [aria-label="Toggle menu"] {
+    height: 44px;
+    width: 44px;
+  }
+  html.mobile-polish .app-header a[href],
+  html.mobile-polish .glass-panel a[href] {
+    min-height: 44px;
+  }
+
+  /* Lighter decoration on mobile: trim grain + ambient glow, soften the heavy
+     card glows that cost fill-rate on phones. */
+  html.mobile-polish .grain::before {
+    opacity: 0.4;
+  }
+  html.mobile-polish .shadow-card-glow {
+    box-shadow: 0 8px 28px -16px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* Section vertical rhythm: pull the big pt-12/pt-16 section tops in a touch so
+     the page is less long and more scannable. */
+  html.mobile-polish main > section {
+    scroll-margin-top: 80px;
+  }
+
+  /* Footer: compact rhythm on phones. */
+  html.mobile-polish .app-footer-premium > .container-royal {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Kingdom: the featured-tournament band is tall on mobile — give the copy room
+     and stop the prize/field/clock row from cramping. */
+  html.mobile-polish .kingdom-decrees .decree {
+    padding-left: 2rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE + TABLET  (≤ 1023px)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+  /* The floating command bar is a desktop affordance — on a touch device it
+     reads as a generic app dock and can sit over CTAs/footer. Hide it; the
+     header + drawer cover navigation. */
+  html.mobile-polish nav[aria-label="Quick navigation"] {
+    display: none !important;
+  }
+
+  /* Reduce expensive backdrop blur on glass surfaces (cheap on desktop GPUs,
+     costly while scrolling on mobile/tablet). */
+  html.mobile-polish .glass-panel {
+    backdrop-filter: blur(10px) saturate(1.05);
+    -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TABLET  (768px – 1023px)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet gets its own balance — not enlarged mobile, not broken desktop.
+     Inner-page heroes sit a little taller than phone but shorter than desktop. */
+  html.mobile-polish .page-hero {
+    min-height: 460px !important;
+  }
+}
