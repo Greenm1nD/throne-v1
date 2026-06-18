@@ -14,14 +14,17 @@ import { polishEnabled } from '@/composables/usePolish'
 import { livePage as page } from '@/data/pages'
 import type { LobbyGame } from '@/data/casinoGames'
 
-// Same tables, reshaped for the reusable lobby grid below.
-const liveGames: LobbyGame[] = page.tables.map((t) => ({
-  name: t.name,
-  provider: t.provider,
-  image: t.image,
-  hot: (t as any).hot,
-  isNew: (t as any).isNew,
-}))
+// Full live catalogue feeds the searchable lobby (Top Games + Live Now stay
+// curated on page.tables). Off-flag falls back to the curated four.
+const liveGames: LobbyGame[] = polishEnabled
+  ? (page.lobby as LobbyGame[])
+  : page.tables.map((t) => ({
+      name: t.name,
+      provider: t.provider,
+      image: t.image,
+      hot: (t as any).hot,
+      isNew: (t as any).isNew,
+    }))
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)

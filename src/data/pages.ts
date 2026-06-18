@@ -195,6 +195,26 @@ export const livePage = {
     image: '/assets/images/live-exclusive.webp',
     fallback: '/assets/images/hall-vip-member.webp',
   },
+  // Full live-dealer catalogue for the "All Live Games" lobby (search/filter +
+  // load-more). Reuses the live table artwork across many studio variants.
+  lobby: [
+    { name: 'Lightning Roulette', provider: 'Evolution', image: '/assets/images/live-roulette.webp', hot: true },
+    { name: 'Blackjack VIP', provider: 'Evolution', image: '/assets/images/live-blackjack.webp' },
+    { name: 'Crazy Time', provider: 'Evolution', image: '/assets/images/live-crazytime.webp', hot: true },
+    { name: 'Speed Baccarat', provider: 'Pragmatic Play Live', image: '/assets/images/live-baccarat.webp' },
+    { name: 'Texas Hold’em', provider: 'Pragmatic Play Live', image: '/assets/images/live-poker.webp', isNew: true },
+    { name: 'Auto Roulette', provider: 'Playtech', image: '/assets/images/game-roulette.webp' },
+    { name: 'Lightning Blackjack', provider: 'Evolution', image: '/assets/images/game-blackjack.webp', hot: true },
+    { name: 'Baccarat Squeeze', provider: 'Ezugi', image: '/assets/images/game-baccarat.webp' },
+    { name: 'Mega Wheel', provider: 'Pragmatic Play Live', image: '/assets/images/live-crazytime.webp' },
+    { name: 'Immersive Roulette', provider: 'Evolution', image: '/assets/images/live-roulette.webp' },
+    { name: 'Dragon Tiger', provider: 'Ezugi', image: '/assets/images/live-baccarat.webp', isNew: true },
+    { name: 'Infinite Blackjack', provider: 'Evolution', image: '/assets/images/live-blackjack.webp' },
+    { name: 'Football Studio', provider: 'Evolution', image: '/assets/images/live-poker.webp' },
+    { name: 'Speed Roulette', provider: 'Playtech', image: '/assets/images/game-roulette.webp' },
+    { name: 'No Commission Baccarat', provider: 'Pragmatic Play Live', image: '/assets/images/game-baccarat.webp' },
+    { name: 'Power Blackjack', provider: 'Evolution', image: '/assets/images/game-blackjack.webp' },
+  ],
   band: <BandItem[]>[
     { icon: 'bolt', title: '24/7 Live Dealers', sub: 'Round the clock live casino action' },
     { icon: 'shield', title: 'Secure & Trusted', sub: 'Licensed studios and certified games' },
