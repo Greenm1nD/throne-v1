@@ -1,37 +1,23 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import AccGlyph from '@/components/account/AccGlyph.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { accountNav, balances, user } from '@/data/account'
-import { useAuth } from '@/composables/useAuth'
+import AccountNav from '@/components/account/AccountNav.vue'
+import { balances, user } from '@/data/account'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { useWalletModal } from '@/composables/useWalletModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
 
 /**
  * Global mobile account menu (phones, < md). Opens from the top-bar profile
- * button on ANY page as a top-most right-side drawer with a blurred scrim, so a
- * member reaches their account nav in one tap from anywhere.
+ * button on ANY page as a top-most right-side drawer with a blurred scrim. The
+ * nav body is the shared config-driven AccountNav (champagne line icons).
  */
-const router = useRouter()
 const { open } = useAccountMenu()
 const { mask } = useDiscreet()
-const auth = useAuth()
-
-function go(to: string) {
-  open.value = false
-  router.push(to)
-}
 const { open: openWallet } = useWalletModal()
 function wallet(kind: 'deposit' | 'withdraw') {
   open.value = false
   openWallet(kind)
-}
-function logout() {
-  open.value = false
-  auth.logout()
-  router.push('/')
 }
 </script>
 
@@ -71,33 +57,10 @@ function logout() {
           </div>
         </div>
 
-        <!-- Nav sections (the only scrolling area) -->
-        <nav class="min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <template v-for="(sec, si) in accountNav" :key="si">
-            <p v-if="sec.title" class="px-3 pb-2 pt-5 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-ink-dim">
-              {{ sec.title }}
-            </p>
-            <button
-              v-for="item in sec.items"
-              :key="item.label + item.to"
-              class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left font-sans text-[13px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
-              @click="go(item.to)"
-            >
-              <span class="grid w-8 place-items-center text-gold/70">
-                <AccGlyph :icon="item.icon" :font="item.font" :img="item.img" :size="item.img ? 28 : 15" />
-              </span>
-              {{ item.label }}
-            </button>
-          </template>
-
-          <button
-            class="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left font-sans text-[13px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
-            @click="logout"
-          >
-            <span class="grid w-8 place-items-center"><AccGlyph img="/assets/images/account/icon-logout.png" :size="28" /></span>
-            Log out
-          </button>
-        </nav>
+        <!-- Nav body (the only scrolling area) — shared config-driven nav -->
+        <div class="min-h-0 flex-1 overflow-y-auto px-2 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <AccountNav @navigate="open = false" />
+        </div>
       </aside>
     </Transition>
   </Teleport>
