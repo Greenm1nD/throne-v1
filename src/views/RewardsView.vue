@@ -17,8 +17,12 @@ const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 
 const ranks = vipPage.tiers
-const activeIndex = ranks.findIndex((r) => r.featured)
-const fillWidth = (activeIndex / (ranks.length - 1)) * 100
+// Guests see a neutral ladder (no current tier, no progress fill); members see
+// their position. Personal progress must not be implied for logged-out visitors.
+const activeIndex = computed(() => (isLoggedIn.value ? ranks.findIndex((r) => r.featured) : -1))
+const fillWidth = computed(() =>
+  isLoggedIn.value ? (activeIndex.value / (ranks.length - 1)) * 100 : 0,
+)
 
 const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 100))
 </script>

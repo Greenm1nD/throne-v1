@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -9,31 +10,18 @@ import { useReveal } from '@/composables/useReveal'
 
 const root = ref<HTMLElement | null>(null)
 useReveal(root, { stagger: 0.12 })
+
+const router = useRouter()
 </script>
 
 <template>
   <section id="casino" ref="root" class="section-glow container-royal pt-16 sm:pt-24">
     <SectionHeader title="Royal Collection" eyebrow="Curated Tables" />
 
-    <!-- View all + arrow controls -->
-    <div class="mb-6 flex items-center justify-end gap-3">
-      <GoldButton variant="ghost" size="sm">
+    <div class="mb-6 flex items-center justify-end">
+      <GoldButton variant="ghost" size="sm" @click="router.push('/casino')">
         View All <AppIcon name="arrowRight" :size="14" />
       </GoldButton>
-      <div class="flex gap-2">
-        <button
-          class="grid h-11 w-11 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
-          aria-label="Previous"
-        >
-          <AppIcon name="arrowLeft" :size="16" />
-        </button>
-        <button
-          class="grid h-11 w-11 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:bg-gold/10 hover:text-gold-bright"
-          aria-label="Next"
-        >
-          <AppIcon name="arrowRight" :size="16" />
-        </button>
-      </div>
     </div>
 
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

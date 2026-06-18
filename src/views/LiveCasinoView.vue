@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useRevealEach } from '@/composables/useReveal'
+import { useEnter } from '@/composables/useEnter'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
@@ -21,6 +23,9 @@ const liveGames: LobbyGame[] = page.tables.map((t) => ({
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
+
+const router = useRouter()
+const { enter } = useEnter()
 </script>
 
 <template>
@@ -58,23 +63,9 @@ useRevealEach(root)
           <h3 class="font-display text-sm font-semibold uppercase tracking-[0.22em] text-champagne">
             Top Games
           </h3>
-          <div class="flex items-center gap-3">
-            <GoldButton variant="ghost" size="sm">View All</GoldButton>
-            <div class="flex gap-2">
-              <button
-                class="grid h-8 w-8 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:text-gold-bright"
-                aria-label="Previous"
-              >
-                <AppIcon name="arrowLeft" :size="14" />
-              </button>
-              <button
-                class="grid h-8 w-8 place-items-center rounded-full border border-border-gold text-champagne transition-colors hover:border-gold hover:text-gold-bright"
-                aria-label="Next"
-              >
-                <AppIcon name="arrowRight" :size="14" />
-              </button>
-            </div>
-          </div>
+          <GoldButton variant="ghost" size="sm" @click="router.push('/casino')">
+            View All <AppIcon name="arrowRight" :size="14" />
+          </GoldButton>
         </div>
 
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
@@ -118,7 +109,7 @@ useRevealEach(root)
           <p class="max-w-xs font-sans text-sm leading-relaxed text-ink-muted">
             {{ page.exclusive.sub }}
           </p>
-          <GoldButton variant="outline" size="md" class="mt-4">
+          <GoldButton variant="outline" size="md" class="mt-4" @click="enter()">
             {{ page.exclusive.cta }} <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>

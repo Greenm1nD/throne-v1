@@ -123,7 +123,7 @@ useRevealEach(root)
 
         <div class="text-center lg:text-left">
           <h3 class="font-display text-xl font-semibold tracking-[0.14em] text-gold-gradient">
-            Your Personal Concierge
+            {{ isLoggedIn ? 'Your Personal Concierge' : 'A Personal Concierge Awaits' }}
           </h3>
           <p class="mx-auto mt-2 max-w-xl font-sans text-[13px] leading-relaxed text-ink-muted lg:mx-0">
             A dedicated host on call around the clock — priority withdrawals arranged,
