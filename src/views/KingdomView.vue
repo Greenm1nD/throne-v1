@@ -6,6 +6,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { kingdomPage as page } from '@/data/pages'
 import { useAuth } from '@/composables/useAuth'
 import { useEnter } from '@/composables/useEnter'
+import { polishEnabled } from '@/composables/usePolish'
 import { useRevealEach } from '@/composables/useReveal'
 import { useSeason } from '@/composables/useSeason'
 import { useQuests } from '@/composables/useQuests'
@@ -28,6 +29,15 @@ const liveEntries = computed(() =>
   isLoggedIn.value ? page.tournaments.filter((t) => t.status === 'live' && isEntered(t.slug)) : [],
 )
 const myRank = (t: (typeof page.tournaments)[number]) => t.board.find((b) => b.you)?.rank
+
+// Polish: elevate one tournament to a featured editorial band; the rest fill the
+// grid below. Off-flag, every tournament stays in the equal-weight grid.
+const featured = computed(
+  () => page.tournaments.find((t) => t.status === 'live') ?? page.tournaments[0],
+)
+const gridTournaments = computed(() =>
+  polishEnabled ? page.tournaments.filter((t) => t.slug !== featured.value.slug) : page.tournaments,
+)
 
 const root = ref<HTMLElement | null>(null)
 const courtEl = ref<HTMLElement | null>(null)
@@ -383,9 +393,65 @@ function claimQuest(q: (typeof page.quests)[number]) {
         </span>
       </RouterLink>
 
+      <!-- Featured tournament — wide editorial band (polish flag) -->
+      <RouterLink
+        v-if="polishEnabled && featured"
+        :to="`/kingdom/tournament/${featured.slug}`"
+        class="group relative mb-5 flex min-h-[300px] flex-col justify-end overflow-hidden rounded-2xl border border-border-gold shadow-card-glow lg:min-h-[340px]"
+        data-reveal
+      >
+        <div
+          v-lazybg="`linear-gradient(90deg, rgba(8,8,10,0.95) 30%, rgba(8,8,10,0.55) 60%, rgba(5,5,5,0.35)), url('${featured.image}'), url('${featured.fallback}')`"
+          class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+        />
+        <span class="shine-beam" />
+
+        <div class="absolute left-6 top-6 z-10 flex items-center gap-2">
+          <span class="flex items-center gap-1.5 rounded-full border border-gold/50 bg-black/55 px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.18em] text-gold-bright backdrop-blur">
+            <AppIcon name="crown" :size="11" /> Featured
+          </span>
+          <span
+            class="flex items-center gap-1.5 rounded-full px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em]"
+            :class="featured.status === 'live'
+              ? 'border border-[#c2603f]/60 bg-black/55 text-[#e89a7c]'
+              : 'border border-border-gold/50 bg-black/55 text-champagne'"
+          >
+            <span v-if="featured.status === 'live'" class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#e0552c] shadow-[0_0_8px_rgba(224,85,44,0.9)]" />
+            {{ featured.status === 'live' ? 'Live' : 'Upcoming' }}
+          </span>
+        </div>
+
+        <div class="relative z-10 max-w-2xl px-6 pb-7 sm:px-9 sm:pb-9">
+          <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-gold/80">{{ featured.game }}</p>
+          <h4 class="mt-1.5 font-display text-3xl font-bold tracking-[0.06em] text-gold-gradient sm:text-4xl">{{ featured.name }}</h4>
+
+          <div class="mt-6 flex flex-wrap items-end gap-x-9 gap-y-4">
+            <div>
+              <p class="font-sans text-[9px] uppercase tracking-[0.2em] text-ink-dim">Prize Pool</p>
+              <p class="mt-1 font-display text-3xl font-bold tabular-nums text-champagne">{{ featured.prize }}</p>
+            </div>
+            <div>
+              <p class="font-sans text-[9px] uppercase tracking-[0.2em] text-ink-dim">Field</p>
+              <p class="mt-1 font-sans text-[15px] font-semibold tabular-nums text-ink-muted">{{ featured.players }} / {{ featured.cap }}</p>
+            </div>
+            <div>
+              <p class="font-sans text-[9px] uppercase tracking-[0.2em] text-ink-dim">{{ featured.status === 'live' ? 'Ends in' : 'Starts in' }}</p>
+              <p class="mt-1 font-sans text-[15px] font-semibold tabular-nums text-ink-muted">{{ tClock(featured) }}</p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center gap-4">
+            <GoldButton variant="solid" size="md">
+              {{ isEntered(featured.slug) ? 'View Standing' : 'Enter Tournament' }} <AppIcon name="arrowRight" :size="14" />
+            </GoldButton>
+            <span class="font-sans text-[11px] text-ink-dim">Entry · {{ featured.entry }}</span>
+          </div>
+        </div>
+      </RouterLink>
+
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <RouterLink
-          v-for="t in page.tournaments"
+          v-for="t in gridTournaments"
           :key="t.slug"
           :to="`/kingdom/tournament/${t.slug}`"
           class="card-lux group relative flex min-h-[260px] flex-col justify-end overflow-hidden p-6"
@@ -450,11 +516,11 @@ function claimQuest(q: (typeof page.quests)[number]) {
         <h3 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Royal Decrees</h3>
       </div>
 
-      <div class="card-lux divide-y divide-white/5 p-0 hover:translate-y-0" data-reveal>
+      <div class="kingdom-decrees card-lux divide-y divide-white/5 p-0 hover:translate-y-0" data-reveal>
         <article
           v-for="d in page.decrees"
           :key="d.title"
-          class="group flex flex-col gap-1.5 px-5 py-5 transition-colors hover:bg-white/[0.02] sm:flex-row sm:items-center sm:gap-5 sm:px-7"
+          class="decree group flex flex-col gap-1.5 px-5 py-5 transition-colors hover:bg-white/[0.02] sm:flex-row sm:items-center sm:gap-5 sm:px-7"
         >
           <span class="shrink-0 self-start rounded-full border border-border-gold/50 px-3 py-1 font-sans text-[9px] font-bold uppercase tracking-[0.16em] text-champagne">
             {{ d.tag }}

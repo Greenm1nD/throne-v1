@@ -69,6 +69,47 @@ html.polish .app-footer-premium > .container-royal {
   padding-bottom: 2.25rem;
 }
 
+/* ── Kingdom: Royal Decrees as a herald's timeline ────────────────────────
+   Turn the flat news list into a vertical timeline (left rail + node per
+   decree), so it reads like a chronicle, not another stack of cards. */
+html.polish .kingdom-decrees .decree {
+  position: relative;
+  padding-left: 2.25rem;
+}
+@media (min-width: 640px) {
+  html.polish .kingdom-decrees .decree {
+    padding-left: 2.75rem;
+  }
+}
+/* Continuous rail */
+html.polish .kingdom-decrees .decree::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(245, 215, 122, 0.18);
+}
+html.polish .kingdom-decrees .decree:first-child::before {
+  top: 1.25rem;
+}
+html.polish .kingdom-decrees .decree:last-child::before {
+  bottom: calc(100% - 1.25rem);
+}
+/* Node */
+html.polish .kingdom-decrees .decree::after {
+  content: '';
+  position: absolute;
+  left: calc(1rem - 3px);
+  top: 1.6rem;
+  height: 7px;
+  width: 7px;
+  border-radius: 9999px;
+  background: rgba(245, 215, 122, 0.5);
+  box-shadow: 0 0 0 3px rgba(5, 5, 5, 0.9);
+}
+
 /* Image-led inner heroes (Live Casino, Sports): a touch more scrim so the title
    stays premium and legible over busy artwork. */
 html.polish .page-hero::after {
