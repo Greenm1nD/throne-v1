@@ -15,6 +15,8 @@ export interface StripItem {
   /** AppIcon glyph */
   icon?: string
   active?: boolean
+  /** optional route to navigate to on click (auth-aware for /account paths) */
+  to?: string
 }
 
 export interface BandItem {
@@ -238,14 +240,14 @@ export const vipPage = {
     posY: '60%',
   },
   benefits: <StripItem[]>[
-    { label: 'Dedicated Account Manager', icon: 'user' },
-    { label: 'Exclusive Bonuses', icon: 'gift' },
-    { label: 'Higher Cashback', icon: 'percent' },
-    { label: 'Faster Withdrawals', icon: 'bolt' },
-    { label: 'Private Tournaments', icon: 'trophy' },
-    { label: 'Invite Only Events', icon: 'crown' },
-    { label: '24/7 Priority Support', icon: 'headset' },
-    { label: 'Personalized VIP Offers', icon: 'sparkle' },
+    { label: 'Dedicated Account Manager', icon: 'user', to: '/account/concierge' },
+    { label: 'Exclusive Bonuses', icon: 'gift', to: '/account/bonuses' },
+    { label: 'Higher Cashback', icon: 'percent', to: '/account/cashback' },
+    { label: 'Faster Withdrawals', icon: 'bolt', to: '/account/withdraw' },
+    { label: 'Private Tournaments', icon: 'trophy', to: '/kingdom' },
+    { label: 'Invite Only Events', icon: 'crown', to: '/kingdom' },
+    { label: '24/7 Priority Support', icon: 'headset', to: '/account/contact' },
+    { label: 'Personalized VIP Offers', icon: 'sparkle', to: '/rewards' },
   ],
   tiers: [
     {
