@@ -4,11 +4,13 @@ import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
 import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
+import RoyalPicks from '@/components/casino/RoyalPicks.vue'
 import RollingNumber from '@/components/ui/RollingNumber.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { casinoPage as page } from '@/data/pages'
 import { useEnter } from '@/composables/useEnter'
+import { polishEnabled } from '@/composables/usePolish'
 
 const { enter } = useEnter()
 
@@ -31,6 +33,9 @@ onBeforeUnmount(() => clearInterval(tick))
     <PageHero v-bind="page.hero" :cta="page.hero.cta" />
 
     <CategoryStrip :items="page.categories" />
+
+    <!-- Royal Picks — curated editorial row (polish flag) -->
+    <RoyalPicks v-if="polishEnabled" />
 
     <GamesLobby data-reveal />
 
