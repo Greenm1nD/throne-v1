@@ -10,6 +10,9 @@ import AgeGate from '@/components/ui/AgeGate.vue'
 import WalletModal from '@/components/wallet/WalletModal.vue'
 import FloatingCommandBar from '@/components/ui/FloatingCommandBar.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
+import MobileTopBar from '@/components/layout/MobileTopBar.vue'
+import MobileBottomNav from '@/components/layout/MobileBottomNav.vue'
+import MobileWelcomeSheet from '@/components/layout/MobileWelcomeSheet.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
@@ -38,6 +41,8 @@ onMounted(() => {
   <LoadingScreen v-if="!ready" @done="ready = true" />
   <AmbientBackground />
   <AppHeader v-show="ready" />
+  <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
+  <MobileTopBar v-if="mobilePolishEnabled" v-show="ready" />
   <div v-show="ready" class="min-h-[60vh]">
     <RouterView v-slot="{ Component }">
       <Transition name="pm-page" mode="out-in">
@@ -52,5 +57,9 @@ onMounted(() => {
   <TwoFaModal />
   <WalletModal />
   <FloatingCommandBar v-if="premiumEnabled" />
+  <template v-if="mobilePolishEnabled">
+    <MobileBottomNav v-show="ready" />
+    <MobileWelcomeSheet v-if="ready" />
+  </template>
   <AgeGate v-if="ready" />
 </template>

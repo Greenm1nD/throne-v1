@@ -18,6 +18,21 @@ html.mobile-polish body {
    MOBILE  (≤ 767px)
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
+  /* Phone chrome: the desktop AppHeader is replaced by MobileTopBar + bottom nav. */
+  html.mobile-polish .app-header {
+    display: none !important;
+  }
+  /* Reserve space so the fixed bottom nav never covers footer/legal/content. */
+  html.mobile-polish body {
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+  /* The floating command bar is already hidden < 1024; ensure nothing else docks
+     over the bottom nav. */
+  html.mobile-polish .app-footer-premium,
+  html.mobile-polish .app-footer {
+    margin-bottom: 0;
+  }
+
   /* Heroes: shorter, less dark empty space, CTA closer to the fold. */
   html.mobile-polish .page-hero {
     min-height: 360px !important;
