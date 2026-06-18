@@ -10,8 +10,15 @@ import { lobbyGames, gameSlug } from '@/data/casinoGames'
  * Tiles match the lobby grid below 1:1 in size (same columns, same card shape),
  * so it reads as "the court's shortlist" above the full catalogue, not a banner.
  */
-const numerals = ['I', 'II', 'III']
-const picks = ['Gates of Olympus', 'Zeus vs Hades', 'The Ultimate 5']
+const numerals = ['I', 'II', 'III', 'IV', 'V', 'VI']
+const picks = [
+  'Gates of Olympus',
+  'Zeus vs Hades',
+  'The Ultimate 5',
+  'Sugar Rush',
+  'Starlight Princess',
+  'Release the Kraken',
+]
   .map((name) => lobbyGames.find((g) => g.name === name))
   .filter((g): g is NonNullable<typeof g> => Boolean(g))
 
