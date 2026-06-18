@@ -111,6 +111,13 @@ export const sportsPage = {
     image: '/assets/images/sports-boost.webp',
     fallback: '/assets/images/sportsbook-arena.webp',
   },
+  // Curated marquee fixtures shown while the live provider feed loads (polish).
+  featured: [
+    { league: 'Champions League', kickoff: 'Today · 21:00', live: true, home: 'Real Madrid', away: 'Man City', odds: { h: '2.10', d: '3.40', a: '3.05' } },
+    { league: 'Premier League', kickoff: 'Today · 22:45', live: false, home: 'Arsenal', away: 'Liverpool', odds: { h: '2.55', d: '3.30', a: '2.60' } },
+    { league: 'La Liga', kickoff: 'Tomorrow · 20:00', live: false, home: 'Barcelona', away: 'Atlético', odds: { h: '1.85', d: '3.60', a: '4.10' } },
+    { league: 'Serie A', kickoff: 'Tomorrow · 20:45', live: false, home: 'Inter', away: 'Juventus', odds: { h: '2.30', d: '3.10', a: '3.20' } },
+  ],
   band: <BandItem[]>[
     { icon: 'bolt', title: 'Live Betting', sub: 'Bet in-play on thousands of events' },
     { icon: 'clock', title: 'Fast Payouts', sub: 'Your winnings, paid instantly' },

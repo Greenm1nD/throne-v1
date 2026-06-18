@@ -7,6 +7,8 @@ import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GameCard from '@/components/home/GameCard.vue'
+import FeaturedMatches from '@/components/sports/FeaturedMatches.vue'
+import { polishEnabled } from '@/composables/usePolish'
 import { sportsPage as page } from '@/data/pages'
 import { royalCollection } from '@/data/games'
 
@@ -134,6 +136,9 @@ useRevealEach(root)
         This section is a styled container — the live feed renders from the third-party provider iframe once its URL is configured.
       </p>
     </section>
+
+    <!-- Tonight's Marquee — curated fixtures (polish flag) -->
+    <FeaturedMatches v-if="polishEnabled" :matches="page.featured" />
 
     <!-- Boost banner (full-width, artwork shown in full at right) -->
     <section class="container-royal pt-12 sm:pt-16">
