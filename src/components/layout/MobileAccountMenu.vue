@@ -47,11 +47,11 @@ function logout() {
     <Transition name="ma-drawer">
       <aside
         v-if="open"
-        class="fixed inset-y-0 right-0 z-[96] flex w-[86%] max-w-[330px] flex-col overflow-y-auto border-l border-border-gold/40 bg-surface/95 backdrop-blur-xl [scrollbar-width:none] md:hidden"
+        class="fixed inset-y-0 right-0 z-[96] flex w-[86%] max-w-[330px] flex-col border-l border-border-gold/40 bg-surface/95 backdrop-blur-xl md:hidden"
         aria-label="Account menu"
       >
-        <!-- Member + balance -->
-        <div class="border-b border-border-gold/25 p-5">
+        <!-- Member + balance (static header — does not scroll) -->
+        <div class="shrink-0 border-b border-border-gold/25 p-5">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <img :src="user.avatar" alt="" class="h-11 w-11 rounded-full border border-border-gold object-cover" />
@@ -71,8 +71,8 @@ function logout() {
           </div>
         </div>
 
-        <!-- Nav sections -->
-        <nav class="px-3 pb-4 pt-2">
+        <!-- Nav sections (the only scrolling area) -->
+        <nav class="min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <template v-for="(sec, si) in accountNav" :key="si">
             <p v-if="sec.title" class="px-3 pb-2 pt-5 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-ink-dim">
               {{ sec.title }}
