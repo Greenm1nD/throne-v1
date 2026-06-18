@@ -1,91 +1,95 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { lobbyGames, gameSlug } from '@/data/casinoGames'
 
 /**
- * Royal Picks — a curated, editorial 3-up of hand-selected games (polish flag).
- * Gives the casino lobby a premium "the court recommends" anchor above the full
- * searchable grid, instead of dropping the visitor straight into 100+ thumbnails.
- * Pure presentation: derives its three games from the existing catalogue.
+ * Royal Picks — a curated, editorial pick of hand-selected games (polish flag).
+ * Tiles match the lobby grid below 1:1 in size (same columns, same card shape),
+ * so it reads as "the court's shortlist" above the full catalogue, not a banner.
  */
-const reasons: Record<string, string> = {
-  'Gates of Olympus': 'The house favourite — divine multipliers to 500×.',
-  'Zeus vs Hades': 'A clash of gods with dual-reel volatility.',
-  'The Ultimate 5': 'Five reels of pure high-stakes momentum.',
-}
 const numerals = ['I', 'II', 'III']
-const picks = Object.keys(reasons)
+const picks = ['Gates of Olympus', 'Zeus vs Hades', 'The Ultimate 5']
   .map((name) => lobbyGames.find((g) => g.name === name))
   .filter((g): g is NonNullable<typeof g> => Boolean(g))
 
 const router = useRouter()
-const open = (slug: string) => router.push(`/casino/play/${slug}`)
+const favs = ref(new Set<string>())
+function toggleFav(name: string) {
+  favs.value.has(name) ? favs.value.delete(name) : favs.value.add(name)
+  favs.value = new Set(favs.value)
+}
 </script>
 
 <template>
   <section class="container-royal pt-12 sm:pt-16">
     <!-- Header -->
-    <div class="mb-6 flex items-end justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="h-6 w-1 rounded-full bg-gold-gradient shadow-gold-soft" />
-        <div>
-          <h2 class="font-display text-xl font-semibold tracking-[0.16em] text-gold-gradient">
-            Royal Picks
-          </h2>
-          <p class="eyebrow mt-1">Hand-selected by the court</p>
-        </div>
+    <div class="mb-6 flex items-center gap-3">
+      <span class="h-6 w-1 rounded-full bg-gold-gradient shadow-gold-soft" />
+      <div>
+        <h2 class="font-display text-xl font-semibold tracking-[0.16em] text-gold-gradient">
+          Royal Picks
+        </h2>
+        <p class="eyebrow mt-1">Hand-selected by the court</p>
       </div>
     </div>
 
-    <!-- Curated 3-up -->
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Same grid + card size as the lobby below -->
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
       <article
         v-for="(g, i) in picks"
         :key="g.name"
         v-glow
         data-reveal
-        class="group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
-        @click="open(gameSlug(g))"
+        class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
+        @click="router.push(`/casino/play/${gameSlug(g)}`)"
       >
-        <div class="relative aspect-[16/10] overflow-hidden">
+        <div class="relative aspect-square overflow-hidden">
           <img
             :src="g.image"
             :alt="g.name"
             loading="lazy"
             decoding="async"
-            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
           <!-- Roman-numeral rank chip -->
           <span
-            class="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full border border-gold/50 bg-black/55 font-display text-[13px] font-bold tracking-[0.04em] text-gold-bright backdrop-blur"
+            class="absolute left-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-gold/50 bg-black/55 font-display text-[12px] font-bold text-gold-bright backdrop-blur"
           >
             {{ numerals[i] }}
           </span>
+
+          <!-- Hover play overlay -->
           <div
-            class="pointer-events-none absolute inset-0"
-            style="background: linear-gradient(180deg, rgba(5,5,5,0) 45%, rgba(5,5,5,0.82))"
-          />
+            class="absolute inset-0 flex items-center justify-center bg-black/55 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100"
+          >
+            <GoldButton variant="solid" size="sm">
+              <AppIcon name="play" :size="12" /> Play
+            </GoldButton>
+          </div>
           <span class="shine-beam z-10" />
         </div>
 
-        <div class="flex flex-1 flex-col gap-3 px-5 py-5">
-          <div>
-            <h3 class="font-display text-lg font-semibold tracking-[0.06em] text-champagne transition-colors group-hover:text-gold-bright">
+        <div class="flex items-center justify-between gap-2 px-3 py-3">
+          <div class="min-w-0">
+            <p class="truncate font-sans text-[12px] font-semibold text-ink transition-colors group-hover:text-gold-bright">
               {{ g.name }}
-            </h3>
-            <p class="mt-1 flex items-center gap-2 font-sans text-[11px] text-ink-dim">
+            </p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-sans text-[10px] text-ink-dim">
               <span class="h-1 w-1 rounded-full bg-gold/70" /> {{ g.provider }}
-              <span v-if="g.rtp" class="text-ink-dim">· RTP {{ g.rtp }}%</span>
             </p>
           </div>
-          <p class="font-sans text-[12.5px] leading-relaxed text-ink-muted">
-            {{ reasons[g.name] }}
-          </p>
-          <GoldButton variant="outline" size="sm" class="mt-auto self-start" @click.stop="open(gameSlug(g))">
-            <AppIcon name="play" :size="12" /> Play Now
-          </GoldButton>
+          <button
+            class="-mr-2 grid h-11 w-11 shrink-0 place-items-center transition-colors"
+            :class="favs.has(g.name) ? 'text-gold-bright' : 'text-ink-dim hover:text-gold'"
+            :aria-pressed="favs.has(g.name)"
+            :aria-label="`Favorite ${g.name}`"
+            @click.stop="toggleFav(g.name)"
+          >
+            <AppIcon name="star" :size="15" />
+          </button>
         </div>
       </article>
     </div>
