@@ -42,7 +42,7 @@ function onScroll() {
   requestAnimationFrame(() => {
     const y = window.scrollY
     // Background drifts slowest; foreground lifts and fades out.
-    if (backdrop.value) backdrop.value.style.transform = `translateY(${y * 0.25}px) scale(1.05)`
+    if (backdrop.value) backdrop.value.style.transform = `translate3d(0, ${y * 0.25}px, 0) scale3d(1.05, 1.05, 1)`
     if (content.value) {
       content.value.style.transform = `translateY(${y * -0.1}px)`
       content.value.style.opacity = String(Math.max(0, 1 - y / 500))
