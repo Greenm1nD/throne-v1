@@ -43,11 +43,11 @@ function onDeposit() {
 
 <template>
   <nav
-    class="mobile-bottomnav glass-panel fixed inset-x-0 bottom-0 z-50 border-t border-border-gold/50 md:hidden"
+    class="mobile-bottomnav fixed bottom-3 left-1/2 z-50 w-[calc(100%-24px)] max-w-[430px] -translate-x-1/2 rounded-[30px] md:hidden"
     aria-label="Primary"
   >
     <!-- Member: nav + raised centre Deposit -->
-    <div v-if="isLoggedIn" class="mx-auto flex max-w-md items-end justify-around px-1">
+    <div v-if="isLoggedIn" class="mx-auto flex items-end justify-around px-1.5">
       <RouterLink
         v-for="(item, i) in items"
         :key="item.to"
@@ -56,10 +56,12 @@ function onDeposit() {
         :class="[isActive(item.to) ? 'text-gold-bright' : 'text-ink-dim hover:text-ink', ['order-1','order-2','order-4','order-5'][i]]"
         :aria-current="isActive(item.to) ? 'page' : undefined"
       >
-        <span class="grid h-7 w-7 place-items-center rounded-full transition-colors" :class="isActive(item.to) && 'bg-gold/[0.14]'">
-          <AppIcon :name="item.icon" :size="18" />
-        </span>
-        <span class="font-sans text-[9px] font-semibold uppercase tracking-[0.1em]">{{ item.label }}</span>
+        <AppIcon :name="item.icon" :size="22" />
+        <span class="font-sans text-[10px] font-semibold uppercase tracking-[0.12em]">{{ item.label }}</span>
+        <span
+          class="h-[3px] w-6 rounded-full bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.7)] transition-opacity duration-300"
+          :class="isActive(item.to) ? 'opacity-100' : 'opacity-0'"
+        />
       </RouterLink>
 
       <!-- Raised centre Deposit button (premium animated focal point) -->
@@ -92,6 +94,28 @@ function onDeposit() {
 </template>
 
 <style scoped>
+/* ── Floating capsule bar ────────────────────────────────────────────────── */
+.mobile-bottomnav {
+  background: linear-gradient(180deg, rgba(28, 25, 18, 0.92) 0%, rgba(5, 5, 5, 0.96) 100%);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 18px 44px -18px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(245, 215, 122, 0.04);
+}
+/* Thin champagne-gold hairline across the top edge (the coin cuts into it) */
+.mobile-bottomnav::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 215, 122, 0.55) 18%, rgba(245, 215, 122, 0.55) 82%, transparent);
+  pointer-events: none;
+}
+
 /* ── Central Deposit button: luxury focal point ──────────────────────────────
    Black & champagne-gold. Calm, restrained — a gold coin / watch-crown feel.
    GPU-only transforms (scale/translate/opacity), no layout shift. */

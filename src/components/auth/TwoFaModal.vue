@@ -32,6 +32,12 @@ function onInput(i: number, e: Event) {
   el.value = el.value.replace(/\D/g, '').slice(-1)
   digits.value[i] = el.value
   if (el.value && i < 5) boxes.value[i + 1]?.focus()
+  // Auto-submit once all six digits are present — on mobile the soft keyboard
+  // can swallow the first tap on the button, so completing the code just enters.
+  if (digits.value.every((d) => d) && !loading.value) {
+    boxes.value[i]?.blur()
+    confirm()
+  }
 }
 
 function onKeydown(i: number, e: KeyboardEvent) {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AccGlyph from '@/components/account/AccGlyph.vue'
-import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { accountNav, balances, user } from '@/data/account'
 import { useAuth } from '@/composables/useAuth'
 import { useDiscreet } from '@/composables/useDiscreet'
+import { useAccountMenu } from '@/composables/useAccountMenu'
 
 const { mask } = useDiscreet()
 
@@ -18,7 +18,7 @@ const { mask } = useDiscreet()
 const router = useRouter()
 const route = useRoute()
 const auth = useAuth()
-const menuOpen = ref(false) // mobile drawer
+const { open: menuOpen } = useAccountMenu() // mobile drawer (opened by the top-bar profile button)
 
 // The button for the page you're on reads as active (solid); the other is outline.
 const onWithdraw = computed(() => route.path === '/account/withdraw')
@@ -120,15 +120,8 @@ function logout() {
       <!-- Mobile scrim -->
       <div v-if="menuOpen" class="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm lg:hidden" @click="menuOpen = false" />
 
-      <!-- ── Routed page ── -->
+      <!-- ── Routed page ── (mobile account menu opens from the top-bar profile button) -->
       <main class="min-w-0 flex-1">
-        <button
-          class="mb-5 flex items-center gap-2.5 rounded-full border border-border-gold/60 px-4 py-2 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-champagne transition-colors hover:border-gold hover:text-gold-bright lg:hidden"
-          aria-label="Account menu"
-          @click="menuOpen = true"
-        >
-          <FontIcon name="hamburger" class="text-[14px]" /> Account Menu
-        </button>
         <RouterView />
       </main>
     </div>

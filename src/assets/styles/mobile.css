@@ -22,9 +22,10 @@ html.mobile-polish body {
   html.mobile-polish .app-header {
     display: none !important;
   }
-  /* Reserve space so the fixed bottom nav never covers footer/legal/content. */
+  /* Reserve space so the floating bottom nav never covers footer/legal/content
+     (pill height + 12px bottom gap + safe area). */
   html.mobile-polish body {
-    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
   }
   /* The floating command bar is already hidden < 1024; ensure nothing else docks
      over the bottom nav. */
@@ -291,5 +292,37 @@ html.mobile-polish body {
   html.mobile-polish .treasury-banner {
     min-height: 380px;
     align-items: flex-start;
+  }
+}
+
+/* ── More mobile density fixes (≤ 767px) ─────────────────────────────────── */
+@media (max-width: 767px) {
+  /* General: any horizontal scroll rail that uses a -mx bleed should stay inset
+     from the wall on phones (Noble Houses, Royal Quests, etc.). */
+  html.mobile-polish [class~="-mx-4"][class*="overflow-x-auto"],
+  html.mobile-polish [class~="-mx-6"][class*="overflow-x-auto"] {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Hall of Kings: two compact cards per row instead of tall stacked ones. */
+  html.mobile-polish .hall-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  html.mobile-polish .hall-grid article {
+    padding: 1.25rem 0.75rem;
+  }
+
+  /* Featured tournament band: taller so the title clears the status pills, and a
+     smaller title so it no longer overlaps them. */
+  html.mobile-polish .featured-band {
+    min-height: 430px;
+  }
+  html.mobile-polish .featured-band h4 {
+    font-size: 1.5rem;
+    line-height: 1.1;
   }
 }

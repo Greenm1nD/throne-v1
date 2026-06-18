@@ -14,7 +14,7 @@ useReveal(root, { stagger: 0.1 })
   <section ref="root" class="section-glow container-royal pt-16 sm:pt-20">
     <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" />
 
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="hall-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <article
         v-for="stat in hallOfKings"
         :key="stat.label"

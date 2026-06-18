@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { useAccountMenu } from '@/composables/useAccountMenu'
 import { user as member } from '@/data/account'
 import { joinCta } from '@/config'
 
@@ -16,8 +17,10 @@ import { joinCta } from '@/config'
  * AppHeader is hidden < 768 via mobile.css so there is only one chrome.
  */
 const router = useRouter()
+const route = useRoute()
 const { isLoggedIn, logout } = useAuth()
 const { open } = useAuthModal()
+const { open: accountMenuOpen } = useAccountMenu()
 const drawer = ref(false)
 
 // Primary pages with a fitting icon for the drawer.
@@ -44,8 +47,14 @@ function go(href: string) {
   router.push(href)
 }
 function profile() {
-  if (isLoggedIn.value) router.push('/account')
-  else open('login')
+  if (!isLoggedIn.value) {
+    open('login')
+    return
+  }
+  // On account pages the profile button opens the account menu; elsewhere it
+  // takes the member to their dashboard.
+  if (route.path.startsWith('/account')) accountMenuOpen.value = true
+  else router.push('/account')
 }
 function signOut() {
   drawer.value = false

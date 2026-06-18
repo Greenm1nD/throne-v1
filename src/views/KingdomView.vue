@@ -397,7 +397,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
       <RouterLink
         v-if="polishEnabled && featured"
         :to="`/kingdom/tournament/${featured.slug}`"
-        class="group relative mb-5 flex min-h-[300px] flex-col justify-end overflow-hidden rounded-2xl border border-border-gold shadow-card-glow lg:min-h-[340px]"
+        class="featured-band group relative mb-5 flex min-h-[300px] flex-col justify-end overflow-hidden rounded-2xl border border-border-gold shadow-card-glow lg:min-h-[340px]"
         data-reveal
       >
         <div
