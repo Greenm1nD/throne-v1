@@ -1,0 +1,130 @@
+/* ── Premium Motion UI Refresh ──────────────────────────────────────────────
+   Active ONLY when <html class="premium"> (set by App.vue behind the
+   VITE_ENABLE_PREMIUM_MOTION_REFRESH flag). With the flag off, the class is
+   never added and every rule here is inert — a clean, zero-risk revert.
+   Scoped, additive overrides only; no existing selectors are modified. */
+
+/* Atmospheric depth: a soft vignette layered over the existing gold radials so
+   no section reads as flat black. (Background layer → always behind content.) */
+html.premium body {
+  background-image:
+    radial-gradient(135% 105% at 50% 40%, transparent 50%, rgba(0, 0, 0, 0.58) 100%),
+    radial-gradient(1200px 600px at 50% -10%, rgba(212, 175, 55, 0.09), transparent 60%),
+    radial-gradient(900px 500px at 85% 20%, rgba(212, 175, 55, 0.05), transparent 55%),
+    radial-gradient(700px 500px at 10% 80%, rgba(212, 175, 55, 0.035), transparent 55%);
+}
+
+/* Per-page atmosphere: each route gets a distinct gold-glow composition (still
+   pure black + champagne) so pages stop feeling like the same template. The
+   vignette layer stays first (on top) in every variant. Falls back to the base
+   above for any unlisted page. */
+html.premium[data-page='casino'] body {
+  background-image:
+    radial-gradient(135% 105% at 50% 40%, transparent 50%, rgba(0, 0, 0, 0.6) 100%),
+    radial-gradient(950px 620px at 82% 24%, rgba(212, 175, 55, 0.11), transparent 55%),
+    radial-gradient(700px 520px at 16% 88%, rgba(212, 175, 55, 0.05), transparent 55%);
+}
+html.premium[data-page='sports'] body {
+  background-image:
+    radial-gradient(135% 105% at 50% 40%, transparent 50%, rgba(0, 0, 0, 0.58) 100%),
+    radial-gradient(1500px 480px at 50% -6%, rgba(212, 175, 55, 0.10), transparent 60%),
+    radial-gradient(680px 520px at 12% 32%, rgba(168, 196, 230, 0.035), transparent 55%);
+}
+html.premium[data-page='vip'] body {
+  background-image:
+    radial-gradient(140% 115% at 50% 45%, transparent 44%, rgba(0, 0, 0, 0.72) 100%),
+    radial-gradient(820px 600px at 24% 18%, rgba(212, 175, 55, 0.06), transparent 55%);
+}
+html.premium[data-page='kingdom'] body {
+  background-image:
+    radial-gradient(135% 105% at 50% 42%, transparent 50%, rgba(0, 0, 0, 0.6) 100%),
+    radial-gradient(720px 620px at 7% 28%, rgba(212, 175, 55, 0.075), transparent 55%),
+    radial-gradient(720px 620px at 93% 28%, rgba(212, 175, 55, 0.075), transparent 55%);
+}
+html.premium[data-page='rewards'] body {
+  background-image:
+    radial-gradient(135% 105% at 50% 38%, transparent 50%, rgba(0, 0, 0, 0.58) 100%),
+    radial-gradient(1050px 640px at 50% 92%, rgba(212, 175, 55, 0.13), transparent 55%),
+    radial-gradient(720px 520px at 50% 2%, rgba(212, 175, 55, 0.06), transparent 55%);
+}
+
+/* Global page transition: subtle fade + 16px lift (used with <Transition
+   name="pm-page" mode="out-in">). Motion-only — frozen for reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-page-enter-active {
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.premium .pm-page-enter-from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  html.premium .pm-page-leave-active {
+    transition: opacity 0.2s ease;
+  }
+  html.premium .pm-page-leave-to {
+    opacity: 0;
+  }
+}
+
+/* Reserve gold for accents: the muted default hairline (border-border-gold /
+   border-hairline) becomes a soft warm dark line, so champagne gold now reads
+   only on hover / active / featured / selected states (which use border-gold*).
+   Makes gold feel rare and premium. Scoped + reversible. */
+html.premium .border-border-gold,
+html.premium .border-hairline {
+  border-color: rgba(245, 238, 225, 0.08);
+}
+
+/* Card hover refinement: a softer lift + faint champagne glow instead of a hard
+   gold border, so cards read as premium and less repetitive. (Scoped to the
+   custom .card-lux class only — no utility overrides.) */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .card-lux:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 22px 60px -28px rgba(0, 0, 0, 0.9),
+      0 0 0 1px rgba(245, 215, 122, 0.22),
+      0 0 30px -6px rgba(245, 215, 122, 0.16);
+  }
+}
+
+/* Ambient hero light-sweep: a slow champagne gradient drifts across section-page
+   hero art so the static images feel alive — no video, no credits. Very low
+   contrast; desktop heroes only; frozen for reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-hero-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(245, 215, 122, 0.06) 50%,
+      transparent 60%
+    );
+    background-size: 240% 100%;
+    animation: pm-hero-sweep 16s ease-in-out infinite;
+  }
+  @keyframes pm-hero-sweep {
+    0% {
+      background-position: 150% 0;
+    }
+    100% {
+      background-position: -50% 0;
+    }
+  }
+}
+
+/* Floating Command Bar entrance (slide up + fade). */
+@media (prefers-reduced-motion: no-preference) {
+  html.premium .pm-cmdbar-enter-active,
+  html.premium .pm-cmdbar-leave-active {
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.premium .pm-cmdbar-enter-from,
+  html.premium .pm-cmdbar-leave-to {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+}
