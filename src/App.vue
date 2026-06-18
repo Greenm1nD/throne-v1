@@ -12,7 +12,6 @@ import FloatingCommandBar from '@/components/ui/FloatingCommandBar.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import MobileTopBar from '@/components/layout/MobileTopBar.vue'
 import MobileBottomNav from '@/components/layout/MobileBottomNav.vue'
-import MobileWelcomeSheet from '@/components/layout/MobileWelcomeSheet.vue'
 import MobileAccountMenu from '@/components/layout/MobileAccountMenu.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
@@ -60,7 +59,6 @@ onMounted(() => {
   <FloatingCommandBar v-if="premiumEnabled" />
   <template v-if="mobilePolishEnabled">
     <MobileBottomNav v-show="ready" />
-    <MobileWelcomeSheet v-if="ready" />
     <MobileAccountMenu />
   </template>
   <AgeGate v-if="ready" />
