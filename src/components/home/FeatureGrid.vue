@@ -10,7 +10,7 @@ useReveal(root, { stagger: 0.14 })
 
 <template>
   <section id="live-casino" ref="root" class="container-royal pt-12 sm:pt-16">
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <div class="feature-cards grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
       <FeatureCard v-for="f in features" :key="f.title" :feature="f" />
     </div>
   </section>

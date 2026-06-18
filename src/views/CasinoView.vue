@@ -94,7 +94,7 @@ onBeforeUnmount(() => clearInterval(tick))
           <p class="eyebrow mt-2">Unlock royal privileges</p>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
+        <div class="vipband-items flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
           <div
             v-for="f in page.vipBand.items"
             :key="f.title"

@@ -178,3 +178,96 @@ html.mobile-polish body {
     min-height: 460px !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE card/icon density (≤ 767px) — per-section refinements
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Auth modal: drop the floating 3D crown badge on phones (it sits awkwardly
+     over the tall sheet). */
+  html.mobile-polish .auth-crown-badge {
+    display: none !important;
+  }
+
+  /* Royal Collection: two image cards per row instead of one tall column. */
+  html.mobile-polish .rc-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  html.mobile-polish .rc-cards article {
+    height: 230px;
+  }
+
+  /* Content-rich cards → horizontal snap carousel (peek the next card). */
+  html.mobile-polish .feature-cards,
+  html.mobile-polish .tourn-grid {
+    display: flex !important;
+    grid-template-columns: none;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    padding-bottom: 0.25rem;
+  }
+  html.mobile-polish .feature-cards::-webkit-scrollbar,
+  html.mobile-polish .tourn-grid::-webkit-scrollbar {
+    display: none;
+  }
+  html.mobile-polish .feature-cards > *,
+  html.mobile-polish .tourn-grid > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+
+  /* Royal Treasures: one compact scrollable row, smaller icons. */
+  html.mobile-polish .treasure-grid {
+    display: flex !important;
+    grid-template-columns: none;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  html.mobile-polish .treasure-grid::-webkit-scrollbar {
+    display: none;
+  }
+  html.mobile-polish .treasure-grid > * {
+    flex: 0 0 31%;
+    scroll-snap-align: start;
+  }
+  html.mobile-polish .treasure-grid img {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  /* Casino "VIP Experience" perks: one horizontal row, not a wrapped block. */
+  html.mobile-polish .vipband-items {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -0.5rem;
+    padding-inline: 0.5rem;
+  }
+  html.mobile-polish .vipband-items::-webkit-scrollbar {
+    display: none;
+  }
+  html.mobile-polish .vipband-items > * {
+    flex: 0 0 auto;
+  }
+
+  /* Rank ladder ("Rise Through the Ranks"): give each crown a floor width and
+     scroll, so the labels stop colliding (NOBLE BARON DUKE … MONARCH). */
+  html.mobile-polish .rank-track {
+    justify-content: flex-start;
+    gap: 0.75rem;
+    width: max-content;
+  }
+  html.mobile-polish .rank-track > li {
+    min-width: 62px;
+  }
+}

@@ -449,7 +449,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
         </div>
       </RouterLink>
 
-      <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <div class="tourn-grid grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <RouterLink
           v-for="t in gridTournaments"
           :key="t.slug"

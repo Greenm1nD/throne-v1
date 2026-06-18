@@ -24,7 +24,7 @@ const router = useRouter()
       </GoldButton>
     </div>
 
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="rc-cards grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <GameCard v-for="game in royalCollection" :key="game.name" :game="game" />
     </div>
   </section>

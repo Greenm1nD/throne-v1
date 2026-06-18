@@ -72,7 +72,7 @@ const xpLabel = computed(
               :style="{ width: `calc(${linePct}% - 0px)` }"
             />
 
-            <ol class="relative flex items-start justify-between">
+            <ol class="rank-track relative flex items-start justify-between">
               <li
                 v-for="(lvl, i) in vipLevels"
                 :key="lvl.name"

@@ -194,7 +194,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
       >
           <div ref="cardEl" class="relative my-6 w-full max-w-5xl">
             <!-- Ornate crown badge over the top edge (outside the clip) -->
-            <div class="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
+            <div class="auth-crown-badge absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
               <div ref="badgeEl">
                 <Crown3D src="/assets/models/coin.glb" poster="/assets/images/throne-logo-mark.webp" :size="130" :radius="155" />
               </div>
