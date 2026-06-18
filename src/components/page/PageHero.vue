@@ -51,9 +51,10 @@ function onScroll() {
 
 const bg = `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.62) 32%, rgba(5,5,5,0.18) 58%, rgba(5,5,5,0.35) 100%), url('${props.image}'), url('${props.fallback}')`
 
-// Cinemagraph plays only with the premium flag + no reduced-motion, and only
-// while the hero is on screen (perf — paused below the fold). Poster (the still)
-// shows otherwise, so the stable design is unchanged.
+// Cinemagraph plays once when the hero scrolls into view, then freezes on its
+// last frame (a "living photo" that settles). Premium flag + no reduced-motion +
+// desktop only; poster (the still) shows otherwise, so the stable design is
+// unchanged.
 const cinemagraph = premiumEnabled && !!props.video
 let io: IntersectionObserver | null = null
 
@@ -61,11 +62,16 @@ onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const desktop = window.matchMedia('(min-width: 768px)').matches
   if (cinemagraph && !reduce && desktop && vid.value) {
+    let played = false
+    vid.value.addEventListener('ended', () => {
+      played = true
+      io?.disconnect() // freeze on the final frame; no replay
+    })
     io = new IntersectionObserver(
       ([e]) => {
-        if (!vid.value) return
+        if (!vid.value || played) return
         if (e.isIntersecting) vid.value.play().catch(() => {})
-        else vid.value.pause()
+        else if (!vid.value.ended) vid.value.pause()
       },
       { threshold: 0.15 },
     )
@@ -105,7 +111,6 @@ onBeforeUnmount(() => {
           :src="video"
           :poster="image"
           muted
-          loop
           playsinline
           preload="none"
           class="absolute inset-0 h-full w-full object-cover"
