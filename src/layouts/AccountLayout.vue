@@ -9,9 +9,9 @@ import { useDiscreet } from '@/composables/useDiscreet'
 const { mask } = useDiscreet()
 
 /**
- * The account area renders INSIDE the site. On desktop the sidebar is a sticky
- * card column; on mobile it is hidden and the global MobileAccountMenu provides
- * the account navigation. Both use the shared AccountNav (champagne line icons).
+ * The account area renders INSIDE the site. On tablet + desktop the sidebar is a
+ * sticky card column; on phones it is hidden and the global MobileAccountMenu
+ * provides the account navigation. Both use the shared AccountNav (champagne line icons).
  */
 const route = useRoute()
 
@@ -22,9 +22,9 @@ const onWithdraw = computed(() => route.path === '/account/withdraw')
 <template>
   <div class="container-royal py-8 lg:py-10">
     <div class="flex items-start gap-6">
-      <!-- ── Sidebar — desktop only (mobile uses the global account menu) ── -->
+      <!-- ── Sidebar — tablet + desktop (phones use the global account menu) ── -->
       <aside
-        class="hidden w-[264px] shrink-0 self-start overflow-y-auto rounded-2xl border border-border-gold/25 bg-surface/60 [max-height:calc(100vh-112px)] [scrollbar-width:none] lg:sticky lg:top-[88px] lg:block"
+        class="hidden w-[240px] shrink-0 self-start overflow-y-auto rounded-2xl border border-border-gold/25 bg-surface/60 [max-height:calc(100vh-112px)] [scrollbar-width:none] md:sticky md:top-[80px] md:block lg:w-[264px] lg:top-[88px]"
       >
         <!-- Member + balance block -->
         <div class="border-b border-border-gold/25 p-5">
