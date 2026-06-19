@@ -15,7 +15,7 @@ import { joinCta } from '@/config'
 
 const { open } = useAuthModal()
 const { open: openWallet } = useWalletModal()
-const { isLoggedIn, user, balance, logout } = useAuth()
+const { isLoggedIn, balance, logout } = useAuth()
 const { discreet, toggle: toggleDiscreet, mask } = useDiscreet()
 const router = useRouter()
 const bar = ref<HTMLElement | null>(null)
@@ -126,14 +126,12 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
           <div class="relative">
             <button
-              class="flex items-center gap-2 rounded-full border border-white/10 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
+              class="grid place-items-center rounded-full border border-white/10 p-0.5 transition-colors hover:border-border-gold"
               :aria-expanded="accOpen"
               aria-label="Account menu"
               @click="accOpen = !accOpen"
             >
-              <img :src="member.avatar" alt="" class="h-8 w-8 rounded-full border border-border-gold object-cover" />
-              <span class="hidden font-sans text-[12px] font-semibold text-ink md:block">{{ user?.name }}</span>
-              <AppIcon name="chevronDown" :size="13" class="text-ink-dim transition-transform" :class="accOpen && 'rotate-180'" />
+              <img :src="member.avatar" alt="" class="h-9 w-9 rounded-full border border-border-gold object-cover" />
             </button>
 
             <Transition
