@@ -17,7 +17,7 @@ export interface CategoryNavItem {
   icon: string
 }
 
-/** The shared category bar (mirrors a sportsbook category strip). */
+/** The single primary nav line: products first, then THRONE brand sections. */
 export const categoryNav: CategoryNavItem[] = [
   { label: 'Sport', to: '/sports', icon: 'ball' },
   { label: 'Live', to: '/live', icon: 'bolt' },
@@ -25,8 +25,11 @@ export const categoryNav: CategoryNavItem[] = [
   { label: 'Casino', to: '/casino', icon: 'sparkle' },
   { label: 'Live Casino', to: '/live-casino', icon: 'play' },
   { label: 'Virtual', to: '/virtual', icon: 'hockey' },
-  { label: 'Games', to: '/games', icon: 'star' },
+  { label: 'Games', to: '/games', icon: 'chart' },
   { label: 'Poker', to: '/poker', icon: 'swords' },
+  { label: 'VIP', to: '/vip', icon: 'star' },
+  { label: 'Kingdom', to: '/kingdom', icon: 'crown' },
+  { label: 'Rewards', to: '/rewards', icon: 'gift' },
 ]
 
 interface EventRow {

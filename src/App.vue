@@ -51,8 +51,8 @@ onMounted(() => {
   <AppHeader v-show="ready" />
   <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
   <MobileTopBar v-if="mobilePolishEnabled" v-show="ready" />
-  <!-- Global product category strip (Sport · Live · E-Sport · Casino … Poker) -->
-  <div v-if="showCategoryNav" class="pt-3 sm:pt-4"><CategoryNav /></div>
+  <!-- Single primary nav line (flush under the slim header) -->
+  <CategoryNav v-if="showCategoryNav" />
   <div v-show="ready" class="min-h-[60vh]">
     <RouterView v-slot="{ Component }">
       <Transition name="pm-page" mode="out-in">

@@ -63,34 +63,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
       <!-- Left: logo -->
       <CrownLogo :size="34" :tagline="false" />
 
-      <!-- Center: nav (visible from lg, 1024px) -->
-      <nav class="hidden items-center gap-5 lg:flex xl:gap-7">
-        <RouterLink
-          v-for="item in primaryNav"
-          :key="item.label"
-          :to="item.href"
-          custom
-          v-slot="{ href, navigate, isActive, isExactActive }"
-        >
-          <a
-            :href="href"
-            class="group relative font-sans text-[13px] font-medium tracking-wide transition-colors hover:text-ink"
-            :class="(item.href === '/' ? isExactActive : isActive) ? 'text-ink' : 'text-ink-muted'"
-            @click="navigate"
-          >
-            {{ item.label }}
-            <span
-              class="absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-300"
-              :class="(item.href === '/' ? isExactActive : isActive) ? 'w-full' : 'w-0 group-hover:w-full'"
-            />
-            <!-- Gold diamond crowning the active underline -->
-            <span
-              v-if="item.href === '/' ? isExactActive : isActive"
-              class="absolute -bottom-[9px] left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 bg-gold-gradient shadow-[0_0_6px_rgba(245,215,122,0.8)]"
-            />
-          </a>
-        </RouterLink>
-      </nav>
+      <!-- Center nav lives in the single full-width category bar below the header
+           (CategoryNav), so the top bar stays a slim utility row. -->
 
       <!-- Right: actions -->
       <div class="flex items-center gap-3">
