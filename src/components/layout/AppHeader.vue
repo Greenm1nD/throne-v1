@@ -24,7 +24,7 @@ const scrolled = ref(false)
 const accOpen = ref(false)
 
 const balanceLabel = computed(() =>
-  mask(`$${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`),
+  mask(`€${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`),
 )
 
 const accLinks = [
@@ -63,8 +63,11 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
       <!-- Left: logo -->
       <CrownLogo :size="34" :tagline="false" />
 
-      <!-- Center nav lives in the single full-width category bar below the header
-           (CategoryNav), so the top bar stays a slim utility row. -->
+      <!-- Center: decorative gold line + diamond (no nav links — nav is the bar below) -->
+      <div class="hidden flex-1 items-center gap-2 px-6 lg:flex" aria-hidden="true">
+        <span class="h-1.5 w-1.5 rotate-45 bg-gold-gradient shadow-[0_0_6px_rgba(245,215,122,0.7)]" />
+        <span class="h-px flex-1 bg-gradient-to-r from-gold/45 via-gold/20 to-transparent" />
+      </div>
 
       <!-- Right: actions -->
       <div class="flex items-center gap-3">
@@ -83,11 +86,12 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
           </GoldButton>
         </template>
 
-        <!-- Logged-in cluster: balance pill + avatar dropdown -->
+        <!-- Logged-in cluster: balance pill · Deposit · gift · user menu -->
         <template v-else>
-          <div class="hidden items-center gap-1 rounded-full border border-border-gold/60 py-1 pl-3 pr-1 sm:flex">
+          <!-- Balance pill (eye + amount) -->
+          <div class="hidden items-center gap-1.5 rounded-full border border-border-gold/50 bg-black/40 py-1.5 pl-3 pr-4 sm:flex">
             <button
-              class="grid h-7 w-7 place-items-center rounded-full text-ink-dim transition-colors hover:text-gold-bright"
+              class="grid h-6 w-6 place-items-center rounded-full text-ink-dim transition-colors hover:text-gold-bright"
               :aria-pressed="discreet"
               :aria-label="discreet ? 'Show balance' : 'Hide balance (discreet mode)'"
               @click="toggleDiscreet"
@@ -95,17 +99,33 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
               <AppIcon :name="discreet ? 'eyeOff' : 'eye'" :size="15" />
             </button>
             <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
-            <GoldButton variant="solid" size="sm" @click="openWallet('deposit')">Deposit</GoldButton>
           </div>
+
+          <GoldButton variant="solid" size="sm" class="hidden sm:inline-flex" @click="openWallet('deposit')">Deposit</GoldButton>
+
+          <!-- Gift / rewards -->
+          <button
+            class="relative hidden h-10 w-10 place-items-center rounded-full border border-white/10 text-gold/80 transition-colors hover:border-border-gold hover:text-gold-bright sm:grid"
+            aria-label="Rewards"
+            @click="router.push('/rewards')"
+          >
+            <AppIcon name="gift" :size="18" />
+            <span class="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-gold-gradient px-1 font-sans text-[9px] font-bold text-bg">3</span>
+          </button>
 
           <div class="relative">
             <button
-              class="grid place-items-center rounded-full border border-white/10 p-0.5 transition-colors hover:border-border-gold"
+              class="flex items-center gap-2 rounded-full border border-white/10 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
               :aria-expanded="accOpen"
               aria-label="Account menu"
               @click="accOpen = !accOpen"
             >
               <img :src="member.avatar" alt="" class="h-9 w-9 rounded-full border border-border-gold object-cover" />
+              <span class="hidden text-left leading-tight lg:block">
+                <span class="block font-sans text-[12px] font-bold uppercase tracking-[0.06em] text-ink">{{ member.name }}</span>
+                <span class="block font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-gold-bright">{{ member.tier }}</span>
+              </span>
+              <AppIcon name="chevronDown" :size="13" class="hidden text-ink-dim transition-transform lg:block" :class="accOpen && 'rotate-180'" />
             </button>
 
             <Transition
