@@ -27,6 +27,12 @@ const router = createRouter({
       component: () => import('@/views/TournamentDetailView.vue'),
     },
     { path: '/rewards', name: 'rewards', component: () => import('@/views/RewardsView.vue') },
+    // Dedicated category pages (one config-driven CategoryView, meta.category selects content)
+    { path: '/esports', name: 'esports', meta: { category: 'esports' }, component: () => import('@/views/CategoryView.vue') },
+    { path: '/live', name: 'live', meta: { category: 'live' }, component: () => import('@/views/CategoryView.vue') },
+    { path: '/virtual', name: 'virtual', meta: { category: 'virtual' }, component: () => import('@/views/CategoryView.vue') },
+    { path: '/games', name: 'games', meta: { category: 'games' }, component: () => import('@/views/CategoryView.vue') },
+    { path: '/poker', name: 'poker', meta: { category: 'poker' }, component: () => import('@/views/CategoryView.vue') },
     // Static info / legal pages (shared InfoView, slug via meta.info)
     { path: '/about', name: 'about', meta: { info: 'about' }, component: () => import('@/views/InfoView.vue') },
     { path: '/help', name: 'help', meta: { info: 'help' }, component: () => import('@/views/InfoView.vue') },

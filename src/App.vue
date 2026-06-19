@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import CategoryNav from '@/components/page/CategoryNav.vue'
 import LoadingScreen from '@/components/home/LoadingScreen.vue'
 import AuthModal from '@/components/auth/AuthModal.vue'
 import TwoFaModal from '@/components/auth/TwoFaModal.vue'
@@ -21,6 +22,13 @@ import { mobilePolishEnabled } from '@/composables/useMobilePolish'
 
 const ready = ref(false)
 const router = useRouter()
+const route = useRoute()
+
+// Global product category strip — shown on play/browse pages, hidden inside the
+// account area and on static info pages where it's not relevant.
+const showCategoryNav = computed(
+  () => ready.value && !route.path.startsWith('/account') && !route.meta.info,
+)
 
 // Activates all premium-motion CSS (scoped under html.premium). Flag off → no
 // class → stable design, untouched. `data-page` drives the per-page atmosphere.
@@ -43,6 +51,8 @@ onMounted(() => {
   <AppHeader v-show="ready" />
   <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
   <MobileTopBar v-if="mobilePolishEnabled" v-show="ready" />
+  <!-- Global product category strip (Sport · Live · E-Sport · Casino … Poker) -->
+  <div v-if="showCategoryNav" class="pt-3 sm:pt-4"><CategoryNav /></div>
   <div v-show="ready" class="min-h-[60vh]">
     <RouterView v-slot="{ Component }">
       <Transition name="pm-page" mode="out-in">
