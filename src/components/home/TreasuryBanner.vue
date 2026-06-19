@@ -45,8 +45,8 @@ function onScroll() {
     const vh = window.innerHeight || document.documentElement.clientHeight
     if (r.bottom < -60 || r.top > vh + 60) return
     const prog = (r.top + r.height / 2 - vh / 2) / vh
-    const y = Math.max(-18, Math.min(18, -prog * 38))
-    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.1)`
+    const y = Math.max(-46, Math.min(46, -prog * 95))
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.22)`
   })
 }
 
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
       <div
         ref="bgEl"
         v-lazybg="bgImage"
-        class="absolute inset-0 scale-110 bg-cover bg-center will-change-transform"
+        class="absolute inset-0 scale-[1.22] bg-cover bg-center will-change-transform"
         :style="{ backgroundColor: '#0d0b07' }"
       />
 
@@ -102,15 +102,15 @@ onBeforeUnmount(() => {
         preload="none"
         class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
       />
-      <!-- Legibility scrim over the cinemagraph (matches the still's gradient) -->
+      <!-- Legibility scrim over the cinemagraph (desktop layout only) -->
       <div
-        v-if="cinemagraph"
+        v-if="cinemagraph && !lite"
         class="pointer-events-none absolute inset-0"
         style="background: linear-gradient(100deg, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.22) 24%, rgba(5,5,5,0) 46%)"
       />
 
-      <!-- Glow choreography (CSS) — kept for the stable/off + mobile experience -->
-      <template v-if="!cinemagraph">
+      <!-- Glow choreography (CSS) — stable/off desktop AND the mobile banner -->
+      <template v-if="!cinemagraph || lite">
         <div
           class="pointer-events-none absolute right-[10%] top-0 h-3/5 w-1/2 animate-goldenPulse"
           style="background: radial-gradient(50% 55% at 55% 40%, rgba(245, 215, 122, 0.2), transparent 70%)"
