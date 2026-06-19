@@ -62,7 +62,9 @@ function activate(item: { to?: string; action?: string }) {
         <li v-for="item in sec.items" :key="item.id">
           <button
             class="acc-item group flex h-12 w-full items-center gap-3 rounded-xl px-3 text-left font-sans text-[14px] transition-colors"
-            :class="isActive(item.to) ? 'acc-item--active' : 'text-[rgba(214,175,55,0.72)] hover:bg-white/[0.04]'"
+            :class="item.action === 'logout'
+              ? 'acc-item--logout'
+              : (isActive(item.to) ? 'acc-item--active' : 'text-[rgba(214,175,55,0.72)] hover:bg-white/[0.04]')"
             :aria-current="isActive(item.to) ? 'page' : undefined"
             @click="activate(item)"
           >
@@ -105,8 +107,12 @@ function activate(item: { to?: string; action?: string }) {
   background: linear-gradient(180deg, #f5d76e, #d4af37);
   box-shadow: 0 0 8px rgba(245, 215, 122, 0.7);
 }
-/* Logout: subtle warm tone on hover. */
-.account-nav li:last-child .acc-item:hover {
-  color: #e7a17c;
+/* Logout: red by default, brighter red on hover. */
+.acc-item--logout {
+  color: #e0584d;
+}
+.acc-item--logout:hover {
+  color: #f06a5c;
+  background: rgba(224, 88, 77, 0.09);
 }
 </style>
