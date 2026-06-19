@@ -305,7 +305,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
         <h3 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Royal Quests</h3>
       </div>
 
-      <div class="quest-rail -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div class="quest-rail -mx-4 flex snap-x gap-4 overflow-x-auto overflow-y-hidden px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div
           v-for="q in page.quests"
           :key="q.id"
