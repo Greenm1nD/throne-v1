@@ -43,9 +43,11 @@ const perks = [
           :style="{ width: `${(activeIndex / (vipLevels.length - 1)) * 100}%` }" />
         <ol class="relative grid gap-6 sm:grid-cols-3 md:auto-cols-fr md:grid-flow-col md:gap-2">
           <li v-for="(lvl, i) in vipLevels" :key="lvl.name" class="flex flex-col items-center gap-1.5 text-center">
-            <div class="relative z-10 flex h-12 items-end">
-              <img :src="lvl.crown" :alt="lvl.name" class="w-auto object-contain"
-                :class="i === activeIndex ? 'h-11 drop-shadow-[0_0_14px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-8' : 'h-8 opacity-50'" />
+            <div class="relative z-10 flex h-12 items-end justify-center">
+              <!-- Fixed box + object-contain equalizes the visual size across crowns
+                   of very different aspect ratios; the active tier sits a touch larger. -->
+              <img :src="lvl.crown" :alt="lvl.name" class="object-contain object-bottom"
+                :class="i === activeIndex ? 'h-11 w-14 drop-shadow-[0_0_14px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-9 w-12' : 'h-9 w-12 opacity-50'" />
             </div>
             <span class="font-sans text-[10px] font-bold uppercase tracking-[0.14em]" :class="i === activeIndex ? 'text-gold-bright' : 'text-ink-muted'">{{ lvl.name }}</span>
             <span class="font-sans text-[9px] tabular-nums text-ink-dim">{{ lvl.threshold.toLocaleString() }}+ XP</span>

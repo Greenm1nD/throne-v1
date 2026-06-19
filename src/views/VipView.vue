@@ -56,7 +56,10 @@ useRevealEach(root)
               Your Tier
             </span>
             <div class="flex h-16 items-end justify-center">
-              <img :src="t.crown" :alt="`${t.name} crown`" class="h-14 w-auto object-contain" :class="!t.featured && 'opacity-80'" />
+              <!-- Fixed box + object-contain equalizes crown sizes across aspect ratios;
+                   the featured tier sits a touch larger. -->
+              <img :src="t.crown" :alt="`${t.name} crown`" class="object-contain object-bottom"
+                :class="t.featured ? 'h-14 w-20' : 'h-11 w-16 opacity-80'" />
             </div>
             <h3
               class="mt-3 font-display text-lg font-semibold tracking-[0.14em]"
