@@ -29,6 +29,27 @@ const bgImage = computed(() =>
 const vid = ref<HTMLVideoElement | null>(null)
 const cinemagraph = premiumEnabled
 let io: IntersectionObserver | null = null
+
+// Subtle scroll parallax on the banner artwork (mobile + desktop) — the image
+// drifts as the banner moves through the viewport, GPU-only, reduced-motion safe.
+const bgEl = ref<HTMLElement | null>(null)
+let raf = 0
+function onScroll() {
+  if (raf) return
+  raf = requestAnimationFrame(() => {
+    raf = 0
+    const el = bgEl.value
+    const sec = root.value
+    if (!el || !sec) return
+    const r = sec.getBoundingClientRect()
+    const vh = window.innerHeight || document.documentElement.clientHeight
+    if (r.bottom < -60 || r.top > vh + 60) return
+    const prog = (r.top + r.height / 2 - vh / 2) / vh
+    const y = Math.max(-18, Math.min(18, -prog * 38))
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.1)`
+  })
+}
+
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const desktop = window.matchMedia('(min-width: 768px)').matches
@@ -43,8 +64,15 @@ onMounted(() => {
     )
     io.observe(vid.value)
   }
+  if (!reduce) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+  }
 })
-onBeforeUnmount(() => io?.disconnect())
+onBeforeUnmount(() => {
+  io?.disconnect()
+  window.removeEventListener('scroll', onScroll)
+})
 </script>
 
 <template>
@@ -55,8 +83,9 @@ onBeforeUnmount(() => io?.disconnect())
     >
       <!-- Image: wide desktop crop, portrait mobile crop (objects below the text). -->
       <div
+        ref="bgEl"
         v-lazybg="bgImage"
-        class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+        class="absolute inset-0 scale-110 bg-cover bg-center will-change-transform"
         :style="{ backgroundColor: '#0d0b07' }"
       />
 
