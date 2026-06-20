@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
-import { useEnter } from '@/composables/useEnter'
 import { useRevealEach } from '@/composables/useReveal'
 
 /**
- * THRONE Games — cinematic hero + the shared games lobby (same GamesFilterBar
- * as Casino/Virtuals for one consistent filter) + top providers + value strip.
+ * THRONE Games — the shared games lobby (same GamesFilterBar as Casino/Virtuals
+ * for one consistent filter) + top providers + value strip. (Hero banner removed.)
  */
-const { enter } = useEnter()
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 
@@ -26,32 +23,8 @@ const values = [
 </script>
 
 <template>
-  <main ref="root" class="pb-8">
-    <!-- ── Hero ─────────────────────────────────────────────────────────── -->
-    <section class="container-royal pt-6 sm:pt-8">
-      <div class="relative overflow-hidden rounded-3xl border border-border-gold/25" data-reveal>
-        <div
-          v-lazybg="`linear-gradient(95deg, rgba(5,5,6,0.97) 0%, rgba(5,5,6,0.8) 44%, rgba(5,5,6,0.45) 100%), url('/assets/images/casino-jackpot.webp')`"
-          class="absolute inset-0 bg-cover bg-center"
-        />
-        <div class="relative z-10 flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-          <p class="font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-champagne/80">Endless games. Instant fun.</p>
-          <h1 class="mt-3 font-display text-5xl font-bold uppercase leading-[0.95] tracking-[0.02em] sm:text-6xl">
-            <span class="block text-ink">Play.</span>
-            <span class="block text-ink">Win.</span>
-            <span class="block text-gold-gradient">Repeat.</span>
-          </h1>
-          <p class="mt-4 max-w-md font-sans text-[13px] leading-7 text-ink-muted">
-            Explore the finest collection of premium games — instant classics, modern favorites and exclusive THRONE experiences.
-          </p>
-          <GoldButton variant="solid" size="lg" class="mt-6 w-fit" @click="enter()">
-            Explore Games <AppIcon name="arrowRight" :size="15" />
-          </GoldButton>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Shared games lobby (same filter as every other page) ─────────── -->
+  <main ref="root" class="pb-8 pt-4 sm:pt-6">
+    <!-- Shared games lobby (same filter as every other page) -->
     <GamesLobby title="All Games" />
 
     <!-- ── Top providers ────────────────────────────────────────────────── -->
