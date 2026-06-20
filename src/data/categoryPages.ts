@@ -32,7 +32,6 @@ export const categoryNav: CategoryNavItem[] = [
   { label: 'Games', to: '/games', icon: 'gamepad' },
   { label: 'Poker', to: '/poker', icon: 'spade' },
   { label: 'VIP', to: '/vip', icon: 'star' },
-  { label: 'Throne Club', to: '/throne-club', icon: 'crown', special: true },
   { label: 'Kingdom', to: '/kingdom', icon: 'castle' },
   { label: 'Rewards', to: '/rewards', icon: 'gift' },
 ]
