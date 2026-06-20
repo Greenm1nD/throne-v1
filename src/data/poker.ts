@@ -48,10 +48,10 @@ export const liveCashGames: CashGame[] = [
 ]
 
 export const topPlayers = [
-  { rank: 1, name: 'RoyalFlush', tier: 'King', amount: '€125,430.50', avatar: '/assets/images/avatars/royal-01.webp' },
-  { rank: 2, name: 'AceMaster', tier: 'Duke', amount: '€98,750.20', avatar: '/assets/images/avatars/royal-02.webp' },
-  { rank: 3, name: 'PokerMind', tier: 'King', amount: '€76,341.10', avatar: '/assets/images/avatars/royal-03.webp' },
-  { rank: 4, name: 'HighRoller', tier: 'Duke', amount: '€64,118.80', avatar: '/assets/images/avatars/royal-04.webp' },
+  { rank: 1, name: 'RoyalFlush', tier: 'King', amount: '€125,430.50' },
+  { rank: 2, name: 'AceMaster', tier: 'Duke', amount: '€98,750.20' },
+  { rank: 3, name: 'PokerMind', tier: 'King', amount: '€76,341.10' },
+  { rank: 4, name: 'HighRoller', tier: 'Duke', amount: '€64,118.80' },
 ]
 
 export interface Tournament {

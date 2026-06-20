@@ -66,8 +66,9 @@ useRevealEach(root)
             <p class="mt-2 font-display text-4xl font-bold tabular-nums text-gold-gradient">{{ jackpotPool.amount }}</p>
             <div class="mt-4 flex items-center gap-3">
               <div class="flex -space-x-2">
-                <img v-for="p in topPlayers.slice(0, 4)" :key="p.rank" :src="p.avatar" alt=""
-                  class="h-7 w-7 rounded-full border border-card object-cover" />
+                <span v-for="i in 4" :key="i" class="grid h-7 w-7 place-items-center rounded-full border border-card bg-black/70 text-gold/80">
+                  <AppIcon name="chip" :size="13" />
+                </span>
               </div>
               <span class="font-sans text-[12px] text-ink-muted">{{ jackpotPool.players }}</span>
             </div>
@@ -173,7 +174,10 @@ useRevealEach(root)
           <li v-for="p in topPlayers" :key="p.rank" class="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-white/[0.03]">
             <span class="grid h-6 w-6 shrink-0 place-items-center font-display text-[13px] font-bold tabular-nums"
               :class="p.rank === 1 ? 'text-gold-bright' : 'text-ink-dim'">{{ p.rank }}</span>
-            <img :src="p.avatar" alt="" class="h-10 w-10 shrink-0 rounded-full border border-border-gold/50 object-cover" />
+            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border-gold/50 bg-black/40 text-gold-bright"
+              style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)">
+              <AppIcon :name="p.tier === 'King' ? 'crown' : 'spade'" :size="18" />
+            </span>
             <span class="min-w-0 flex-1">
               <span class="block truncate font-sans text-[13px] font-semibold text-ink">{{ p.name }}</span>
               <span class="block font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-gold-bright">{{ p.tier }}</span>
