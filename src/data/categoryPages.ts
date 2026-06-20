@@ -31,7 +31,7 @@ export const categoryNav: CategoryNavItem[] = [
   { label: 'Virtuals', to: '/virtual', icon: 'headset' },
   { label: 'Games', to: '/games', icon: 'gamepad' },
   { label: 'Poker', to: '/poker', icon: 'spade' },
-  { label: 'VIP', to: '/vip', icon: 'star' },
+  // VIP temporarily removed from nav (per request) — route still exists; restore when asked.
   { label: 'Kingdom', to: '/kingdom', icon: 'castle' },
   { label: 'Rewards', to: '/rewards', icon: 'gift' },
 ]

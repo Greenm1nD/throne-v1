@@ -34,7 +34,7 @@ const router = createRouter({
     { path: '/esports', name: 'esports', meta: { category: 'esports' }, component: () => import('@/views/CategoryView.vue') },
     { path: '/live', name: 'live', meta: { category: 'live' }, component: () => import('@/views/CategoryView.vue') },
     { path: '/virtual', name: 'virtual', component: () => import('@/views/VirtualsView.vue') },
-    { path: '/games', name: 'games', meta: { category: 'games' }, component: () => import('@/views/CategoryView.vue') },
+    { path: '/games', name: 'games', component: () => import('@/views/GamesView.vue') },
     { path: '/poker', name: 'poker', component: () => import('@/views/PokerView.vue') },
     // Static info / legal pages (shared InfoView, slug via meta.info)
     { path: '/about', name: 'about', meta: { info: 'about' }, component: () => import('@/views/InfoView.vue') },

@@ -46,7 +46,7 @@ function wallet() {
   <Transition name="pm-cmdbar">
     <nav
       v-if="scrolled"
-      class="glass-panel fixed bottom-6 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border-gold/40 p-1.5 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.9)] md:flex"
+      class="cmdbar-frame glass-panel fixed bottom-6 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border-gold/40 p-1.5 md:flex"
       aria-label="Quick navigation"
     >
       <RouterLink
@@ -88,3 +88,25 @@ function wallet() {
     </nav>
   </Transition>
 </template>
+
+<style scoped>
+/* Premium "breathing" gold frame — a soft glow that pulses around the pill. */
+@keyframes cmdGlow {
+  0%, 100% {
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(212, 175, 55, 0.22), 0 0 16px -4px rgba(245, 215, 122, 0.22);
+  }
+  50% {
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(245, 215, 122, 0.55), 0 0 30px -2px rgba(245, 215, 122, 0.5);
+  }
+}
+.cmdbar-frame {
+  animation: cmdGlow 3.6s ease-in-out infinite;
+  will-change: box-shadow;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmdbar-frame {
+    animation: none;
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.9);
+  }
+}
+</style>
