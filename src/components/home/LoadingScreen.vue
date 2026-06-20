@@ -93,12 +93,13 @@ onMounted(() => {
   // 6 · Particles converge inward + fade
   tl.to(dots, { x: 0, y: 0, opacity: 0, scale: 0.2, duration: 0.55, stagger: 0.008, ease: 'power2.in' }, 1.05)
 
-  // 7–9 · Crown → T monogram reveal (top-down wipe)
+  // 7–9 · THRONE 3D logo appears directly — clean fade + settle (no blur wipe,
+  // so a frozen frame during model decode still reads as the crisp logo).
   tl.fromTo(
     mark.value,
-    { opacity: 0, clipPath: 'inset(0 0 100% 0)', filter: 'blur(6px)' },
-    { opacity: 1, clipPath: 'inset(0 0 0% 0)', filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' },
-    1.45,
+    { opacity: 0, scale: 0.82 },
+    { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' },
+    0.25,
   )
 
   // 10 · Royal crest diamonds pop in
