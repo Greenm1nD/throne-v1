@@ -8,8 +8,8 @@ import { lobbyGames, gameSlug, type LobbyGame } from '@/data/casinoGames'
 
 /** Reusable royal game lobby — defaults to the casino catalogue. */
 const props = withDefaults(
-  defineProps<{ title?: string; games?: LobbyGame[]; navigable?: boolean }>(),
-  { title: 'All Games', games: () => lobbyGames, navigable: true },
+  defineProps<{ title?: string; games?: LobbyGame[]; navigable?: boolean; flush?: boolean }>(),
+  { title: 'All Games', games: () => lobbyGames, navigable: true, flush: false },
 )
 
 const router = useRouter()
@@ -42,7 +42,7 @@ function toggleFav(name: string) {
 </script>
 
 <template>
-  <section class="container-royal pt-12 sm:pt-16">
+  <section class="container-royal" :class="flush ? '' : 'pt-12 sm:pt-16'">
     <GamesFilterBar
       :title="title"
       :count="filtered.length"

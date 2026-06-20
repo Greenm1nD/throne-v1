@@ -23,9 +23,9 @@ const values = [
 </script>
 
 <template>
-  <main ref="root" class="pb-8 pt-4 sm:pt-6">
+  <main ref="root" class="pb-8 pt-8 sm:pt-10">
     <!-- Shared games lobby (same filter as every other page) -->
-    <GamesLobby title="All Games" />
+    <GamesLobby flush title="All Games" />
 
     <!-- ── Top providers ────────────────────────────────────────────────── -->
     <section class="container-royal pt-12 sm:pt-16">
