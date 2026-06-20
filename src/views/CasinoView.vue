@@ -2,7 +2,6 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRevealEach } from '@/composables/useReveal'
 import PageHero from '@/components/page/PageHero.vue'
-import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
 import RoyalPicks from '@/components/casino/RoyalPicks.vue'
 import RollingNumber from '@/components/ui/RollingNumber.vue'
@@ -13,6 +12,14 @@ import { useEnter } from '@/composables/useEnter'
 import { polishEnabled } from '@/composables/usePolish'
 
 const { enter } = useEnter()
+
+// Casino highlights — replaces the game-type strip (those live in the main nav).
+const highlights = [
+  { icon: 'chip', value: '2,400+', label: 'Games' },
+  { icon: 'shield', value: '60+', label: 'Providers' },
+  { icon: 'user', value: '18,402', label: 'Players Online' },
+  { icon: 'trophy', value: '€84,200', label: 'Biggest Win Today' },
+]
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -32,7 +39,19 @@ onBeforeUnmount(() => clearInterval(tick))
   <main ref="root" class="pb-4">
     <PageHero v-bind="page.hero" :cta="page.hero.cta" />
 
-    <CategoryStrip :items="page.categories" />
+    <!-- Casino highlights (the game-type categories live in the main nav) -->
+    <section class="container-royal pt-5">
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div v-for="h in highlights" :key="h.label"
+          class="flex items-center gap-3 rounded-2xl border border-border-gold/15 bg-card/70 px-5 py-4">
+          <AppIcon :name="h.icon" :size="22" class="shrink-0 text-gold/80" />
+          <span class="min-w-0">
+            <span class="block font-display text-lg font-bold tabular-nums text-gold-gradient">{{ h.value }}</span>
+            <span class="block truncate font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">{{ h.label }}</span>
+          </span>
+        </div>
+      </div>
+    </section>
 
     <!-- Royal Picks — curated editorial row (polish flag) -->
     <RoyalPicks v-if="polishEnabled" />

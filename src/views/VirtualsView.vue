@@ -6,7 +6,7 @@ import { useEnter } from '@/composables/useEnter'
 import { useRevealEach } from '@/composables/useReveal'
 import {
   virtualsHero, virtualsLiveEvents, virtualsCategories, virtualsStartingSoon,
-  virtualsLobby, virtualsMostPlayed, virtualsChampionships, virtualsFeatures,
+  virtualsLobby, virtualsFeatures,
 } from '@/data/virtuals'
 
 /**
@@ -136,55 +136,6 @@ const activeCategory = ref('All Games')
       </div>
       <div class="mt-6 text-center">
         <GoldButton variant="outline" size="md" @click="enter()">Load More <AppIcon name="plus" :size="14" /></GoldButton>
-      </div>
-    </section>
-
-    <!-- ── 5 · Most played + 6 · Championships ───────────────────────────── -->
-    <section class="container-royal grid gap-4 pt-12 sm:pt-16 lg:grid-cols-[1fr_1.2fr]">
-      <!-- Most played -->
-      <div class="rounded-2xl border border-border-gold/15 bg-card/70 p-5 sm:p-6" data-reveal>
-        <h2 class="mb-4 font-display text-[15px] font-semibold uppercase tracking-[0.16em] text-champagne">Most Played Today</h2>
-        <ul class="space-y-4">
-          <li v-for="m in virtualsMostPlayed" :key="m.name" class="flex items-center gap-3">
-            <span class="h-10 w-10 shrink-0 overflow-hidden rounded-lg">
-              <span v-lazybg="`url('${m.image}')`" class="block h-full w-full bg-cover bg-center" :style="{ backgroundColor: '#0d0d10' }" />
-            </span>
-            <span class="min-w-0 flex-1">
-              <span class="flex items-center justify-between gap-2">
-                <span class="truncate font-sans text-[13px] font-semibold text-ink">{{ m.name }}</span>
-                <span class="shrink-0 font-sans text-[11px] tabular-nums text-ink-dim">{{ m.players }} playing · {{ m.bets }} bets</span>
-              </span>
-              <span class="mt-1.5 block h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                <span class="block h-full rounded-full bg-gold-gradient transition-[width] duration-700 motion-reduce:transition-none" :style="{ width: `${m.pct}%` }" />
-              </span>
-            </span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Championships -->
-      <div data-reveal>
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="font-display text-[15px] font-semibold uppercase tracking-[0.16em] text-champagne">Upcoming Championships</h2>
-          <button class="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-gold/90 hover:text-gold-bright">View all</button>
-        </div>
-        <ul class="space-y-3">
-          <li v-for="c in virtualsChampionships" :key="c.name"
-            class="group flex items-center gap-4 rounded-2xl border border-border-gold/15 bg-card/70 p-4 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-border-gold/50 motion-reduce:transform-none">
-            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-border-gold/40 text-gold-bright"
-              style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)">
-              <AppIcon :name="c.icon" :size="22" />
-            </span>
-            <div class="min-w-0 flex-1">
-              <h3 class="truncate font-display text-[15px] font-semibold tracking-[0.04em] text-ink">{{ c.name }}</h3>
-              <p class="font-sans text-[12px] text-ink-dim">
-                <span class="font-semibold text-gold-bright">{{ c.prize }}</span> · {{ c.participants }} in
-                <span class="inline-flex items-center gap-1 tabular-nums"><AppIcon name="clock" :size="11" class="text-gold/70" /> {{ c.startsIn }}</span>
-              </p>
-            </div>
-            <GoldButton variant="outline" size="sm" class="hidden shrink-0 sm:inline-flex" @click="enter()">Enter</GoldButton>
-          </li>
-        </ul>
       </div>
     </section>
 
