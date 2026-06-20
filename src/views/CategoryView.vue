@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PageHero from '@/components/page/PageHero.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
+import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { categoryPages } from '@/data/categoryPages'
@@ -23,6 +24,17 @@ const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 // Re-run reveal when navigating between category pages (same component reused).
 watch(() => route.path, () => useRevealEach(root))
+
+// Grid-mode pages (Games) get the shared filter bar.
+const query = ref('')
+const sort = ref('popular')
+const filteredItems = computed(() => {
+  let list = (cfg.value.items ?? []).filter((i) =>
+    i.name.toLowerCase().includes(query.value.trim().toLowerCase()),
+  )
+  if (sort.value === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
+  return list
+})
 </script>
 
 <template>
@@ -31,7 +43,7 @@ watch(() => route.path, () => useRevealEach(root))
 
     <!-- Section header -->
     <section class="container-royal pt-10 sm:pt-14">
-      <div class="mb-6">
+      <div v-if="cfg.mode === 'events'" class="mb-6">
         <p class="eyebrow">{{ cfg.hero.tagline }}</p>
         <h2 class="mt-1 font-display text-2xl font-semibold tracking-[0.14em] text-gold-gradient">{{ cfg.sectionTitle }}</h2>
         <p class="mt-1 font-sans text-[13px] text-ink-dim">{{ cfg.sectionSub }}</p>
@@ -63,9 +75,17 @@ watch(() => route.path, () => useRevealEach(root))
         </li>
       </ul>
 
-      <!-- GRID mode (games / poker) -->
-      <div v-else class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        <article v-for="x in cfg.items" :key="x.name"
+      <!-- GRID mode (games) — shared filter bar -->
+      <template v-else>
+        <GamesFilterBar
+          :title="cfg.sectionTitle"
+          :count="filteredItems.length"
+          search-placeholder="Search games..."
+          v-model:query="query"
+          v-model:sort="sort"
+        />
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <article v-for="x in filteredItems" :key="x.name"
           class="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
           data-reveal @click="enter()">
           <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${x.image}')`"
@@ -79,7 +99,8 @@ watch(() => route.path, () => useRevealEach(root))
             </span>
           </div>
         </article>
-      </div>
+        </div>
+      </template>
     </section>
 
     <FeatureBand :items="cfg.band" />

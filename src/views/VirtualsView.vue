@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
 import { useEnter } from '@/composables/useEnter'
 import { useRevealEach } from '@/composables/useReveal'
 import {
-  virtualsHero, virtualsLiveEvents, virtualsCategories, virtualsStartingSoon,
+  virtualsHero, virtualsLiveEvents, virtualsStartingSoon,
   virtualsLobby, virtualsFeatures,
 } from '@/data/virtuals'
 
 /**
- * THRONE Virtuals — premium virtual-sports page. Hero + live events · category
- * selector · starting-soon countdowns · lobby grid · most played · championships
- * · why-play. Cinematic black-gold imagery; data-driven; hover lift; reduced-motion safe.
+ * THRONE Virtuals — premium virtual-sports page. Hero + live events ·
+ * starting-soon countdowns · lobby grid (shared filter bar) · why-play.
+ * Cinematic black-gold imagery; data-driven; hover lift; reduced-motion safe.
  */
 const { enter } = useEnter()
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 
-const activeCategory = ref('All Games')
+// Lobby search/filter/sort via the shared GamesFilterBar.
+const query = ref('')
+const cat = ref('all')
+const sort = ref('popular')
+const cats = [...new Set(virtualsLobby.map((g) => g.cat))]
+const filteredLobby = computed(() => {
+  let list = virtualsLobby.filter(
+    (g) =>
+      (cat.value === 'all' || g.cat === cat.value) &&
+      g.title.toLowerCase().includes(query.value.trim().toLowerCase()),
+  )
+  if (sort.value === 'az') list = [...list].sort((a, b) => a.title.localeCompare(b.title))
+  return list
+})
 </script>
 
 <template>
@@ -83,19 +97,7 @@ const activeCategory = ref('All Games')
       </div>
     </section>
 
-    <!-- ── 2 · Category selector ────────────────────────────────────────── -->
-    <section class="container-royal pt-8">
-      <div class="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <button
-          v-for="c in virtualsCategories" :key="c"
-          class="shrink-0 rounded-full px-4 py-2 font-sans text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-200"
-          :class="activeCategory === c ? 'bg-gold-gradient text-bg' : 'border border-border-gold/20 bg-card/60 text-ink-muted hover:border-border-gold/50 hover:text-champagne'"
-          @click="activeCategory = c"
-        >{{ c }}</button>
-      </div>
-    </section>
-
-    <!-- ── 3 · Starting soon ────────────────────────────────────────────── -->
+    <!-- ── Starting soon ────────────────────────────────────────────────── -->
     <section class="container-royal pt-10 sm:pt-14">
       <div class="mb-5 flex items-center justify-between">
         <h2 class="font-display text-2xl font-semibold tracking-[0.14em] text-gold-gradient">Starting Soon</h2>
@@ -117,13 +119,20 @@ const activeCategory = ref('All Games')
       </div>
     </section>
 
-    <!-- ── 4 · Lobby grid ───────────────────────────────────────────────── -->
+    <!-- ── Lobby grid (shared filter bar) ───────────────────────────────── -->
     <section class="container-royal pt-12 sm:pt-16">
-      <div class="mb-5 flex items-center justify-between">
-        <h2 class="font-display text-2xl font-semibold tracking-[0.14em] text-gold-gradient">Explore Virtuals</h2>
-      </div>
+      <GamesFilterBar
+        title="Explore Virtuals"
+        :count="filteredLobby.length"
+        :filter-options="cats"
+        filter-label="All Types"
+        search-placeholder="Search virtuals..."
+        v-model:query="query"
+        v-model:filter="cat"
+        v-model:sort="sort"
+      />
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-        <article v-for="g in virtualsLobby" :key="g.title"
+        <article v-for="g in filteredLobby" :key="g.title"
           class="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-gold motion-reduce:transform-none" data-reveal @click="enter()">
           <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${g.image}')`"
             class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />

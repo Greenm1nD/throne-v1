@@ -51,20 +51,21 @@ export interface VirtualGame {
   title: string
   sub: string
   image: string
+  cat: string
 }
 export const virtualsLobby: VirtualGame[] = [
-  { title: 'Horse Racing', sub: 'Every 3 min', image: horse },
-  { title: 'Greyhounds', sub: 'Every 2 min', image: greyhound },
-  { title: 'Virtual Football', sub: 'Every 3 min', image: football },
-  { title: 'Virtual Tennis', sub: 'Every 2 min', image: tennis },
-  { title: 'Motorbikes', sub: 'Every 3 min', image: motorsport },
-  { title: 'World Cup', sub: 'Seasonal', image: football },
-  { title: 'Basketball Cup', sub: 'Every 4 min', image: basketball },
-  { title: 'Formula Racing', sub: 'Every 3 min', image: motorsport },
-  { title: 'Champions League', sub: 'Nightly', image: football },
-  { title: 'Euro Cup', sub: 'Seasonal', image: football },
-  { title: 'Speedway', sub: 'Every 3 min', image: motorsport },
-  { title: 'Tennis Cup', sub: 'Every 2 min', image: tennis },
+  { title: 'Horse Racing', sub: 'Every 3 min', image: horse, cat: 'Horse Racing' },
+  { title: 'Greyhounds', sub: 'Every 2 min', image: greyhound, cat: 'Greyhounds' },
+  { title: 'Virtual Football', sub: 'Every 3 min', image: football, cat: 'Football' },
+  { title: 'Virtual Tennis', sub: 'Every 2 min', image: tennis, cat: 'Tennis' },
+  { title: 'Motorbikes', sub: 'Every 3 min', image: motorsport, cat: 'Motorsport' },
+  { title: 'World Cup', sub: 'Seasonal', image: football, cat: 'Football' },
+  { title: 'Basketball Cup', sub: 'Every 4 min', image: basketball, cat: 'Basketball' },
+  { title: 'Formula Racing', sub: 'Every 3 min', image: motorsport, cat: 'Motorsport' },
+  { title: 'Champions League', sub: 'Nightly', image: football, cat: 'Football' },
+  { title: 'Euro Cup', sub: 'Seasonal', image: football, cat: 'Football' },
+  { title: 'Speedway', sub: 'Every 3 min', image: motorsport, cat: 'Motorsport' },
+  { title: 'Tennis Cup', sub: 'Every 2 min', image: tennis, cat: 'Tennis' },
 ]
 
 export const virtualsMostPlayed = [

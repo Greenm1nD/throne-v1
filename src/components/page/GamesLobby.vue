@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
+import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
 import { lobbyGames, gameSlug, type LobbyGame } from '@/data/casinoGames'
 
 /** Reusable royal game lobby — defaults to the casino catalogue. */
@@ -18,7 +19,7 @@ const providers = computed(() => [...new Set(props.games.map((g) => g.provider))
 
 const query = ref('')
 const provider = ref('all')
-const sort = ref<'popular' | 'az'>('popular')
+const sort = ref('popular')
 const visible = ref(12)
 const favs = ref(new Set<string>())
 
@@ -42,58 +43,14 @@ function toggleFav(name: string) {
 
 <template>
   <section class="container-royal pt-12 sm:pt-16">
-    <!-- Header -->
-    <div class="mb-6 flex items-center gap-3">
-      <span class="h-6 w-1 rounded-full bg-gold-gradient shadow-gold-soft" />
-      <h2 class="font-display text-xl font-semibold tracking-[0.16em] text-gold-gradient">
-        {{ title }}
-      </h2>
-    </div>
-
-    <!-- Toolbar -->
-    <div class="mb-7 flex flex-col gap-3 lg:flex-row lg:items-center">
-      <label class="relative flex-1 lg:max-w-md">
-        <AppIcon
-          name="search"
-          :size="15"
-          class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gold/60"
-        />
-        <input
-          v-model="query"
-          type="search"
-          placeholder="Search the royal collection..."
-          class="h-11 w-full rounded-full border border-border-gold/60 bg-black/40 pl-11 pr-4 font-sans text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none"
-        />
-      </label>
-
-      <div class="flex items-center gap-3">
-        <div class="relative">
-          <select
-            v-model="provider"
-            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold focus:outline-none"
-          >
-            <option value="all">All Providers</option>
-            <option v-for="p in providers" :key="p" :value="p">{{ p }}</option>
-          </select>
-          <AppIcon name="chevronDown" :size="14" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-dim" />
-        </div>
-
-        <div class="relative">
-          <select
-            v-model="sort"
-            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold focus:outline-none"
-          >
-            <option value="popular">Sort: Popular</option>
-            <option value="az">Sort: A – Z</option>
-          </select>
-          <AppIcon name="chevronDown" :size="14" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-dim" />
-        </div>
-      </div>
-
-      <p class="font-sans text-[12px] text-ink-dim lg:ml-auto">
-        <span class="font-semibold tabular-nums text-champagne">{{ filtered.length }}</span> games
-      </p>
-    </div>
+    <GamesFilterBar
+      :title="title"
+      :count="filtered.length"
+      :filter-options="providers"
+      v-model:query="query"
+      v-model:filter="provider"
+      v-model:sort="sort"
+    />
 
     <!-- Grid -->
     <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
