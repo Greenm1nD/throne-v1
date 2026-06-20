@@ -20,6 +20,9 @@ const router = createRouter({
       component: () => import('@/views/LiveCasinoView.vue'),
     },
     { path: '/vip', name: 'vip', component: () => import('@/views/VipView.vue') },
+    // Throne Club nav target on this branch aliases the membership (VIP) page; the
+    // full Throne Club flagship lives on feature/throne-club-redesign.
+    { path: '/throne-club', name: 'throne-club', component: () => import('@/views/VipView.vue') },
     { path: '/kingdom', name: 'kingdom', component: () => import('@/views/KingdomView.vue') },
     {
       path: '/kingdom/tournament/:slug',

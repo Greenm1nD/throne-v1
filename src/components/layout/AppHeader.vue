@@ -60,13 +60,17 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     :class="{ 'app-header--scrolled': scrolled }"
   >
     <div class="container-royal flex h-full items-center justify-between gap-6">
-      <!-- Left: logo -->
-      <CrownLogo :size="34" :tagline="false" />
-
-      <!-- Center: decorative gold line + diamond (no nav links — nav is the bar below) -->
-      <div class="hidden flex-1 items-center gap-2 px-6 lg:flex" aria-hidden="true">
-        <span class="h-1.5 w-1.5 rotate-45 bg-gold-gradient shadow-[0_0_6px_rgba(245,215,122,0.7)]" />
-        <span class="h-px flex-1 bg-gradient-to-r from-gold/45 via-gold/20 to-transparent" />
+      <!-- Left: logo + short decorative divider (THRONE ◇──── ♔) -->
+      <div class="flex items-center gap-3.5">
+        <CrownLogo :size="38" :tagline="false" />
+        <div class="hidden items-center gap-2 lg:flex" aria-hidden="true">
+          <span class="h-2 w-2 rotate-45 bg-gold-gradient shadow-[0_0_7px_rgba(245,215,122,0.75)]" />
+          <span
+            class="h-px w-28 xl:w-36"
+            style="background: linear-gradient(90deg, rgba(212,175,55,0.18), rgba(245,215,122,0.6) 50%, rgba(212,175,55,0.18))"
+          />
+          <AppIcon name="crown" :size="14" class="text-gold/75" />
+        </div>
       </div>
 
       <!-- Right: actions -->
@@ -88,8 +92,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
         <!-- Logged-in cluster: balance pill · Deposit · gift · user menu -->
         <template v-else>
-          <!-- Balance pill (eye + amount) -->
-          <div class="hidden items-center gap-1.5 rounded-full border border-border-gold/50 bg-black/40 py-1.5 pl-3 pr-4 sm:flex">
+          <!-- Balance pill (eye + amount) — secondary to Deposit -->
+          <div class="hidden items-center gap-1.5 rounded-full border border-border-gold/40 bg-black/40 py-1.5 pl-3 pr-4 transition-colors hover:border-border-gold/80 sm:flex">
             <button
               class="grid h-6 w-6 place-items-center rounded-full text-ink-dim transition-colors hover:text-gold-bright"
               :aria-pressed="discreet"
@@ -98,7 +102,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
             >
               <AppIcon :name="discreet ? 'eyeOff' : 'eye'" :size="15" />
             </button>
-            <span class="font-sans text-[13px] font-bold tabular-nums text-gold-bright">{{ balanceLabel }}</span>
+            <span class="font-sans text-[13px] font-semibold tabular-nums text-champagne">{{ balanceLabel }}</span>
           </div>
 
           <GoldButton variant="solid" size="sm" class="hidden sm:inline-flex" @click="openWallet('deposit')">Deposit</GoldButton>
@@ -113,7 +117,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
             <span class="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-gold-gradient px-1 font-sans text-[9px] font-bold text-bg">3</span>
           </button>
 
-          <div class="relative">
+          <div class="relative ml-1.5">
             <button
               class="flex items-center gap-2 rounded-full border border-white/10 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
               :aria-expanded="accOpen"

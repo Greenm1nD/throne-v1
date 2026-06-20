@@ -15,6 +15,8 @@ export interface CategoryNavItem {
   label: string
   to: string
   icon: string
+  /** Throne Club gets a slightly more special hover/active treatment. */
+  special?: boolean
 }
 
 /**
@@ -22,15 +24,16 @@ export interface CategoryNavItem {
  * Products first, then THRONE brand sections. One source of truth for the bar.
  */
 export const categoryNav: CategoryNavItem[] = [
-  { label: 'Casino', to: '/casino', icon: 'sparkle' },
+  { label: 'Casino', to: '/casino', icon: 'chip' },
   { label: 'Sports', to: '/sports', icon: 'bolt' },
   { label: 'Live Casino', to: '/live-casino', icon: 'monitor' },
   { label: 'E-Sport', to: '/esports', icon: 'trophy' },
   { label: 'Virtuals', to: '/virtual', icon: 'headset' },
-  { label: 'Games', to: '/games', icon: 'play' },
-  { label: 'Poker', to: '/poker', icon: 'swords' },
+  { label: 'Games', to: '/games', icon: 'gamepad' },
+  { label: 'Poker', to: '/poker', icon: 'spade' },
   { label: 'VIP', to: '/vip', icon: 'star' },
-  { label: 'Kingdom', to: '/kingdom', icon: 'shield' },
+  { label: 'Throne Club', to: '/throne-club', icon: 'crown', special: true },
+  { label: 'Kingdom', to: '/kingdom', icon: 'castle' },
   { label: 'Rewards', to: '/rewards', icon: 'gift' },
 ]
 
