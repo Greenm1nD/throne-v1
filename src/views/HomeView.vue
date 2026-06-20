@@ -4,6 +4,7 @@ import HeroSection from '@/components/home/HeroSection.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
+import GameRails from '@/components/home/GameRails.vue'
 import FeatureGrid from '@/components/home/FeatureGrid.vue'
 import TreasuryBanner from '@/components/home/TreasuryBanner.vue'
 import RoyalTreasures from '@/components/home/RoyalTreasures.vue'
@@ -22,6 +23,7 @@ useReveal(communityRow, { stagger: 0.14 })
     <KingdomStatus />
     <HallOfKings />
     <RoyalCollection />
+    <GameRails />
     <FeatureGrid />
 
     <div class="container-royal pt-16 sm:pt-20">
