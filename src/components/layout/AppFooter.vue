@@ -107,7 +107,7 @@ const rightCols = footerNav.slice(2)
 
       <!-- Concierge · CTA · Security band -->
       <div
-        class="mt-14 grid gap-8 rounded-2xl border border-white/5 bg-white/[0.02] px-8 py-8 lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-white/5"
+        class="mt-14 grid gap-8 rounded-2xl border border-border-gold/10 bg-white/[0.02] px-8 py-8 lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-border-gold/12"
       >
         <div class="flex items-center gap-4 lg:pr-8">
           <span
@@ -161,7 +161,7 @@ const rightCols = footerNav.slice(2)
 
       <!-- Bottom bar: copyright · payments · responsibility -->
       <div
-        class="mt-10 flex flex-col items-center gap-6 border-t border-white/5 pt-8 lg:flex-row lg:justify-between"
+        class="mt-10 flex flex-col items-center gap-6 border-t border-border-gold/10 pt-8 lg:flex-row lg:justify-between"
       >
         <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-ink-dim">
           © 2026 THRONE. All rights reserved.

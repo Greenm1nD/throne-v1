@@ -45,7 +45,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
     <!-- Loyalty tiers ladder -->
     <section class="container-royal relative z-20 -mt-9">
       <div
-        class="grid gap-8 rounded-2xl border border-white/5 bg-card/90 px-6 py-7 shadow-card-glow backdrop-blur sm:px-8 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-10"
+        class="grid gap-8 rounded-2xl border border-border-gold/10 bg-card/90 px-6 py-7 shadow-card-glow backdrop-blur sm:px-8 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-10"
       >
         <div class="shrink-0 lg:max-w-[160px]">
           <h3 class="font-display text-sm font-semibold uppercase leading-relaxed tracking-[0.22em] text-champagne">
@@ -110,7 +110,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
           <article
             v-for="r in page.redeem"
             :key="r.title"
-            class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border border-white/10 bg-black/30 transition-all duration-300 hover:-translate-y-1 hover:border-border-gold"
+            class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border border-border-gold/20 bg-black/30 transition-all duration-300 hover:-translate-y-1 hover:border-border-gold"
           >
             <div class="relative aspect-square overflow-hidden">
               <div
@@ -125,7 +125,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
               </h4>
               <p class="mt-0.5 font-sans text-[10px] text-ink-dim">{{ r.sub }}</p>
             </div>
-            <div class="mt-auto flex items-center justify-between gap-2 border-t border-white/5 bg-white/[0.02] px-3 py-1.5">
+            <div class="mt-auto flex items-center justify-between gap-2 border-t border-border-gold/10 bg-white/[0.02] px-3 py-1.5">
               <span class="whitespace-nowrap font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold/90">
                 {{ r.tier }}
               </span>
@@ -171,7 +171,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         <!-- Recent activity -->
         <div>
           <p class="eyebrow mb-2">Recent Activity</p>
-          <ul class="divide-y divide-white/5">
+          <ul class="divide-y divide-border-gold/12">
             <li
               v-for="a in page.summary.activity"
               :key="a.detail"
@@ -214,7 +214,7 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
           </p>
         </div>
 
-        <div class="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/5 bg-white/[0.03]">
+        <div class="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-border-gold/10 bg-white/[0.03]">
           <div
             v-for="s in page.summary.stats"
             :key="s.label"

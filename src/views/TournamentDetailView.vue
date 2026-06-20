@@ -93,7 +93,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
           </div>
           <div class="card-lux p-6 hover:translate-y-0">
             <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">Prize Breakdown</h3>
-            <ul class="mt-4 divide-y divide-white/5">
+            <ul class="mt-4 divide-y divide-border-gold/12">
               <li v-for="p in t.prizeBreakdown" :key="p.place" class="flex items-center justify-between py-2.5">
                 <span class="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-muted">{{ p.place }}</span>
                 <span class="font-display text-[15px] font-bold tabular-nums text-gold-gradient">{{ p.amount }}</span>

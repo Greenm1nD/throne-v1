@@ -46,7 +46,7 @@ useRevealEach(root)
             :class="
               t.featured
                 ? 'animate-softGlow border-gold/70 bg-gold/[0.05] xl:-translate-y-2'
-                : 'border-white/5 bg-card/80 hover:border-border-gold'
+                : 'border-border-gold/10 bg-card/80 hover:border-border-gold'
             "
           >
             <span

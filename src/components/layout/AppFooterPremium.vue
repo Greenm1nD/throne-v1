@@ -80,7 +80,7 @@ const pays = paymentMethods.slice(0, 5)
       </nav>
 
       <!-- Bottom bar -->
-      <div class="mt-9 flex flex-col items-center gap-5 border-t border-white/5 pt-7 lg:flex-row lg:justify-between">
+      <div class="mt-9 flex flex-col items-center gap-5 border-t border-border-gold/10 pt-7 lg:flex-row lg:justify-between">
         <p class="order-2 font-sans text-[11px] uppercase tracking-[0.12em] text-ink-dim lg:order-1">
           © 2026 THRONE. All rights reserved.
         </p>

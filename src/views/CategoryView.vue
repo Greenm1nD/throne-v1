@@ -40,7 +40,7 @@ watch(() => route.path, () => useRevealEach(root))
       <!-- EVENTS mode (esports / live / virtual) -->
       <ul v-if="cfg.mode === 'events'" class="grid gap-3 lg:grid-cols-2">
         <li v-for="(e, i) in cfg.events" :key="i"
-          class="flex items-center gap-4 rounded-2xl border border-white/8 bg-card/70 p-4 transition-colors hover:border-border-gold/50" data-reveal>
+          class="flex items-center gap-4 rounded-2xl border border-border-gold/15 bg-card/70 p-4 transition-colors hover:border-border-gold/50" data-reveal>
           <div class="min-w-0 flex-1">
             <p class="flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">
               <span v-if="e.live" class="inline-flex items-center gap-1 rounded-full bg-rose-500/15 px-1.5 py-0.5 text-[9px] font-bold text-rose-400">
@@ -58,7 +58,7 @@ watch(() => route.path, () => useRevealEach(root))
             <span class="grid h-12 w-14 place-items-center rounded-lg border border-border-gold/30 bg-black/30 font-sans text-[13px] font-bold tabular-nums text-gold-bright transition-colors hover:border-gold">{{ e.oddsA }}</span>
             <span v-if="e.oddsX" class="grid h-12 w-14 place-items-center rounded-lg border border-border-gold/30 bg-black/30 font-sans text-[13px] font-bold tabular-nums text-gold-bright transition-colors hover:border-gold">{{ e.oddsX }}</span>
             <span v-if="e.oddsB !== '—'" class="grid h-12 w-14 place-items-center rounded-lg border border-border-gold/30 bg-black/30 font-sans text-[13px] font-bold tabular-nums text-gold-bright transition-colors hover:border-gold">{{ e.oddsB }}</span>
-            <span v-else class="grid h-12 w-14 place-items-center rounded-lg border border-white/10 font-sans text-[11px] uppercase text-ink-dim">All</span>
+            <span v-else class="grid h-12 w-14 place-items-center rounded-lg border border-border-gold/20 font-sans text-[11px] uppercase text-ink-dim">All</span>
           </div>
         </li>
       </ul>
@@ -66,7 +66,7 @@ watch(() => route.path, () => useRevealEach(root))
       <!-- GRID mode (games / poker) -->
       <div v-else class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         <article v-for="x in cfg.items" :key="x.name"
-          class="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl border border-white/8 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
+          class="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
           data-reveal @click="enter()">
           <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${x.image}')`"
             class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />

@@ -32,7 +32,7 @@ const { enter } = useEnter()
       </div>
     </div>
 
-    <div class="card-lux divide-y divide-white/5 p-0 hover:translate-y-0" data-reveal>
+    <div class="card-lux divide-y divide-border-gold/12 p-0 hover:translate-y-0" data-reveal>
       <article
         v-for="m in matches"
         :key="m.home + m.away"

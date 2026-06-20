@@ -29,7 +29,7 @@ useRevealEach(root)
       <div class="card-lux overflow-hidden p-0 hover:translate-y-0" data-reveal>
         <!-- Frame chrome -->
         <div
-          class="flex flex-col gap-4 border-b border-white/5 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
+          class="flex flex-col gap-4 border-b border-border-gold/10 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
         >
           <div class="flex items-center gap-4">
             <h3 class="font-display text-sm font-semibold uppercase tracking-[0.22em] text-champagne">
@@ -47,7 +47,7 @@ useRevealEach(root)
           </div>
 
           <!-- Provider switch -->
-          <div class="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 p-1">
+          <div class="flex items-center gap-1 rounded-full border border-border-gold/20 bg-black/40 p-1">
             <button
               v-for="(p, i) in page.sportsbook.providers"
               :key="p"
@@ -113,7 +113,7 @@ useRevealEach(root)
             <div
               v-for="i in 4"
               :key="i"
-              class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-white/[0.02] px-5 py-4"
+              class="flex items-center justify-between gap-4 rounded-xl border border-border-gold/10 bg-white/[0.02] px-5 py-4"
               :style="{ animation: `goldenPulse ${3 + i * 0.35}s ease-in-out ${-i * 0.6}s infinite` }"
             >
               <div class="flex-1 space-y-2.5">
@@ -130,7 +130,7 @@ useRevealEach(root)
 
       <!-- Integration note -->
       <p
-        class="mt-3 flex items-center gap-2.5 rounded-xl border border-dashed border-white/10 px-4 py-2.5 font-sans text-[11px] text-ink-dim"
+        class="mt-3 flex items-center gap-2.5 rounded-xl border border-dashed border-border-gold/20 px-4 py-2.5 font-sans text-[11px] text-ink-dim"
       >
         <AppIcon name="sparkle" :size="13" class="shrink-0 text-gold/60" />
         This section is a styled container — the live feed renders from the third-party provider iframe once its URL is configured.

@@ -23,14 +23,14 @@ function go(item: StripItem) {
 <template>
   <section class="container-royal -mt-9 relative z-20">
     <div
-      class="flex items-stretch overflow-x-auto rounded-2xl border border-white/5 bg-card/90 shadow-card-glow backdrop-blur [scrollbar-width:none]"
+      class="flex items-stretch overflow-x-auto rounded-2xl border border-border-gold/10 bg-card/90 shadow-card-glow backdrop-blur [scrollbar-width:none]"
     >
       <button
         v-for="(item, i) in items"
         :key="item.label"
         type="button"
         class="group relative flex min-w-[110px] flex-1 flex-col items-center gap-2.5 px-4 py-5 transition-colors hover:bg-gold/[0.04]"
-        :class="[i > 0 && 'border-l border-white/5', item.to ? 'cursor-pointer' : 'cursor-default']"
+        :class="[i > 0 && 'border-l border-border-gold/10', item.to ? 'cursor-pointer' : 'cursor-default']"
         @click="go(item)"
       >
         <span

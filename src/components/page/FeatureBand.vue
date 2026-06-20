@@ -10,7 +10,7 @@ defineProps<{ items: BandItem[] }>()
 <template>
   <section class="container-royal pt-12 sm:pt-16">
     <div
-      class="grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] sm:grid-cols-2"
+      class="grid gap-px overflow-hidden rounded-2xl border border-border-gold/10 bg-white/[0.02] sm:grid-cols-2"
       :class="items.length > 4 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'"
       :style="items.length === 6 ? 'grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))' : ''"
     >

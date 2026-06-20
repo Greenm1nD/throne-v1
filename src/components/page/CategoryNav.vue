@@ -16,7 +16,7 @@ const isActive = (to: string) =>
 </script>
 
 <template>
-  <nav class="category-nav border-y border-white/5 bg-black/35 backdrop-blur" aria-label="Primary">
+  <nav class="category-nav border-y border-border-gold/10 bg-black/35 backdrop-blur" aria-label="Primary">
     <div class="container-royal flex items-center">
       <!-- Left ornament: diamond → line -->
       <div class="hidden flex-1 items-center gap-2 pr-4 lg:flex" aria-hidden="true">

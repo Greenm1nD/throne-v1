@@ -105,7 +105,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
           <!-- Gift / rewards -->
           <button
-            class="relative hidden h-10 w-10 place-items-center rounded-full border border-white/10 text-gold/80 transition-colors hover:border-border-gold hover:text-gold-bright sm:grid"
+            class="relative hidden h-10 w-10 place-items-center rounded-full border border-border-gold/20 text-gold/80 transition-colors hover:border-border-gold hover:text-gold-bright sm:grid"
             aria-label="Rewards"
             @click="router.push('/rewards')"
           >
@@ -115,7 +115,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
           <div class="relative">
             <button
-              class="flex items-center gap-2 rounded-full border border-white/10 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
+              class="flex items-center gap-2 rounded-full border border-border-gold/20 py-1 pl-1 pr-2.5 transition-colors hover:border-border-gold"
               :aria-expanded="accOpen"
               aria-label="Account menu"
               @click="accOpen = !accOpen"
@@ -145,7 +145,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
                   <AppIcon :name="l.icon" :size="14" class="text-gold/70" /> {{ l.label }}
                 </RouterLink>
                 <button
-                  class="flex w-full items-center gap-2.5 border-t border-white/5 px-4 py-2.5 font-sans text-[12px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
+                  class="flex w-full items-center gap-2.5 border-t border-border-gold/10 px-4 py-2.5 font-sans text-[12px] text-ink-muted transition-colors hover:bg-gold/[0.06] hover:text-gold-bright"
                   @click="signOut"
                 >
                   <AppIcon name="x" :size="14" class="text-gold/70" /> Log out
@@ -157,7 +157,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
         <!-- Mobile menu toggle -->
         <button
-          class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-champagne lg:hidden"
+          class="grid h-10 w-10 place-items-center rounded-full border border-border-gold/20 text-champagne lg:hidden"
           :aria-expanded="menuOpen"
           aria-label="Toggle menu"
           @click="menuOpen = !menuOpen"
@@ -183,7 +183,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
             v-for="item in primaryNav"
             :key="item.label"
             :to="item.href"
-            class="group flex items-center gap-3 border-b border-white/5 py-3.5 font-sans text-sm uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-gold-bright"
+            class="group flex items-center gap-3 border-b border-border-gold/10 py-3.5 font-sans text-sm uppercase tracking-[0.14em] text-ink-muted transition-colors hover:text-gold-bright"
             :active-class="item.href === '/' ? '' : 'text-gold-bright'"
             exact-active-class="text-gold-bright"
             @click="menuOpen = false"

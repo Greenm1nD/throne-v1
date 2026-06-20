@@ -84,7 +84,7 @@ useRevealEach(root)
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <button
           v-for="s in pokerStats" :key="s.label"
-          class="group flex items-center gap-3 rounded-2xl border border-white/8 bg-card/70 px-5 py-4 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-border-gold/50 motion-reduce:transform-none"
+          class="group flex items-center gap-3 rounded-2xl border border-border-gold/15 bg-card/70 px-5 py-4 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-border-gold/50 motion-reduce:transform-none"
           @click="enter()"
         >
           <AppIcon :name="s.icon" :size="22" class="shrink-0 text-gold/80" />
@@ -99,7 +99,7 @@ useRevealEach(root)
     <!-- ── Live Cash Games + Top Players ────────────────────────────────── -->
     <section class="container-royal grid gap-4 pt-10 sm:pt-14 lg:grid-cols-[2fr_1fr]">
       <!-- Live cash games -->
-      <div class="rounded-2xl border border-white/8 bg-card/70 p-5 sm:p-6" data-reveal>
+      <div class="rounded-2xl border border-border-gold/15 bg-card/70 p-5 sm:p-6" data-reveal>
         <div class="mb-4 flex items-center justify-between">
           <h2 class="flex items-center gap-2 font-display text-[15px] font-semibold uppercase tracking-[0.16em] text-champagne">
             <AppIcon name="crown" :size="16" class="text-gold/80" /> Live Cash Games
@@ -110,7 +110,7 @@ useRevealEach(root)
         <!-- Desktop table -->
         <table class="hidden w-full text-left md:table">
           <thead>
-            <tr class="border-b border-white/8 font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">
+            <tr class="border-b border-border-gold/15 font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">
               <th class="py-2.5 pr-3 font-medium">Table</th>
               <th class="px-3 py-2.5 font-medium">Stakes</th>
               <th class="px-3 py-2.5 font-medium">Players</th>
@@ -119,7 +119,7 @@ useRevealEach(root)
             </tr>
           </thead>
           <tbody>
-            <tr v-for="g in liveCashGames" :key="g.table" class="group border-b border-white/5 transition-colors last:border-0 hover:bg-white/[0.03]">
+            <tr v-for="g in liveCashGames" :key="g.table" class="group border-b border-border-gold/10 transition-colors last:border-0 hover:bg-white/[0.03]">
               <td class="py-3 pr-3">
                 <div class="flex items-center gap-2.5">
                   <AppIcon name="spade" :size="15" :class="g.featured ? 'text-gold-bright' : 'text-gold/55'" />
@@ -141,7 +141,7 @@ useRevealEach(root)
 
         <!-- Mobile cards -->
         <ul class="space-y-3 md:hidden">
-          <li v-for="g in liveCashGames" :key="g.table" class="rounded-xl border border-white/8 bg-black/30 p-4">
+          <li v-for="g in liveCashGames" :key="g.table" class="rounded-xl border border-border-gold/15 bg-black/30 p-4">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 <AppIcon name="spade" :size="15" :class="g.featured ? 'text-gold-bright' : 'text-gold/55'" />
@@ -152,7 +152,7 @@ useRevealEach(root)
               </div>
               <button class="shrink-0 rounded-lg border border-border-gold/60 px-3.5 py-1.5 font-sans text-[11px] font-bold uppercase tracking-[0.12em] text-gold-bright transition-colors hover:bg-gold-gradient hover:text-bg" @click="enter()">Join</button>
             </div>
-            <div class="mt-3 grid grid-cols-3 gap-2 border-t border-white/5 pt-3 text-center">
+            <div class="mt-3 grid grid-cols-3 gap-2 border-t border-border-gold/10 pt-3 text-center">
               <span><span class="block font-sans text-[9px] uppercase tracking-[0.1em] text-ink-dim">Stakes</span><span class="font-sans text-[12px] tabular-nums text-champagne">{{ g.stakes }}</span></span>
               <span><span class="block font-sans text-[9px] uppercase tracking-[0.1em] text-ink-dim">Players</span><span class="font-sans text-[12px] tabular-nums text-ink-muted">{{ g.players }}</span></span>
               <span><span class="block font-sans text-[9px] uppercase tracking-[0.1em] text-ink-dim">Avg Pot</span><span class="font-sans text-[12px] tabular-nums text-gold-bright">{{ g.pot }}</span></span>
@@ -162,7 +162,7 @@ useRevealEach(root)
       </div>
 
       <!-- Top players -->
-      <div class="rounded-2xl border border-white/8 bg-card/70 p-5 sm:p-6" data-reveal>
+      <div class="rounded-2xl border border-border-gold/15 bg-card/70 p-5 sm:p-6" data-reveal>
         <div class="mb-4 flex items-center justify-between">
           <h2 class="flex items-center gap-2 font-display text-[15px] font-semibold uppercase tracking-[0.16em] text-champagne">
             <AppIcon name="crown" :size="16" class="text-gold/80" /> Top Players
@@ -195,7 +195,7 @@ useRevealEach(root)
       </div>
       <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <article v-for="t in tournaments" :key="t.name"
-          class="group flex flex-col rounded-2xl border border-white/8 bg-card/70 p-5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-border-gold/50 motion-reduce:transform-none" data-reveal>
+          class="group flex flex-col rounded-2xl border border-border-gold/15 bg-card/70 p-5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-border-gold/50 motion-reduce:transform-none" data-reveal>
           <div class="flex items-center gap-3">
             <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/40 text-gold-bright"
               style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)">
@@ -206,7 +206,7 @@ useRevealEach(root)
               <p class="font-sans text-[12px] font-semibold tabular-nums text-gold-bright">{{ t.gtd }}</p>
             </div>
           </div>
-          <div class="mt-4 flex items-center justify-between border-t border-white/5 pt-3 font-sans text-[12px]">
+          <div class="mt-4 flex items-center justify-between border-t border-border-gold/10 pt-3 font-sans text-[12px]">
             <span class="text-ink-dim">Buy-in <span class="text-champagne">{{ t.buyin }}</span></span>
             <span class="inline-flex items-center gap-1.5 tabular-nums text-ink-muted"><AppIcon name="clock" :size="12" class="text-gold/70" /> {{ t.startsIn }}</span>
           </div>
@@ -216,7 +216,7 @@ useRevealEach(root)
 
     <!-- ── Feature strip ────────────────────────────────────────────────── -->
     <section class="container-royal pt-10 sm:pt-14">
-      <div class="grid grid-cols-2 gap-3 rounded-2xl border border-white/8 bg-card/60 p-4 sm:grid-cols-3 lg:grid-cols-5 lg:p-5" data-reveal>
+      <div class="grid grid-cols-2 gap-3 rounded-2xl border border-border-gold/15 bg-card/60 p-4 sm:grid-cols-3 lg:grid-cols-5 lg:p-5" data-reveal>
         <div v-for="f in pokerFeatures" :key="f.title" class="flex flex-col items-center gap-2 px-2 py-4 text-center">
           <AppIcon :name="f.icon" :size="22" class="text-gold/80" />
           <span class="font-sans text-[12px] font-bold uppercase tracking-[0.1em] text-ink">{{ f.title }}</span>

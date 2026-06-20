@@ -123,14 +123,14 @@ const controls = [
         </div>
 
         <!-- Info bar -->
-        <div class="flex flex-col gap-4 border-t border-white/5 bg-card/80 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-col gap-4 border-t border-border-gold/10 bg-card/80 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p class="font-display text-base font-semibold tracking-[0.1em] text-champagne">{{ game.name }}</p>
             <p class="mt-0.5 flex items-center gap-1.5 font-sans text-[11px] text-ink-dim">
               <span class="h-1 w-1 rounded-full bg-gold/70" /> {{ game.provider }} · RTP {{ game.rtp }}%
             </p>
           </div>
-          <div class="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 p-1">
+          <div class="flex items-center gap-1 rounded-full border border-border-gold/20 bg-black/40 p-1">
             <button
               v-for="m in (['real', 'demo'] as const)"
               :key="m"

@@ -259,7 +259,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
               <li
                 v-for="n in rest"
                 :key="n.name"
-                class="flex items-center gap-4 rounded-lg border-b border-white/5 px-3 py-3 transition-colors last:border-0"
+                class="flex items-center gap-4 rounded-lg border-b border-border-gold/10 px-3 py-3 transition-colors last:border-0"
                 :class="(n.you && isLoggedIn) ? 'bg-gold/[0.06]' : 'hover:bg-white/[0.02]'"
               >
                 <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border-gold/40 font-display text-[12px] font-bold tabular-nums text-ink-muted">
@@ -516,7 +516,7 @@ function claimQuest(q: (typeof page.quests)[number]) {
         <h3 class="font-display text-2xl font-bold tracking-[0.08em] text-gold-gradient">Royal Decrees</h3>
       </div>
 
-      <div class="kingdom-decrees card-lux divide-y divide-white/5 p-0 hover:translate-y-0" data-reveal>
+      <div class="kingdom-decrees card-lux divide-y divide-border-gold/12 p-0 hover:translate-y-0" data-reveal>
         <article
           v-for="d in page.decrees"
           :key="d.title"

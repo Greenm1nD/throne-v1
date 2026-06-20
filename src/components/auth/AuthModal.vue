@@ -379,7 +379,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
             </div>
 
             <!-- Bottom feature strip -->
-            <div class="grid grid-cols-2 gap-px border-t border-white/5 bg-white/[0.02] sm:grid-cols-4">
+            <div class="grid grid-cols-2 gap-px border-t border-border-gold/10 bg-white/[0.02] sm:grid-cols-4">
               <div
                 v-for="b in state.mode === 'register' ? benefits.register : benefits.login"
                 :key="b.title"

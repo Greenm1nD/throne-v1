@@ -50,7 +50,7 @@ const img = assets[props.feature.image]
     <!-- Bottom meta row (only when the feature provides one) -->
     <div
       v-if="feature.meta.length"
-      class="relative z-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-3"
+      class="relative z-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border-gold/20 pt-3"
     >
       <span
         v-for="m in feature.meta"

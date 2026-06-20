@@ -45,11 +45,11 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
       >
         <span
           class="relative grid h-12 w-12 place-items-center rounded-full border"
-          :class="o.unlocked ? 'border-border-gold text-gold-bright' : 'border-white/10 text-ink-dim'"
+          :class="o.unlocked ? 'border-border-gold text-gold-bright' : 'border-border-gold/20 text-ink-dim'"
           :style="o.unlocked ? 'background: radial-gradient(circle, rgba(212,175,55,0.14), transparent 70%)' : ''"
         >
           <AppIcon :name="o.icon" :size="19" />
-          <span v-if="!o.unlocked" class="absolute -bottom-1 -right-1 grid h-5 w-5 place-items-center rounded-full border border-white/10 bg-surface text-ink-dim">
+          <span v-if="!o.unlocked" class="absolute -bottom-1 -right-1 grid h-5 w-5 place-items-center rounded-full border border-border-gold/20 bg-surface text-ink-dim">
             <AppIcon name="lock" :size="10" />
           </span>
         </span>

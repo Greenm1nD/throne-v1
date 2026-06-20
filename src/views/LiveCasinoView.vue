@@ -78,7 +78,7 @@ const { enter } = useEnter()
 
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
           <article v-for="t in page.tables" :key="t.name" class="group cursor-pointer">
-            <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 transition-colors group-hover:border-border-gold">
+            <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-border-gold/20 transition-colors group-hover:border-border-gold">
               <img
                 :src="t.image"
                 :alt="t.name"

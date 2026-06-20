@@ -83,7 +83,7 @@ onBeforeUnmount(() => clearInterval(tick))
     <!-- VIP experience band -->
     <section class="container-royal pt-12 sm:pt-16">
       <div
-        class="grid gap-8 rounded-2xl border border-white/5 bg-card/70 px-8 py-8 lg:grid-cols-[auto_1fr_auto] lg:items-center"
+        class="grid gap-8 rounded-2xl border border-border-gold/10 bg-card/70 px-8 py-8 lg:grid-cols-[auto_1fr_auto] lg:items-center"
         data-reveal
         style="background-image: linear-gradient(180deg, rgba(13,13,16,0.85), rgba(8,8,10,0.92)), url('/assets/images/texture-marble.webp'); background-size: cover"
       >
