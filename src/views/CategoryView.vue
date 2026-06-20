@@ -39,10 +39,10 @@ const filteredItems = computed(() => {
 
 <template>
   <main ref="root" class="pb-6">
-    <PageHero v-bind="cfg.hero" @primary="enter()" />
+    <PageHero v-if="!cfg.hideHero" v-bind="cfg.hero" @primary="enter()" />
 
     <!-- Section header -->
-    <section class="container-royal pt-10 sm:pt-14">
+    <section class="container-royal pt-8 sm:pt-10">
       <div v-if="cfg.mode === 'events'" class="mb-6">
         <p class="eyebrow">{{ cfg.hero.tagline }}</p>
         <h2 class="mt-1 font-display text-2xl font-semibold tracking-[0.14em] text-gold-gradient">{{ cfg.sectionTitle }}</h2>

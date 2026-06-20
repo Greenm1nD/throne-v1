@@ -57,6 +57,8 @@ interface GridItem {
 export interface CategoryConfig {
   slug: string
   mode: 'events' | 'grid'
+  /** Skip the top hero banner (grid pages that lead straight into games). */
+  hideHero?: boolean
   hero: {
     title: string
     tagline: string
@@ -207,39 +209,47 @@ export const categoryPages: Record<string, CategoryConfig> = {
     cta: { title: 'Quick rounds, real thrills', sub: 'Instant games with transparent maths.' },
   },
 
-  // Beton — fast-bet / crash section (placeholder interpretation; redefine when specified).
+  // Beton — live betting games (TVBET / BetGames style). No hero banner.
   beton: {
     slug: 'beton',
     mode: 'grid',
+    hideHero: true,
     hero: {
       title: 'Beton',
-      tagline: 'Bet. Watch. Cash out.',
-      sub: 'Crash and fast-bet games — place your stake, watch the multiplier climb, and cash out before it falls.',
-      cta: 'Place a Bet',
-      image: '/assets/images/page-casino-hero-2.webp',
-      imageMobile: '/assets/images/hero-mobile-casino.webp',
-      fallback: '/assets/images/page-casino-hero.webp',
+      tagline: 'Live betting games',
+      sub: 'Fast live betting games — dice, wheels, lotteries and card duels, drawn live around the clock.',
+      cta: 'Play Beton',
+      image: '/assets/images/live-casino.webp',
+      fallback: '/assets/images/live-exclusive.webp',
       posY: '50%',
     },
-    sectionTitle: 'Crash & Fast-Bet',
-    sectionSub: 'Place, ride the multiplier, cash out in time',
+    sectionTitle: 'Beton — Live Betting Games',
+    sectionSub: 'TVBET & BetGames, drawn live 24/7',
     items: [
-      { name: 'Aviator', meta: 'Crash · up to x1000', image: '/assets/images/games/bounty-gold.webp', tag: 'Hot' },
-      { name: 'JetX', meta: 'Crash · x1000', image: '/assets/images/games/fishin-reels.webp', tag: 'Hot' },
-      { name: 'Rocket Blast', meta: 'Crash · x5000', image: '/assets/images/games/gates-of-olympus.webp' },
-      { name: 'Cash or Crash', meta: 'Fast-bet · cash out', image: '/assets/images/games/great-stick-up.webp' },
-      { name: 'Mines', meta: 'Strategy · cash out anytime', image: '/assets/images/games/empty-the-bank.webp' },
-      { name: 'Plinko', meta: 'Arcade · pick your risk', image: '/assets/images/games/candy-blitz.webp' },
-      { name: 'Limbo', meta: 'Fast-bet · set your target', image: '/assets/images/games/fruit-rainbow.webp', tag: 'New' },
-      { name: 'Goal Rush', meta: 'Crash · x900', image: '/assets/images/games/octobeer.webp' },
+      { name: 'Dice Duel', meta: 'BetGames.TV', image: '/assets/images/live-exclusive.webp', tag: 'Live' },
+      { name: 'Wheel of Fortune', meta: 'BetGames.TV', image: '/assets/images/live-roulette.webp', tag: 'Live' },
+      { name: 'Lucky 6', meta: 'BetGames.TV', image: '/assets/images/live-crazytime.webp', tag: 'Live' },
+      { name: '1Bet', meta: 'TVBET', image: '/assets/images/casino-jackpot.webp', tag: 'Live' },
+      { name: 'Keno', meta: 'TVBET', image: '/assets/images/casino-jackpot.webp', tag: 'Live' },
+      { name: '5Bet', meta: 'TVBET', image: '/assets/images/hall-biggest-jackpot.webp', tag: 'Live' },
+      { name: 'War of Elements', meta: 'TVBET', image: '/assets/images/live-blackjack.webp', tag: 'Live' },
+      { name: 'PokerBet', meta: 'TVBET', image: '/assets/images/live-poker.webp', tag: 'Live' },
+      { name: 'WheelBet', meta: 'TVBET', image: '/assets/images/live-roulette.webp', tag: 'Live' },
+      { name: '7Bet', meta: 'TVBET', image: '/assets/images/casino-jackpot.webp', tag: 'Live' },
+      { name: 'BlackJack', meta: 'TVBET', image: '/assets/images/live-blackjack.webp', tag: 'Live' },
+      { name: 'Classic Wheel', meta: 'BetGames.TV', image: '/assets/images/live-crazytime.webp', tag: 'Live' },
+      { name: 'Poker 6+', meta: 'BetGames.TV', image: '/assets/images/live-poker.webp', tag: 'Live' },
+      { name: 'War of Bets', meta: 'BetGames.TV', image: '/assets/images/live-poker.webp', tag: 'Live' },
+      { name: 'Bet On Poker', meta: 'BetGames.TV', image: '/assets/images/live-poker.webp', tag: 'Live' },
+      { name: 'Baccarat', meta: 'BetGames.TV', image: '/assets/images/live-baccarat.webp', tag: 'Live' },
     ],
     band: [
-      { icon: 'chart', title: 'Live Multipliers', sub: 'Climbing every second' },
-      { icon: 'bolt', title: 'Instant Cash Out', sub: 'Lock your win anytime' },
-      { icon: 'shield', title: 'Provably Fair', sub: 'Verify every round' },
-      { icon: 'clock', title: '24/7 Rounds', sub: 'Never stops' },
+      { icon: 'bolt', title: 'Drawn Live', sub: 'Real studios, real time' },
+      { icon: 'clock', title: '24/7 Rounds', sub: 'A new draw every minute' },
+      { icon: 'shield', title: 'Fair & Audited', sub: 'Independently certified' },
+      { icon: 'chart', title: 'Simple Bets', sub: 'Pick, stake, win' },
     ],
-    cta: { title: 'Ride the multiplier', sub: 'Crash and fast-bet games, settled in seconds.' },
+    cta: { title: 'Bet on the next draw', sub: 'Live betting games, settled in seconds.' },
   },
 
   poker: {
