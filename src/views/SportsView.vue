@@ -6,11 +6,9 @@ import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import GameCard from '@/components/home/GameCard.vue'
 import FeaturedMatches from '@/components/sports/FeaturedMatches.vue'
 import { polishEnabled } from '@/composables/usePolish'
 import { sportsPage as page } from '@/data/pages'
-import { royalCollection } from '@/data/games'
 
 const provider = ref(0)
 
@@ -174,26 +172,6 @@ useRevealEach(root)
             {{ page.boost.cta }} <AppIcon name="arrowRight" :size="14" />
           </GoldButton>
         </div>
-      </div>
-    </section>
-
-    <!-- Popular right now — royal tables while the feed loads -->
-    <section class="container-royal pt-12 sm:pt-16">
-      <div class="mb-6 flex items-center justify-between">
-        <div>
-          <p class="eyebrow mb-1.5">While the odds settle — from the Royal Casino</p>
-          <h3 class="font-display text-base font-semibold uppercase tracking-[0.2em] text-gold-gradient">
-            Popular Right Now
-          </h3>
-        </div>
-        <RouterLink to="/casino">
-          <GoldButton variant="ghost" size="sm">
-            Open Casino <AppIcon name="arrowRight" :size="14" />
-          </GoldButton>
-        </RouterLink>
-      </div>
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <GameCard v-for="game in royalCollection" :key="game.name" :game="game" />
       </div>
     </section>
 
