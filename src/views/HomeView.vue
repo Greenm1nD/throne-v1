@@ -6,7 +6,6 @@ import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
 import GameCarousel from '@/components/home/GameCarousel.vue'
 import PrimaryDestinations from '@/components/home/PrimaryDestinations.vue'
-import WinnersFeed from '@/components/home/WinnersFeed.vue'
 import FeatureGrid from '@/components/home/FeatureGrid.vue'
 import TreasuryBanner from '@/components/home/TreasuryBanner.vue'
 import RoyalTreasures from '@/components/home/RoyalTreasures.vue'
@@ -42,12 +41,9 @@ useReveal(communityRow, { stagger: 0.14 })
     <!-- Primary destinations -->
     <PrimaryDestinations />
 
-    <!-- Trending Now + Recently Won -->
-    <section class="container-royal grid grid-cols-1 gap-5 pt-12 sm:pt-16 lg:grid-cols-3">
-      <div class="lg:col-span-2">
-        <GameCarousel title="Trending Now" :games="trending" variant="sm" view-all-to="/games" />
-      </div>
-      <WinnersFeed />
+    <!-- Trending Now -->
+    <section class="container-royal pt-12 sm:pt-16">
+      <GameCarousel title="Trending Now" :games="trending" variant="lg" view-all-to="/games" />
     </section>
 
     <FeatureGrid />
