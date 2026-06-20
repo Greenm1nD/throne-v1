@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRevealEach } from '@/composables/useReveal'
-import PageHero from '@/components/page/PageHero.vue'
-import CategoryStrip from '@/components/page/CategoryStrip.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -16,12 +14,8 @@ useRevealEach(root)
 
 <template>
   <main ref="root" class="pb-4">
-    <PageHero v-bind="page.hero" />
-
-    <CategoryStrip :items="page.sports" />
-
     <!-- ── The Arena: provider sportsbook frame, dressed in THRONE ── -->
-    <section class="container-royal pt-12 sm:pt-16">
+    <section class="container-royal pt-8 sm:pt-10">
       <div class="card-lux overflow-hidden p-0 hover:translate-y-0" data-reveal>
         <!-- Frame chrome -->
         <div
