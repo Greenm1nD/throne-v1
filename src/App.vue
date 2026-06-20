@@ -51,8 +51,8 @@ onMounted(() => {
   <AppHeader v-show="ready" />
   <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
   <MobileTopBar v-if="mobilePolishEnabled" v-show="ready" />
-  <!-- Single primary nav line (flush under the slim header) -->
-  <CategoryNav v-if="showCategoryNav" />
+  <!-- Single primary nav line (desktop/tablet only; phones use the hamburger drawer) -->
+  <CategoryNav v-if="showCategoryNav" class="hidden md:block" />
   <div v-show="ready" class="min-h-[60vh]">
     <RouterView v-slot="{ Component }">
       <Transition name="pm-page" mode="out-in">

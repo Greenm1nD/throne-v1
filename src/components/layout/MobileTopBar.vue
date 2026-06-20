@@ -7,6 +7,7 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
+import { categoryNav } from '@/data/categoryPages'
 import { joinCta } from '@/config'
 
 /**
@@ -21,15 +22,11 @@ const { open } = useAuthModal()
 const { open: accountMenuOpen } = useAccountMenu()
 const drawer = ref(false)
 
-// Primary pages with a fitting icon for the drawer.
+// Full page list for the drawer — Home + the shared category set (single source),
+// so on mobile everything lives in the hamburger (the desktop category bar is hidden).
 const navItems = [
   { label: 'Home', href: '/', icon: 'crown' },
-  { label: 'Casino', href: '/casino', icon: 'sparkle' },
-  { label: 'Sports', href: '/sports', icon: 'trophy' },
-  { label: 'Live Casino', href: '/live-casino', icon: 'monitor' },
-  { label: 'VIP', href: '/vip', icon: 'star' },
-  { label: 'Kingdom', href: '/kingdom', icon: 'swords' },
-  { label: 'Rewards', href: '/rewards', icon: 'gift' },
+  ...categoryNav.map((c) => ({ label: c.label, href: c.to, icon: c.icon })),
 ]
 
 const secondary = [
