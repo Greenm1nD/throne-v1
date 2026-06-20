@@ -31,7 +31,8 @@ const router = createRouter({
     },
     { path: '/rewards', name: 'rewards', component: () => import('@/views/RewardsView.vue') },
     // Dedicated category pages (one config-driven CategoryView, meta.category selects content)
-    { path: '/esports', name: 'esports', meta: { category: 'esports' }, component: () => import('@/views/CategoryView.vue') },
+    // E-Sport uses the identical Sports page (same Arena frame layout).
+    { path: '/esports', name: 'esports', component: () => import('@/views/SportsView.vue') },
     { path: '/live', name: 'live', meta: { category: 'live' }, component: () => import('@/views/CategoryView.vue') },
     { path: '/virtual', name: 'virtual', component: () => import('@/views/VirtualsView.vue') },
     { path: '/games', name: 'games', component: () => import('@/views/GamesView.vue') },
