@@ -24,12 +24,14 @@ export interface CategoryNavItem {
  * Products first, then THRONE brand sections. One source of truth for the bar.
  */
 export const categoryNav: CategoryNavItem[] = [
-  { label: 'Casino', to: '/casino', icon: 'chip' },
-  { label: 'Sports', to: '/sports', icon: 'bolt' },
-  { label: 'Live Casino', to: '/live-casino', icon: 'monitor' },
+  { label: 'Home', to: '/', icon: 'home' },
+  { label: 'Sport', to: '/sports', icon: 'bolt' },
   { label: 'E-Sport', to: '/esports', icon: 'trophy' },
-  { label: 'Virtuals', to: '/virtual', icon: 'headset' },
+  { label: 'Casino', to: '/casino', icon: 'chip' },
+  { label: 'Live Casino', to: '/live-casino', icon: 'monitor' },
+  { label: 'Virtual', to: '/virtual', icon: 'headset' },
   { label: 'Games', to: '/games', icon: 'gamepad' },
+  { label: 'Beton', to: '/beton', icon: 'chart' },
   { label: 'Poker', to: '/poker', icon: 'spade' },
   // VIP temporarily removed from nav (per request) — route still exists; restore when asked.
   { label: 'Kingdom', to: '/kingdom', icon: 'castle' },
@@ -203,6 +205,41 @@ export const categoryPages: Record<string, CategoryConfig> = {
       { icon: 'star', title: 'Auto-Play', sub: 'Set it and watch' },
     ],
     cta: { title: 'Quick rounds, real thrills', sub: 'Instant games with transparent maths.' },
+  },
+
+  // Beton — fast-bet / crash section (placeholder interpretation; redefine when specified).
+  beton: {
+    slug: 'beton',
+    mode: 'grid',
+    hero: {
+      title: 'Beton',
+      tagline: 'Bet. Watch. Cash out.',
+      sub: 'Crash and fast-bet games — place your stake, watch the multiplier climb, and cash out before it falls.',
+      cta: 'Place a Bet',
+      image: '/assets/images/page-casino-hero-2.webp',
+      imageMobile: '/assets/images/hero-mobile-casino.webp',
+      fallback: '/assets/images/page-casino-hero.webp',
+      posY: '50%',
+    },
+    sectionTitle: 'Crash & Fast-Bet',
+    sectionSub: 'Place, ride the multiplier, cash out in time',
+    items: [
+      { name: 'Aviator', meta: 'Crash · up to x1000', image: '/assets/images/games/bounty-gold.webp', tag: 'Hot' },
+      { name: 'JetX', meta: 'Crash · x1000', image: '/assets/images/games/fishin-reels.webp', tag: 'Hot' },
+      { name: 'Rocket Blast', meta: 'Crash · x5000', image: '/assets/images/games/gates-of-olympus.webp' },
+      { name: 'Cash or Crash', meta: 'Fast-bet · cash out', image: '/assets/images/games/great-stick-up.webp' },
+      { name: 'Mines', meta: 'Strategy · cash out anytime', image: '/assets/images/games/empty-the-bank.webp' },
+      { name: 'Plinko', meta: 'Arcade · pick your risk', image: '/assets/images/games/candy-blitz.webp' },
+      { name: 'Limbo', meta: 'Fast-bet · set your target', image: '/assets/images/games/fruit-rainbow.webp', tag: 'New' },
+      { name: 'Goal Rush', meta: 'Crash · x900', image: '/assets/images/games/octobeer.webp' },
+    ],
+    band: [
+      { icon: 'chart', title: 'Live Multipliers', sub: 'Climbing every second' },
+      { icon: 'bolt', title: 'Instant Cash Out', sub: 'Lock your win anytime' },
+      { icon: 'shield', title: 'Provably Fair', sub: 'Verify every round' },
+      { icon: 'clock', title: '24/7 Rounds', sub: 'Never stops' },
+    ],
+    cta: { title: 'Ride the multiplier', sub: 'Crash and fast-bet games, settled in seconds.' },
   },
 
   poker: {

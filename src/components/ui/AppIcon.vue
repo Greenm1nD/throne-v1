@@ -15,6 +15,7 @@ withDefaults(
 // Stroke-path glyphs keyed by name.
 const paths: Record<string, string> = {
   crown: 'M3.5 8.5 7 11.5 12 5.5 17 11.5 20.5 8.5 18.7 17.5 5.3 17.5Z M5 20h14',
+  home: 'M4 11l8-6 8 6 M6 10v9h12v-9 M10 19v-5h4v5',
   chip: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z M12 3v3 M12 18v3 M3 12h3 M18 12h3 M5.6 5.6l2.1 2.1 M16.3 16.3l2.1 2.1 M18.4 5.6l-2.1 2.1 M7.7 16.3l-2.1 2.1',
   spade: 'M12 4C12 4 5 9 5 13.5A3.5 3.5 0 0 0 10.5 16C10.5 18 9.8 19 8.5 20h7C14.2 19 13.5 18 13.5 16A3.5 3.5 0 0 0 19 13.5C19 9 12 4 12 4Z',
   castle: 'M4 10V7h2v1.5h2V7h2v1.5h2V7h2v1.5h2V7h2v3 M4 10h16v10H4z M10 20v-5h4v5',

@@ -22,12 +22,9 @@ const { open } = useAuthModal()
 const { open: accountMenuOpen } = useAccountMenu()
 const drawer = ref(false)
 
-// Full page list for the drawer — Home + the shared category set (single source),
-// so on mobile everything lives in the hamburger (the desktop category bar is hidden).
-const navItems = [
-  { label: 'Home', href: '/', icon: 'crown' },
-  ...categoryNav.map((c) => ({ label: c.label, href: c.to, icon: c.icon })),
-]
+// Full page list for the drawer — the shared category set (single source), so the
+// hamburger order matches the desktop bar exactly (Home is the first nav item).
+const navItems = categoryNav.map((c) => ({ label: c.label, href: c.to, icon: c.icon }))
 
 const secondary = [
   { label: 'About', href: '/about' },
