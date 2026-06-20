@@ -4,24 +4,22 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useWalletModal } from '@/composables/useWalletModal'
+import { categoryNav } from '@/data/categoryPages'
 
 /**
  * Floating Command Bar — an optional, desktop-only quick-nav (Linear/Raycast feel)
  * that fades in once the visitor scrolls past the hero. Rendered only behind the
  * premium-motion flag (see App.vue), so it is trivially removable. Hidden on
  * mobile; all targets are real routes/actions (no dead controls).
+ *
+ * Mirrors the top menu: the same `categoryNav` set so scrolling never loses the
+ * primary navigation.
  */
 const { isLoggedIn } = useAuth()
 const { open } = useAuthModal()
 const { open: openWallet } = useWalletModal()
 
-const items = [
-  { label: 'Home', to: '/', icon: 'crown' },
-  { label: 'Casino', to: '/casino', icon: 'sparkle' },
-  { label: 'Sports', to: '/sports', icon: 'trophy' },
-  { label: 'VIP', to: '/vip', icon: 'star' },
-  { label: 'Rewards', to: '/rewards', icon: 'gift' },
-]
+const items = categoryNav
 
 const scrolled = ref(false)
 let raf = 0
