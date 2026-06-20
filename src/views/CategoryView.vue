@@ -25,12 +25,16 @@ useRevealEach(root)
 // Re-run reveal when navigating between category pages (same component reused).
 watch(() => route.path, () => useRevealEach(root))
 
-// Grid-mode pages (Games) get the shared filter bar.
+// Grid-mode pages get the shared filter bar (search · provider · sort).
 const query = ref('')
+const provider = ref('all')
 const sort = ref('popular')
+const providers = computed(() => [...new Set((cfg.value.items ?? []).map((i) => i.meta))])
 const filteredItems = computed(() => {
-  let list = (cfg.value.items ?? []).filter((i) =>
-    i.name.toLowerCase().includes(query.value.trim().toLowerCase()),
+  let list = (cfg.value.items ?? []).filter(
+    (i) =>
+      (provider.value === 'all' || i.meta === provider.value) &&
+      i.name.toLowerCase().includes(query.value.trim().toLowerCase()),
   )
   if (sort.value === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
   return list
@@ -80,8 +84,11 @@ const filteredItems = computed(() => {
         <GamesFilterBar
           :title="cfg.sectionTitle"
           :count="filteredItems.length"
+          :filter-options="providers"
+          filter-label="All Providers"
           search-placeholder="Search games..."
           v-model:query="query"
+          v-model:filter="provider"
           v-model:sort="sort"
         />
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
