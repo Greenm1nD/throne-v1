@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import HeroSection from '@/components/home/HeroSection.vue'
-import ConciergeBand from '@/components/home/ConciergeBand.vue'
 import TheInvitation from '@/components/home/TheInvitation.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
@@ -31,8 +30,7 @@ useReveal(communityRow, { stagger: 0.14 })
 <template>
   <main>
     <HeroSection />
-    <ConciergeBand />
-    <KingdomStatus class="!mt-10 sm:!mt-14" />
+    <KingdomStatus />
     <HallOfKings />
     <RoyalCollection />
 
