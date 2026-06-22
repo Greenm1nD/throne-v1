@@ -6,7 +6,6 @@ import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
 import GameCarousel from '@/components/home/GameCarousel.vue'
-import RoyalDistricts from '@/components/home/RoyalDistricts.vue'
 import FeatureGrid from '@/components/home/FeatureGrid.vue'
 import TreasuryBanner from '@/components/home/TreasuryBanner.vue'
 import RoyalTreasures from '@/components/home/RoyalTreasures.vue'
@@ -38,9 +37,6 @@ useReveal(communityRow, { stagger: 0.14 })
     <section class="container-royal pt-16 sm:pt-24">
       <GameCarousel title="Continue Playing" :games="continuePlaying" variant="lg" view-all-to="/casino" />
     </section>
-
-    <!-- The Royal Districts -->
-    <RoyalDistricts />
 
     <!-- Trending Now -->
     <section class="container-royal pt-16 sm:pt-24">
