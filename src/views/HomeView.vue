@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import ConciergeBand from '@/components/home/ConciergeBand.vue'
 import TheInvitation from '@/components/home/TheInvitation.vue'
+import TheHighTable from '@/components/home/TheHighTable.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
@@ -34,6 +35,10 @@ useReveal(communityRow, { stagger: 0.14 })
     <ConciergeBand />
     <KingdomStatus class="!mt-8 sm:!mt-10" />
     <HallOfKings />
+
+    <!-- Live elite activity -->
+    <TheHighTable />
+
     <RoyalCollection />
 
     <!-- Continue Playing -->
