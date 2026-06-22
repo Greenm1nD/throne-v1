@@ -4,6 +4,7 @@ import SectionHeader from '@/components/ui/SectionHeader.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import PodiumCard from './PodiumCard.vue'
+import CountUp from '@/components/ui/CountUp.vue'
 import { kingsSeason, kingsChampions, kingsStats } from '@/data/hallOfKings'
 import { useReveal } from '@/composables/useReveal'
 
@@ -13,7 +14,7 @@ useReveal(root, { stagger: 0.1 })
 
 <template>
   <section ref="root" class="section-glow container-royal pt-16 sm:pt-24">
-    <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 px-5 py-10 shadow-[0_40px_110px_-45px_rgba(0,0,0,0.95)] sm:px-8 sm:py-12">
+    <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 px-5 py-8 shadow-[0_40px_110px_-45px_rgba(0,0,0,0.95)] sm:px-8 sm:py-10">
       <!-- Cinematic royal-hall backdrop -->
       <div
         v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.66), rgba(7,7,9,0.82)), url('/assets/images/king-hall-bg.webp')`"
@@ -29,7 +30,7 @@ useReveal(root, { stagger: 0.1 })
         <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" align="center" />
 
         <!-- Season info bar -->
-        <div class="mx-auto mb-12 flex w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur sm:flex-row sm:rounded-full lg:mb-16" data-reveal>
+        <div class="mx-auto mb-8 flex w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur sm:flex-row sm:rounded-full lg:mb-10" data-reveal>
           <div class="flex flex-1 items-center justify-center gap-2 px-5 py-2.5">
             <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="h-4 w-4 object-contain" />
             <span class="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-champagne">{{ kingsSeason.name }}</span>
@@ -55,14 +56,14 @@ useReveal(root, { stagger: 0.1 })
         </div>
 
         <!-- Headline stats -->
-        <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border-gold/25 bg-border-gold/20 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
-          <div v-for="s in kingsStats" :key="s.label" class="flex items-center gap-4 bg-[#08080b]/70 px-5 py-6 transition-colors hover:bg-[#0d0d11]/70">
-            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-border-gold/45 bg-black/30 text-gold-bright">
-              <AppIcon :name="s.icon" :size="19" />
+        <div class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border-gold/25 bg-border-gold/20 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+          <div v-for="s in kingsStats" :key="s.label" class="flex items-center gap-3.5 bg-[#08080b]/70 px-5 py-4 transition-colors hover:bg-[#0d0d11]/70">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/45 bg-black/30 text-gold-bright">
+              <AppIcon :name="s.icon" :size="18" />
             </span>
             <div class="min-w-0">
               <p class="font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">{{ s.label }}</p>
-              <p class="font-display text-xl font-bold tabular-nums tracking-[0.01em] text-gold-bright">{{ s.value }}</p>
+              <p class="font-display text-xl font-bold tabular-nums tracking-[0.01em] text-gold-bright"><CountUp :value="s.value" /></p>
               <p class="truncate font-sans text-[10px] text-ink-muted">{{ s.description }}</p>
             </div>
           </div>
