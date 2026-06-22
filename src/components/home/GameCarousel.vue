@@ -53,12 +53,12 @@ function play(g: LobbyGame) {
 
     <ul ref="track" class="flex gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-reveal>
       <li v-for="g in games" :key="g.name" class="shrink-0"
-        :class="variant === 'lg' ? 'w-[208px] sm:w-[248px]' : 'w-[150px] sm:w-[168px]'">
+        :class="variant === 'lg' ? 'w-[170px] sm:w-[216px]' : 'w-[150px] sm:w-[168px]'">
         <article
           class="group cursor-pointer overflow-hidden rounded-[18px] border border-border-gold/15 bg-card shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(245,215,122,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:border-gold hover:shadow-card-lift motion-reduce:transform-none"
           @click="play(g)"
         >
-          <div class="relative overflow-hidden" :class="variant === 'lg' ? 'aspect-[4/3]' : 'aspect-square'">
+          <div class="relative aspect-square overflow-hidden">
             <img :src="g.image" :alt="g.name" loading="lazy" decoding="async"
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
             <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
