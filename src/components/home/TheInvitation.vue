@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
@@ -27,14 +27,60 @@ const stats = [
   { value: 'MMXXI', label: 'Established' },
   { value: '3.2%', label: 'Acceptance Rate' },
 ]
+
+// Subtle scroll parallax on the throne-room backdrop — cinematic depth, GPU-only,
+// reduced-motion safe.
+const bgEl = ref<HTMLElement | null>(null)
+let raf = 0
+function onScroll() {
+  if (raf) return
+  raf = requestAnimationFrame(() => {
+    raf = 0
+    const el = bgEl.value
+    const sec = root.value
+    if (!el || !sec) return
+    const r = sec.getBoundingClientRect()
+    const vh = window.innerHeight || document.documentElement.clientHeight
+    if (r.bottom < -80 || r.top > vh + 80) return
+    const prog = (r.top + r.height / 2 - vh / 2) / vh
+    const y = Math.max(-40, Math.min(40, -prog * 80))
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.12)`
+  })
+}
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (raf) cancelAnimationFrame(raf)
+})
 </script>
+
+<style scoped>
+/* Slow conic gold shimmer ring orbiting the wax seal. */
+.seal-aura {
+  background: conic-gradient(from 0deg, transparent 0%, rgba(245, 215, 122, 0.28) 12%, transparent 28%, transparent 60%, rgba(245, 215, 122, 0.18) 72%, transparent 88%);
+  -webkit-mask-image: radial-gradient(circle, transparent 58%, #000 62%, #000 72%, transparent 78%);
+  mask-image: radial-gradient(circle, transparent 58%, #000 62%, #000 72%, transparent 78%);
+  animation: sealSpin 18s linear infinite;
+}
+@keyframes sealSpin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seal-aura { animation: none; }
+}
+</style>
 
 <template>
   <section ref="root" class="container-royal pt-16 sm:pt-24">
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/25 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]" data-reveal>
       <div
+        ref="bgEl"
         v-lazybg="`linear-gradient(180deg, rgba(6,6,8,0.92), rgba(6,6,8,0.97)), url('/assets/images/hero-throne-room.webp')`"
-        class="absolute inset-0 bg-cover bg-center"
+        class="absolute inset-0 scale-[1.12] bg-cover bg-center will-change-transform"
         :style="{ backgroundColor: '#08080a' }"
       />
       <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(80% 60% at 50% 0%, rgba(245,215,122,0.12), transparent 55%)" />
@@ -43,6 +89,7 @@ const stats = [
       <div class="relative z-10 flex flex-col items-center px-6 py-12 text-center sm:px-10 sm:py-16">
         <!-- Wax seal -->
         <div class="relative h-28 w-28">
+          <span class="seal-aura absolute -inset-4 rounded-full" aria-hidden="true" />
           <span class="absolute -inset-2 rounded-full" style="background: radial-gradient(circle, rgba(245,215,122,0.42), transparent 60%); filter: blur(6px)" />
           <img
             src="/assets/images/invitation-seal.webp"
