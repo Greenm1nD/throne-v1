@@ -30,13 +30,14 @@ useReveal(communityRow, { stagger: 0.14 })
   <main>
     <HeroSection />
     <KingdomStatus />
-    <HallOfKings />
     <RoyalCollection />
 
     <!-- Continue Playing -->
     <section class="container-royal pt-16 sm:pt-24">
       <GameCarousel title="Continue Playing" :games="continuePlaying" variant="lg" view-all-to="/casino" />
     </section>
+
+    <HallOfKings />
 
     <!-- Trending Now -->
     <section class="container-royal pt-16 sm:pt-24">
