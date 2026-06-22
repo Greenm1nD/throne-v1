@@ -10,7 +10,7 @@ const isChampion = props.champion.rank === 1
 <template>
   <div
     class="podium-wrap group relative"
-    :class="isChampion ? 'z-10 lg:-mt-6' : 'lg:mt-4'"
+    :class="isChampion ? 'z-10 lg:-mt-10' : 'lg:mt-6'"
     data-reveal
   >
     <!-- Floating crown (champion) -->
@@ -54,7 +54,8 @@ const isChampion = props.champion.rank === 1
       <!-- Runners: insignia -->
       <template v-else>
         <div class="relative mb-1 mt-7 h-28 w-28">
-          <AppIcon name="crown" :size="16" class="absolute -top-5 left-1/2 -translate-x-1/2" :class="champion.accent === 'silver' ? 'text-[#d6d9e2]' : 'text-[#caa06a]'" />
+          <img src="/assets/images/emblems/emblem-07-laurel.webp" alt="" class="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 object-contain opacity-30" />
+          <AppIcon name="crown" :size="16" class="absolute -top-5 left-1/2 z-10 -translate-x-1/2" :class="champion.accent === 'silver' ? 'text-[#d6d9e2]' : 'text-[#caa06a]'" />
           <span class="absolute inset-0 rounded-full" :style="{ background: champion.accent === 'silver' ? 'radial-gradient(circle, rgba(201,204,214,0.22), transparent 64%)' : 'radial-gradient(circle, rgba(202,160,106,0.24), transparent 64%)' }" />
           <img
             :src="champion.image" alt=""
@@ -77,6 +78,9 @@ const isChampion = props.champion.rank === 1
         :class="isChampion ? 'text-2xl text-gold-gradient sm:text-[1.7rem]' : champion.accent === 'silver' ? 'text-xl text-[#e7e9f0]' : 'text-xl text-[#e3c08f]'"
       >{{ champion.winnings }}</p>
       <p class="mt-1 font-sans text-[9px] uppercase tracking-[0.22em] text-ink-dim">Total Winnings</p>
+
+      <!-- Champion inset frame (double-line gold) -->
+      <span v-if="isChampion" class="pointer-events-none absolute inset-[6px] z-20 rounded-[13px] border border-gold/45" aria-hidden="true" />
 
       <span class="shine-beam" />
     </article>
