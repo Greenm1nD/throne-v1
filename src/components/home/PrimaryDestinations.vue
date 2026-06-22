@@ -20,7 +20,7 @@ const destinations = [
 </script>
 
 <template>
-  <section ref="root" class="container-royal pt-12 sm:pt-16">
+  <section ref="root" class="container-royal pt-16 sm:pt-24">
     <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
       <article v-for="d in destinations" :key="d.title" data-reveal
         class="group relative aspect-[16/11] cursor-pointer overflow-hidden rounded-[20px] border border-border-gold/20 transition-all duration-500 hover:border-gold hover:shadow-card-lift md:aspect-[4/5] lg:aspect-[16/11]"

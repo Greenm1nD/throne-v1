@@ -32,12 +32,12 @@ useReveal(communityRow, { stagger: 0.14 })
   <main>
     <HeroSection />
     <ConciergeBand />
-    <KingdomStatus class="!mt-8 sm:!mt-10" />
+    <KingdomStatus class="!mt-10 sm:!mt-14" />
     <HallOfKings />
     <RoyalCollection />
 
     <!-- Continue Playing -->
-    <section class="container-royal pt-12 sm:pt-16">
+    <section class="container-royal pt-16 sm:pt-24">
       <GameCarousel title="Continue Playing" :games="continuePlaying" variant="lg" view-all-to="/casino" />
     </section>
 
@@ -45,7 +45,7 @@ useReveal(communityRow, { stagger: 0.14 })
     <PrimaryDestinations />
 
     <!-- Trending Now -->
-    <section class="container-royal pt-12 sm:pt-16">
+    <section class="container-royal pt-16 sm:pt-24">
       <GameCarousel title="Trending Now" :games="trending" variant="lg" view-all-to="/games" />
     </section>
 
@@ -54,7 +54,7 @@ useReveal(communityRow, { stagger: 0.14 })
 
     <FeatureGrid />
 
-    <div class="container-royal pt-16 sm:pt-20">
+    <div class="container-royal pt-16 sm:pt-24">
       <RoyalDivider />
     </div>
     <TreasuryBanner />
@@ -62,7 +62,7 @@ useReveal(communityRow, { stagger: 0.14 })
     <!-- Royal Treasures + The Court, side by side -->
     <section
       ref="communityRow"
-      class="container-royal grid grid-cols-1 gap-5 pt-12 sm:pt-16 lg:grid-cols-2"
+      class="container-royal grid grid-cols-1 gap-5 pt-16 sm:pt-24 lg:grid-cols-2"
     >
       <RoyalTreasures />
       <TheCourt />

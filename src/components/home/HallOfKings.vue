@@ -11,10 +11,17 @@ useReveal(root, { stagger: 0.1 })
 </script>
 
 <template>
-  <section ref="root" class="section-glow container-royal pt-16 sm:pt-20">
+  <section ref="root" class="section-glow container-royal pt-16 sm:pt-24">
     <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" />
 
-    <div class="hall-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 p-5 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)] sm:p-7">
+      <div
+        v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.85), rgba(7,7,9,0.93)), url('/assets/images/hall-of-kings-bg.webp')`"
+        class="absolute inset-0 bg-cover bg-center"
+        :style="{ backgroundColor: '#08080a' }"
+      />
+      <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(90% 60% at 50% 0%, rgba(245,215,122,0.1), transparent 55%)" />
+      <div class="relative z-10 hall-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <article
         v-for="stat in hallOfKings"
         :key="stat.label"
@@ -58,6 +65,7 @@ useReveal(root, { stagger: 0.1 })
         <!-- Hover shine -->
         <span class="shine-beam" />
       </article>
+      </div>
     </div>
   </section>
 </template>
