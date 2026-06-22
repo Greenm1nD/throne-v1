@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
 import { vipLevels, playerStatus } from '@/data/vipLevels'
 import { useAuth } from '@/composables/useAuth'
-import { useEnter } from '@/composables/useEnter'
 
 const { isLoggedIn } = useAuth()
-const { enter } = useEnter()
 
 // Guests see the ladder with no personal position; members see their rank.
 const currentIndex = computed(() =>
@@ -138,19 +135,6 @@ const xpLabel = computed(
           </p>
         </div>
 
-        <!-- Guest: aspirational join CTA (no personal data) -->
-        <div
-          v-else
-          class="shrink-0 rounded-xl border border-border-gold bg-black/40 p-4 text-center lg:w-72"
-        >
-          <p class="eyebrow">Begin your ascent</p>
-          <p class="mt-1.5 font-sans text-[12px] leading-relaxed text-ink-muted">
-            Claim your title and climb from Noble to Monarch.
-          </p>
-          <GoldButton variant="solid" size="sm" block class="mt-3" @click="enter()">
-            Join the Kingdom
-          </GoldButton>
-        </div>
       </div>
     </div>
   </section>

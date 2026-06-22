@@ -13,9 +13,9 @@ const root = ref<HTMLElement | null>(null)
 useReveal(root, { stagger: 0.12 })
 
 const destinations = [
-  { title: 'Casino', lines: ['Thousands of games', 'Endless entertainment'], image: '/assets/images/page-casino-hero.webp', to: '/casino' },
-  { title: 'Live Casino', lines: ['Real dealers', 'Real experience'], image: '/assets/images/page-live-hero.webp', to: '/live-casino' },
-  { title: 'Sports', lines: ['Bet on your passion', 'Live action'], image: '/assets/images/page-sports-hero.webp', to: '/sports' },
+  { title: 'Casino', lines: ['The private slot vault', 'Endless entertainment'], image: '/assets/images/dest-casino.webp', to: '/casino' },
+  { title: 'Live Casino', lines: ['High-limit roulette salon', 'Real dealers, real glory'], image: '/assets/images/dest-live.webp', to: '/live-casino' },
+  { title: 'Sports', lines: ['Your private stadium suite', 'Bet on your passion'], image: '/assets/images/dest-sports.webp', to: '/sports' },
 ]
 </script>
 
