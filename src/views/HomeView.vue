@@ -31,8 +31,8 @@ useReveal(communityRow, { stagger: 0.14 })
   <main>
     <HeroSection />
     <KingdomStatus />
-    <HallOfKings />
     <RoyalCollection />
+    <HallOfKings />
 
     <!-- Continue Playing -->
     <section class="container-royal pt-16 sm:pt-24">
