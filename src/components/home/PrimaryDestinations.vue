@@ -23,7 +23,7 @@ const destinations = [
   <section ref="root" class="container-royal pt-12 sm:pt-16">
     <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
       <article v-for="d in destinations" :key="d.title" data-reveal
-        class="group relative aspect-[16/12] min-h-[300px] cursor-pointer overflow-hidden rounded-[20px] border border-border-gold/20 transition-all duration-500 hover:border-gold hover:shadow-card-lift md:aspect-[3/4] lg:aspect-[5/4]"
+        class="group relative aspect-[16/11] cursor-pointer overflow-hidden rounded-[20px] border border-border-gold/20 transition-all duration-500 hover:border-gold hover:shadow-card-lift md:aspect-[4/5] lg:aspect-[16/11]"
         @click="router.push(d.to)">
         <div v-lazybg="`linear-gradient(105deg, rgba(4,4,5,0.94) 8%, rgba(4,4,5,0.55) 48%, rgba(4,4,5,0.2)), url('${d.image}')`"
           class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 motion-reduce:transform-none"
