@@ -26,15 +26,9 @@ useReveal(root, { stagger: 0.1 })
         v-for="stat in hallOfKings"
         :key="stat.label"
         v-glow
-        class="card-lux group flex flex-col items-center gap-4 p-6 text-center"
+        class="group relative flex flex-col items-center gap-4 overflow-hidden rounded-2xl border border-border-gold/15 bg-white/[0.03] p-6 text-center backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-gold hover:bg-white/[0.05] motion-reduce:transform-none"
         data-reveal
       >
-        <!-- Cinematic backdrop (dark, lazy-loaded) -->
-        <div
-          v-lazybg="`linear-gradient(180deg, rgba(8,8,10,0.82), rgba(5,5,5,0.94)), url('${stat.image}')`"
-          class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-
         <!-- Crest glow + glyph -->
         <div
           class="relative z-10 grid h-16 w-16 place-items-center rounded-full border border-border-gold transition-all duration-300 group-hover:shadow-gold-soft"
