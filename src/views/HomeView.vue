@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import HeroSection from '@/components/home/HeroSection.vue'
 import ConciergeBand from '@/components/home/ConciergeBand.vue'
+import TheInvitation from '@/components/home/TheInvitation.vue'
 import KingdomStatus from '@/components/home/KingdomStatus.vue'
 import HallOfKings from '@/components/home/HallOfKings.vue'
 import RoyalCollection from '@/components/home/RoyalCollection.vue'
@@ -47,6 +48,9 @@ useReveal(communityRow, { stagger: 0.14 })
     <section class="container-royal pt-12 sm:pt-16">
       <GameCarousel title="Trending Now" :games="trending" variant="lg" view-all-to="/games" />
     </section>
+
+    <!-- Exclusivity & scarcity -->
+    <TheInvitation />
 
     <FeatureGrid />
 
