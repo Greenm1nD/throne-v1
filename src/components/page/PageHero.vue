@@ -66,10 +66,10 @@ const bg = computed(() => {
   return `${scrim}, url('${heroImg.value}'), url('${props.fallback}')`
 })
 
-// Cinemagraph loops seamlessly (clips are generated start-frame = end-frame).
-// Premium flag + no reduced-motion + desktop only, and only while on screen
-// (perf — paused below the fold). Poster (the still) shows otherwise, so the
-// stable design is unchanged.
+// Hero video plays ONCE on entry, then freezes on its last frame (becomes a
+// still). It replays only on remount — i.e. a page refresh or re-navigation.
+// Premium flag + no reduced-motion + desktop only. Paused below the fold until
+// it has finished; once ended we stop observing so scrolling never restarts it.
 const cinemagraph = premiumEnabled && !!props.video
 let io: IntersectionObserver | null = null
 
@@ -80,15 +80,22 @@ onMounted(() => {
   const desktopMin = mobilePolishEnabled ? 1024 : 768
   const desktop = window.matchMedia(`(min-width: ${desktopMin}px)`).matches
   if (cinemagraph && !reduce && desktop && vid.value) {
+    const v = vid.value
+    let finished = false
+    // Hold on the final frame once the clip ends; never auto-restart this mount.
+    v.addEventListener('ended', () => {
+      finished = true
+      io?.disconnect()
+    })
     io = new IntersectionObserver(
       ([e]) => {
-        if (!vid.value) return
+        if (!vid.value || finished) return
         if (e.isIntersecting) vid.value.play().catch(() => {})
         else vid.value.pause()
       },
       { threshold: 0.15 },
     )
-    io.observe(vid.value)
+    io.observe(v)
   }
   if (reduce || !content.value) return
   gsap.from(content.value.children, {
@@ -121,15 +128,14 @@ onBeforeUnmount(() => {
       :style="{ backgroundImage: bg, backgroundColor: '#07070a', backgroundPosition: `center ${posY}` }"
     >
       <template v-if="cinemagraph && !lite">
-        <!-- Ambient loop over the still; the same scrim re-painted on top -->
+        <!-- Plays once on entry, then freezes on the last frame (the still). -->
         <video
           ref="vid"
           :src="video"
           :poster="image"
           muted
-          loop
           playsinline
-          preload="none"
+          preload="auto"
           class="absolute inset-0 h-full w-full object-cover"
           :style="{ objectPosition: `center ${posY}` }"
         />
