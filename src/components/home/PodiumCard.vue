@@ -62,7 +62,7 @@ const isSilver = props.champion.accent === 'silver'
           <img
             :src="champion.image"
             alt=""
-            class="relative mx-auto h-44 w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transform-none"
+            class="relative mx-auto h-52 w-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transform-none"
             style="-webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 80%, transparent 100%)"
           />
           <span class="absolute bottom-0 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-gold/55 bg-black/60 px-3.5 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-gold-bright backdrop-blur">

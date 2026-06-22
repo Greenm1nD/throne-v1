@@ -17,7 +17,7 @@ useReveal(root, { stagger: 0.1 })
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 px-5 py-8 shadow-[0_40px_110px_-45px_rgba(0,0,0,0.95)] sm:px-8 sm:py-10">
       <!-- Cinematic royal-hall backdrop -->
       <div
-        v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.66), rgba(7,7,9,0.82)), url('/assets/images/king-hall-bg.webp')`"
+        v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.55), rgba(7,7,9,0.74)), url('/assets/images/king-hall-bg.webp')`"
         class="absolute inset-0 bg-cover bg-center"
         :style="{ backgroundColor: '#08080a' }"
       />
@@ -46,7 +46,7 @@ useReveal(root, { stagger: 0.1 })
         </div>
 
         <!-- Podium -->
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:items-end">
+        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:items-end">
           <PodiumCard
             v-for="c in kingsChampions"
             :key="c.rank"
