@@ -78,11 +78,11 @@ onBeforeUnmount(() => {
             <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="hk-ipulse h-4 w-4 object-contain" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.name }}</span>
           </div>
-          <div class="flex flex-1 items-center justify-center gap-2 border-t border-border-gold/12 px-4 py-2.5 sm:border-l sm:border-t-0">
+          <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 sm:border-l sm:border-border-gold/12">
             <AppIcon name="vault" :size="14" class="hk-ipulse text-gold-bright" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.prizePool }}</span>
           </div>
-          <div class="flex flex-1 items-center justify-center gap-2 border-t border-border-gold/12 px-4 py-2.5 sm:border-l sm:border-t-0">
+          <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 sm:border-l sm:border-border-gold/12">
             <AppIcon name="clock" :size="14" class="hk-ipulse text-gold-bright" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.daysRemaining }}</span>
           </div>
