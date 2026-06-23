@@ -118,15 +118,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Slow Ken Burns zoom on the royal-hall backdrop */
-.hk-zoom {
-  transform: scale(1.16);
-  animation: hkZoom 24s ease-in-out infinite alternate;
-}
-@keyframes hkZoom {
-  from { transform: scale(1.16); }
-  to { transform: scale(1.24); }
-}
+/* Static scale on the backdrop — headroom for the scroll parallax */
+.hk-zoom { transform: scale(1.16); }
 
 /* Candlelight flicker — gentle, irregular opacity drift */
 .hk-flicker { animation: hkFlicker 9s ease-in-out infinite; }
