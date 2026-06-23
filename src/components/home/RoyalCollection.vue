@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import SectionHeader from '@/components/ui/SectionHeader.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GameCard from './GameCard.vue'
@@ -16,9 +15,7 @@ const router = useRouter()
 
 <template>
   <section id="casino" ref="root" class="section-glow container-royal pt-10 sm:pt-14">
-    <SectionHeader title="Royal Collection" eyebrow="Curated Tables" />
-
-    <div class="-mt-2 mb-3 flex items-center justify-end">
+    <div class="mb-2 flex items-center justify-end">
       <GoldButton variant="ghost" size="sm" @click="router.push('/casino')">
         View All <AppIcon name="arrowRight" :size="14" />
       </GoldButton>
