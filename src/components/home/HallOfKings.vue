@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
         <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" align="center" />
 
         <!-- Season info bar -->
-        <div class="hk-bar relative mx-auto mb-8 flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur sm:flex-row sm:rounded-full lg:mb-10" data-reveal>
+        <div class="hk-bar relative mx-auto mb-12 flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur sm:flex-row sm:rounded-full lg:mb-16" data-reveal>
           <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5">
             <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="hk-ipulse h-4 w-4 object-contain" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.name }}</span>
