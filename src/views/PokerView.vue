@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useEnter } from '@/composables/useEnter'
@@ -17,16 +17,48 @@ import {
 const { enter } = useEnter()
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
+
+// Hero backdrop scroll parallax (desktop, GPU-only, reduced-motion safe).
+const heroSec = ref<HTMLElement | null>(null)
+const heroBg = ref<HTMLElement | null>(null)
+let raf = 0
+function onScroll() {
+  if (raf) return
+  raf = requestAnimationFrame(() => {
+    raf = 0
+    const el = heroBg.value
+    const sec = heroSec.value
+    if (!el || !sec) return
+    const r = sec.getBoundingClientRect()
+    const vh = window.innerHeight || document.documentElement.clientHeight
+    if (r.bottom < -80 || r.top > vh + 80) return
+    const prog = (r.top + r.height / 2 - vh / 2) / vh
+    const y = Math.max(-42, Math.min(42, -prog * 84))
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
+  })
+}
+onMounted(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const desktop = window.matchMedia('(min-width: 1024px)').matches
+  if (reduce || !desktop) return
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (raf) cancelAnimationFrame(raf)
+})
 </script>
 
 <template>
   <main ref="root" class="pb-8">
     <!-- ── Hero + Jackpot Pool ──────────────────────────────────────────── -->
-    <section class="container-royal pt-6 sm:pt-8">
+    <section ref="heroSec" class="container-royal pt-6 sm:pt-8">
       <div class="relative overflow-hidden rounded-3xl border border-border-gold/30" data-reveal>
         <div
+          ref="heroBg"
           v-lazybg="`linear-gradient(90deg, rgba(5,5,6,0.97) 0%, rgba(5,5,6,0.82) 42%, rgba(5,5,6,0.5) 100%), url('${pokerHero.image}')`"
-          class="absolute inset-0 bg-cover bg-center"
+          class="absolute inset-0 scale-[1.14] bg-cover bg-center will-change-transform"
         />
         <div class="relative z-10 grid gap-8 p-7 sm:p-10 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:p-12">
           <!-- Left: copy -->
