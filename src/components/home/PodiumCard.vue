@@ -77,12 +77,12 @@ const isSilver = props.champion.accent === 'silver'
           <img src="/assets/images/emblems/emblem-07-laurel.webp" alt="" class="pointer-events-none absolute left-1/2 top-1/2 h-[8.75rem] w-[8.75rem] -translate-x-1/2 -translate-y-1/2 object-contain opacity-40" />
           <AppIcon name="crown" :size="18" class="absolute -top-5 left-1/2 z-10 -translate-x-1/2" :class="isSilver ? 'text-[#dfe2ea]' : 'text-[#d8ab72]'" />
           <span class="absolute inset-0 rounded-full" :style="{ background: isSilver ? 'radial-gradient(circle, rgba(205,209,219,0.24), transparent 64%)' : 'radial-gradient(circle, rgba(216,171,114,0.26), transparent 64%)' }" />
-          <img
-            :src="champion.image" alt=""
-            class="relative h-24 w-24 rounded-full border-2 object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+          <div
+            class="relative h-24 w-24 overflow-hidden rounded-full border-2 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
             :class="isSilver ? 'border-[#cdd1db]/45' : 'border-[#d8ab72]/50'"
-            style="-webkit-mask-image: radial-gradient(circle, #000 66%, transparent 76%); mask-image: radial-gradient(circle, #000 66%, transparent 76%)"
-          />
+          >
+            <img :src="champion.image" alt="" class="h-full w-full object-cover" />
+          </div>
         </div>
       </template>
 
