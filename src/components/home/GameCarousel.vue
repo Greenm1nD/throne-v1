@@ -75,7 +75,7 @@ function play(g: LobbyGame) {
             </span>
 
             <!-- Hover overlay -->
-            <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+            <div class="absolute inset-0 flex items-center justify-center bg-black/55 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <span class="rounded-full bg-gold-gradient px-4 py-1.5 font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-[#1a1407]">Play</span>
             </div>
           </div>
