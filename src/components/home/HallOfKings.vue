@@ -29,7 +29,7 @@ function onScroll() {
     const vh = window.innerHeight || document.documentElement.clientHeight
     if (r.bottom < -80 || r.top > vh + 80) return
     const prog = (r.top + r.height / 2 - vh / 2) / vh
-    const y = Math.max(-24, Math.min(24, -prog * 48))
+    const y = Math.max(-46, Math.min(46, -prog * 92))
     el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
   })
 }
@@ -120,12 +120,12 @@ onBeforeUnmount(() => {
 <style scoped>
 /* Slow Ken Burns zoom on the royal-hall backdrop */
 .hk-zoom {
-  transform: scale(1.08);
+  transform: scale(1.16);
   animation: hkZoom 24s ease-in-out infinite alternate;
 }
 @keyframes hkZoom {
-  from { transform: scale(1.08); }
-  to { transform: scale(1.17); }
+  from { transform: scale(1.16); }
+  to { transform: scale(1.24); }
 }
 
 /* Candlelight flicker — gentle, irregular opacity drift */
@@ -181,6 +181,6 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .hk-flicker, .hk-beam, .hk-sweep, .hk-bar-sweep, .hk-ipulse, .hk-zoom { animation: none; }
-  .hk-zoom { transform: scale(1.08); }
+  .hk-zoom { transform: scale(1.16); }
 }
 </style>
