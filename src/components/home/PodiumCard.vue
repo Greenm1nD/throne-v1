@@ -32,13 +32,13 @@ const isSilver = props.champion.accent === 'silver'
     />
 
     <article
-      class="relative flex h-full flex-col items-center overflow-hidden rounded-[20px] text-center backdrop-blur-md transition-all duration-300 group-hover:-translate-y-[3px] motion-reduce:transform-none"
+      class="relative flex h-full flex-col items-center overflow-hidden rounded-[20px] text-center backdrop-blur-md transition-all duration-300 motion-reduce:transform-none"
       :class="[
         isChampion
-          ? 'border-2 border-gold/60 bg-gradient-to-b from-[#171206]/55 to-black/65 px-5 pb-6 pt-5 shadow-[0_0_80px_-12px_rgba(245,215,122,0.6)]'
+          ? 'champ-glow border-2 border-gold/60 bg-gradient-to-b from-[#171206]/55 to-black/65 px-5 pb-6 pt-5 group-hover:-translate-y-1'
           : isSilver
-            ? 'border border-[#cdd1db]/30 bg-black/45 px-5 pb-5 pt-5 group-hover:border-[#cdd1db]/60'
-            : 'border border-[#c79a63]/35 bg-black/45 px-5 pb-5 pt-5 group-hover:border-[#d8ab72]/70',
+            ? 'border border-[#cdd1db]/30 bg-black/45 px-5 pb-5 pt-5 group-hover:-translate-y-[3px] group-hover:border-[#cdd1db]/60'
+            : 'border border-[#c79a63]/35 bg-black/45 px-5 pb-5 pt-5 group-hover:-translate-y-[3px] group-hover:border-[#d8ab72]/70',
       ]"
     >
       <!-- Subtle royal texture so cards never read flat -->
@@ -58,11 +58,12 @@ const isSilver = props.champion.accent === 'silver'
       <!-- Champion: integrated portrait -->
       <template v-if="isChampion">
         <div class="relative z-10 w-full">
+          <span class="champion-aura pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-[240px]" aria-hidden="true" />
           <span class="champion-halo pointer-events-none absolute left-1/2 top-1/2 h-[180%] w-[150%] -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
           <img
             :src="champion.image"
             alt=""
-            class="relative mx-auto h-52 w-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transform-none"
+            class="relative mx-auto h-52 w-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-[1.015] motion-reduce:transform-none"
             style="-webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 80%, transparent 100%)"
           />
           <span class="absolute bottom-0 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-gold/55 bg-black/60 px-3.5 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-gold-bright backdrop-blur">
@@ -115,12 +116,30 @@ const isSilver = props.champion.accent === 'silver'
   0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(0.95); }
   50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
 }
-.crown-shimmer { animation: crownShimmer 5s ease-in-out infinite; }
+/* Very slow ceremonial aura ring rotating behind the champion portrait */
+.champion-aura {
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(245, 215, 122, 0.16) 42deg, transparent 120deg, transparent 232deg, rgba(245, 215, 122, 0.1) 300deg, transparent 360deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 44%, #000 55%, #000 70%, transparent 80%);
+  mask-image: radial-gradient(circle, transparent 44%, #000 55%, #000 70%, transparent 80%);
+  animation: auraSpin 28s linear infinite;
+}
+@keyframes auraSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+/* Ceremonial border-glow pulse on the champion frame */
+.champ-glow { animation: champGlow 6s ease-in-out infinite; }
+@keyframes champGlow {
+  0%, 100% { box-shadow: 0 0 58px -16px rgba(245, 215, 122, 0.42); }
+  50% { box-shadow: 0 0 92px -10px rgba(245, 215, 122, 0.7); }
+}
+.crown-shimmer { animation: crownShimmer 7s ease-in-out infinite; }
 @keyframes crownShimmer {
   0%, 100% { filter: drop-shadow(0 0 12px rgba(245, 215, 122, 0.5)); }
   50% { filter: drop-shadow(0 0 24px rgba(245, 215, 122, 0.85)); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .champion-halo, .crown-shimmer { animation: none; }
+  .champion-halo, .champion-aura, .champ-glow, .crown-shimmer { animation: none; }
+  .champ-glow { box-shadow: 0 0 58px -16px rgba(245, 215, 122, 0.45); }
 }
 </style>
