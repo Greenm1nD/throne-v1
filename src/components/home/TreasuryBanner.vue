@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section id="rewards" ref="root" class="container-royal pt-16 sm:pt-24">
+  <section id="rewards" ref="root" class="container-royal pt-10 sm:pt-14">
     <div
       class="treasury-banner group relative flex min-h-[200px] items-center overflow-hidden rounded-2xl border border-border-gold shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,215,122,0.12)] lg:aspect-[6/1]"
       data-reveal

@@ -15,10 +15,10 @@ const router = useRouter()
 </script>
 
 <template>
-  <section id="casino" ref="root" class="section-glow container-royal pt-16 sm:pt-24">
+  <section id="casino" ref="root" class="section-glow container-royal pt-10 sm:pt-14">
     <SectionHeader title="Royal Collection" eyebrow="Curated Tables" />
 
-    <div class="mb-6 flex items-center justify-end">
+    <div class="-mt-2 mb-3 flex items-center justify-end">
       <GoldButton variant="ghost" size="sm" @click="router.push('/casino')">
         View All <AppIcon name="arrowRight" :size="14" />
       </GoldButton>

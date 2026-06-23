@@ -15,7 +15,7 @@ withDefaults(
 
 <template>
   <div
-    class="mb-8 flex w-full flex-col gap-4 sm:mb-10"
+    class="mb-6 flex w-full flex-col gap-3 sm:mb-7"
     :class="align === 'center' ? 'items-center text-center' : 'sm:flex-row sm:items-end sm:justify-between'"
   >
     <div :class="align === 'center' ? 'flex flex-col items-center' : ''">

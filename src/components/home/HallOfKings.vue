@@ -13,7 +13,7 @@ useReveal(root, { stagger: 0.1 })
 </script>
 
 <template>
-  <section ref="root" class="section-glow container-royal pt-16 sm:pt-24">
+  <section ref="root" class="section-glow container-royal pt-10 sm:pt-14">
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 px-5 py-8 shadow-[0_40px_110px_-45px_rgba(0,0,0,0.95)] sm:px-8 sm:py-10">
       <!-- Cinematic royal-hall backdrop -->
       <div

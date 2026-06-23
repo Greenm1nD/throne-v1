@@ -10,7 +10,7 @@ useReveal(root, { stagger: 0.14 })
 </script>
 
 <template>
-  <section id="live-casino" ref="root" class="container-royal relative pt-16 sm:pt-24">
+  <section id="live-casino" ref="root" class="container-royal relative pt-10 sm:pt-14">
     <!-- Ambient haze -->
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[440px]" style="background: radial-gradient(58% 100% at 50% 0%, rgba(245,215,122,0.07), transparent 72%)" aria-hidden="true" />
 

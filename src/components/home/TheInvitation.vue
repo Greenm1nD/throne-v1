@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
 </style>
 
 <template>
-  <section ref="root" class="container-royal pt-16 sm:pt-24">
+  <section ref="root" class="container-royal pt-10 sm:pt-14">
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/25 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]" data-reveal>
       <div
         ref="bgEl"
