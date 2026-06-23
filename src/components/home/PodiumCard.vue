@@ -74,7 +74,6 @@ const isSilver = props.champion.accent === 'silver'
       <!-- Runners: larger insignia -->
       <template v-else>
         <div class="relative z-10 mb-1 mt-6 h-24 w-24">
-          <img src="/assets/images/emblems/emblem-07-laurel.webp" alt="" class="pointer-events-none absolute left-1/2 top-1/2 h-[8.75rem] w-[8.75rem] -translate-x-1/2 -translate-y-1/2 object-contain opacity-40" />
           <AppIcon name="crown" :size="18" class="absolute -top-5 left-1/2 z-10 -translate-x-1/2" :class="isSilver ? 'text-[#dfe2ea]' : 'text-[#d8ab72]'" />
           <span class="absolute inset-0 rounded-full" :style="{ background: isSilver ? 'radial-gradient(circle, rgba(205,209,219,0.24), transparent 64%)' : 'radial-gradient(circle, rgba(216,171,114,0.26), transparent 64%)' }" />
           <div
