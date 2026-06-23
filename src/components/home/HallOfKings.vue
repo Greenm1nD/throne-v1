@@ -30,7 +30,7 @@ function onScroll() {
     if (r.bottom < -80 || r.top > vh + 80) return
     const prog = (r.top + r.height / 2 - vh / 2) / vh
     const y = Math.max(-24, Math.min(24, -prog * 48))
-    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.08)`
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
   })
 }
 onMounted(() => {
@@ -50,12 +50,13 @@ onBeforeUnmount(() => {
   <section ref="root" class="section-glow container-royal pt-10 sm:pt-14">
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/20 px-5 py-8 shadow-[0_40px_110px_-45px_rgba(0,0,0,0.95)] sm:px-8 sm:py-10">
       <!-- Cinematic royal-hall backdrop (slow parallax) -->
-      <div
-        ref="bgEl"
-        v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.55), rgba(7,7,9,0.74)), url('/assets/images/king-hall-bg.webp')`"
-        class="absolute inset-0 scale-[1.08] bg-cover bg-center will-change-transform"
-        :style="{ backgroundColor: '#08080a' }"
-      />
+      <div ref="bgEl" class="absolute inset-0 will-change-transform">
+        <div
+          v-lazybg="`linear-gradient(180deg, rgba(7,7,9,0.55), rgba(7,7,9,0.74)), url('/assets/images/king-hall-bg.webp')`"
+          class="hk-zoom absolute inset-0 bg-cover bg-center"
+          :style="{ backgroundColor: '#08080a' }"
+        />
+      </div>
       <!-- Candlelit top glow (gentle flicker) -->
       <div class="hk-flicker pointer-events-none absolute inset-0" style="background: radial-gradient(70% 50% at 50% 0%, rgba(245,215,122,0.12), transparent 55%)" aria-hidden="true" />
       <!-- Warm spotlight behind the champion (desktop) -->
@@ -117,6 +118,16 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* Slow Ken Burns zoom on the royal-hall backdrop */
+.hk-zoom {
+  transform: scale(1.08);
+  animation: hkZoom 24s ease-in-out infinite alternate;
+}
+@keyframes hkZoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1.17); }
+}
+
 /* Candlelight flicker — gentle, irregular opacity drift */
 .hk-flicker { animation: hkFlicker 9s ease-in-out infinite; }
 @keyframes hkFlicker {
@@ -169,6 +180,7 @@ onBeforeUnmount(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hk-flicker, .hk-beam, .hk-sweep, .hk-bar-sweep, .hk-ipulse { animation: none; }
+  .hk-flicker, .hk-beam, .hk-sweep, .hk-bar-sweep, .hk-ipulse, .hk-zoom { animation: none; }
+  .hk-zoom { transform: scale(1.08); }
 }
 </style>
