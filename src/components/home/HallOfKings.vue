@@ -21,13 +21,16 @@ let raf = 0
 
 // Mobile auto-rotating carousels (podium + stats) — one card per view, so the
 // user doesn't scroll through a long stack.
+const seasonTrack = ref<HTMLElement | null>(null)
 const podiumTrack = ref<HTMLElement | null>(null)
 const statsTrack = ref<HTMLElement | null>(null)
 const timers: number[] = []
 function autoAdvance(track: HTMLElement | null, ms: number) {
   if (!track) return
   timers.push(window.setInterval(() => {
-    const kids = Array.from(track.children) as HTMLElement[]
+    const kids = (Array.from(track.children) as HTMLElement[]).filter(
+      (k) => getComputedStyle(k).position !== 'absolute',
+    )
     if (kids.length < 2 || document.hidden) return
     const base = kids[0].offsetLeft
     let cur = 0, best = Infinity
@@ -62,6 +65,7 @@ onMounted(() => {
   }
   // Auto-rotate the single-card carousels on phones only.
   if (!reduce && window.matchMedia('(max-width: 639px)').matches) {
+    autoAdvance(seasonTrack.value, 3200)
     autoAdvance(podiumTrack.value, 4500)
     autoAdvance(statsTrack.value, 3800)
   }
@@ -100,16 +104,16 @@ onBeforeUnmount(() => {
         <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" align="center" />
 
         <!-- Season info bar -->
-        <div class="hk-bar relative mx-auto mb-12 flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur sm:flex-row sm:rounded-full lg:mb-16" data-reveal>
-          <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5">
+        <div ref="seasonTrack" class="hk-bar relative mx-auto mb-12 flex w-full max-w-3xl snap-x snap-mandatory overflow-x-auto rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:snap-none sm:overflow-hidden sm:rounded-full lg:mb-16" data-reveal>
+          <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1">
             <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="hk-ipulse h-4 w-4 object-contain" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.name }}</span>
           </div>
-          <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 sm:border-l sm:border-border-gold/12">
+          <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1 sm:border-l sm:border-border-gold/12">
             <AppIcon name="vault" :size="14" class="hk-ipulse text-gold-bright" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.prizePool }}</span>
           </div>
-          <div class="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 sm:border-l sm:border-border-gold/12">
+          <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1 sm:border-l sm:border-border-gold/12">
             <AppIcon name="clock" :size="14" class="hk-ipulse text-gold-bright" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.daysRemaining }}</span>
           </div>
