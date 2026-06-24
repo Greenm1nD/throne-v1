@@ -18,6 +18,27 @@ const { lite } = useViewport()
 // Very slow cinematic parallax on the royal-hall backdrop (desktop, GPU-only).
 const bgEl = ref<HTMLElement | null>(null)
 let raf = 0
+
+// Mobile auto-rotating carousels (podium + stats) — one card per view, so the
+// user doesn't scroll through a long stack.
+const podiumTrack = ref<HTMLElement | null>(null)
+const statsTrack = ref<HTMLElement | null>(null)
+const timers: number[] = []
+function autoAdvance(track: HTMLElement | null, ms: number) {
+  if (!track) return
+  timers.push(window.setInterval(() => {
+    const kids = Array.from(track.children) as HTMLElement[]
+    if (kids.length < 2 || document.hidden) return
+    const base = kids[0].offsetLeft
+    let cur = 0, best = Infinity
+    kids.forEach((k, j) => {
+      const d = Math.abs((k.offsetLeft - base) - track.scrollLeft)
+      if (d < best) { best = d; cur = j }
+    })
+    const next = (cur + 1) % kids.length
+    track.scrollTo({ left: kids[next].offsetLeft - base, behavior: 'smooth' })
+  }, ms))
+}
 function onScroll() {
   if (raf) return
   raf = requestAnimationFrame(() => {
@@ -35,14 +56,20 @@ function onScroll() {
 }
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const desktop = window.matchMedia('(min-width: 1024px)').matches
-  if (reduce || !desktop) return
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
+  if (!reduce && window.matchMedia('(min-width: 1024px)').matches) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+  }
+  // Auto-rotate the single-card carousels on phones only.
+  if (!reduce && window.matchMedia('(max-width: 639px)').matches) {
+    autoAdvance(podiumTrack.value, 4500)
+    autoAdvance(statsTrack.value, 3800)
+  }
 })
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
   if (raf) cancelAnimationFrame(raf)
+  timers.forEach((t) => clearInterval(t))
 })
 </script>
 
@@ -90,18 +117,18 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Podium -->
-        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:items-end">
+        <div ref="podiumTrack" class="hk-track mx-auto flex max-w-5xl snap-x snap-mandatory gap-4 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3 lg:items-end">
           <PodiumCard
             v-for="c in kingsChampions"
             :key="c.rank"
             :champion="c"
-            :class="c.rank === 1 ? 'order-first sm:col-span-2 lg:order-none lg:col-span-1' : ''"
+            :class="[c.rank === 1 ? 'order-first sm:col-span-2 lg:order-none lg:col-span-1' : '', 'w-full shrink-0 snap-center sm:w-auto']"
           />
         </div>
 
         <!-- Headline stats -->
-        <div class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border-gold/25 bg-border-gold/20 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
-          <div v-for="s in kingsStats" :key="s.label" class="group/stat flex items-center gap-3.5 bg-[#08080b]/70 px-5 py-4 transition-colors hover:bg-[#0d0d11]/70">
+        <div ref="statsTrack" class="hk-track mt-8 flex snap-x snap-mandatory overflow-x-auto rounded-2xl border border-border-gold/25 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:snap-none sm:grid-cols-2 sm:gap-px sm:overflow-hidden sm:bg-border-gold/20 lg:grid-cols-4" data-reveal>
+          <div v-for="s in kingsStats" :key="s.label" class="group/stat flex w-full shrink-0 snap-center items-center gap-3.5 bg-[#08080b]/70 px-5 py-4 transition-colors hover:bg-[#0d0d11]/70 sm:w-auto">
             <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border-gold/45 bg-black/30 text-gold-bright transition-shadow duration-300 group-hover/stat:shadow-gold-soft">
               <AppIcon :name="s.icon" :size="18" />
             </span>
