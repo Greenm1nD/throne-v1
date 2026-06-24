@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
+import GameTile from '@/components/page/GameTile.vue'
 import { useEnter } from '@/composables/useEnter'
 import { useRevealEach } from '@/composables/useReveal'
 import {
@@ -132,16 +133,16 @@ const filteredLobby = computed(() => {
         v-model:sort="sort"
       />
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-        <article v-for="g in filteredLobby" :key="g.title"
-          class="group relative aspect-square overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-gold motion-reduce:transform-none" data-reveal @click="enter()">
-          <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${g.image}')`"
-            class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />
-          <span class="absolute right-2 top-2 z-10 rounded-full border border-border-gold/40 bg-black/60 px-2 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-gold-bright backdrop-blur">Instant</span>
-          <div class="relative z-10 flex h-full flex-col justify-end p-3">
-            <h3 class="font-display text-[14px] font-semibold text-ink">{{ g.title }}</h3>
-            <p class="font-sans text-[10px] uppercase tracking-[0.1em] text-ink-dim">{{ g.sub }} · 24/7</p>
-          </div>
-        </article>
+        <GameTile
+          v-for="g in filteredLobby"
+          :key="g.title"
+          :title="g.title"
+          :subtitle="`${g.sub} · 24/7`"
+          :image="g.image"
+          tag="Instant"
+          data-reveal
+          @select="enter()"
+        />
       </div>
       <div class="mt-6 text-center">
         <GoldButton variant="outline" size="md" @click="enter()">Load More <AppIcon name="plus" :size="14" /></GoldButton>

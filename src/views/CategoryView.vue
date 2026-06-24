@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import PageHero from '@/components/page/PageHero.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
+import GameTile from '@/components/page/GameTile.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { categoryPages } from '@/data/categoryPages'
@@ -92,20 +93,16 @@ const filteredItems = computed(() => {
           v-model:sort="sort"
         />
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-        <article v-for="x in filteredItems" :key="x.name"
-          class="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
-          data-reveal @click="enter()">
-          <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${x.image}')`"
-            class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />
-          <span v-if="x.tag" class="absolute left-3 top-3 z-10 rounded-full border border-border-gold/50 bg-black/60 px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright backdrop-blur">{{ x.tag }}</span>
-          <div class="relative z-10 flex h-full flex-col justify-end p-4">
-            <h3 class="font-display text-base font-semibold tracking-[0.04em] text-ink">{{ x.name }}</h3>
-            <p class="font-sans text-[11px] text-ink-muted">{{ x.meta }}</p>
-            <span class="mt-2 inline-flex items-center gap-1 font-sans text-[11px] font-semibold text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
-              Play <AppIcon name="arrowRight" :size="12" />
-            </span>
-          </div>
-        </article>
+          <GameTile
+            v-for="x in filteredItems"
+            :key="x.name"
+            :title="x.name"
+            :subtitle="x.meta"
+            :image="x.image"
+            :tag="x.tag"
+            data-reveal
+            @select="enter()"
+          />
         </div>
       </template>
     </section>
