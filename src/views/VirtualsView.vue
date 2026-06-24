@@ -131,9 +131,9 @@ const filteredLobby = computed(() => {
         v-model:filter="cat"
         v-model:sort="sort"
       />
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         <article v-for="g in filteredLobby" :key="g.title"
-          class="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-gold motion-reduce:transform-none" data-reveal @click="enter()">
+          class="group relative aspect-square overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-gold motion-reduce:transform-none" data-reveal @click="enter()">
           <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${g.image}')`"
             class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />
           <span class="absolute right-2 top-2 z-10 rounded-full border border-border-gold/40 bg-black/60 px-2 py-0.5 font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-gold-bright backdrop-blur">Instant</span>

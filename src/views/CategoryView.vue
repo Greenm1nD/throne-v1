@@ -91,9 +91,9 @@ const filteredItems = computed(() => {
           v-model:filter="provider"
           v-model:sort="sort"
         />
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         <article v-for="x in filteredItems" :key="x.name"
-          class="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
+          class="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border-gold/15 transition-all duration-300 hover:-translate-y-1 hover:border-gold motion-reduce:transform-none"
           data-reveal @click="enter()">
           <div v-lazybg="`linear-gradient(180deg, rgba(5,5,6,0.1) 35%, rgba(5,5,6,0.92)), url('${x.image}')`"
             class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" :style="{ backgroundColor: '#0d0d10' }" />
