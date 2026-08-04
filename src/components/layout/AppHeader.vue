@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
@@ -10,6 +10,7 @@ import { useAuthModal } from '@/composables/useAuthModal'
 import { useAuth } from '@/composables/useAuth'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { useWalletModal } from '@/composables/useWalletModal'
+import { introDone } from '@/composables/useIntroDone'
 import { user as member } from '@/data/account'
 import { joinCta } from '@/config'
 
@@ -22,6 +23,17 @@ const bar = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
 const scrolled = ref(false)
 const accOpen = ref(false)
+
+// Gold line-draw along the header's bottom edge, played once as the intro
+// loader dissolves (reduced-motion: skipped; the static border is already there).
+const showIntroLine = ref(false)
+const stopIntroLine = watch(introDone, (v) => {
+  if (!v) return
+  stopIntroLine()
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  showIntroLine.value = true
+  setTimeout(() => (showIntroLine.value = false), 2600)
+})
 
 const balanceLabel = computed(() =>
   mask(`€${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`),
@@ -224,5 +236,59 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
         </nav>
       </div>
     </Transition>
+    <!-- Intro line-draw: gold beam sweeps the bottom edge as the site opens -->
+    <div v-if="showIntroLine" class="intro-line pointer-events-none absolute inset-x-0 bottom-[-1px]" aria-hidden="true">
+      <span class="intro-line-draw" />
+      <span class="intro-line-tip" />
+    </div>
   </header>
 </template>
+
+<style scoped>
+/* Intro line-draw — a gold hairline draws left→right with a glowing tip, then
+   settles into the header's existing border. Element is v-if-mounted on intro
+   completion so the CSS animations start exactly then. */
+.intro-line {
+  height: 2px;
+  z-index: 60;
+}
+.intro-line-draw {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(245, 215, 122, 0.08), rgba(245, 215, 122, 0.9) 55%, rgba(245, 215, 122, 0.65));
+  box-shadow: 0 0 8px rgba(245, 215, 122, 0.55);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation:
+    introLineDraw 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards,
+    introLineFade 0.7s ease-out 1.7s forwards;
+}
+.intro-line-tip {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 42px;
+  height: 7px;
+  margin-left: -21px;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(255, 240, 190, 0.95), rgba(245, 215, 122, 0.5) 55%, transparent);
+  filter: blur(0.5px);
+  opacity: 0;
+  animation: introTipTravel 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+@keyframes introLineDraw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes introLineFade {
+  to { opacity: 0; }
+}
+@keyframes introTipTravel {
+  0% { left: 0%; opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+</style>
