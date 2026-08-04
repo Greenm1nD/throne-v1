@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import gsap from 'gsap'
 import RotatingCrownRing from './RotatingCrownRing.vue'
 import FloorSmoke from './FloorSmoke.vue'
@@ -9,6 +9,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { useRouter } from 'vue-router'
 import { useEnter } from '@/composables/useEnter'
 import { useViewport } from '@/composables/useMobilePolish'
+import { introDone } from '@/composables/useIntroDone'
 import { assets } from '@/data/assets'
 
 const router = useRouter()
@@ -24,6 +25,7 @@ const sub = ref<HTMLElement | null>(null)
 const ctas = ref<HTMLElement | null>(null)
 const backdrop = ref<HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)
+const bloom = ref<HTMLElement | null>(null)
 
 // Scarcity signals — exclusivity is felt, not stated. A live presence count
 // that gently drifts, and a closing "intake" window, both tick on a timer.
@@ -60,16 +62,38 @@ onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (reduce) return
 
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.15 })
-  tl.from(backdrop.value, { opacity: 0, scale: 1.08, duration: 1.4, ease: 'power2.out' })
-    .from(eyebrow.value, { opacity: 0, y: 16, duration: 0.6 }, '-=1.0')
-    .from(
-      heading.value,
-      { opacity: 0, y: 24, filter: 'blur(14px)', duration: 0.9 },
-      '-=0.5',
-    )
-    .from(sub.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.5')
-    .from(ctas.value, { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
+  // "Lights come on in the palace" — the hall waits in near-darkness, then the
+  // golden ring flares and the hero brightens as the loader dissolves. Initial
+  // dark state is set immediately (invisible under the loader) so the reveal
+  // starts from black the moment the page appears.
+  gsap.set(backdrop.value, { filter: 'brightness(0.05) saturate(0.75)' })
+  gsap.set([eyebrow.value, sub.value, ctas.value], { opacity: 0, y: 16 })
+  gsap.set(heading.value, { opacity: 0, y: 24, filter: 'blur(14px)' })
+
+  const start = () => {
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    tl.to(backdrop.value, { filter: 'brightness(1) saturate(1)', duration: 2.4, ease: 'power2.inOut', clearProps: 'filter' }, 0)
+      // Gold ring ignition flare, blooming then settling
+      .fromTo(bloom.value, { opacity: 0 }, { opacity: 0.55, duration: 0.9, ease: 'power2.in' }, 0.4)
+      .to(bloom.value, { opacity: 0, duration: 1.3, ease: 'power2.out' }, 1.35)
+      // Content emerges once the hall is lit
+      .to(eyebrow.value, { opacity: 1, y: 0, duration: 0.6 }, 1.1)
+      .to(heading.value, { opacity: 1, y: 0, filter: 'blur(0px)', clearProps: 'filter', duration: 0.9 }, 1.35)
+      .to(sub.value, { opacity: 1, y: 0, duration: 0.6 }, 1.7)
+      .to(ctas.value, { opacity: 1, y: 0, duration: 0.6 }, 1.9)
+  }
+
+  // Play in view: wait for the intro loader to dissolve (or start at once on
+  // SPA navigation back to home).
+  if (introDone.value) start()
+  else {
+    const stop = watch(introDone, (v) => {
+      if (v) {
+        stop()
+        start()
+      }
+    })
+  }
 
   // Continuous scroll parallax is a scroll-jank risk on touch devices — skip it
   // in lite mode (the static hero stays put).
@@ -128,6 +152,14 @@ onBeforeUnmount(() => {
         "
       />
     </div>
+
+    <!-- Golden ignition bloom over the throne ring (entrance only) -->
+    <div
+      ref="bloom"
+      class="pointer-events-none absolute inset-0 z-[5] opacity-0"
+      style="background: radial-gradient(46% 62% at 50% 44%, rgba(245, 215, 122, 0.42), rgba(212, 175, 55, 0.14) 46%, transparent 72%)"
+      aria-hidden="true"
+    />
 
     <!-- Decorative motion — desktop only (skipped on mobile/tablet for perf) -->
     <template v-if="!lite">

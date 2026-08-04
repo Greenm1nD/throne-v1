@@ -19,8 +19,15 @@ import AppFooterPremium from '@/components/layout/AppFooterPremium.vue'
 import { premiumEnabled } from '@/composables/usePremiumMotion'
 import { polishEnabled } from '@/composables/usePolish'
 import { mobilePolishEnabled } from '@/composables/useMobilePolish'
+import { introDone } from '@/composables/useIntroDone'
 
 const ready = ref(false)
+
+/** Loader dissolved — show the app and release entrance choreography. */
+function onIntroDone() {
+  ready.value = true
+  introDone.value = true
+}
 const router = useRouter()
 const route = useRoute()
 
@@ -46,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <LoadingScreen v-if="!ready" @done="ready = true" />
+  <LoadingScreen v-if="!ready" @done="onIntroDone" />
   <AmbientBackground />
   <AppHeader v-show="ready" />
   <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
