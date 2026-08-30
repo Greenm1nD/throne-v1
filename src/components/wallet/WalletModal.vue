@@ -7,6 +7,7 @@ import { useWalletModal } from '@/composables/useWalletModal'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { track } from '@/utils/analytics'
+import { parseMoney } from '@/utils/money'
 
 const { state, close, setKind } = useWalletModal()
 const { mask } = useDiscreet()
@@ -17,23 +18,44 @@ useFocusTrap(dialogEl, computed(() => state.open))
 const isDeposit = computed(() => state.kind === 'deposit')
 const methods = computed<PayMethod[]>(() => (isDeposit.value ? DEPOSIT : WITHDRAW))
 
-/** Prototype has no transaction to submit — this records the intent, which is
- *  the last measurable step of the funnel that exists today. */
-function onSubmit() {
-  track(isDeposit.value ? 'deposit_complete' : 'withdraw_complete', {
-    method: selected.value?.name ?? 'unknown',
-  })
-}
-
 const methodName = ref('')
 const selected = computed(() => methods.value.find((m) => m.name === methodName.value) ?? methods.value[0])
 
-// Reset the chosen method to the first available whenever the modal opens or
-// the deposit/withdraw mode flips.
+/* ── Amount — bound and validated against the method's published limits ── */
+const amount = ref('')
+const amountNum = computed(() => Number(amount.value))
+const amountValid = computed(() => {
+  if (!selected.value || amount.value.trim() === '') return false
+  const n = amountNum.value
+  if (!Number.isFinite(n)) return false
+  return n >= parseMoney(selected.value.min) && n <= parseMoney(selected.value.max)
+})
+const amountError = computed(() =>
+  !selected.value || amount.value.trim() === '' || amountValid.value
+    ? ''
+    : `Enter an amount between ${selected.value.min} and ${selected.value.max}`,
+)
+
+/** Prototype has no transaction to submit — this records the intent, which is
+ *  the last measurable step of the funnel that exists today. Fires ONLY on a
+ *  valid amount, so the funnel never counts an empty form as a completion. */
+function onSubmit() {
+  if (!amountValid.value) return
+  track(isDeposit.value ? 'deposit_complete' : 'withdraw_complete', {
+    method: selected.value?.name ?? 'unknown',
+    amount: amountNum.value,
+  })
+}
+
+// Reset the chosen method and the amount whenever the modal opens or the
+// deposit/withdraw mode flips.
 watch(
   () => [state.open, state.kind],
   () => {
-    if (state.open) methodName.value = methods.value[0]?.name ?? ''
+    if (state.open) {
+      methodName.value = methods.value[0]?.name ?? ''
+      amount.value = ''
+    }
   },
   { immediate: true },
 )
@@ -151,17 +173,43 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
               <label class="block">
                 <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Amount</span>
                 <input
+                  v-model="amount"
                   :placeholder="selected ? `${selected.min} – ${selected.max}` : '0.00'"
                   inputmode="decimal"
-                  class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold"
+                  :aria-invalid="!!amountError"
+                  class="h-12 w-full rounded-lg border bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim"
+                  :class="amountError ? 'border-[#c2603f] focus:border-[#d9774f]' : 'border-border-gold/60 focus:border-gold'"
                 />
+                <span v-if="amountError" class="mt-1 block pl-1 font-sans text-[11px] normal-case tracking-normal text-[#d98a6a]">
+                  {{ amountError }}
+                </span>
               </label>
 
-              <GoldButton variant="solid" size="lg" block @click="onSubmit">{{ isDeposit ? 'Deposit' : 'Withdraw' }}</GoldButton>
+              <!-- Published limits and processing time for the chosen method -->
+              <div v-if="selected" class="flex flex-wrap gap-2">
+                <span class="rounded-full border border-border-gold/30 bg-black/30 px-3 py-1 font-sans text-[10px] uppercase tracking-[0.14em] text-ink-dim">
+                  Min <span class="tabular-nums text-ink-muted">{{ selected.min }}</span>
+                </span>
+                <span class="rounded-full border border-border-gold/30 bg-black/30 px-3 py-1 font-sans text-[10px] uppercase tracking-[0.14em] text-ink-dim">
+                  Max <span class="tabular-nums text-ink-muted">{{ selected.max }}</span>
+                </span>
+                <span class="rounded-full border border-border-gold/30 bg-black/30 px-3 py-1 font-sans text-[10px] uppercase tracking-[0.14em] text-ink-dim">
+                  Time <span class="text-ink-muted">{{ selected.time }}</span>
+                </span>
+              </div>
+
+              <GoldButton
+                variant="solid"
+                size="lg"
+                block
+                :disabled="!amountValid"
+                class="disabled:pointer-events-none disabled:opacity-40"
+                @click="onSubmit"
+              >{{ isDeposit ? 'Deposit' : 'Withdraw' }}</GoldButton>
             </form>
 
             <p class="mt-4 text-center font-sans text-[10px] uppercase tracking-[0.18em] text-ink-dim">
-              {{ isDeposit ? 'Sealed by 256-bit encryption' : 'Bonus funds are not withdrawable' }}
+              Sealed by 256-bit encryption
             </p>
           </div>
         </div>

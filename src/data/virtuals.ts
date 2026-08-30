@@ -68,29 +68,6 @@ export const virtualsLobby: VirtualGame[] = [
   { title: 'Tennis Cup', sub: 'Every 2 min', image: tennis, cat: 'Tennis' },
 ]
 
-export const virtualsMostPlayed = [
-  { name: 'Horse Racing', players: '4,820', bets: '12.4k', pct: 92, image: horse },
-  { name: 'Virtual Football', players: '4,210', bets: '10.8k', pct: 84, image: football },
-  { name: 'Greyhounds', players: '3,540', bets: '8.9k', pct: 74, image: greyhound },
-  { name: 'Motorbikes', players: '2,910', bets: '6.2k', pct: 61, image: motorsport },
-  { name: 'Tennis', players: '2,380', bets: '5.1k', pct: 50, image: tennis },
-]
-
-export interface VirtualChampionship {
-  name: string
-  prize: string
-  startsIn: string
-  participants: string
-  icon: string
-}
-export const virtualsChampionships: VirtualChampionship[] = [
-  { name: 'World Cup Finals', prize: '€500,000', startsIn: '02:14:30', participants: '18,402', icon: 'trophy' },
-  { name: 'Champions League', prize: '€250,000', startsIn: '04:40:12', participants: '12,118', icon: 'crown' },
-  { name: 'Grand Prix Series', prize: '€180,000', startsIn: '06:05:48', participants: '9,640', icon: 'bolt' },
-  { name: 'Royal Derby', prize: '€120,000', startsIn: '08:20:05', participants: '7,205', icon: 'crown' },
-  { name: 'Throne Cup', prize: '€1,000,000', startsIn: '23:59:59', participants: '24,591', icon: 'crown' },
-]
-
 export const virtualsFeatures = [
   { icon: 'clock', title: '24/7 Action', sub: 'New events every 2–3 minutes' },
   { icon: 'bolt', title: 'Every 2 Minutes', sub: 'No waiting for fixtures' },

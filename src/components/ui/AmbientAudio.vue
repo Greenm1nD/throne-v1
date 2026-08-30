@@ -63,10 +63,11 @@ onMounted(() => {
     })
     .catch(() => (missing.value = true))
 
-  // ON by default — only an explicit mute ('0') keeps the hall silent.
-  // Browsers require a gesture for audible playback, so: try immediately
-  // (works on soft navigations), otherwise begin on the first interaction.
-  if (localStorage.getItem(STORAGE) !== '0') {
+  // OFF by default — sound is opt-in via the toggle. Only a guest who has
+  // explicitly turned it on before ('1') gets it resumed: try immediately
+  // (works on soft navigations), otherwise begin on the first interaction
+  // (browsers require a gesture for audible playback).
+  if (localStorage.getItem(STORAGE) === '1') {
     const begin = () => {
       if (playing.value) return
       void toggle()

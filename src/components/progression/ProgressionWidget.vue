@@ -232,6 +232,7 @@ const tributeLine = computed(() => {
       class="inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-[0.16em] text-ink-dim transition-colors hover:text-champagne"
     >
       <AppIcon name="lock" :size="10" /> Writ of Restraint
+      <span class="normal-case tracking-[0.02em]">· Deposit &amp; loss limits</span>
     </RouterLink>
   </div>
 
@@ -281,6 +282,7 @@ const tributeLine = computed(() => {
       class="inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-[0.16em] text-ink-dim transition-colors hover:text-champagne"
     >
       <AppIcon name="lock" :size="10" /> Writ of Restraint
+      <span class="normal-case tracking-[0.02em]">· Deposit &amp; loss limits</span>
     </RouterLink>
   </div>
 
@@ -383,6 +385,7 @@ const tributeLine = computed(() => {
         class="inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-[0.16em] text-champagne transition-colors hover:text-gold-bright"
       >
         <AppIcon name="lock" :size="10" /> Writ of Restraint
+        <span class="normal-case tracking-[0.02em]">· Deposit &amp; loss limits</span>
       </RouterLink>
     </div>
   </div>

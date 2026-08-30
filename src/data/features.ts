@@ -11,6 +11,7 @@ export interface Feature {
   subtitle: string
   image: AssetKey
   cta: string
+  /** Router path the CTA navigates to — must exist in src/router/index.ts. */
   href: string
   meta: FeatureMeta[]
   /** Highlights the card as the most exclusive (extra gold treatment) */
@@ -23,7 +24,7 @@ export const features: Feature[] = [
     subtitle: 'Live Casino',
     image: 'liveCasino',
     cta: 'Play Now',
-    href: '#live-casino',
+    href: '/live-casino',
     meta: [],
   },
   {
@@ -31,7 +32,7 @@ export const features: Feature[] = [
     subtitle: 'Sportsbook',
     image: 'sportsbookArena',
     cta: 'Bet Now',
-    href: '#sports',
+    href: '/sports',
     meta: [
       { label: 'Football', icon: 'ball' },
       { label: 'F1', icon: 'flag' },
@@ -44,7 +45,7 @@ export const features: Feature[] = [
     subtitle: 'VIP Club',
     image: 'vipClub',
     cta: 'Explore VIP',
-    href: '#vip',
+    href: '/vip',
     meta: [],
     vip: true,
   },

@@ -31,10 +31,13 @@ export const categoryNav: CategoryNavItem[] = [
   { label: 'Live Casino', to: '/live-casino', icon: 'monitor' },
   { label: 'Virtual', to: '/virtual', icon: 'headset' },
   { label: 'Games', to: '/games', icon: 'gamepad' },
-  { label: 'Beton', to: '/beton', icon: 'chart' },
+  // Plain-word label: "Beton" was opaque. Slug/route unchanged. (The brief
+  // suggested "Sport", but that label already exists at /sports — this is the
+  // page's own subject: TVBET / BetGames live betting games.)
+  { label: 'Bet Games', to: '/beton', icon: 'chart' },
   { label: 'Poker', to: '/poker', icon: 'spade' },
   // VIP temporarily removed from nav (per request) — route still exists; restore when asked.
-  { label: 'Kingdom', to: '/kingdom', icon: 'castle' },
+  { label: 'Kingdom · Tournaments', to: '/kingdom', icon: 'castle' },
   { label: 'Rewards', to: '/rewards', icon: 'gift' },
 ]
 

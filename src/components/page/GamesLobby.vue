@@ -2,9 +2,11 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 import GamesFilterBar from '@/components/page/GamesFilterBar.vue'
+import GameTile from '@/components/page/GameTile.vue'
 import { lobbyGames, gameSlug, type LobbyGame } from '@/data/casinoGames'
+import { useFavorites } from '@/composables/useFavorites'
+import { useRecentlyPlayed } from '@/composables/useRecentlyPlayed'
 
 /** Reusable royal game lobby — defaults to the casino catalogue. */
 const props = withDefaults(
@@ -20,24 +22,43 @@ const providers = computed(() => [...new Set(props.games.map((g) => g.provider))
 const query = ref('')
 const provider = ref('all')
 const sort = ref('popular')
-const visible = ref(12)
-const favs = ref(new Set<string>())
+const favOnly = ref(false)
+
+const { favorites } = useFavorites()
+const { recent } = useRecentlyPlayed()
+
+const sortOptions = [
+  { value: 'popular', label: 'Sort: Popular' },
+  { value: 'az', label: 'Sort: A – Z' },
+  { value: 'rtp', label: 'Sort: RTP High – Low' },
+]
 
 const filtered = computed(() => {
-  let list = props.games.filter(
+  const list = props.games.filter(
     (g) =>
       (provider.value === 'all' || g.provider === provider.value) &&
+      (!favOnly.value || favorites.has(gameSlug(g))) &&
       g.name.toLowerCase().includes(query.value.trim().toLowerCase()),
   )
-  if (sort.value === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
-  return list
+  if (sort.value === 'az') return [...list].sort((a, b) => a.name.localeCompare(b.name))
+  if (sort.value === 'rtp')
+    return [...list].sort((a, b) => parseFloat(b.rtp ?? '0') - parseFloat(a.rtp ?? '0'))
+  // Default: curated popularity rank from the catalogue (1 = most popular).
+  return [...list].sort((a, b) => (a.popular ?? 99) - (b.popular ?? 99))
 })
 
-const shown = computed(() => filtered.value.slice(0, visible.value))
+/** Favorited games within THIS catalogue — the chip count stays honest per lobby. */
+const favCount = computed(() => props.games.filter((g) => favorites.has(gameSlug(g))).length)
 
-function toggleFav(name: string) {
-  favs.value.has(name) ? favs.value.delete(name) : favs.value.add(name)
-  favs.value = new Set(favs.value)
+/** Recently played, limited to games that exist in this catalogue. */
+const recentGames = computed(() =>
+  recent.value
+    .map((slug) => props.games.find((g) => gameSlug(g) === slug))
+    .filter((g): g is LobbyGame => Boolean(g)),
+)
+
+function open(g: LobbyGame) {
+  if (props.navigable) router.push(`/casino/play/${gameSlug(g)}`)
 }
 </script>
 
@@ -47,85 +68,69 @@ function toggleFav(name: string) {
       :title="title"
       :count="filtered.length"
       :filter-options="providers"
+      :sort-options="sortOptions"
       v-model:query="query"
       v-model:filter="provider"
       v-model:sort="sort"
     />
 
-    <!-- Grid -->
-    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-      <article
-        v-for="g in shown"
-        :key="g.name"
-        v-glow
-        class="group cursor-pointer overflow-hidden rounded-xl border border-border-gold/70 bg-card shadow-[inset_0_1px_0_rgba(245,215,122,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-card-lift"
-        @click="navigable && router.push(`/casino/play/${gameSlug(g)}`)"
+    <!-- Favorites filter chip -->
+    <div class="-mt-3 mb-5">
+      <button
+        class="flex h-9 items-center gap-2 rounded-full border px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors"
+        :class="favOnly
+          ? 'border-gold bg-gold-gradient text-[#1a1407] shadow-gold-soft'
+          : 'border-border-gold/60 bg-black/40 text-ink-muted hover:border-gold hover:text-gold-bright'"
+        :aria-pressed="favOnly"
+        @click="favOnly = !favOnly"
       >
-        <div class="relative aspect-square overflow-hidden">
-          <img
-            :src="g.image"
-            :alt="g.name"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          <!-- Royal badges -->
-          <span
-            v-if="g.hot"
-            class="absolute left-2 top-2 flex items-center gap-1 rounded bg-gold-gradient px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-[#1a1407] shadow-gold-soft"
-          >
-            <AppIcon name="crown" :size="10" /> Hot
-          </span>
-          <span
-            v-else-if="g.isNew"
-            class="absolute left-2 top-2 rounded border border-gold/60 bg-black/60 px-2 py-0.5 font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold-bright backdrop-blur"
-          >
-            New
-          </span>
+        <AppIcon name="star" :size="12" /> Favorites
+        <span class="tabular-nums">{{ favCount }}</span>
+      </button>
+    </div>
 
-          <!-- Hover play overlay -->
-          <div
-            class="absolute inset-0 flex items-center justify-center bg-black/55 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100"
-          >
-            <GoldButton variant="solid" size="sm">
-              <AppIcon name="play" :size="12" /> Play
-            </GoldButton>
-          </div>
-          <span class="shine-beam" />
-        </div>
+    <!-- Recently played -->
+    <div v-if="recentGames.length" class="mb-6">
+      <p class="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-dim">
+        Recently Played
+      </p>
+      <div class="flex gap-3 overflow-x-auto pb-1">
+        <button
+          v-for="g in recentGames"
+          :key="gameSlug(g)"
+          class="group flex w-44 shrink-0 items-center gap-2.5 rounded-xl border border-border-gold/40 bg-card/70 p-2 text-left transition-colors hover:border-gold"
+          @click="open(g)"
+        >
+          <img :src="g.image" alt="" loading="lazy" decoding="async" class="h-10 w-10 shrink-0 rounded-lg object-cover" />
+          <span class="min-w-0">
+            <span class="block truncate font-sans text-[11px] font-semibold text-ink transition-colors group-hover:text-gold-bright">{{ g.name }}</span>
+            <span class="block truncate font-sans text-[9px] text-ink-dim">{{ g.provider }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
 
-        <div class="flex items-center justify-between gap-2 px-3 py-3">
-          <div class="min-w-0">
-            <p class="truncate font-sans text-[12px] font-semibold text-ink transition-colors group-hover:text-gold-bright">
-              {{ g.name }}
-            </p>
-            <p class="mt-0.5 flex items-center gap-1.5 font-sans text-[10px] text-ink-dim">
-              <span class="h-1 w-1 rounded-full bg-gold/70" /> {{ g.provider }}
-            </p>
-          </div>
-          <button
-            class="-mr-2 grid h-11 w-11 shrink-0 place-items-center transition-colors"
-            :class="favs.has(g.name) ? 'text-gold-bright' : 'text-ink-dim hover:text-gold'"
-            :aria-pressed="favs.has(g.name)"
-            :aria-label="`Favorite ${g.name}`"
-            @click.stop="toggleFav(g.name)"
-          >
-            <AppIcon name="star" :size="15" />
-          </button>
-        </div>
-      </article>
+    <!-- Grid — 3-up on mobile so a viewport shows a real shelf of games -->
+    <div class="grid grid-cols-3 gap-2.5 sm:gap-4 lg:grid-cols-4 xl:grid-cols-6">
+      <GameTile
+        v-for="g in filtered"
+        :key="g.name"
+        :title="g.name"
+        :subtitle="g.provider"
+        :rtp="g.rtp"
+        :image="g.image"
+        :hot="g.hot"
+        :is-new="g.isNew"
+        :fav-id="gameSlug(g)"
+        @select="open(g)"
+      />
     </div>
 
     <!-- Empty state -->
     <p v-if="!filtered.length" class="py-16 text-center font-sans text-sm text-ink-dim">
-      No games match your search — the vault holds more soon.
+      {{ favOnly
+        ? 'No favorites yet — tap the star on any game to keep it here.'
+        : 'No games match your search — the vault holds more soon.' }}
     </p>
-
-    <!-- Load more -->
-    <div v-if="visible < filtered.length" class="mt-8 flex justify-center">
-      <GoldButton variant="outline" size="md" @click="visible += 6">
-        Load More Games <AppIcon name="chevronDown" :size="14" />
-      </GoldButton>
-    </div>
   </section>
 </template>

@@ -1,31 +1,46 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import GoldButton from '@/components/ui/GoldButton.vue'
 import ParticleLayer from '@/components/ui/ParticleLayer.vue'
-import { useAuth } from '@/composables/useAuth'
-import { useEnter } from '@/composables/useEnter'
+import { RANKS, formatBp } from '@/data/progression'
 import { useReveal } from '@/composables/useReveal'
 
 /**
- * The Invitation — exclusivity & scarcity. Membership is capped; founding seats
- * are visibly limited. Wax-seal crest, season name, seats remaining. The lever
- * that makes access feel earned, not bought.
+ * The Invitation — the trust panel: "What you will never see here."
+ * The old scarcity theatre (seat counts, acceptance rates, member tallies) is
+ * gone. The panel now states what the house IS, in plain words, and points to
+ * the player's own limits.
  */
-const { isLoggedIn } = useAuth()
-const { enter } = useEnter()
 const root = ref<HTMLElement | null>(null)
 useReveal(root, { stagger: 0.1 })
 
-// Founding-seat scarcity (prototype figures).
-const seatsTotal = 100
-const seatsRemaining = 12
-const claimedPct = ((seatsTotal - seatsRemaining) / seatsTotal) * 100
+// Rate range straight from the ladder, so the copy can never drift from the data.
+const minRate = formatBp(Math.min(...RANKS.map((r) => r.standingOrderBp)))
+const maxRate = formatBp(Math.max(...RANKS.map((r) => r.standingOrderBp)))
+const firstRank = RANKS[0].name
+const lastRank = RANKS[RANKS.length - 1].name
 
-const stats = [
-  { value: '4,820', label: 'Members' },
-  { value: 'MMXXI', label: 'Established' },
-  { value: '3.2%', label: 'Accepted' },
+const promises = [
+  {
+    icon: 'clock',
+    title: 'No countdown timers',
+    body: 'Nothing here expires while you decide. A season has an end date; an offer never has a ticking clock.',
+  },
+  {
+    icon: 'shield',
+    title: 'No fake scarcity',
+    body: 'No invented seat counts, no closing windows, no "only 12 left". What you see is what exists.',
+  },
+  {
+    icon: 'check',
+    title: 'No offers that pay for losing',
+    body: 'The Standing Order pays on every settled bet, win or lose — never a bonus triggered by a loss.',
+  },
+  {
+    icon: 'percent',
+    title: 'Published rates on every rank',
+    body: `Every rank's rate is printed on the ladder — ${minRate} at ${firstRank} to ${maxRate} at ${lastRank} — before you stake anything.`,
+  },
 ]
 
 // Subtle scroll parallax on the throne-room backdrop — cinematic depth, GPU-only,
@@ -58,22 +73,6 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
-/* Slow conic gold shimmer ring orbiting the wax seal. */
-.seal-aura {
-  background: conic-gradient(from 0deg, transparent 0%, rgba(245, 215, 122, 0.28) 12%, transparent 28%, transparent 60%, rgba(245, 215, 122, 0.18) 72%, transparent 88%);
-  -webkit-mask-image: radial-gradient(circle, transparent 58%, #000 62%, #000 72%, transparent 78%);
-  mask-image: radial-gradient(circle, transparent 58%, #000 62%, #000 72%, transparent 78%);
-  animation: sealSpin 18s linear infinite;
-}
-@keyframes sealSpin {
-  to { transform: rotate(360deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .seal-aura { animation: none; }
-}
-</style>
-
 <template>
   <section ref="root" class="container-royal pt-10 sm:pt-14">
     <div class="relative overflow-hidden rounded-[24px] border border-border-gold/25 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]" data-reveal>
@@ -86,11 +85,10 @@ onBeforeUnmount(() => {
       <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(80% 60% at 50% 0%, rgba(245,215,122,0.12), transparent 55%)" />
       <ParticleLayer :count="14" />
 
-      <div class="relative z-10 flex flex-col gap-7 px-6 py-7 sm:px-10 sm:py-8 lg:flex-row lg:items-center lg:gap-10">
-        <!-- Left: seal + headline -->
-        <div class="flex items-center gap-5">
+      <div class="relative z-10 px-6 py-7 sm:px-10 sm:py-9">
+        <!-- Header: seal + headline -->
+        <div class="flex items-center gap-5" data-reveal>
           <div class="relative h-16 w-16 shrink-0">
-            <span class="seal-aura absolute -inset-3 rounded-full" aria-hidden="true" />
             <span class="absolute -inset-1.5 rounded-full" style="background: radial-gradient(circle, rgba(245,215,122,0.42), transparent 60%); filter: blur(5px)" />
             <img loading="lazy" decoding="async"
               src="/assets/images/invitation-seal.webp"
@@ -100,35 +98,40 @@ onBeforeUnmount(() => {
             />
           </div>
           <div>
-            <p class="font-sans text-[9px] font-semibold uppercase tracking-[0.26em] text-champagne/70">Strictly Limited · Season of the Lion</p>
-            <h2 class="mt-1 font-display text-2xl font-semibold tracking-[0.08em] text-gold-gradient sm:text-3xl">Membership by Invitation</h2>
+            <p class="font-sans text-[9px] font-semibold uppercase tracking-[0.26em] text-champagne/70">The House's Word</p>
+            <h2 class="mt-1 font-display text-2xl font-semibold tracking-[0.08em] text-gold-gradient sm:text-3xl">What You Will Never See Here</h2>
             <p class="mt-2 max-w-md font-sans text-[12.5px] leading-6 text-ink-muted">
-              The Kingdom admits a measured few each season — reserved for those who hold a title.
-            </p>
-            <p class="mt-2.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink-dim">
-              <template v-for="(s, i) in stats" :key="s.label"><span class="font-semibold text-champagne/80">{{ s.value }}</span> {{ s.label }}<span v-if="i < stats.length - 1" class="px-2 text-gold/40">·</span></template>
+              Four things this house does not do — each one a promise you can check.
             </p>
           </div>
         </div>
 
-        <!-- Right: seats + CTA -->
-        <div class="w-full shrink-0 lg:w-[300px]">
-          <div class="mb-2 flex items-center justify-between font-sans text-[10px] uppercase tracking-[0.14em]">
-            <span class="text-ink-dim">Founding Seats</span>
-            <span class="font-semibold text-gold-bright">{{ seatsRemaining }} of {{ seatsTotal }} left</span>
-          </div>
-          <div class="h-2 w-full overflow-hidden rounded-full bg-white/[0.07]">
-            <div class="h-full rounded-full bg-gold-gradient shadow-[0_0_12px_rgba(245,215,122,0.5)]" :style="{ width: `${claimedPct}%` }" />
-          </div>
-          <div class="mt-4">
-            <span v-if="isLoggedIn" class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border-gold/50 bg-black/30 px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold-bright backdrop-blur">
-              <AppIcon name="check" :size="14" /> Your Seat Is Secured
+        <!-- The four promises -->
+        <div class="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div
+            v-for="p in promises"
+            :key="p.title"
+            class="flex items-start gap-3.5 rounded-2xl border border-border-gold/20 bg-black/30 px-5 py-4 backdrop-blur-sm"
+            data-reveal
+          >
+            <span class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border-gold/45 bg-black/30 text-gold-bright">
+              <AppIcon :name="p.icon" :size="15" />
             </span>
-            <GoldButton v-else variant="solid" size="md" block @click="enter()">
-              Request Your Invitation <AppIcon name="arrowRight" :size="14" />
-            </GoldButton>
+            <div>
+              <h3 class="font-sans text-[12px] font-bold uppercase tracking-[0.14em] text-champagne">{{ p.title }}</h3>
+              <p class="mt-1 font-sans text-[12px] leading-5 text-ink-muted">{{ p.body }}</p>
+            </div>
           </div>
         </div>
+
+        <!-- Quiet footer: the player's own limits -->
+        <p class="mt-6 border-t border-border-gold/15 pt-4 font-sans text-[11px] leading-5 text-ink-dim" data-reveal>
+          Set your own ceiling before you play —
+          <RouterLink
+            to="/responsible-gaming"
+            class="text-champagne/80 underline decoration-border-gold/50 underline-offset-2 transition-colors hover:text-gold-bright"
+          >Writ of Restraint — deposit &amp; loss limits</RouterLink>
+        </p>
       </div>
     </div>
   </section>

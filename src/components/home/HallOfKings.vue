@@ -103,6 +103,13 @@ onBeforeUnmount(() => {
       <div class="relative z-10">
         <SectionHeader title="Hall of Kings" eyebrow="Legends of the Realm" align="center" />
 
+        <!-- Demo-data label: the board is illustrative until the backend attaches -->
+        <div class="mb-4 flex justify-center" data-reveal>
+          <span class="rounded-full border border-border-gold/30 bg-black/40 px-3 py-1 font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-ink-dim backdrop-blur">
+            {{ kingsSeason.name }} · Demo Data
+          </span>
+        </div>
+
         <!-- Season info bar -->
         <div ref="seasonTrack" class="hk-bar relative mx-auto mb-12 flex w-full max-w-3xl snap-x snap-mandatory overflow-x-auto rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:snap-none sm:overflow-hidden sm:rounded-full lg:mb-16" data-reveal>
           <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1">
@@ -110,8 +117,8 @@ onBeforeUnmount(() => {
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.name }}</span>
           </div>
           <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1 sm:border-l sm:border-border-gold/12">
-            <AppIcon name="vault" :size="14" class="hk-ipulse text-gold-bright" />
-            <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.prizePool }}</span>
+            <AppIcon name="crown" :size="14" class="hk-ipulse text-gold-bright" />
+            <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.measure }}</span>
           </div>
           <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1 sm:border-l sm:border-border-gold/12">
             <AppIcon name="clock" :size="14" class="hk-ipulse text-gold-bright" />
@@ -138,7 +145,8 @@ onBeforeUnmount(() => {
             </span>
             <div class="min-w-0">
               <p class="font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">{{ s.label }}</p>
-              <p class="font-display text-xl font-bold tabular-nums tracking-[0.01em] text-gold-bright"><CountUp :value="s.value" /></p>
+              <!-- Figures are data, not display type — font-sans per brand doctrine -->
+              <p class="font-sans text-xl font-bold tabular-nums tracking-[0.01em] text-gold-bright"><CountUp :value="s.value" /></p>
               <p class="truncate font-sans text-[10px] text-ink-muted">{{ s.description }}</p>
             </div>
           </div>

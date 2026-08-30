@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import CategoryNav from '@/components/page/CategoryNav.vue'
 import LoadingScreen from '@/components/home/LoadingScreen.vue'
@@ -22,8 +22,10 @@ import { mobilePolishEnabled } from '@/composables/useMobilePolish'
 import { introDone } from '@/composables/useIntroDone'
 
 const ready = ref(false)
+// The intro loader mounts only when the sequencing below asks for it.
+const showLoader = ref(false)
 
-/** Loader dissolved — show the app and release entrance choreography. */
+/** Loader dissolved (or skipped) — show the app and release entrance choreography. */
 function onIntroDone() {
   ready.value = true
   introDone.value = true
@@ -31,15 +33,74 @@ function onIntroDone() {
 const router = useRouter()
 const route = useRoute()
 
+/* ── Entrance sequencing ──────────────────────────────────────────────────────
+ * Age gate FIRST, then (home only, once per session) the intro loader, then the
+ * hero "lights-on" entrance — so a first visitor actually sees the entrance
+ * instead of it playing underneath the gate overlay. All storage access is
+ * try/caught: a blocked store simply skips the ceremony.
+ * ──────────────────────────────────────────────────────────────────────────── */
+const AGE_KEY = 'throne.age-ok' // written by AgeGate.vue on accept
+const INTRO_KEY = 'throne.intro-seen'
+let gatePoll = 0
+
+function ageAccepted(): boolean {
+  try {
+    return localStorage.getItem(AGE_KEY) === '1'
+  } catch {
+    return true // storage blocked → the gate can't open either; proceed
+  }
+}
+
+function introSeen(): boolean {
+  try {
+    return sessionStorage.getItem(INTRO_KEY) === '1'
+  } catch {
+    return true // can't remember it played → don't risk replaying every load
+  }
+}
+
+function beginEntrance() {
+  if (route.path === '/' && !introSeen()) {
+    try {
+      sessionStorage.setItem(INTRO_KEY, '1')
+    } catch {
+      /* private mode — the loader just plays again next load */
+    }
+    showLoader.value = true
+  } else {
+    onIntroDone()
+  }
+}
+
 // Global product category strip — shown on play/browse pages, hidden inside the
-// account area and on static info pages where it's not relevant.
+// account area, on static info pages, and on campaign landers (single-purpose
+// pages where product navigation would leak the visitor before the CTA).
 const showCategoryNav = computed(
-  () => ready.value && !route.path.startsWith('/account') && !route.meta.info,
+  () =>
+    ready.value &&
+    !route.path.startsWith('/account') &&
+    !route.meta.info &&
+    route.name !== 'campaign',
 )
 
 // Activates all premium-motion CSS (scoped under html.premium). Flag off → no
 // class → stable design, untouched. `data-page` drives the per-page atmosphere.
 onMounted(() => {
+  // Wait for the initial navigation so `route.path` is the real landing route,
+  // then run the gate → loader → entrance chain. AgeGate resolves via
+  // localStorage (it owns the key), so a light poll watches for the accept.
+  void router.isReady().then(() => {
+    if (ageAccepted()) {
+      beginEntrance()
+      return
+    }
+    gatePoll = window.setInterval(() => {
+      if (!ageAccepted()) return
+      window.clearInterval(gatePoll)
+      beginEntrance()
+    }, 250)
+  })
+
   if (polishEnabled) document.documentElement.classList.add('polish')
   if (mobilePolishEnabled) document.documentElement.classList.add('mobile-polish')
   if (!premiumEnabled) return
@@ -50,10 +111,12 @@ onMounted(() => {
   setPage(router.currentRoute.value.name)
   router.afterEach((to) => setPage(to.name))
 })
+
+onBeforeUnmount(() => window.clearInterval(gatePoll))
 </script>
 
 <template>
-  <LoadingScreen v-if="!ready" @done="onIntroDone" />
+  <LoadingScreen v-if="showLoader && !ready" @done="onIntroDone" />
   <AmbientBackground />
   <AppHeader v-show="ready" />
   <!-- Phone-only chrome (flag on; AppHeader is hidden < 768 via mobile.css) -->
@@ -78,5 +141,6 @@ onMounted(() => {
     <MobileBottomNav v-show="ready" />
     <MobileAccountMenu />
   </template>
-  <AgeGate v-if="ready" />
+  <!-- Mounted immediately: the gate must resolve before the intro plays -->
+  <AgeGate />
 </template>

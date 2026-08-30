@@ -41,6 +41,14 @@ const router = createRouter({
     { path: '/games', name: 'games', component: () => import('@/views/GamesView.vue') },
     { path: '/beton', name: 'beton', meta: { category: 'beton' }, component: () => import('@/views/CategoryView.vue') },
     { path: '/poker', name: 'poker', component: () => import('@/views/PokerView.vue') },
+    // Campaign landers — one config entry per traffic source (src/data/campaigns.ts).
+    // Unknown ids render the default campaign, never a 404. Not in the SEO
+    // manifest, so the afterEach hook below already serves these noindex.
+    {
+      path: '/c/:campaignId?',
+      name: 'campaign',
+      component: () => import('@/views/CampaignLanderView.vue'),
+    },
     // Static info / legal pages (shared InfoView, slug via meta.info)
     { path: '/about', name: 'about', meta: { info: 'about' }, component: () => import('@/views/InfoView.vue') },
     { path: '/help', name: 'help', meta: { info: 'help' }, component: () => import('@/views/InfoView.vue') },

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
+import { useFavorites } from '@/composables/useFavorites'
 
 /**
  * Canonical game tile — one shared style for every game grid (Casino, Virtuals,
- * Beton…): square art, badge, hover Play overlay, name + subtitle row, favourite.
+ * Beton…): square art, badge, hover Play overlay, name + provider/RTP row,
+ * favorite star (persisted via useFavorites).
  */
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     subtitle?: string
@@ -15,11 +17,22 @@ withDefaults(
     hot?: boolean
     isNew?: boolean
     tag?: string
+    /** Return-to-player, e.g. "96.5" — shown beside the subtitle when known */
+    rtp?: string
+    /** Stable favorite key (game slug); falls back to the title */
+    favId?: string
   }>(),
-  { subtitle: '', hot: false, isNew: false, tag: '' },
+  { subtitle: '', hot: false, isNew: false, tag: '', rtp: '', favId: '' },
 )
 defineEmits<{ select: [] }>()
-const fav = ref(false)
+
+const { isFavorite, toggleFavorite } = useFavorites()
+const favKey = computed(() => props.favId || props.title)
+
+/** "Provider · RTP 96.5%" — plain facts under the name, never decoration. */
+const caption = computed(() =>
+  [props.subtitle, props.rtp ? `RTP ${props.rtp}%` : ''].filter(Boolean).join(' · '),
+)
 </script>
 
 <template>
@@ -45,19 +58,19 @@ const fav = ref(false)
       <span class="shine-beam" />
     </div>
 
-    <div class="flex items-center justify-between gap-2 px-3 py-3">
+    <div class="flex items-center justify-between gap-2 px-2.5 py-2">
       <div class="min-w-0">
         <p class="truncate font-sans text-[12px] font-semibold text-ink transition-colors group-hover:text-gold-bright">{{ title }}</p>
-        <p v-if="subtitle" class="mt-0.5 flex items-center gap-1.5 truncate font-sans text-[10px] text-ink-dim">
-          <span class="h-1 w-1 shrink-0 rounded-full bg-gold/70" /> {{ subtitle }}
+        <p v-if="caption" class="mt-0.5 truncate font-sans text-[10px] text-ink-dim">
+          {{ caption }}
         </p>
       </div>
       <button
-        class="-mr-2 grid h-11 w-11 shrink-0 place-items-center transition-colors"
-        :class="fav ? 'text-gold-bright' : 'text-ink-dim hover:text-gold'"
-        :aria-pressed="fav"
-        :aria-label="`Favourite ${title}`"
-        @click.stop="fav = !fav"
+        class="-my-1.5 -mr-1.5 grid h-11 w-11 shrink-0 place-items-center transition-colors"
+        :class="isFavorite(favKey) ? 'text-gold-bright' : 'text-ink-dim hover:text-gold'"
+        :aria-pressed="isFavorite(favKey)"
+        :aria-label="`Favorite ${title}`"
+        @click.stop="toggleFavorite(favKey)"
       >
         <AppIcon name="star" :size="15" />
       </button>

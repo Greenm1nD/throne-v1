@@ -4,7 +4,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 /**
  * Premium count-up: animates a numeric value (with currency prefix / unit suffix)
  * from 0 to target when it scrolls into view. Reduced-motion → final value only.
- * Examples: "€24,500,000" · "12 Days".
+ * Examples: "$1,250,000" · "12 Days".
  */
 const props = withDefaults(defineProps<{ value: string; duration?: number }>(), { duration: 1500 })
 

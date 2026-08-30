@@ -7,6 +7,8 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { findGame, lobbyGames, gameSlug } from '@/data/casinoGames'
+import { useFavorites } from '@/composables/useFavorites'
+import { useRecentlyPlayed } from '@/composables/useRecentlyPlayed'
 
 const route = useRoute()
 const router = useRouter()
@@ -18,7 +20,10 @@ const game = computed(() => findGame(String(route.params.slug)) ?? null)
 
 const playing = ref(false)
 const mode = ref<'real' | 'demo'>('real')
-const fav = ref(false)
+
+const { isFavorite, toggleFavorite } = useFavorites()
+const { recordPlay } = useRecentlyPlayed()
+const slug = computed(() => (game.value ? gameSlug(game.value) : ''))
 
 const rootEl = ref<HTMLElement | null>(null)
 useRevealEach(rootEl)
@@ -26,21 +31,24 @@ useRevealEach(rootEl)
 // Switching to another game resets the session state.
 watch(() => route.params.slug, () => {
   playing.value = false
-  fav.value = false
 })
 
 const popular = computed(() =>
-  lobbyGames.filter((g) => g !== game.value).slice(0, 6),
+  [...lobbyGames]
+    .sort((a, b) => (a.popular ?? 99) - (b.popular ?? 99))
+    .filter((g) => g !== game.value)
+    .slice(0, 6),
 )
 
 function launch() {
   if (!game.value) return
   playing.value = true
+  recordPlay(slug.value)
   track('game_open', { game: game.value.name, provider: game.value.provider, mode: mode.value })
 }
 
 const controls = [
-  { icon: 'star', label: 'Favorite', act: () => (fav.value = !fav.value) },
+  { icon: 'star', label: 'Favorite', act: () => slug.value && toggleFavorite(slug.value) },
   { icon: 'refresh', label: 'Reload', act: () => (playing.value = false) },
   { icon: 'vault', label: 'Lobby', act: () => router.push('/casino') },
   { icon: 'x', label: 'Close', act: () => router.push('/casino') },
@@ -76,7 +84,7 @@ const controls = [
               :key="c.label"
               :aria-label="c.label"
               class="grid h-10 w-10 place-items-center rounded-full border border-border-gold/60 bg-black/60 backdrop-blur transition-all duration-300 hover:border-gold hover:text-gold-bright"
-              :class="c.icon === 'star' && fav ? 'text-gold-bright' : 'text-champagne'"
+              :class="c.icon === 'star' && isFavorite(slug) ? 'text-gold-bright' : 'text-champagne'"
               @click="c.act"
             >
               <FontIcon v-if="c.icon === 'refresh'" name="refresh" class="text-[15px]" />

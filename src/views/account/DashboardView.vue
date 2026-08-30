@@ -8,7 +8,6 @@ import { useRouter } from 'vue-router'
 import { user, balances, transactions, quickActions } from '@/data/account'
 import ProgressionWidget from '@/components/progression/ProgressionWidget.vue'
 import { useProgression } from '@/composables/useProgression'
-import { formatBp } from '@/data/progression'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { polishEnabled } from '@/composables/usePolish'
 
@@ -24,27 +23,20 @@ const recent = transactions.slice(0, 5)
     <!-- Greeting -->
     <div>
       <p class="font-sans text-[13px] text-ink-dim">Welcome back,</p>
-      <div class="mt-1 flex items-center gap-3">
-        <h1 class="font-display text-3xl font-bold tracking-[0.06em] text-gold-gradient">{{ user.name }}</h1>
-        <img v-if="rank" :src="rank.crown" alt="" class="h-7 w-auto" />
-      </div>
+      <h1 class="mt-1 font-display text-3xl font-bold tracking-[0.06em] text-gold-gradient">{{ user.name }}</h1>
       <p class="mt-1 font-sans text-[12px] text-ink-dim">{{ user.handle }} · Member since {{ user.memberSince }}</p>
       <span class="mt-2 inline-flex items-center gap-2 rounded-full border border-border-gold px-3.5 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-gold-bright">
         <AppIcon name="crown" :size="12" /> {{ rank?.name }}
       </span>
     </div>
 
-    <!-- Stat row -->
-    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <!-- Stat row — rank deliberately absent here: the ProgressionWidget below
+         is the one rank surface, plus the compact badge in the greeting. -->
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       <StatCard label="Balance" :value="balances.total" font="wallet" accent
         :rows="[{ k: 'Total Deposits', v: balances.totalDeposits }, { k: 'Total Withdrawals', v: balances.totalWithdrawals }]" />
       <StatCard label="Bonus" :value="balances.bonus" icon="gift" accent
         :rows="[{ k: 'Active Bonuses', v: String(balances.activeBonuses) }, { k: 'Active Balance', v: balances.activeBonusBalance }]" />
-      <StatCard label="Rank" :value="rank?.name ?? '—'" icon="crown" accent
-        :rows="rank ? [
-          { k: 'Standing Order', v: formatBp(rank.standingOrderBp) },
-          { k: 'Weekly Purse', v: rank.weeklyPurseBp ? formatBp(rank.weeklyPurseBp) : '—' },
-        ] : []" />
       <StatCard label="Account Status" value="Not Verified" icon="shield"
         :rows="polishEnabled ? [] : [{ k: 'Member since', v: user.memberSince }, { k: 'Two-Factor Auth', v: 'Disabled' }]">
         <template #value><span class="text-[#e89a7c]">Not Verified</span></template>
@@ -70,20 +62,6 @@ const recent = transactions.slice(0, 5)
         </template>
 
         <ProgressionWidget placement="Card" />
-
-        <div class="mt-6 grid grid-cols-2 gap-3 border-t border-border-gold/20 pt-5 sm:grid-cols-4">
-          <div v-for="b in [
-              { icon: 'star', t: 'Higher Bonuses' },
-              { icon: 'bolt', t: 'Faster Withdrawals' },
-              { icon: 'headset', t: 'VIP Support' },
-              { icon: 'crown', t: 'Exclusive Events' },
-            ]" :key="b.t" class="flex flex-col items-center gap-2 text-center">
-            <span class="grid h-11 w-11 place-items-center rounded-full border border-border-gold/60 text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)">
-              <AppIcon :name="b.icon" :size="17" />
-            </span>
-            <span class="font-sans text-[10px] uppercase tracking-[0.1em] text-ink-dim">{{ b.t }}</span>
-          </div>
-        </div>
       </AccountPanel>
 
       <AccountPanel title="Recent Transactions">

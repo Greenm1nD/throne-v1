@@ -94,10 +94,10 @@ const isSilver = props.champion.accent === 'silver'
       <p v-if="!isChampion" class="relative z-10 mt-0.5 font-sans text-[11px] uppercase tracking-[0.14em] text-ink-muted">{{ champion.title }}</p>
 
       <p
-        class="relative z-10 mt-2 font-display font-bold tabular-nums"
+        class="relative z-10 mt-2 font-sans font-bold tabular-nums"
         :class="isChampion ? 'text-2xl text-gold-gradient sm:text-[1.8rem]' : isSilver ? 'text-xl text-[#eef0f5]' : 'text-xl text-[#efd6ad]'"
-      ><CountUp :value="champion.winnings" /></p>
-      <p class="relative z-10 mt-1 font-sans text-[10px] uppercase tracking-[0.16em] text-ink-dim">Total Winnings</p>
+      ><CountUp :value="champion.crowns" /></p>
+      <p class="relative z-10 mt-1 font-sans text-[10px] uppercase tracking-[0.16em] text-ink-dim">Season Crowns</p>
 
       <!-- Champion inset frame (double-line gold) -->
       <span v-if="isChampion" class="pointer-events-none absolute inset-[7px] z-20 rounded-[13px] border border-gold/45" aria-hidden="true" />

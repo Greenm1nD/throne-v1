@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { playRoyalGate } from '@/utils/sfx'
+import { getAttribution } from '@/utils/attribution'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import Crown3D from '@/components/ui/Crown3D.vue'
+import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { track } from '@/utils/analytics'
 import { assets } from '@/data/assets'
 import { INVITE_ONLY, joinCta } from '@/config'
 
 const { state, close, setMode, openTwofa } = useAuthModal()
+const { login } = useAuth()
+const router = useRouter()
+const route = useRoute()
 
 // Per-field password reveal toggles (keyed by field id).
 const reveal = reactive<Record<string, boolean>>({})
@@ -19,6 +26,8 @@ const reveal = reactive<Record<string, boolean>>({})
 const values = reactive<Record<string, string>>({})
 const errors = reactive<Record<string, string>>({})
 const terms = ref(false)
+// Deliberately NOT pre-checked — an age confirmation must be an affirmative act.
+const adult = ref(false)
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
 function clearError(id: string) {
@@ -31,7 +40,6 @@ function validate(): boolean {
   for (const f of fields) {
     if (f.select) continue
     const v = (values[f.id] ?? '').trim()
-    if (f.id === 'referral') continue // optional
     if (!v) {
       errors[f.id] = 'Required'
       continue
@@ -44,19 +52,61 @@ function validate(): boolean {
     }
   }
   if (state.mode === 'register') {
-    if (values.password && values.confirm && values.password !== values.confirm) {
-      errors.confirm = 'Passwords do not match'
-    }
     if (!terms.value) errors.terms = 'Please accept the Terms to continue'
+    if (!adult.value) errors.adult = 'Please confirm you are 18 or older'
   }
   return Object.keys(errors).length === 0
 }
 
-// Login chain: credentials → 2FA seal → auth.login() (see TwoFaModal).
-function enterKingdom() {
+/**
+ * 2FA at login is a per-user security setting (Security → Two-Factor Auth),
+ * not a gate everyone is forced through. The demo user has it off, so login
+ * completes directly; when the flag is on, the seal dialog (TwoFaModal) runs
+ * as before. Becomes a field on the user record once the backend exists.
+ */
+const TWOFA_ON_LOGIN: boolean = false
+
+/**
+ * Copy the captured click attribution onto the account exactly once, at
+ * registration. The capture store is never re-read after this — a later
+ * affiliate's cookie must not overwrite the original referrer (the freeze
+ * rule from tech_integrations/tracking_and_postbacks.js §3).
+ */
+function freezeAttributionOnAccount() {
+  try {
+    if (window.localStorage.getItem('throne.account.attribution')) return
+    const attr = getAttribution()
+    if (attr) window.localStorage.setItem('throne.account.attribution', JSON.stringify(attr))
+  } catch {
+    /* storage unavailable — the demo freeze simply skips */
+  }
+}
+
+/**
+ * Only same-origin absolute paths may be followed (mirrors TwoFaModal):
+ * `//evil.com` and `/\evil.com` are rejected so the guard's redirect query
+ * param cannot become an open redirect.
+ */
+function safeRedirect(raw: unknown): string | null {
+  const path = typeof raw === 'string' ? raw : null
+  if (!path || !path.startsWith('/')) return null
+  if (path[1] === '/' || path[1] === '\\') return null
+  return path
+}
+
+async function enterKingdom() {
   if (!validate()) return
+  if (state.mode === 'login' && TWOFA_ON_LOGIN) {
+    close()
+    openTwofa()
+    return
+  }
+  await login()
+  if (state.mode === 'register') freezeAttributionOnAccount()
+  track(state.mode === 'register' ? 'registration_complete' : 'login_complete')
   close()
-  openTwofa()
+  // replace, not push: the login detour should not sit in the back stack.
+  router.replace(safeRedirect(route.query.redirect) ?? '/account')
 }
 
 const dialogEl = ref<HTMLElement | null>(null)
@@ -78,6 +128,7 @@ watch(
     Object.keys(errors).forEach((k) => delete errors[k])
     Object.keys(values).forEach((k) => delete values[k])
     terms.value = false
+    adult.value = false
     playRoyalGate()
     await nextTick()
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -130,24 +181,13 @@ interface Field {
   select?: boolean
 }
 
-// Ordered for a clear two-column read:
-//   Full Name | Username      (identity)
-//   Email     | Date of Birth (contact)
-//   Password  | Confirm       (credentials, side by side)
-//   Country   | Referral code
+// The four essentials only. Full name and country are collected at KYC
+// (verification), not at the door — fewer fields, fewer drop-offs.
 const registerFields: Field[] = [
-  { id: 'fullName', icon: 'user', placeholder: 'Full Name' },
-  { id: 'username', icon: 'user', placeholder: 'Username' },
   { id: 'email', icon: 'mail', placeholder: 'Email Address', type: 'email' },
-  { id: 'dob', icon: 'calendar', placeholder: 'Date of Birth' },
+  { id: 'username', icon: 'user', placeholder: 'Username' },
+  { id: 'dob', icon: 'calendar', placeholder: 'Date of Birth', type: 'date' },
   { id: 'password', icon: 'lock', placeholder: 'Password', password: true },
-  { id: 'confirm', icon: 'lock', placeholder: 'Confirm Password', password: true },
-  { id: 'country', icon: 'globe', placeholder: 'Select Country', select: true },
-  {
-    id: 'referral',
-    icon: 'gift',
-    placeholder: INVITE_ONLY ? 'Invitation Code (Optional)' : 'Referral Code (Optional)',
-  },
 ]
 
 const loginFields: Field[] = [
@@ -282,6 +322,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                         v-model="values[f.id]"
                         :type="f.password ? (reveal[f.id] ? 'text' : 'password') : f.type ?? 'text'"
                         :placeholder="f.placeholder"
+                        :aria-label="f.placeholder"
                         :aria-invalid="!!errors[f.id]"
                         class="h-12 w-full rounded-lg border bg-black/40 pl-11 pr-11 text-sm text-ink placeholder:text-ink-dim"
                         :class="errors[f.id] ? 'border-[#c2603f] focus:border-[#d9774f]' : 'border-border-gold/60 focus:border-gold'"
@@ -330,12 +371,18 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                       {{ errors.terms }}
                     </p>
                     <label class="flex items-center gap-2.5 text-[13px] text-ink-muted">
-                      <input type="checkbox" class="peer sr-only" checked />
-                      <span class="grid h-4 w-4 place-items-center rounded border border-border-gold text-transparent peer-checked:bg-gold peer-checked:text-bg">
+                      <input v-model="adult" type="checkbox" class="peer sr-only" @change="clearError('adult')" />
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-transparent peer-checked:bg-gold peer-checked:text-bg"
+                        :class="errors.adult ? 'border-[#c2603f]' : 'border-border-gold'"
+                      >
                         <AppIcon name="check" :size="11" />
                       </span>
                       I confirm that I am 18 years or older
                     </label>
+                    <p v-if="errors.adult" class="pl-6 font-sans text-[11px] text-[#d98a6a]">
+                      {{ errors.adult }}
+                    </p>
                   </div>
 
                   <GoldButton variant="solid" size="lg" block class="mt-3" @click="enterKingdom">

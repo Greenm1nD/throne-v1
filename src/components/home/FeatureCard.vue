@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { assets } from '@/data/assets'
 import type { Feature } from '@/data/features'
+import { INVITE_ONLY } from '@/config'
 
 const props = defineProps<{ feature: Feature }>()
 const img = assets[props.feature.image]
+const router = useRouter()
+
+// The VIP badge must not claim gatekeeping that isn't on (config.ts).
+const vipBadge = INVITE_ONLY ? 'Invite Only' : 'Earned by Rank'
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const img = assets[props.feature.image]
       v-if="feature.vip"
       class="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full border border-border-gold bg-black/50 px-3 py-1 font-sans text-[9px] font-semibold uppercase tracking-[0.2em] text-gold-bright backdrop-blur"
     >
-      <AppIcon name="crown" :size="11" /> Invite Only
+      <AppIcon name="crown" :size="11" /> {{ vipBadge }}
     </span>
 
     <!-- Hover shine -->
@@ -42,7 +48,7 @@ const img = assets[props.feature.image]
           {{ feature.subtitle }}
         </p>
       </div>
-      <GoldButton variant="outline" size="sm">
+      <GoldButton variant="outline" size="sm" @click="router.push(feature.href)">
         {{ feature.cta }} <AppIcon name="arrowRight" :size="13" />
       </GoldButton>
     </div>

@@ -329,10 +329,6 @@ html.mobile-polish body {
 
 /* ── Hero refinements (≤ 767px) ──────────────────────────────────────────── */
 @media (max-width: 767px) {
-  /* Home hero: drop the scarcity pill on phones (too dense over the video). */
-  html.mobile-polish .hero-scarcity {
-    display: none !important;
-  }
   /* Home hero CTAs: equal-width, comfortably sized stack. */
   html.mobile-polish .hero-ctas {
     width: 100%;

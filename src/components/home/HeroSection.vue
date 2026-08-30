@@ -11,9 +11,16 @@ import { useEnter } from '@/composables/useEnter'
 import { useViewport } from '@/composables/useMobilePolish'
 import { introDone } from '@/composables/useIntroDone'
 import { assets } from '@/data/assets'
+import { RANKS, formatBp } from '@/data/progression'
 
 const router = useRouter()
 const { enter, enterLabel } = useEnter()
+
+// The one real differentiator, stated plainly. Standing Order rates come from
+// the progression ladder itself, so this line can never drift from the data.
+const minRateBp = Math.min(...RANKS.map((r) => r.standingOrderBp))
+const maxRateBp = Math.max(...RANKS.map((r) => r.standingOrderBp))
+const offerRange = `${formatBp(minRateBp)}–${formatBp(maxRateBp)}`
 
 // Lite hero on mobile/tablet (flag on): static poster instead of autoplay video,
 // crown image instead of the 3D model, no smoke/sparkles, no scroll parallax.
@@ -26,20 +33,6 @@ const ctas = ref<HTMLElement | null>(null)
 const backdrop = ref<HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)
 const bloom = ref<HTMLElement | null>(null)
-
-// Scarcity signals — exclusivity is felt, not stated. A live presence count
-// that gently drifts, and a closing "intake" window, both tick on a timer.
-const online = ref(1247)
-let secs = 2 * 3600 + 47 * 60 // ~2h47m until the next intake closes
-const countdown = ref('')
-let timer: ReturnType<typeof setInterval> | undefined
-
-function fmt() {
-  const h = Math.floor(secs / 3600)
-  const m = Math.floor((secs % 3600) / 60)
-  const s = secs % 60
-  countdown.value = `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`
-}
 
 let ticking = false
 function onScroll() {
@@ -97,23 +90,10 @@ onMounted(() => {
   // Continuous scroll parallax is a scroll-jank risk on touch devices — skip it
   // in lite mode (the static hero stays put).
   if (!lite.value) window.addEventListener('scroll', onScroll, { passive: true })
-
-  // Tick the live signals. Frozen for reduced-motion (still shown, just static).
-  fmt()
-  if (!reduce) {
-    timer = setInterval(() => {
-      if (secs > 0) secs--
-      fmt()
-      // Presence drifts within a tight band so it reads as live, not random.
-      const drift = Math.round((Math.random() - 0.45) * 4)
-      online.value = Math.min(1289, Math.max(1208, online.value + drift))
-    }, 1000)
-  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
-  if (timer) clearInterval(timer)
 })
 </script>
 
@@ -201,29 +181,18 @@ onBeforeUnmount(() => {
       </p>
     </div>
 
-    <!-- Bottom: scarcity signals + CTAs over the marble floor -->
+    <!-- Bottom: the offer in plain words + CTAs over the marble floor -->
     <div
       ref="ctas"
       class="container-royal relative z-10 flex flex-col items-center gap-5"
     >
-      <!-- Live presence + closing intake window (hidden on phones) -->
-      <div
-        class="hero-scarcity flex flex-wrap items-center justify-center gap-x-5 gap-y-2 rounded-full border border-border-gold/40 bg-black/45 px-5 py-2 backdrop-blur-sm"
+      <!-- The house's actual offer — rates read from the progression ladder -->
+      <p
+        class="hero-offer max-w-xl rounded-full border border-border-gold/40 bg-black/45 px-5 py-2 text-center font-sans text-[11px] leading-5 tracking-[0.04em] text-ink-muted backdrop-blur-sm"
       >
-        <span class="flex items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-ink-muted">
-          <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] motion-safe:animate-pulse" />
-          <span class="font-semibold tabular-nums text-champagne">{{ online.toLocaleString() }}</span> nobles in the hall
-        </span>
-        <span class="hidden h-3 w-px bg-border-gold/40 sm:block" />
-        <span class="flex items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-ink-muted">
-          Next intake closes in
-          <span class="font-semibold tabular-nums text-champagne">{{ countdown }}</span>
-        </span>
-        <span class="hidden h-3 w-px bg-border-gold/40 sm:block" />
-        <span class="font-sans text-[11px] tracking-[0.04em] text-ink-muted">
-          The roster is capped at <span class="font-semibold text-champagne">500</span>
-        </span>
-      </div>
+        The Standing Order — <span class="font-semibold tabular-nums text-champagne">{{ offerRange }}</span>
+        of every settled bet returns to you. Rates published, no wagering requirements.
+      </p>
 
       <div class="hero-ctas flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
         <GoldButton variant="solid" size="lg" block class="sm:w-auto" @click="enter()">

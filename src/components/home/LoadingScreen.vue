@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
-import { allow3D } from '@/utils/render3d'
 
 const emit = defineEmits<{ done: [] }>()
 
-// 3D coin fades in over the PNG poster once the model is ready.
-const crownReady = ref(false)
-// On mobile / reduced-motion / save-data we keep the static poster (no WebGL).
-const use3D = ref(false)
-
-// Backstop: the intro must never stick, even if rAF/GSAP is starved (e.g. by
-// the WebGL crown decoding). Whichever fires first wins; finish is idempotent.
+// Backstop: the intro must never stick, even if rAF/GSAP is starved. Whichever
+// fires first wins; finish is idempotent.
 let safety = 0
 let finished = false
 function finish() {
@@ -59,15 +53,9 @@ onMounted(() => {
     return
   }
 
-  // Light 3D coin on capable devices; phones keep the static poster.
-  if (allow3D()) {
-    use3D.value = true
-    import('@google/model-viewer')
-  }
-
-  // Hard cap on the whole intro (timeline runs ~3.45s) — setTimeout fires even
+  // Hard cap on the whole intro (timeline runs ~1.2s) — setTimeout fires even
   // when rAF is throttled, so the loader can never trap the user.
-  safety = window.setTimeout(finish, 4500)
+  safety = window.setTimeout(finish, 2500)
 
   const root = stage.value!
   const dots = Array.from(root.querySelectorAll<HTMLElement>('.spark-dot'))
@@ -77,46 +65,43 @@ onMounted(() => {
   dots.forEach((d, i) => gsap.set(d, { x: particles[i].x, y: particles[i].y }))
   gsap.set(gems, { rotation: 45 })
 
+  // Compact ceremony (~1.2s total): the full sequence at double time, so the
+  // loader whets rather than delays.
   const tl = gsap.timeline({ onComplete: finish })
 
-  // 1–2 · First spark
-  tl.fromTo(spark.value, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' }, 0.1)
+  // 1 · First spark
+  tl.fromTo(spark.value, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'power2.out' }, 0)
 
-  // 3 · Energy gathering
-  tl.fromTo(dots, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, stagger: 0.015, ease: 'power1.out' }, 0.35)
+  // 2 · Energy gathering
+  tl.fromTo(dots, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.25, stagger: 0.008, ease: 'power1.out' }, 0.1)
 
-  // 4–5 · Ring draws, halo completes
-  tl.to(spark.value, { opacity: 0, scale: 0.4, duration: 0.3 }, 0.7)
-  tl.fromTo(ringCircle.value, { strokeDashoffset: CIRC }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 0.7)
-  tl.fromTo(ringGlow.value, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 1.1)
+  // 3 · Ring draws, halo completes
+  tl.to(spark.value, { opacity: 0, scale: 0.4, duration: 0.2 }, 0.3)
+  tl.fromTo(ringCircle.value, { strokeDashoffset: CIRC }, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.inOut' }, 0.25)
+  tl.fromTo(ringGlow.value, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' }, 0.5)
 
-  // 6 · Particles converge inward + fade
-  tl.to(dots, { x: 0, y: 0, opacity: 0, scale: 0.2, duration: 0.55, stagger: 0.008, ease: 'power2.in' }, 1.05)
+  // 4 · Particles converge inward + fade
+  tl.to(dots, { x: 0, y: 0, opacity: 0, scale: 0.2, duration: 0.3, stagger: 0.004, ease: 'power2.in' }, 0.45)
 
-  // 7–9 · THRONE 3D logo appears directly — clean fade + settle (no blur wipe,
-  // so a frozen frame during model decode still reads as the crisp logo).
+  // 5 · THRONE logo mark — clean fade + settle
   tl.fromTo(
     mark.value,
     { opacity: 0, scale: 0.82 },
-    { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' },
-    0.25,
+    { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' },
+    0.15,
   )
 
-  // 10 · Royal crest diamonds pop in
-  tl.fromTo(gems, { opacity: 0, scale: 0, rotation: 45 }, { opacity: 1, scale: 1, rotation: 45, duration: 0.4, stagger: 0.06, ease: 'back.out(2.2)' }, 1.95)
+  // 6 · Crest diamonds + tagline
+  tl.fromTo(gems, { opacity: 0, scale: 0, rotation: 45 }, { opacity: 1, scale: 1, rotation: 45, duration: 0.25, stagger: 0.03, ease: 'back.out(2.2)' }, 0.55)
+  tl.fromTo(tagline.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.6)
 
-  // 11 · Tagline reveal
-  tl.fromTo(tagline.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 2.2)
-
-  // 12–13 · Premium hold → portal transition (crest expands + flash)
-  tl.to(stage.value, { scale: 2.7, duration: 0.6, ease: 'power2.in' }, 2.78)
-  tl.to([mark.value, tagline.value, ...gems], { opacity: 0, duration: 0.3 }, 2.8)
-  tl.to(ringGlow.value, { scale: 1.4, opacity: 0.9, duration: 0.6 }, 2.78)
-  tl.fromTo(flash.value, { opacity: 0 }, { opacity: 0.55, duration: 0.2 }, 2.9)
-  tl.to(flash.value, { opacity: 0, duration: 0.35 }, 3.1)
-
-  // 14–15 · Dissolve into the homepage
-  tl.to(screen.value, { opacity: 0, duration: 0.45, ease: 'power2.in' }, 3.0)
+  // 7 · Portal transition (crest expands + flash) → dissolve into the homepage
+  tl.to(stage.value, { scale: 2.7, duration: 0.4, ease: 'power2.in' }, 0.8)
+  tl.to([mark.value, tagline.value, ...gems], { opacity: 0, duration: 0.25 }, 0.82)
+  tl.to(ringGlow.value, { scale: 1.4, opacity: 0.9, duration: 0.4 }, 0.8)
+  tl.fromTo(flash.value, { opacity: 0 }, { opacity: 0.55, duration: 0.15 }, 0.9)
+  tl.to(flash.value, { opacity: 0, duration: 0.25 }, 1.05)
+  tl.to(screen.value, { opacity: 0, duration: 0.35, ease: 'power2.in' }, 0.85)
 })
 
 onBeforeUnmount(() => clearTimeout(safety))
@@ -187,45 +172,16 @@ onBeforeUnmount(() => clearTimeout(safety))
           :style="{ top: d.top, left: d.left, marginLeft: '-6px', marginTop: '-6px', boxShadow: '0 0 8px rgba(245,215,122,0.6)' }"
         />
 
-        <!-- THRONE logo mark: live 3D over a PNG poster fallback -->
+        <!-- THRONE logo mark — static poster only: at ~1.2s the 3D coin could
+             never finish loading, so the WebGL pass is skipped entirely -->
         <div
           ref="mark"
           class="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 opacity-0"
         >
-          <!-- Round champagne glow behind the coin (replaces the square-clipping drop-shadow) -->
-          <span
-            v-if="use3D && crownReady"
-            class="pointer-events-none absolute inset-0 z-0"
-            style="background: radial-gradient(circle, rgba(245,215,122,0.4), rgba(245,215,122,0.1) 42%, transparent 64%); filter: blur(6px)"
-            aria-hidden="true"
-          />
           <img
-            v-show="!crownReady"
             src="/assets/images/throne-logo-mark.webp"
             alt=""
             class="absolute inset-0 h-full w-full object-contain drop-shadow-[0_4px_24px_rgba(212,175,55,0.5)]"
-          />
-          <model-viewer
-            v-if="use3D"
-            src="/assets/models/coin.glb"
-            loading="eager"
-            reveal="auto"
-            auto-rotate
-            auto-rotate-delay="0"
-            rotation-per-second="120deg"
-            interaction-prompt="none"
-            camera-orbit="0deg 80deg 155%"
-            min-camera-orbit="auto 80deg auto"
-            max-camera-orbit="auto 80deg auto"
-            shadow-intensity="0"
-            exposure="1.35"
-            tone-mapping="aces"
-            environment-image="neutral"
-            field-of-view="28deg"
-            class="absolute inset-0 z-[1] h-full w-full transition-opacity duration-500"
-            :class="crownReady ? 'opacity-100' : 'opacity-0'"
-            style="background: transparent; --poster-color: transparent"
-            @load="crownReady = true"
           />
         </div>
       </div>

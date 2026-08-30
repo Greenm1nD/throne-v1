@@ -51,7 +51,7 @@ export const casinoPage = {
   ],
   jackpot: {
     label: 'Progressive Jackpot',
-    amount: '€10,892,750',
+    amount: '$1,250,000',
     cta: 'Play to Win',
     image: '/assets/images/casino-jackpot.webp',
     fallback: '/assets/images/hall-biggest-jackpot.webp',

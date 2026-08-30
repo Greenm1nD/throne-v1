@@ -29,13 +29,18 @@ useReveal(communityRow, { stagger: 0.14 })
 <template>
   <main>
     <HeroSection />
-    <KingdomStatus />
-    <RoyalCollection />
 
-    <!-- Continue Playing -->
+    <!-- Continue Playing — playable tiles within the first scroll -->
     <section class="container-royal pt-10 sm:pt-14">
       <GameCarousel title="Continue Playing" :games="continuePlaying" variant="lg" view-all-to="/casino" />
     </section>
+
+    <!-- KingdomStatus pulls itself up (sm:-mt-12, built to overlap the hero
+         seam) — the wrapper's padding absorbs that so it clears the rail. -->
+    <div class="pt-8 sm:pt-[6.5rem]">
+      <KingdomStatus />
+    </div>
+    <RoyalCollection />
 
     <HallOfKings />
 
@@ -44,7 +49,7 @@ useReveal(communityRow, { stagger: 0.14 })
       <GameCarousel title="Trending Now" :games="trending" variant="lg" view-all-to="/games" />
     </section>
 
-    <!-- Exclusivity & scarcity -->
+    <!-- Trust panel — what the house will never do -->
     <TheInvitation />
 
     <FeatureGrid />

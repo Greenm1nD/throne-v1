@@ -1,10 +1,20 @@
-/** Hall of Kings — season, podium champions and headline stats. */
+/**
+ * Hall of Kings — seasonal leaderboard. Scored in CROWNS (season points earned
+ * by play), never in money: no fabricated winnings or jackpot figures. All
+ * entries are demo data and are labeled as such in the UI ("Season XII · demo").
+ */
+
+import { RANKS } from './progression'
 
 export interface KingChampion {
   rank: 1 | 2 | 3
   name: string
+  /** Ladder rank the player holds (see src/data/progression.ts). */
   title: string
-  winnings: string
+  /**
+   * Season crowns — leaderboard points, not currency.
+   */
+  crowns: string
   /** Portrait (rank 1) or insignia (ranks 2–3) artwork */
   image: string
   accent: 'gold' | 'silver' | 'bronze'
@@ -19,8 +29,8 @@ export interface KingStat {
 }
 
 export const kingsSeason = {
-  name: 'Season of the Lion',
-  prizePool: '€500,000 Prize Pool',
+  name: 'Season XII',
+  measure: 'Ranked by Crowns — season points, not money',
   daysRemaining: '12 Days Remaining',
 }
 
@@ -29,32 +39,35 @@ export const kingsChampions: KingChampion[] = [
   {
     rank: 2,
     name: 'Lionheart',
-    title: 'The Conqueror',
-    winnings: '€18,750,000',
+    title: 'Sovereign',
+    crowns: '41,380 Crowns',
     image: '/assets/images/king-lion.webp',
     accent: 'silver',
   },
   {
     rank: 1,
     name: 'Kingmaker',
-    title: 'Season Champion',
-    winnings: '€24,500,000',
+    title: 'Monarch',
+    crowns: '48,210 Crowns',
     image: '/assets/images/king-champion.webp',
     accent: 'gold',
   },
   {
     rank: 3,
     name: 'Crownlord',
-    title: 'The Strategist',
-    winnings: '€12,890,000',
+    title: 'Crown',
+    crowns: '36,905 Crowns',
     image: '/assets/images/king-crown.webp',
     accent: 'bronze',
   },
 ]
 
+const leader = kingsChampions.find((c) => c.rank === 1)!
+
+/** Honest-shaped: counts computed from the data above and the real ladder. */
 export const kingsStats: KingStat[] = [
-  { label: 'Highest Win', value: '€2,450,000', description: 'Imperial Roulette', icon: 'trophy' },
-  { label: 'Biggest Jackpot', value: '€10,892,750', description: 'Monarch Slots — Royal Pot', icon: 'spade' },
-  { label: 'Season Prize Pool', value: '€500,000', description: 'For the top 50 players', icon: 'vault' },
-  { label: 'Days Remaining', value: '12 Days', description: 'Until season ends', icon: 'calendar' },
+  { label: 'Leading Score', value: leader.crowns, description: `${leader.name} — ${leader.title}`, icon: 'trophy' },
+  { label: 'On the Podium', value: `${kingsChampions.length} Ranked`, description: 'Demo roster — the full board arrives with the backend', icon: 'crown' },
+  { label: 'Rank Titles', value: `${RANKS.length} Titles`, description: `${RANKS[0].name} to ${RANKS[RANKS.length - 1].name}, rates published`, icon: 'chart' },
+  { label: 'Days Remaining', value: '12 Days', description: 'Until the season closes', icon: 'calendar' },
 ]

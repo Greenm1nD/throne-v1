@@ -12,6 +12,7 @@ import { useDiscreet } from '@/composables/useDiscreet'
 import { useWalletModal } from '@/composables/useWalletModal'
 import { introDone } from '@/composables/useIntroDone'
 import { user as member } from '@/data/account'
+import { formatMoney } from '@/utils/money'
 import { joinCta } from '@/config'
 
 const { open } = useAuthModal()
@@ -35,9 +36,7 @@ const stopIntroLine = watch(introDone, (v) => {
   setTimeout(() => (showIntroLine.value = false), 2600)
 })
 
-const balanceLabel = computed(() =>
-  mask(`€${balance.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`),
-)
+const balanceLabel = computed(() => mask(formatMoney(balance.value)))
 
 const accLinks = [
   { label: 'Dashboard', to: '/account', icon: 'crown' },

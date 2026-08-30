@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -7,6 +7,9 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
+import { useDiscreet } from '@/composables/useDiscreet'
+import { useWalletModal } from '@/composables/useWalletModal'
+import { formatMoney } from '@/utils/money'
 import { useScrollLock } from '@/composables/useScrollLock'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { categoryNav } from '@/data/categoryPages'
@@ -19,9 +22,14 @@ import { joinCta } from '@/config'
  * AppHeader is hidden < 768 via mobile.css so there is only one chrome.
  */
 const router = useRouter()
-const { isLoggedIn, logout } = useAuth()
+const { isLoggedIn, balance, logout } = useAuth()
 const { open } = useAuthModal()
 const { open: accountMenuOpen } = useAccountMenu()
+const { open: openWallet } = useWalletModal()
+const { mask } = useDiscreet()
+// Persistent balance pill (category norm: balance always visible, tap opens
+// the wallet). Discreet mode masks the figure but the pill stays.
+const balanceLabel = computed(() => mask(formatMoney(balance.value)))
 const drawer = ref(false)
 const drawerEl = ref<HTMLElement | null>(null)
 const { lock, unlock } = useScrollLock()
@@ -79,19 +87,29 @@ function signOut() {
         </span>
       </button>
 
-      <!-- Center: crest -->
+      <!-- Center: crest (mark-only for members so the balance pill never overlaps) -->
       <RouterLink to="/" aria-label="THRONE home" class="absolute left-1/2 -translate-x-1/2">
-        <CrownLogo :size="28" :tagline="false" />
+        <CrownLogo :size="28" :tagline="false" :with-text="!isLoggedIn" />
       </RouterLink>
 
-      <!-- Right: profile -->
-      <button
-        class="grid h-11 w-11 place-items-center rounded-full border border-border-gold/60 text-champagne transition-colors hover:border-gold hover:text-gold-bright"
-        :aria-label="isLoggedIn ? 'Your account' : 'Log in or join'"
-        @click="profile"
-      >
-        <AppIcon name="user" :size="18" />
-      </button>
+      <!-- Right: balance pill (members) + profile -->
+      <div class="flex items-center gap-2">
+        <button
+          v-if="isLoggedIn"
+          class="flex h-9 items-center rounded-full border border-border-gold/60 bg-black/40 px-3 font-sans text-[12px] font-bold tabular-nums text-gold-bright transition-colors hover:border-gold"
+          aria-label="Balance — open wallet"
+          @click="openWallet('deposit')"
+        >
+          {{ balanceLabel }}
+        </button>
+        <button
+          class="grid h-11 w-11 place-items-center rounded-full border border-border-gold/60 text-champagne transition-colors hover:border-gold hover:text-gold-bright"
+          :aria-label="isLoggedIn ? 'Your account' : 'Log in or join'"
+          @click="profile"
+        >
+          <AppIcon name="user" :size="18" />
+        </button>
+      </div>
     </div>
   </header>
 
