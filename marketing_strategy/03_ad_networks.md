@@ -14,6 +14,8 @@ open to you.
 
 ### 1.1 Market viability matrix
 
+> ⚠️ **SUPERSEDED (2026-08-31):** several classifications below are stale — Chile is CLOSED (Supreme Court 09/2025 + DNS blocking), Japan is CLOSED (promo/affiliate ban since 2025-09-25, criminal), Peru/Mexico/DR are licensing-track, not grey. The current market model is the market-cell gate in [07_launch_flow_plan.md](07_launch_flow_plan.md) §3. This table is kept for the workable-geo mechanics only and will be harmonized after the counsel sprint.
+
 | Market | Status | Run ads? | Note |
 |---|---|:--:|---|
 | **Mexico** | Grey, tolerated | ✅ Primary | SEGOB permits exist for local ops; offshore is long-standing grey. Highest LatAm volume open to you |
