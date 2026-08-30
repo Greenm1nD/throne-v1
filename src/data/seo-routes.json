@@ -1,0 +1,77 @@
+[
+  { "path": "/", "name": "home", "priority": 1.0,
+    "title": "A Private Royal Gaming Kingdom",
+    "description": "A private royal gaming club: the casino floor, the live tables, the sportsbook and the Royal Court, gathered under one roof. Admission by the front door." },
+
+  { "path": "/casino", "name": "casino", "priority": 0.9,
+    "title": "Casino — Where Fortune Bows to Kings",
+    "description": "The casino floor — a searchable lobby of slots from Pragmatic Play and Platin Gaming, the progressive jackpot counting upward, and the VIP band beneath it." },
+
+  { "path": "/live-casino", "name": "live-casino", "priority": 0.8,
+    "title": "Live Casino — The Royal Tables",
+    "description": "Real dealers, real time. Live blackjack, baccarat, poker and Crazy Time from Evolution and Pragmatic Play Live, with stakes, seat counts and studio in view." },
+
+  { "path": "/sports", "name": "sports", "priority": 0.8,
+    "title": "The Arena — Sports Betting",
+    "description": "The Arena — the THRONE sportsbook. The house frame that the provider feed is served inside, with the sports welcome band and the arena furniture in place." },
+
+  { "path": "/esports", "name": "esports", "priority": 0.6, "canonical": "/sports",
+    "title": "The Arena — Sports Betting",
+    "description": "The Arena — the THRONE sportsbook. The house frame that the provider feed is served inside, with the sports welcome band and the arena furniture in place." },
+
+  { "path": "/live", "name": "live", "priority": 0.7,
+    "title": "Live Betting — Every Second Is a Market",
+    "description": "In-play betting across football, tennis, basketball, hockey and volleyball — odds that move with the game, and cash-out whenever you choose to take it." },
+
+  { "path": "/virtual", "name": "virtual", "priority": 0.7,
+    "title": "Virtual Sports — Real Adrenaline",
+    "description": "Horse racing, greyhounds, football, tennis and motorbikes run around the clock — a new event every two or three minutes, settled the moment it ends." },
+
+  { "path": "/games", "name": "games", "priority": 0.7,
+    "title": "All Games — The Full Catalogue",
+    "description": "Every THRONE game in one lobby — search, filter and sort the full slot catalogue, see the studios behind it, and start instantly with no download." },
+
+  { "path": "/beton", "name": "beton", "priority": 0.7,
+    "title": "Beton — Live Betting Games",
+    "description": "Live betting games drawn in real studios around the clock — dice duels, wheels, keno and card games from TVBET and BetGames.TV, settled in seconds." },
+
+  { "path": "/poker", "name": "poker", "priority": 0.7,
+    "title": "Poker — Where Skill Becomes Power",
+    "description": "The poker room — cash games from €2/€5 to €50/€100, Sit & Go, private tables, and daily tournaments with guaranteed prize pools." },
+
+  { "path": "/vip", "name": "vip", "priority": 0.9,
+    "title": "VIP Club — The Inner Circle",
+    "description": "Six ranks from Noble to Monarch, the privileges attached to each, a dedicated host on call, and the door to the VIP lounge — the membership ladder in full." },
+
+  { "path": "/throne-club", "name": "throne-club", "priority": 0.6, "canonical": "/vip",
+    "title": "VIP Club — The Inner Circle",
+    "description": "Six ranks from Noble to Monarch, the privileges attached to each, a dedicated host on call, and the door to the VIP lounge — the membership ladder in full." },
+
+  { "path": "/kingdom", "name": "kingdom", "priority": 0.7,
+    "title": "The Kingdom — Hall of Kings",
+    "description": "The living realm — the Royal Court leaderboard, the running season, royal tournaments, noble houses and the Hall of Kings where champions are enshrined." },
+
+  { "path": "/rewards", "name": "rewards", "priority": 0.7,
+    "title": "Rewards & The Treasury",
+    "description": "Where play converts to points, and points to something worth having — private jet hours, concierge travel, five-star escapes and bespoke gifts." },
+
+  { "path": "/about", "name": "about", "priority": 0.5,
+    "title": "About the House",
+    "description": "The house, its standard and its discretion: how THRONE curates every table and tier, and why membership is confidential by default rather than by request." },
+
+  { "path": "/help", "name": "help", "priority": 0.5,
+    "title": "Help Center & Concierge",
+    "description": "Answers on accounts and verification, funding your treasury, and how offers work — plus the direct line to the Royal Concierge from inside your account." },
+
+  { "path": "/responsible-gaming", "name": "responsible-gaming", "priority": 0.6,
+    "title": "Responsible Gaming",
+    "description": "THRONE is for adults 18 and over. Set deposit, wager and loss limits, cool off or self-exclude, learn the warning signs, and find confidential support." },
+
+  { "path": "/terms", "name": "terms", "priority": 0.4,
+    "title": "Terms of Service",
+    "description": "The terms of membership — eligibility and the 18+ rule, account responsibility, wagering and payout rules, fair use, and how changes are communicated." },
+
+  { "path": "/privacy", "name": "privacy", "priority": 0.4,
+    "title": "Privacy Policy",
+    "description": "What THRONE collects, why it is held, and how it is handled — account and verification data, the uses it is put to, your rights, and the cookies in use." }
+]

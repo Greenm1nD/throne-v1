@@ -5,6 +5,7 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import AccountNav from '@/components/account/AccountNav.vue'
 import { balances, user } from '@/data/account'
 import { useDiscreet } from '@/composables/useDiscreet'
+import { useProgression } from '@/composables/useProgression'
 
 const { mask } = useDiscreet()
 
@@ -17,6 +18,8 @@ const route = useRoute()
 
 // The button for the page you're on reads as active (solid); the other is outline.
 const onWithdraw = computed(() => route.path === '/account/withdraw')
+
+const { rank } = useProgression()
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const onWithdraw = computed(() => route.path === '/account/withdraw')
             <img :src="user.avatar" alt="" class="h-11 w-11 rounded-full border border-border-gold object-cover" />
             <div class="min-w-0">
               <p class="truncate font-sans text-[13px] font-semibold text-ink">{{ user.name }}</p>
-              <p class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }}</p>
+              <p class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold-bright">{{ rank?.name }}</p>
             </div>
           </div>
           <p class="mt-4 font-display text-xl font-bold tabular-nums text-gold-gradient">{{ mask(balances.total) }}</p>

@@ -3,6 +3,7 @@ import AccountPanel from '@/components/account/AccountPanel.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { user } from '@/data/account'
+import { useProgression } from '@/composables/useProgression'
 
 // A dedicated, named host — the heart of the high-net-worth experience.
 // A name and a face turn "support" into personal service.
@@ -21,6 +22,8 @@ const services = [
   { icon: 'calendar', t: 'Court Events', d: 'Invitations to tournaments and gatherings of the Inner Circle.' },
   { icon: 'bolt', t: 'Instant Resolutions', d: 'Your requests bypass every queue in the kingdom.' },
 ]
+
+const { rank } = useProgression()
 </script>
 
 <template>
@@ -34,7 +37,7 @@ const services = [
       <div v-lazybg="`linear-gradient(90deg, rgba(5,5,5,0.94) 35%, rgba(5,5,5,0.4)), url('/assets/images/vip-lounge.webp'), url('/assets/images/vip-club.webp')`"
         class="absolute inset-0 bg-cover bg-center" />
       <div class="relative z-10 px-7 py-10 sm:px-10">
-        <p class="eyebrow mb-2">At your service, {{ user.tier }} {{ user.name }}</p>
+        <p class="eyebrow mb-2">At your service, {{ rank?.name }} {{ user.name }}</p>
         <h2 class="font-display text-2xl font-bold tracking-[0.1em] text-gold-gradient">The Royal Concierge</h2>
         <p class="mt-3 max-w-xl font-sans text-[13px] leading-relaxed text-ink-muted">
           You are not assigned a queue — you are assigned a person. One word, and it is done.

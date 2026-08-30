@@ -1,0 +1,573 @@
+{
+  "$schema": "https://throne.example/schemas/crm-automation-v1.json",
+  "version": "1.0.0",
+  "updated": "2026-08-27",
+  "owner": "crm@throne.example",
+  "platform_target": "Optimove / Smartico / Fast Track — generic, portable",
+
+  "_readme": [
+    "Three production flows: welcome, churn prevention, VIP escalation.",
+    "",
+    "TWO RULES OVERRIDE EVERY FLOW IN THIS FILE.",
+    "1. global.suppression is evaluated BEFORE any flow condition. A player who has",
+    "   set a limit, taken a break, or self-excluded receives ZERO promotional",
+    "   messages, from any flow, on any channel, regardless of segment membership.",
+    "   This is a licence condition, not a preference. It is implemented as a hard",
+    "   pre-filter rather than as a segment exclusion so that a new flow authored",
+    "   next quarter inherits it automatically.",
+    "2. Every flow carries a holdout control group. A retention programme with no",
+    "   control group cannot distinguish incremental revenue from revenue that",
+    "   would have arrived anyway, and will therefore report itself as successful",
+    "   forever."
+  ],
+
+  "global": {
+    "timezone_source": "player.registration_timezone",
+    "quiet_hours": {
+      "enabled": true,
+      "start": "22:00",
+      "end": "09:00",
+      "applies_to": ["sms", "push", "phone"],
+      "behaviour": "defer_to_window_start",
+      "note": "Email is exempt — it is pull, not interrupt. SMS at 03:00 local generates complaints and carrier blocks."
+    },
+
+    "frequency_caps": [
+      { "channel": "email", "max": 4, "per": "rolling_7d" },
+      { "channel": "sms", "max": 2, "per": "rolling_7d" },
+      { "channel": "push", "max": 5, "per": "rolling_7d" },
+      { "channel": "all_promotional", "max": 8, "per": "rolling_7d" }
+    ],
+
+    "suppression": {
+      "evaluated": "before_all_flow_conditions",
+      "hard_block": [
+        { "field": "player.self_excluded", "operator": "is_true" },
+        { "field": "player.cooling_off_until", "operator": "in_future" },
+        { "field": "player.deposit_limit_active", "operator": "is_true" },
+        { "field": "player.loss_limit_active", "operator": "is_true" },
+        { "field": "player.session_limit_active", "operator": "is_true" },
+        { "field": "player.rg_flag_severity", "operator": "gte", "value": 2 },
+        { "field": "player.account_status", "operator": "in", "value": ["closed", "frozen", "kyc_failed"] },
+        { "field": "player.marketing_consent", "operator": "is_false" },
+        { "field": "player.registration_country", "operator": "in_list", "value": "blocked_countries" }
+      ],
+      "channel_specific_block": [
+        { "channel": "email", "field": "player.email_bounced_hard", "operator": "is_true" },
+        { "channel": "email", "field": "player.email_unsubscribed", "operator": "is_true" },
+        { "channel": "sms", "field": "player.sms_opt_out", "operator": "is_true" },
+        { "channel": "sms", "field": "player.phone_verified", "operator": "is_false" },
+        { "channel": "push", "field": "player.push_token", "operator": "is_null" }
+      ],
+      "transactional_exempt": {
+        "note": "Suppression applies to PROMOTIONAL messages only. Withdrawal confirmations, KYC requests, security alerts, limit-change confirmations and self-exclusion confirmations must always send.",
+        "message_classes": ["transactional", "security", "regulatory", "rg_confirmation"]
+      }
+    },
+
+    "global_control_group": {
+      "enabled": true,
+      "size_pct": 5,
+      "assignment": "deterministic_hash(player_id, 'crm_holdout_2026')",
+      "note": "Stable across flows and across time so lifetime incremental value is measurable. Never reshuffle mid-quarter."
+    },
+
+    "attribution_window_hours": 72,
+    "default_send_priority": ["push", "email", "sms"],
+    "channel_fallback": {
+      "enabled": true,
+      "rule": "If primary channel is blocked by suppression or cap, try next in priority order. If all blocked, drop — never queue for later.",
+      "note": "Queueing a dropped message is how a player returns from a two-week break to fourteen backlogged promotions."
+    }
+  },
+
+  "bonus_catalog": {
+    "welcome_match": {
+      "id": "BNS_WELCOME_100",
+      "type": "deposit_match",
+      "match_pct": 100,
+      "max_bonus_usd": 200,
+      "min_deposit_usd": 20,
+      "wagering_multiplier": 35,
+      "wagering_basis": "bonus_only",
+      "max_bet_during_wagering_usd": 5,
+      "max_bet_enforcement": "platform_blocked",
+      "game_weighting": { "slots": 100, "live_casino": 10, "table_games": 5, "video_poker": 5, "jackpot_slots": 0 },
+      "expiry_days": 7,
+      "max_cashout_multiplier": null,
+      "_note": "wagering_basis 'bonus_only' rather than 'deposit_plus_bonus' halves the effective requirement and is the single most reviewable term on the offer. max_cashout_multiplier null = uncapped."
+    },
+    "welcome_spins": {
+      "id": "BNS_WELCOME_FS100",
+      "type": "free_spins",
+      "spins": 100,
+      "spin_value_usd": 0.2,
+      "drip": { "enabled": true, "per_day": 20, "days": 5 },
+      "eligible_games": ["book_of_thrones", "royal_fortune", "crown_jewels"],
+      "wagering_multiplier": 20,
+      "wagering_basis": "winnings_only",
+      "max_win_usd": 100,
+      "expiry_days": 7,
+      "_note": "Dripping 20/day for 5 days is a retention mechanic, not a scarcity mechanic — the spins do not expire faster if unused, they simply arrive daily."
+    },
+    "reload_50": {
+      "id": "BNS_RELOAD_50",
+      "type": "deposit_match",
+      "match_pct": 50,
+      "max_bonus_usd": 100,
+      "min_deposit_usd": 25,
+      "wagering_multiplier": 30,
+      "wagering_basis": "bonus_only",
+      "max_bet_during_wagering_usd": 5,
+      "expiry_days": 3
+    },
+    "winback_spins": {
+      "id": "BNS_WINBACK_FS50",
+      "type": "free_spins",
+      "spins": 50,
+      "spin_value_usd": 0.2,
+      "eligible_games": ["book_of_thrones", "royal_fortune"],
+      "wagering_multiplier": 1,
+      "wagering_basis": "winnings_only",
+      "max_win_usd": 50,
+      "expiry_days": 14,
+      "requires_deposit": false,
+      "_note": "1x wagering and no deposit requirement. A win-back offer that requires a deposit is not a win-back offer, it is a reload offer sent to someone who left."
+    },
+    "vip_discretionary": {
+      "id": "BNS_VIP_DISC",
+      "type": "manual_grant",
+      "granted_by": "vip_manager",
+      "requires_approval": true,
+      "max_value_usd": 5000,
+      "_note": "Never automated. A VIP bonus issued by a rule rather than a person is indistinguishable from a slot machine paying out."
+    }
+  },
+
+  "segments": {
+    "seg_new_registrant": {
+      "description": "Registered, not yet deposited",
+      "conditions": [
+        { "field": "player.registered_at", "operator": "within_last_days", "value": 30 },
+        { "field": "player.deposit_count", "operator": "eq", "value": 0 },
+        { "field": "player.kyc_status", "operator": "not_in", "value": ["failed", "rejected"] }
+      ]
+    },
+    "seg_ftd_recent": {
+      "description": "Made first deposit within 30 days",
+      "conditions": [
+        { "field": "player.deposit_count", "operator": "gte", "value": 1 },
+        { "field": "player.first_deposit_at", "operator": "within_last_days", "value": 30 }
+      ]
+    },
+    "seg_dormant_14d": {
+      "description": "No login and no wager for 14 days, previously active",
+      "conditions": [
+        { "field": "player.deposit_count", "operator": "gte", "value": 1 },
+        { "field": "player.last_wager_at", "operator": "older_than_days", "value": 14 },
+        { "field": "player.last_login_at", "operator": "older_than_days", "value": 14 },
+        { "field": "player.lifetime_ngr_usd", "operator": "gte", "value": 25 }
+      ],
+      "_note": "lifetime_ngr floor excludes bonus-only accounts that never had value. Win-back on those is negative ROI by construction."
+    },
+    "seg_dormant_45d": {
+      "description": "Deep dormancy — final win-back attempt",
+      "conditions": [
+        { "field": "player.last_wager_at", "operator": "older_than_days", "value": 45 },
+        { "field": "player.last_wager_at", "operator": "newer_than_days", "value": 180 },
+        { "field": "player.lifetime_ngr_usd", "operator": "gte", "value": 50 }
+      ]
+    },
+    "seg_high_roller": {
+      "description": "Single deposit over $1,000, or $2,500 in 30 days",
+      "match": "any",
+      "conditions": [
+        { "field": "event.deposit_amount_usd", "operator": "gt", "value": 1000 },
+        { "field": "player.deposits_30d_usd", "operator": "gte", "value": 2500 }
+      ]
+    },
+    "seg_deposit_abandoner": {
+      "description": "Opened the cashier, did not complete, within 60 minutes",
+      "conditions": [
+        { "field": "event.name", "operator": "eq", "value": "deposit_initiated" },
+        { "field": "player.deposit_completed_since_event", "operator": "is_false" },
+        { "field": "event.age_minutes", "operator": "between", "value": [20, 60] }
+      ]
+    },
+    "seg_weekend_reload_eligible": {
+      "description": "Deposited at least twice, active in last 10 days",
+      "conditions": [
+        { "field": "player.deposit_count", "operator": "gte", "value": 2 },
+        { "field": "player.last_wager_at", "operator": "within_last_days", "value": 10 },
+        { "field": "player.lifetime_ngr_usd", "operator": "gte", "value": 40 }
+      ]
+    }
+  },
+
+  "flows": [
+
+    {
+      "id": "flow_welcome",
+      "name": "Welcome — Day 1 / 3 / 7",
+      "status": "active",
+      "priority": 100,
+      "goal": "First deposit within 7 days of registration",
+      "success_event": "first_deposit_completed",
+      "control_group_pct": 10,
+      "entry": {
+        "trigger": { "type": "event", "event": "registration_completed" },
+        "entry_conditions": [{ "segment": "seg_new_registrant" }],
+        "re_entry": "never",
+        "max_concurrent_flows": 1
+      },
+      "exit_conditions": [
+        { "event": "first_deposit_completed", "action": "exit_success" },
+        { "segment_exit": "seg_new_registrant", "action": "exit_silent" },
+        { "field": "player.self_excluded", "operator": "is_true", "action": "exit_immediate" }
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "name": "Immediate — account confirmation",
+          "delay": { "value": 0, "unit": "minutes" },
+          "message_class": "transactional",
+          "channel": "email",
+          "template": "email_welcome_confirm",
+          "note": "Transactional. Bypasses suppression and caps. Carries the bonus offer but its primary job is deliverability warm-up on a cold address."
+        },
+        {
+          "step": 2,
+          "name": "Day 1 — welcome offer",
+          "delay": { "value": 24, "unit": "hours" },
+          "send_window": { "start": "17:00", "end": "21:00", "timezone": "player_local" },
+          "conditions": [{ "field": "player.deposit_count", "operator": "eq", "value": 0 }],
+          "channel_priority": ["email", "push"],
+          "template": "email_welcome_bonus",
+          "payload": { "bonus_id": "BNS_WELCOME_100", "secondary_bonus_id": "BNS_WELCOME_FS100" },
+          "note": "17:00–21:00 local is the highest-intent window in LatAm evening leisure. Sending at 09:00 halves open rate."
+        },
+        {
+          "step": 3,
+          "name": "Day 3 — objection handling",
+          "delay": { "value": 72, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "send_window": { "start": "18:00", "end": "21:30", "timezone": "player_local" },
+          "conditions": [{ "field": "player.deposit_count", "operator": "eq", "value": 0 }],
+          "branch": {
+            "on": "player.opened_step_2",
+            "cases": [
+              {
+                "when": true,
+                "channel_priority": ["email"],
+                "template": "email_welcome_d3_payments",
+                "note": "They read it and did not act. The blocker is usually payment method trust — lead with local methods (OXXO, SPEI, Khipu, PIX where legal) and withdrawal speed, not with a bigger bonus."
+              },
+              {
+                "when": false,
+                "channel_priority": ["push", "email"],
+                "template": "push_welcome_d3_reminder",
+                "note": "They never opened it. Different channel, shorter message, new subject line."
+              }
+            ]
+          }
+        },
+        {
+          "step": 4,
+          "name": "Day 7 — final, no-deposit hook",
+          "delay": { "value": 168, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "send_window": { "start": "18:00", "end": "21:30", "timezone": "player_local" },
+          "conditions": [{ "field": "player.deposit_count", "operator": "eq", "value": 0 }],
+          "channel_priority": ["email", "push"],
+          "template": "email_welcome_d7_final",
+          "payload": { "bonus_id": "BNS_WINBACK_FS50" },
+          "note": "A small no-deposit-required grant. The registrant has now ignored two deposit asks; a third is noise. Converting them to a PLAYER first and a depositor second is the higher-EV path."
+        },
+        {
+          "step": 5,
+          "name": "Exit to nurture",
+          "delay": { "value": 240, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "action": "move_to_flow",
+          "target_flow": "flow_low_frequency_nurture",
+          "note": "No further welcome messaging. Ever. Continuing to send deposit prompts to a 10-day non-depositor is how a domain gets spam-foldered."
+        }
+      ]
+    },
+
+    {
+      "id": "flow_churn_prevention",
+      "name": "Churn Prevention — 14-day dormancy",
+      "status": "active",
+      "priority": 80,
+      "goal": "Reactivate a wagering session within 7 days of entry",
+      "success_event": "wager_placed",
+      "control_group_pct": 15,
+      "entry": {
+        "trigger": { "type": "segment_entry", "segment": "seg_dormant_14d" },
+        "evaluation": "daily_at_11:00_utc",
+        "re_entry": { "allowed": true, "cooldown_days": 60 },
+        "max_entries_per_player_per_year": 4
+      },
+      "exit_conditions": [
+        { "event": "wager_placed", "action": "exit_success" },
+        { "event": "deposit_completed", "action": "exit_success" },
+        { "field": "player.self_excluded", "operator": "is_true", "action": "exit_immediate" },
+        { "field": "player.cooling_off_until", "operator": "in_future", "action": "exit_immediate" }
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "name": "Day 14 — no-strings free spins",
+          "delay": { "value": 0, "unit": "hours" },
+          "send_window": { "start": "18:00", "end": "21:00", "timezone": "player_local" },
+          "channel_priority": ["push", "email"],
+          "template": "push_winback_spins",
+          "fallback_template": "email_winback_spins",
+          "payload": { "bonus_id": "BNS_WINBACK_FS50" },
+          "note": "50 spins, 1x wagering, NO deposit required. The ask is 'come back', not 'pay us'. A deposit-gated win-back converts at roughly a third of the rate."
+        },
+        {
+          "step": 2,
+          "name": "Day 17 — spins expiring, factual",
+          "delay": { "value": 72, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "conditions": [
+            { "field": "bonus.BNS_WINBACK_FS50.redeemed", "operator": "is_false" },
+            { "field": "bonus.BNS_WINBACK_FS50.expires_in_days", "operator": "gte", "value": 5 }
+          ],
+          "channel_priority": ["email"],
+          "template": "email_winback_reminder",
+          "note": "States the expiry date as a fact. No countdown timer, no ticking clock, no 'hurry'. See ../marketing_strategy/02_influencer_streamers.md §5.7 for why urgency mechanics are excluded across the product."
+        },
+        {
+          "step": 3,
+          "name": "Day 21 — new content, no offer",
+          "delay": { "value": 168, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "channel_priority": ["email"],
+          "template": "email_winback_new_games",
+          "payload": { "content_block": "new_releases_30d" },
+          "note": "Zero bonus. Product news only. Some dormancy is boredom, and boredom does not respond to money."
+        },
+        {
+          "step": 4,
+          "name": "Day 30 — hand off or stop",
+          "delay": { "value": 384, "unit": "hours" },
+          "delay_from": "flow_entry",
+          "branch": {
+            "on": "player.lifetime_ngr_usd",
+            "cases": [
+              {
+                "when": { "operator": "gte", "value": 500 },
+                "action": "create_task",
+                "assignee_role": "vip_manager",
+                "task_template": "manual_winback_high_value",
+                "note": "Above $500 lifetime NGR a human outreach beats any automated sequence."
+              },
+              {
+                "when": { "operator": "lt", "value": 500 },
+                "action": "move_to_flow",
+                "target_flow": "flow_low_frequency_nurture",
+                "note": "Monthly product newsletter only. Stop the win-back cadence."
+              }
+            ]
+          }
+        }
+      ],
+      "rg_guardrails": {
+        "note": "Dormancy is ambiguous. Some of it is a player self-managing a problem, and re-engagement messaging aimed at that player is the exact harm the licence conditions exist to prevent.",
+        "hard_rules": [
+          "Exclude any player whose last session showed loss-chasing markers (escalating stake after loss, session length > 4h, deposit count in session >= 3).",
+          "Exclude any player who has EVER set a deposit or loss limit, even if now expired.",
+          "Exclude any player who has contacted support about gambling difficulty (support tag 'rg_concern').",
+          "Cap at 4 win-back entries per player per year, with a 60-day cooldown. A player receiving win-back offers every month is being pursued, not served.",
+          "If a player self-excludes within 7 days of receiving a win-back message, flag the case for RG review and add the player to permanent CRM exclusion."
+        ]
+      }
+    },
+
+    {
+      "id": "flow_vip_highroller",
+      "name": "VIP High-Roller — deposit > $1,000",
+      "status": "active",
+      "priority": 200,
+      "goal": "Assign a named manager within 2 hours; establish contact within 24",
+      "success_event": "vip_manager_contact_made",
+      "control_group_pct": 0,
+      "_control_note": "No holdout. Withholding service from a high-value player to measure a lift is not a defensible experiment.",
+      "entry": {
+        "trigger": { "type": "event", "event": "deposit_completed" },
+        "entry_conditions": [
+          { "segment": "seg_high_roller" },
+          { "field": "player.kyc_status", "operator": "eq", "value": "verified" },
+          { "field": "player.vip_manager_id", "operator": "is_null" }
+        ],
+        "evaluation": "realtime",
+        "re_entry": "never"
+      },
+      "steps": [
+        {
+          "step": 1,
+          "name": "Immediate — internal alert",
+          "delay": { "value": 0, "unit": "seconds" },
+          "action": "notify_internal",
+          "channels": ["slack:#vip-alerts", "email:vip-desk@throne.example"],
+          "payload": {
+            "template": "internal_vip_alert",
+            "fields": [
+              "player_id", "deposit_amount_usd", "currency", "country",
+              "lifetime_deposits_usd", "lifetime_ngr_usd", "acquisition_source",
+              "affiliate_btag", "kyc_status", "rg_flags", "preferred_language"
+            ]
+          },
+          "note": "rg_flags is in the payload deliberately. A manager must never open a relationship with a player carrying an open RG concern without knowing it."
+        },
+        {
+          "step": 2,
+          "name": "Source-of-funds gate",
+          "delay": { "value": 0, "unit": "seconds" },
+          "conditions": [{ "field": "player.deposits_30d_usd", "operator": "gte", "value": 5000 }],
+          "action": "create_task",
+          "assignee_role": "compliance",
+          "task_template": "sof_review_required",
+          "sla_hours": 24,
+          "blocking": true,
+          "note": "AML gate. Blocks step 3 until cleared. Assigning a VIP manager and hospitality budget to an unverified source of funds is how an operator loses a licence."
+        },
+        {
+          "step": 3,
+          "name": "Assign named manager",
+          "delay": { "value": 15, "unit": "minutes" },
+          "conditions": [{ "field": "task.sof_review_required.status", "operator": "in", "value": ["cleared", "not_required"] }],
+          "action": "assign_owner",
+          "assignment_rule": {
+            "strategy": "language_match_then_least_loaded",
+            "fallback": "vip_desk_lead",
+            "max_players_per_manager": 60,
+            "note": "60 is a real ceiling. Past it the relationship is a mailing list with a name on it."
+          },
+          "sets": { "player.vip_manager_id": "{{assigned_manager_id}}", "player.tier": "vip_pending" }
+        },
+        {
+          "step": 4,
+          "name": "Personal introduction — human, not template",
+          "delay": { "value": 2, "unit": "hours" },
+          "send_window": { "start": "09:00", "end": "21:00", "timezone": "player_local" },
+          "channel_priority": ["email"],
+          "template": "email_vip_intro",
+          "sent_by": "{{assigned_manager}}",
+          "personalisation": { "from_name": "{{manager_first_name}}", "reply_to": "{{manager_direct_email}}", "signature": "{{manager_signature}}" },
+          "requires_human_review": true,
+          "note": "requires_human_review is not optional. A VIP introduction that reads as automated destroys the premise of the tier on first contact."
+        },
+        {
+          "step": 5,
+          "name": "Direct contact",
+          "delay": { "value": 24, "unit": "hours" },
+          "conditions": [{ "field": "event.vip_manager_contact_made", "operator": "is_false" }],
+          "action": "create_task",
+          "assignee": "{{assigned_manager}}",
+          "task_template": "vip_first_contact_overdue",
+          "sla_hours": 12,
+          "escalate_to": "vip_desk_lead"
+        },
+        {
+          "step": 6,
+          "name": "Tier confirmation and benefits",
+          "delay": { "value": 72, "unit": "hours" },
+          "conditions": [{ "field": "event.vip_manager_contact_made", "operator": "is_true" }],
+          "action": "set_field",
+          "sets": { "player.tier": "vip", "player.withdrawal_priority": "expedited", "player.support_queue": "vip" },
+          "then": { "channel": "email", "template": "email_vip_confirmed" }
+        }
+      ],
+      "vip_rg_obligations": {
+        "note": "High deposit volume is the strongest single predictor of gambling harm. VIP management is therefore an RG-monitored function, not only a revenue function.",
+        "hard_rules": [
+          "Affordability check required before any hospitality, discretionary bonus, or credit-adjacent benefit.",
+          "Monthly affordability re-review for any player depositing over $5,000/month.",
+          "VIP managers are compensated on retention and satisfaction, NEVER on the deposit or loss volume of their assigned players. A manager paid on player losses has an interest directly opposed to the player's.",
+          "Any RG marker on a VIP account escalates to the RG team within 1 hour and pauses all discretionary benefits until reviewed.",
+          "A VIP requesting a limit or a break is actioned immediately and is never routed to their manager for a retention conversation first."
+        ]
+      }
+    },
+
+    {
+      "id": "flow_deposit_abandonment",
+      "name": "Deposit Abandonment Recovery",
+      "status": "active",
+      "priority": 150,
+      "goal": "Complete the interrupted deposit within 24 hours",
+      "success_event": "deposit_completed",
+      "control_group_pct": 10,
+      "entry": {
+        "trigger": { "type": "event", "event": "deposit_initiated" },
+        "entry_conditions": [{ "segment": "seg_deposit_abandoner" }],
+        "evaluation": "realtime_with_delay",
+        "re_entry": { "allowed": true, "cooldown_hours": 72 },
+        "max_entries_per_player_per_week": 2
+      },
+      "exit_conditions": [
+        { "event": "deposit_completed", "action": "exit_success" },
+        { "event": "deposit_failed_by_psp", "action": "branch_to_support" }
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "name": "20 minutes — assume it broke, not that they changed their mind",
+          "delay": { "value": 20, "unit": "minutes" },
+          "channel_priority": ["push"],
+          "template": "push_deposit_abandon",
+          "branch": {
+            "on": "event.failure_reason",
+            "cases": [
+              { "when": "psp_declined", "template": "push_deposit_declined_alt_method", "note": "Card declined. Offer the local alternative — this is a solvable problem and the message should read as help." },
+              { "when": "timeout", "template": "push_deposit_timeout" },
+              { "when": "user_abandoned", "template": "push_deposit_abandon" }
+            ]
+          },
+          "note": "Most abandonment in LatAm is a failed card, not a change of heart. Lead with a fix, not with a bonus."
+        },
+        {
+          "step": 2,
+          "name": "4 hours — email with methods",
+          "delay": { "value": 4, "unit": "hours" },
+          "conditions": [{ "field": "player.deposit_completed_since_entry", "operator": "is_false" }],
+          "channel_priority": ["email"],
+          "template": "email_deposit_abandon_methods",
+          "payload": { "content_block": "local_payment_methods_by_country" }
+        },
+        {
+          "step": 3,
+          "name": "24 hours — stop",
+          "delay": { "value": 24, "unit": "hours" },
+          "action": "exit_silent",
+          "note": "Two attempts, then stop. A third message about an abandoned deposit is pressure, and pressure on a payment decision is the mechanic this product does not use."
+        }
+      ]
+    }
+  ],
+
+  "measurement": {
+    "primary_kpis": [
+      { "flow": "flow_welcome", "metric": "reg_to_ftd_rate", "target_pct": 35, "vs_control": "incremental_pp" },
+      { "flow": "flow_welcome", "metric": "median_hours_to_ftd", "target": 36 },
+      { "flow": "flow_churn_prevention", "metric": "reactivation_rate_7d", "target_pct": 18, "vs_control": "incremental_pp" },
+      { "flow": "flow_churn_prevention", "metric": "reactivated_d30_retention", "target_pct": 40 },
+      { "flow": "flow_vip_highroller", "metric": "time_to_manager_contact_hours_p90", "target": 24 },
+      { "flow": "flow_vip_highroller", "metric": "vip_90d_retention", "target_pct": 75 },
+      { "flow": "flow_deposit_abandonment", "metric": "recovery_rate_24h", "target_pct": 22, "vs_control": "incremental_pp" }
+    ],
+    "guardrail_kpis": [
+      { "metric": "email_unsubscribe_rate", "ceiling_pct": 0.4, "action_on_breach": "pause_flow" },
+      { "metric": "email_spam_complaint_rate", "ceiling_pct": 0.08, "action_on_breach": "pause_all_promotional" },
+      { "metric": "sms_opt_out_rate", "ceiling_pct": 1.5, "action_on_breach": "pause_sms" },
+      { "metric": "push_disable_rate", "ceiling_pct": 2.5, "action_on_breach": "reduce_frequency_cap" },
+      { "metric": "self_exclusion_within_7d_of_promo", "ceiling_pct": 0.15, "action_on_breach": "rg_review_and_pause" }
+    ],
+    "guardrail_note": "self_exclusion_within_7d_of_promo is the most important number in this file. If promotional pressure is pushing players into self-exclusion, every other metric here is measuring the wrong thing.",
+    "reporting_cadence": "weekly_flow_review, monthly_incremental_revenue_vs_control"
+  }
+}

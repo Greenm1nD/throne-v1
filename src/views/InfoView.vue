@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { useRevealEach } from '@/composables/useReveal'
@@ -11,15 +11,6 @@ const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
 
 const page = computed(() => infoPages[(route.meta.info as string) ?? ''])
-
-// Keep the document title in step with the page.
-watch(
-  page,
-  (p) => {
-    if (p) document.title = `${p.title} · THRONE`
-  },
-  { immediate: true },
-)
 </script>
 
 <template>

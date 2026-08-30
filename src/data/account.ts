@@ -20,9 +20,6 @@ export const user = {
   nationalId: '*******74',
   country: 'United Kingdom',
   currency: 'USD',
-  xp: 10550,
-  xpNext: 15000,
-  nextTier: 'Crown',
 }
 
 export const balances = {
@@ -380,7 +377,7 @@ export const genericHistories: Record<string, GenHistoryConfig> = {
 
 export const faqs = [
   { q: 'How fast are Duke-tier withdrawals?', a: 'Priority processing — typically under 2 hours for e-wallets and crypto, 1–2 banking days for cards.' },
-  { q: 'How do I earn XP toward the next tier?', a: 'Every wager earns XP across casino, live tables and sports. Tier upgrades apply instantly.' },
+  { q: 'How do I earn tribute toward the next rank?', a: 'One tribute is one unit of house edge your play generates — your wager multiplied by the edge of that game. Low-edge games therefore earn slowly. Rank never decays once reached.' },
   { q: 'Where do I redeem reward points?', a: 'In My Rewards — exchange points for cashback, free spins, or luxury experiences from the Treasury.' },
   { q: 'Is my account protected?', a: 'Two-factor authentication, device management and session control are available under Security.' },
 ]

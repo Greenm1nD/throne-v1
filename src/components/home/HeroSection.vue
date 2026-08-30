@@ -30,7 +30,6 @@ const bloom = ref<HTMLElement | null>(null)
 // Scarcity signals — exclusivity is felt, not stated. A live presence count
 // that gently drifts, and a closing "intake" window, both tick on a timer.
 const online = ref(1247)
-const seatsLeft = ref(9)
 let secs = 2 * 3600 + 47 * 60 // ~2h47m until the next intake closes
 const countdown = ref('')
 let timer: ReturnType<typeof setInterval> | undefined
@@ -222,7 +221,7 @@ onBeforeUnmount(() => {
         </span>
         <span class="hidden h-3 w-px bg-border-gold/40 sm:block" />
         <span class="font-sans text-[11px] tracking-[0.04em] text-ink-muted">
-          Only <span class="font-semibold text-champagne">{{ seatsLeft }}</span> seats at the royal table
+          The roster is capped at <span class="font-semibold text-champagne">500</span>
         </span>
       </div>
 

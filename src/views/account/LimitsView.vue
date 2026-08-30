@@ -26,7 +26,7 @@ const limits = [
           </div>
           <label class="block">
             <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">New limit ($)</span>
-            <input :placeholder="l.placeholder" inputmode="decimal" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+            <input :placeholder="l.placeholder" inputmode="decimal" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold" />
           </label>
           <GoldButton variant="outline" size="md">Apply</GoldButton>
         </div>

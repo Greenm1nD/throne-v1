@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { useFocusTrap } from '@/composables/useFocusTrap'
+import { track } from '@/utils/analytics'
 
 /**
  * Step two of the login chain: a 6-digit royal seal. Static prototype —
@@ -13,6 +15,10 @@ import { useAuthModal } from '@/composables/useAuthModal'
 const { state, closeTwofa } = useAuthModal()
 const { login, loading } = useAuth()
 const router = useRouter()
+const route = useRoute()
+
+const dialogEl = ref<HTMLElement | null>(null)
+useFocusTrap(dialogEl, computed(() => state.twofaOpen))
 
 const digits = ref<string[]>(['', '', '', '', '', ''])
 const boxes = ref<HTMLInputElement[]>([])
@@ -45,10 +51,25 @@ function onKeydown(i: number, e: KeyboardEvent) {
   if (e.key === 'Escape') closeTwofa()
 }
 
+/**
+ * Only same-origin absolute paths may be followed. `//evil.com` is
+ * protocol-relative and `/\evil.com` is normalised to it by some browsers, so
+ * both are rejected — otherwise the guard's own query param becomes an open
+ * redirect anyone can put in a link.
+ */
+function safeRedirect(raw: unknown): string | null {
+  const path = typeof raw === 'string' ? raw : null
+  if (!path || !path.startsWith('/')) return null
+  if (path[1] === '/' || path[1] === '\\') return null
+  return path
+}
+
 async function confirm() {
   await login()
+  track(state.mode === 'register' ? 'registration_complete' : 'login_complete')
   closeTwofa()
-  router.push('/account')
+  // replace, not push: the login detour should not sit in the back stack.
+  router.replace(safeRedirect(route.query.redirect) ?? '/account')
 }
 </script>
 
@@ -61,8 +82,9 @@ async function confirm() {
       leave-to-class="opacity-0"
     >
       <div
+        ref="dialogEl"
         v-if="state.twofaOpen"
-        class="fixed inset-0 z-[120] grid place-items-center bg-black/80 p-4 backdrop-blur-sm"
+        class="fixed inset-0 z-modal-step grid place-items-center bg-black/80 p-4 backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
         aria-label="Two-factor verification"
@@ -89,7 +111,7 @@ async function confirm() {
               inputmode="numeric"
               maxlength="1"
               autocomplete="one-time-code"
-              class="h-13 w-11 rounded-lg border border-border-gold/60 bg-black/40 text-center font-display text-xl tabular-nums text-gold-bright focus:border-gold focus:outline-none"
+              class="h-13 w-11 rounded-lg border border-border-gold/60 bg-black/40 text-center font-display text-xl tabular-nums text-gold-bright focus:border-gold"
               style="height: 52px"
               @input="onInput(i, $event)"
               @keydown="onKeydown(i, $event)"

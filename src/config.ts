@@ -17,5 +17,5 @@ export const joinCta = INVITE_ONLY ? 'Request an Invitation' : 'Join the Kingdom
 
 // Closing-band subtitle.
 export const finaleSub = INVITE_ONLY
-  ? 'Request your invitation. Claim your throne.'
-  : 'Join the Kingdom. Claim your throne.'
+  ? 'Request your invitation. The house keeps its word.'
+  : 'Join the Kingdom. The house keeps its word.'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CrownLogo from '@/components/ui/CrownLogo.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -7,6 +7,8 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import { categoryNav } from '@/data/categoryPages'
 import { joinCta } from '@/config'
 
@@ -21,6 +23,16 @@ const { isLoggedIn, logout } = useAuth()
 const { open } = useAuthModal()
 const { open: accountMenuOpen } = useAccountMenu()
 const drawer = ref(false)
+const drawerEl = ref<HTMLElement | null>(null)
+const { lock, unlock } = useScrollLock()
+
+// The flag is flipped from a dozen template sites (scrim, close button, every
+// nav link), so the lock rides a watch rather than a call at each one. A watch
+// fires only on a real change, so re-opening an already-open drawer cannot take
+// a second lock the single close would never release.
+watch(drawer, (on) => (on ? lock() : unlock()))
+// Escape rides the trap, so only the innermost open overlay closes.
+useFocusTrap(drawerEl, drawer, { onEscape: () => (drawer.value = false) })
 
 // Full page list for the drawer — the shared category set (single source), so the
 // hamburger order matches the desktop bar exactly (Home is the first nav item).
@@ -86,12 +98,16 @@ function signOut() {
   <!-- Full page-list drawer -->
   <Teleport to="body">
     <Transition name="md-scrim">
-      <div v-if="drawer" class="fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm md:hidden" @click="drawer = false" />
+      <div v-if="drawer" class="fixed inset-0 z-drawer-scrim bg-black/70 backdrop-blur-sm md:hidden" @click="drawer = false" />
     </Transition>
     <Transition name="md-drawer">
       <aside
         v-if="drawer"
-        class="fixed inset-y-0 left-0 z-[71] flex w-[84%] max-w-[330px] flex-col overflow-y-auto border-r border-border-gold bg-surface/98 backdrop-blur-xl md:hidden [scrollbar-width:none]"
+        ref="drawerEl"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        class="fixed inset-y-0 left-0 z-drawer flex w-[84%] max-w-[330px] flex-col overflow-y-auto border-r border-border-gold bg-surface/98 backdrop-blur-xl md:hidden [scrollbar-width:none]"
       >
         <div class="flex items-center justify-between border-b border-border-gold/30 px-5 py-4">
           <CrownLogo :size="30" :tagline="false" />

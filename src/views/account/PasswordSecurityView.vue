@@ -20,7 +20,7 @@ import { passwordRules } from '@/data/account'
             <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">{{ f }}</span>
             <span class="relative block">
               <AppIcon name="lock" :size="15" class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gold/70" />
-              <input type="password" placeholder="••••••••" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input type="password" placeholder="••••••••" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
             </span>
           </label>
         </div>

@@ -15,13 +15,13 @@ export default {
         ink: {
           DEFAULT: '#F8F5EF',
           muted: '#A8A29A',
-          dim: '#6F6A61',
+          dim: '#8A857B',
         },
         'border-gold': 'rgba(212, 175, 55, 0.35)',
       },
       fontFamily: {
-        display: ['Cinzel', 'Cormorant Garamond', 'Georgia', 'serif'],
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        display: ['Cinzel', 'Georgia', 'serif'],
+        serif: ['Georgia', 'serif'],
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
@@ -30,6 +30,20 @@ export default {
       },
       maxWidth: {
         royal: '1440px',
+      },
+      /* Layer scale — one vocabulary for everything that stacks page-wide.
+         Tailwind's built-in 0–50 already covers content (0–30) and chrome (40
+         command bar, 50 header / bottom nav); these name the layers above it.
+         Nothing page-wide should use an arbitrary z-[…] value again. */
+      zIndex: {
+        'drawer-scrim': '70',
+        drawer: '71',
+        overlay: '100',
+        modal: '200',
+        /* A modal that succeeds another modal (2FA follows the login dialog)
+           and must therefore paint above it, not below. */
+        'modal-step': '210',
+        blocking: '300',
       },
       /* Motion tokens — one vocabulary for all luxury movement */
       transitionDuration: {

@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { applyHead } from '@/utils/head'
+import { seoRouteFor } from '@/data/seoRoutes'
+import { trackPageview } from '@/utils/analytics'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -98,30 +101,42 @@ const router = createRouter({
   },
 })
 
-// Per-route document title for SEO / shareability (SPA has one HTML shell).
-const TITLES: Record<string, string> = {
-  home: 'A Private Royal Gaming Kingdom',
-  casino: 'Casino — Where Fortune Bows to Kings',
-  'game-play': 'Casino',
-  sports: 'Sports Arena',
-  'live-casino': 'Live Casino — The Royal Tables',
-  vip: 'VIP Club — The Inner Circle',
-  kingdom: 'The Kingdom — Hall of Kings',
-  tournament: 'Royal Tournament',
-  rewards: 'Rewards & The Treasury',
-  'not-found': 'Page Not Found',
+// Per-route <head>. The manifest in src/data/seo-routes.json is the single
+// source of truth; scripts/prerender.mjs bakes the same values into a static
+// file per public route so crawlers that do not run JS see them too.
+const FALLBACK = {
+  title: 'THRONE · VIP Gaming Club',
+  description: 'THRONE — a private royal gaming club. The casino floor, the live tables, the sportsbook and the Royal Court, gathered under one roof.',
 }
+
 router.afterEach((to) => {
   const name = String(to.name ?? '')
-  const t = TITLES[name] ?? (name.startsWith('acc-') ? 'My Account' : '')
-  document.title = t ? `${t} · THRONE` : 'THRONE · VIP Gaming Club'
+  const seo = seoRouteFor(name)
+
+  // Nothing outside the public manifest may be indexed: the 28 /account routes
+  // are auth-gated, the two :slug families are unbounded, and not-found is
+  // not a page. Without this they would all serve the shell's metadata and
+  // return 200 — exactly the duplicate problem the manifest exists to end.
+  const robots = seo ? null : 'noindex'
+
+  applyHead({
+    title: seo ? `${seo.title} · THRONE` : name.startsWith('acc-') ? 'My Account · THRONE' : FALLBACK.title,
+    description: seo?.description ?? FALLBACK.description,
+    // `to.path` excludes query and hash, so tracking params never mint a
+    // duplicate URL. An alias points at the page it duplicates instead.
+    canonicalPath: seo?.canonical ?? to.path,
+    robots,
+  })
+
+  trackPageview(name || 'unknown')
 })
 
-// Guests bouncing off a protected route land home with the login modal open.
+// Guests bouncing off a protected route land home with the login modal open,
+// carrying where they were going so the login chain can put them back there.
 router.beforeEach((to) => {
   if (to.meta.requiresAuth && !useAuth().isLoggedIn.value) {
     useAuthModal().open('login')
-    return { path: '/' }
+    return { path: '/', query: { redirect: to.fullPath } }
   }
 })
 

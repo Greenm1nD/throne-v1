@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
         <!-- Season info bar -->
         <div ref="seasonTrack" class="hk-bar relative mx-auto mb-12 flex w-full max-w-3xl snap-x snap-mandatory overflow-x-auto rounded-2xl border border-border-gold/15 bg-black/25 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:snap-none sm:overflow-hidden sm:rounded-full lg:mb-16" data-reveal>
           <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1">
-            <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="hk-ipulse h-4 w-4 object-contain" />
+            <img src="/assets/images/emblems/emblem-02-lion.webp" alt="" class="hk-ipulse h-4 w-4 object-contain" loading="lazy" decoding="async" />
             <span class="whitespace-nowrap font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-champagne">{{ kingsSeason.name }}</span>
           </div>
           <div class="flex w-full shrink-0 snap-center items-center justify-center gap-2 px-4 py-2.5 sm:w-auto sm:flex-1 sm:border-l sm:border-border-gold/12">

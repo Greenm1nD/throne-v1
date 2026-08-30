@@ -3,7 +3,8 @@ import AccountPanel from '@/components/account/AccountPanel.vue'
 import HistoryFilter from '@/components/account/HistoryFilter.vue'
 import StatCard from '@/components/account/StatCard.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { balances, user } from '@/data/account'
+import { balances } from '@/data/account'
+import { useProgression } from '@/composables/useProgression'
 
 const history = [
   { week: 'Week of Jun 8', wagered: '$4,820', rate: '15%', back: '+ $72.30' },
@@ -11,6 +12,8 @@ const history = [
   { week: 'Week of May 25', wagered: '$3,400', rate: '15%', back: '+ $51.00' },
   { week: 'Week of May 18', wagered: '$9,010', rate: '15%', back: '+ $135.15' },
 ]
+
+const { rank } = useProgression()
 </script>
 
 <template>
@@ -23,7 +26,7 @@ const history = [
     <div class="grid gap-4 sm:grid-cols-3">
       <StatCard label="Available Cashback" :value="balances.cashbackAvailable" icon="percent" accent />
       <StatCard label="Total Earned" :value="balances.cashbackTotal" icon="vault" />
-      <StatCard :label="`${user.tier} Rate`" value="15%" icon="crown" />
+      <StatCard :label="`${rank?.name} Rate`" value="15%" icon="crown" />
     </div>
 
     <AccountPanel title="Claim">

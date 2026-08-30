@@ -79,7 +79,7 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
             <label v-if="!isDeposit" class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Select bank</span>
               <span class="relative block">
-                <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold focus:outline-none">
+                <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold">
                   <option v-for="b in WITHDRAW_BANKS" :key="b">{{ b }}</option>
                 </select>
                 <AppIcon name="chevronDown" :size="15" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted" />
@@ -87,15 +87,15 @@ const visible = computed(() => (cat.value === 'all' ? methods.value : methods.va
             </label>
             <label v-if="!isDeposit" class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">IBAN</span>
-              <input placeholder="GB00 XXXX 0000 0000 0000 00" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input placeholder="GB00 XXXX 0000 0000 0000 00" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold" />
             </label>
             <label class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Amount</span>
-              <input :placeholder="`${m.min} – ${m.max}`" inputmode="decimal" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input :placeholder="`${m.min} – ${m.max}`" inputmode="decimal" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold" />
             </label>
             <label class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Description <span class="normal-case text-ink-dim">(optional)</span></span>
-              <input placeholder="A note for the ledger…" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input placeholder="A note for the ledger…" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
             </label>
             <div class="sm:col-span-2">
               <GoldButton variant="solid" size="md">{{ isDeposit ? 'Deposit' : 'Withdraw' }}</GoldButton>

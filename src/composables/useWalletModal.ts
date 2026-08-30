@@ -1,4 +1,6 @@
 import { reactive } from 'vue'
+import { useScrollLock } from './useScrollLock'
+import { track } from '@/utils/analytics'
 
 /**
  * Global deposit/withdraw modal. The header "Deposit" button opens it; the
@@ -11,15 +13,21 @@ const state = reactive<{ open: boolean; kind: WalletKind }>({
   kind: 'deposit',
 })
 
+const { lock, unlock } = useScrollLock()
+
 export function useWalletModal() {
   function open(kind: WalletKind = 'deposit') {
     state.kind = kind
+    // Guarded: deposit → withdraw while open must not double-lock.
+    if (!state.open) {
+      lock()
+      track(kind === 'deposit' ? 'deposit_start' : 'withdraw_start')
+    }
     state.open = true
-    document.documentElement.style.overflow = 'hidden'
   }
   function close() {
+    if (state.open) unlock()
     state.open = false
-    document.documentElement.style.overflow = ''
   }
   function setKind(kind: WalletKind) {
     state.kind = kind

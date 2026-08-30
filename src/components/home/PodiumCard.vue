@@ -24,7 +24,7 @@ const isSilver = props.champion.accent === 'silver'
     />
 
     <!-- Floating crown (champion) -->
-    <img
+    <img loading="lazy" decoding="async"
       v-if="isChampion"
       src="/assets/images/crown-crown.png"
       alt=""
@@ -60,7 +60,7 @@ const isSilver = props.champion.accent === 'silver'
         <div class="relative z-10 w-full">
           <span class="champion-aura pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-[240px]" aria-hidden="true" />
           <span class="champion-halo pointer-events-none absolute left-1/2 top-1/2 h-[180%] w-[150%] -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
-          <img
+          <img loading="lazy" decoding="async"
             :src="champion.image"
             alt=""
             class="relative mx-auto h-52 w-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-[1.015] motion-reduce:transform-none"
@@ -81,7 +81,7 @@ const isSilver = props.champion.accent === 'silver'
             class="relative h-24 w-24 overflow-hidden rounded-full border-2 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
             :class="isSilver ? 'border-[#cdd1db]/45' : 'border-[#d8ab72]/50'"
           >
-            <img :src="champion.image" alt="" class="h-full w-full object-cover" />
+            <img :src="champion.image" alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
           </div>
         </div>
       </template>

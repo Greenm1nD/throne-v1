@@ -123,7 +123,7 @@ onBeforeUnmount(() => clearTimeout(safety))
 </script>
 
 <template>
-  <div ref="screen" class="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-bg">
+  <div ref="screen" class="fixed inset-0 z-overlay grid place-items-center overflow-hidden bg-bg">
     <!-- Portal flash overlay -->
     <div
       ref="flash"

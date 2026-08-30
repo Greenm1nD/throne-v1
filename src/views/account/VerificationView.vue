@@ -59,7 +59,7 @@ import { verificationStatus } from '@/data/account'
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Country</span>
           <span class="relative block">
-            <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold focus:outline-none">
+            <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold">
               <option selected>United Kingdom (+44)</option>
               <option>Germany (+49)</option>
               <option>Canada (+1)</option>
@@ -69,7 +69,7 @@ import { verificationStatus } from '@/data/account'
         </label>
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Phone</span>
-          <input placeholder="*** *** 4567" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+          <input placeholder="*** *** 4567" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
         </label>
         <div class="flex items-end">
           <GoldButton variant="solid" size="md">Send Code</GoldButton>

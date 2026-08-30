@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { paymentMethods } from '@/data/navigation'
 import { useEnter } from '@/composables/useEnter'
+import { trust } from '@/config/trust'
+import TrustBlock from '@/components/layout/TrustBlock.vue'
 
 /**
  * Slim premium footer (Phase 2, premium-motion flag). ~40% shorter than the
@@ -27,7 +28,6 @@ const secondary = [
   { label: 'Terms', to: '/terms' },
   { label: 'Privacy', to: '/privacy' },
 ]
-const pays = paymentMethods.slice(0, 5)
 </script>
 
 <template>
@@ -45,7 +45,7 @@ const pays = paymentMethods.slice(0, 5)
     <div class="container-royal py-12">
       <!-- Crest -->
       <div class="flex flex-col items-center text-center">
-        <img src="/assets/images/throne-logo-mark.webp" alt="" class="h-10 w-auto opacity-90 drop-shadow-[0_3px_14px_rgba(212,175,55,0.4)]" />
+        <img src="/assets/images/throne-logo-mark.webp" alt="" class="h-10 w-auto opacity-90 drop-shadow-[0_3px_14px_rgba(212,175,55,0.4)]" loading="lazy" decoding="async" />
         <p class="mt-3 font-display text-2xl font-bold tracking-[0.22em] text-gold-gradient">THRONE</p>
         <p class="mt-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.4em] text-champagne/70">
           Built for the Crowned
@@ -85,21 +85,24 @@ const pays = paymentMethods.slice(0, 5)
           © 2026 THRONE. All rights reserved.
         </p>
 
-        <ul class="order-1 flex flex-wrap items-center justify-center gap-4 lg:order-2">
+        <!-- An acceptance mark is a claim of live contractual acceptance through
+             an acquirer. Empty until that is true. -->
+        <ul
+          v-if="trust.payments?.length"
+          class="order-1 flex flex-wrap items-center justify-center gap-4 lg:order-2"
+        >
           <li
-            v-for="p in pays"
+            v-for="p in trust.payments"
             :key="p"
             class="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-dim"
           >
             {{ p }}
           </li>
         </ul>
+      </div>
 
-        <div class="order-3 flex items-center gap-3">
-          <span class="font-sans text-[11px] uppercase tracking-[0.14em] text-ink-dim">Play Responsibly</span>
-          <span class="h-4 w-px bg-white/10" />
-          <span class="grid h-8 w-8 place-items-center rounded-full border border-ink-dim/60 font-sans text-[10px] font-bold text-ink-muted">18+</span>
-        </div>
+      <div class="mt-7">
+        <TrustBlock />
       </div>
     </div>
   </footer>

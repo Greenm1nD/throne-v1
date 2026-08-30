@@ -17,6 +17,7 @@ const { isLoggedIn } = useAuth()
 const { enter } = useEnter()
 
 const t = computed(() => kingdomPage.tournaments.find((x) => x.slug === route.params.slug))
+
 const fillPct = computed(() => (t.value ? Math.round((t.value.players / t.value.cap) * 100) : 0))
 const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
 </script>
@@ -134,7 +135,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
           </ol>
 
           <div v-else class="grid place-items-center gap-2 py-12 text-center">
-            <img src="/assets/images/crown-duke.png" alt="" class="h-9 w-auto opacity-70" />
+            <img src="/assets/images/crown-duke.png" alt="" class="h-9 w-auto opacity-70" loading="lazy" decoding="async" />
             <p class="font-sans text-[13px] text-ink-muted">The lists open when the tournament begins.</p>
             <p class="font-sans text-[11px] text-ink-dim">Reserve your seat to be summoned when it starts.</p>
           </div>

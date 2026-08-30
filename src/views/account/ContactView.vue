@@ -36,12 +36,12 @@ const channels = [
       <div class="grid gap-4 sm:grid-cols-2">
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Subject</span>
-          <input placeholder="How may the court assist?" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+          <input placeholder="How may the court assist?" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
         </label>
         <label class="block">
           <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Category</span>
           <span class="relative block">
-            <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold focus:outline-none">
+            <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold">
               <option disabled selected>Choose a category</option>
               <option>Wallet & Payments</option>
               <option>Bonuses & Rewards</option>
@@ -55,7 +55,7 @@ const channels = [
       <label class="mt-4 block">
         <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Message</span>
         <textarea rows="5" placeholder="Describe your request in detail…"
-          class="w-full rounded-lg border border-border-gold/60 bg-black/40 p-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+          class="w-full rounded-lg border border-border-gold/60 bg-black/40 p-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
       </label>
       <GoldButton variant="solid" size="md" class="mt-5">Dispatch to the Court</GoldButton>
     </AccountPanel>

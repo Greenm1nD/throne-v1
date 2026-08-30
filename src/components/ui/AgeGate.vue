@@ -1,26 +1,34 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { useFocusTrap } from '@/composables/useFocusTrap'
+import { track } from '@/utils/analytics'
 
 /**
  * One-time 18+ gate. Required for a gambling brand, and doubles as a premium
  * "you are being admitted" ceremony. The choice persists in localStorage.
  */
+const { lock, unlock } = useScrollLock()
+
 const STORAGE = 'throne.age-ok'
 const open = ref(false)
 const denied = ref(false)
+const dialogEl = ref<HTMLElement | null>(null)
+useFocusTrap(dialogEl, open)
 
 onMounted(() => {
   if (localStorage.getItem(STORAGE) !== '1') {
     open.value = true
-    document.documentElement.style.overflow = 'hidden'
+    lock()
   }
 })
 
 function enter() {
+  track('age_gate_accept')
   localStorage.setItem(STORAGE, '1')
   open.value = false
-  document.documentElement.style.overflow = ''
+  unlock()
 }
 function decline() {
   denied.value = true
@@ -36,8 +44,9 @@ function decline() {
       leave-to-class="opacity-0"
     >
       <div
+        ref="dialogEl"
         v-if="open"
-        class="fixed inset-0 z-[300] grid place-items-center overflow-y-auto bg-black/92 p-5 backdrop-blur-md"
+        class="fixed inset-0 z-blocking grid place-items-center overflow-y-auto bg-black/92 p-5 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         aria-label="Age verification"

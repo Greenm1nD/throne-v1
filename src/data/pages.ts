@@ -253,39 +253,6 @@ export const vipPage = {
     { label: '24/7 Priority Support', icon: 'headset', to: '/account/contact' },
     { label: 'Personalized VIP Offers', icon: 'sparkle', to: '/rewards' },
   ],
-  tiers: [
-    {
-      name: 'Noble',
-      range: '0 – 5,000 XP',
-      crown: '/assets/images/crown-noble.png',
-      perks: ['Welcome Bonus', '24/7 Support', 'Daily Rewards'],
-    },
-    {
-      name: 'Baron',
-      range: '5,001 – 15,000 XP',
-      crown: '/assets/images/crown-baron.png',
-      perks: ['Higher Cashback', 'Faster Withdrawals', 'Exclusive Promotions'],
-    },
-    {
-      name: 'Duke',
-      range: '15,001 – 50,000 XP',
-      crown: '/assets/images/crown-duke.png',
-      perks: ['Personal Account Manager', 'VIP Cashback', 'Private Events Access'],
-      featured: true,
-    },
-    {
-      name: 'Crown',
-      range: '50,001 – 150,000 XP',
-      crown: '/assets/images/crown-crown.png',
-      perks: ['Dedicated VIP Host', 'Highest Cashback', 'Priority Withdrawals'],
-    },
-    {
-      name: 'Sovereign',
-      range: '150,001+ XP',
-      crown: '/assets/images/crown-sovereign.png',
-      perks: ['Exclusive VIP Lounge', 'Invite Only Tournaments', 'Custom Offers & Gifts'],
-    },
-  ],
   lounge: {
     title: 'VIP Lounge',
     sub: 'A private world of luxury, reserved for our elite members.',
@@ -363,26 +330,6 @@ export const rewardsPage = {
       fallback: '/assets/images/hall-biggest-jackpot.webp',
     },
   ],
-  summary: {
-    level: 'Duke',
-    xp: 32450,
-    next: 50000,
-    toNext: '17,550 XP to reach CROWN',
-    stats: [
-      { icon: 'star', label: 'Available Points', value: '12,450' },
-      { icon: 'gift', label: 'Redeemed Rewards', value: '24' },
-      { icon: 'sparkle', label: 'Total Value', value: '€2,450' },
-    ],
-    cta: 'Go to Rewards Wallet',
-    // Wallet (polish): live balance, next unlock, recent activity
-    points: 12450,
-    nextUnlock: { name: 'Bespoke Gifts', cost: 60000 },
-    activity: [
-      { label: '+1,200 pts', detail: 'Live Blackjack', when: 'Today' },
-      { label: 'Redeemed', detail: 'Five-Star Escape', when: '2 days' },
-      { label: '+850 pts', detail: 'Roulette', when: '3 days' },
-    ],
-  },
   band: <BandItem[]>[
     { icon: 'star', title: 'Earn Points', sub: 'Earn points on every bet across all games' },
     { icon: 'gift', title: 'Real-World Privileges', sub: 'Trade points for travel, gifts and access' },

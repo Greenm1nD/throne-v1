@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
           <div class="relative h-16 w-16 shrink-0">
             <span class="seal-aura absolute -inset-3 rounded-full" aria-hidden="true" />
             <span class="absolute -inset-1.5 rounded-full" style="background: radial-gradient(circle, rgba(245,215,122,0.42), transparent 60%); filter: blur(5px)" />
-            <img
+            <img loading="lazy" decoding="async"
               src="/assets/images/invitation-seal.webp"
               alt=""
               class="relative h-16 w-16 rounded-full object-cover drop-shadow-[0_0_18px_rgba(245,215,122,0.4)]"

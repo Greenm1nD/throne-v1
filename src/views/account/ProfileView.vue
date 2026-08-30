@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { user } from '@/data/account'
+import { useProgression } from '@/composables/useProgression'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const fields = [
   { label: 'First Name', value: user.firstName },
@@ -28,6 +31,13 @@ const portraits = [
 
 const current = ref(user.avatar)
 const showPicker = ref(false)
+
+// It teleports to body, covers the page and traps the eye — so it owes the
+// keyboard the same three things every other dialog here provides.
+const pickerEl = ref<HTMLElement | null>(null)
+const { lock, unlock } = useScrollLock()
+watch(showPicker, (on) => (on ? lock() : unlock()))
+useFocusTrap(pickerEl, showPicker, { onEscape: () => (showPicker.value = false) })
 const draft = ref(current.value)
 
 function openPicker() {
@@ -39,6 +49,8 @@ function apply() {
   user.avatar = draft.value
   showPicker.value = false
 }
+
+const { rank } = useProgression()
 </script>
 
 <template>
@@ -56,7 +68,7 @@ function apply() {
         </div>
         <div>
           <p class="font-display text-lg font-semibold tracking-[0.08em] text-ink">{{ user.name }}</p>
-          <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }} · {{ user.handle }} · Member since {{ user.memberSince }}</p>
+          <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-gold-bright">{{ rank?.name }} · {{ user.handle }} · Member since {{ user.memberSince }}</p>
           <GoldButton variant="outline" size="sm" class="mt-3" @click="openPicker">
             <AppIcon name="user" :size="13" /> Change Portrait
           </GoldButton>
@@ -103,7 +115,11 @@ function apply() {
       <Transition name="fade">
         <div
           v-if="showPicker"
-          class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          ref="pickerEl"
+          class="fixed inset-0 z-modal flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Choose your emblem"
           @click.self="showPicker = false"
         >
           <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" />

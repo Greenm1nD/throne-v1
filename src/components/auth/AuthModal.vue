@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import gsap from 'gsap'
 import { playRoyalGate } from '@/utils/sfx'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import Crown3D from '@/components/ui/Crown3D.vue'
 import { useAuthModal } from '@/composables/useAuthModal'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import { assets } from '@/data/assets'
 import { INVITE_ONLY, joinCta } from '@/config'
 
@@ -57,6 +58,9 @@ function enterKingdom() {
   close()
   openTwofa()
 }
+
+const dialogEl = ref<HTMLElement | null>(null)
+useFocusTrap(dialogEl, computed(() => state.open))
 
 const cardEl = ref<HTMLElement | null>(null)
 const badgeEl = ref<HTMLElement | null>(null)
@@ -185,8 +189,9 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
       leave-to-class="opacity-0"
     >
       <div
+        ref="dialogEl"
         v-if="state.open"
-        class="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
+        class="fixed inset-0 z-modal grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         :aria-label="state.mode === 'register' ? joinCta : 'Enter the Kingdom'"
@@ -263,7 +268,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                       />
                       <select
                         v-if="f.select"
-                        class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-9 text-sm text-ink-muted focus:border-gold focus:outline-none"
+                        class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-9 text-sm text-ink-muted focus:border-gold"
                       >
                         <option value="" disabled selected>{{ f.placeholder }}</option>
                         <option>United Kingdom</option>
@@ -278,7 +283,7 @@ const panelBg = `linear-gradient(180deg, rgba(5,5,5,0.25), rgba(5,5,5,0.55)), ur
                         :type="f.password ? (reveal[f.id] ? 'text' : 'password') : f.type ?? 'text'"
                         :placeholder="f.placeholder"
                         :aria-invalid="!!errors[f.id]"
-                        class="h-12 w-full rounded-lg border bg-black/40 pl-11 pr-11 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
+                        class="h-12 w-full rounded-lg border bg-black/40 pl-11 pr-11 text-sm text-ink placeholder:text-ink-dim"
                         :class="errors[f.id] ? 'border-[#c2603f] focus:border-[#d9774f]' : 'border-border-gold/60 focus:border-gold'"
                         @input="clearError(f.id)"
                       />

@@ -3,8 +3,10 @@ import Crown3D from '@/components/ui/Crown3D.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import FontIcon from '@/components/ui/FontIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
-import { footerNav, paymentMethods } from '@/data/navigation'
+import { footerNav } from '@/data/navigation'
 import { useEnter } from '@/composables/useEnter'
+import { trust } from '@/config/trust'
+import TrustBlock from '@/components/layout/TrustBlock.vue'
 
 const { enter, enterLabel } = useEnter()
 
@@ -138,28 +140,9 @@ const rightCols = footerNav.slice(2)
           </GoldButton>
         </div>
 
-        <div class="flex items-center gap-4 lg:justify-end lg:pl-8">
-          <span
-            class="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-border-gold text-champagne"
-            style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)"
-          >
-            <AppIcon name="shield" :size="24" />
-          </span>
-          <div>
-            <p class="font-display text-sm font-semibold uppercase tracking-[0.16em] text-gold-gradient">
-              Safe &amp; Secure
-            </p>
-            <p class="mt-1 font-sans text-[11px] uppercase tracking-[0.12em] text-ink-muted">
-              Advanced Security
-            </p>
-            <p class="font-sans text-[11px] uppercase tracking-[0.12em] text-ink-dim">
-              Your safety, our priority
-            </p>
-          </div>
-        </div>
       </div>
 
-      <!-- Bottom bar: copyright · payments · responsibility -->
+      <!-- Bottom bar: copyright · payments -->
       <div
         class="mt-10 flex flex-col items-center gap-6 border-t border-border-gold/10 pt-8 lg:flex-row lg:justify-between"
       >
@@ -167,27 +150,21 @@ const rightCols = footerNav.slice(2)
           © 2026 THRONE. All rights reserved.
         </p>
 
-        <ul class="flex flex-wrap items-center justify-center gap-5">
+        <!-- An acceptance mark is a claim of live contractual acceptance through
+             an acquirer. Empty until that is true. -->
+        <ul v-if="trust.payments?.length" class="flex flex-wrap items-center justify-center gap-5">
           <li
-            v-for="p in paymentMethods"
+            v-for="p in trust.payments"
             :key="p"
             class="font-sans text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-dim transition-colors hover:text-ink-muted"
           >
             {{ p }}
           </li>
         </ul>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <span class="font-sans text-[11px] uppercase tracking-[0.14em] text-ink-dim">
-            Play Responsibly
-          </span>
-          <span class="h-4 w-px bg-white/10" />
-          <span
-            class="grid h-9 w-9 place-items-center rounded-full border border-ink-dim/60 font-sans text-[10px] font-bold text-ink-muted"
-          >
-            18+
-          </span>
-        </div>
+      <div class="mt-8">
+        <TrustBlock />
       </div>
     </div>
   </footer>

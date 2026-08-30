@@ -49,7 +49,7 @@ const sort = defineModel<string>('sort', { default: 'popular' })
           v-model="query"
           type="search"
           :placeholder="searchPlaceholder"
-          class="h-11 w-full rounded-full border border-border-gold/60 bg-black/40 pl-11 pr-4 font-sans text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none"
+          class="h-11 w-full rounded-full border border-border-gold/60 bg-black/40 pl-11 pr-4 font-sans text-sm text-ink placeholder:text-ink-dim focus:border-gold"
         />
       </label>
 
@@ -57,7 +57,7 @@ const sort = defineModel<string>('sort', { default: 'popular' })
         <div v-if="filterOptions.length" class="relative">
           <select
             v-model="filter"
-            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold focus:outline-none"
+            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold"
           >
             <option value="all">{{ filterLabel }}</option>
             <option v-for="o in filterOptions" :key="o" :value="o">{{ o }}</option>
@@ -68,7 +68,7 @@ const sort = defineModel<string>('sort', { default: 'popular' })
         <div class="relative">
           <select
             v-model="sort"
-            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold focus:outline-none"
+            class="h-11 appearance-none rounded-full border border-border-gold/60 bg-black/40 pl-5 pr-10 font-sans text-[12px] uppercase tracking-[0.08em] text-ink-muted focus:border-gold"
           >
             <option v-for="o in sortOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>

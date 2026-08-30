@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { track } from '@/utils/analytics'
 import { useRevealEach } from '@/composables/useReveal'
 import { useRoute, useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -10,7 +11,11 @@ import { findGame, lobbyGames, gameSlug } from '@/data/casinoGames'
 const route = useRoute()
 const router = useRouter()
 
-const game = computed(() => findGame(String(route.params.slug)) ?? lobbyGames[0])
+// No fallback: an unknown slug must render as not-found, not silently serve a
+// different game. The old `?? lobbyGames[0]` minted an indexable duplicate of
+// the same page for every string anyone put in the URL.
+const game = computed(() => findGame(String(route.params.slug)) ?? null)
+
 const playing = ref(false)
 const mode = ref<'real' | 'demo'>('real')
 const fav = ref(false)
@@ -28,6 +33,12 @@ const popular = computed(() =>
   lobbyGames.filter((g) => g !== game.value).slice(0, 6),
 )
 
+function launch() {
+  if (!game.value) return
+  playing.value = true
+  track('game_open', { game: game.value.name, provider: game.value.provider, mode: mode.value })
+}
+
 const controls = [
   { icon: 'star', label: 'Favorite', act: () => (fav.value = !fav.value) },
   { icon: 'refresh', label: 'Reload', act: () => (playing.value = false) },
@@ -40,7 +51,7 @@ const controls = [
   <main ref="rootEl" class="pb-4">
     <div class="container-royal pt-6">
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.12em]" aria-label="Breadcrumb">
+      <nav v-if="game" class="flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.12em]" aria-label="Breadcrumb">
         <RouterLink to="/" class="text-ink-dim transition-colors hover:text-gold-bright">Home</RouterLink>
         <span class="text-gold/50">/</span>
         <RouterLink to="/casino" class="text-ink-dim transition-colors hover:text-gold-bright">Casino</RouterLink>
@@ -49,7 +60,7 @@ const controls = [
       </nav>
 
       <!-- Game frame -->
-      <div class="card-lux mt-5 overflow-hidden p-0 hover:translate-y-0" data-reveal>
+      <div v-if="game" class="card-lux mt-5 overflow-hidden p-0 hover:translate-y-0" data-reveal>
         <div class="relative aspect-video max-h-[680px] w-full overflow-hidden">
           <!-- Blurred art backdrop -->
           <div
@@ -93,7 +104,7 @@ const controls = [
               <button
                 class="group relative grid h-20 w-20 place-items-center rounded-full bg-gold-gradient text-[#1a1407] shadow-gold transition-transform duration-300 hover:scale-105 active:scale-95"
                 aria-label="Launch game"
-                @click="playing = true"
+                @click="launch"
               >
                 <span class="absolute -inset-2 animate-ringRotate rounded-full border border-dashed border-gold/40" />
                 <AppIcon name="play" :size="30" />
@@ -142,6 +153,16 @@ const controls = [
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Unknown slug: a real not-found state, noindex'd, never another game -->
+      <div v-if="!game" class="grid place-items-center gap-4 py-24 text-center">
+        <img src="/assets/images/crown-duke.png" alt="" class="h-12 w-auto opacity-80" decoding="async" />
+        <h1 class="font-display text-2xl font-bold tracking-[0.1em] text-gold-gradient">Game Not Found</h1>
+        <p class="max-w-sm font-sans text-sm text-ink-muted">No table by that name sits in this hall.</p>
+        <GoldButton variant="solid" size="md" @click="router.push('/casino')">
+          Back to the Casino <AppIcon name="arrowRight" :size="14" />
+        </GoldButton>
       </div>
 
       <!-- Popular casino games -->

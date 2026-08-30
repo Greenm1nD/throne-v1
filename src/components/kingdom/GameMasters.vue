@@ -31,7 +31,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
           <span class="grid h-11 w-11 place-items-center rounded-full border border-border-gold/50 font-display text-[13px] font-bold text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)">
             {{ initials(m.name) }}
           </span>
-          <img :src="m.crown" alt="" class="absolute -bottom-1 -right-1 h-4 w-auto drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
+          <img :src="m.crown" alt="" class="absolute -bottom-1 -right-1 h-4 w-auto drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" loading="lazy" decoding="async" />
         </span>
 
         <p class="font-sans text-[13px] font-semibold text-ink">

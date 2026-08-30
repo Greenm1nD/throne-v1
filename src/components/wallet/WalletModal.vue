@@ -5,12 +5,25 @@ import GoldButton from '@/components/ui/GoldButton.vue'
 import { DEPOSIT, WITHDRAW, WITHDRAW_BANKS, balances, type PayMethod } from '@/data/account'
 import { useWalletModal } from '@/composables/useWalletModal'
 import { useDiscreet } from '@/composables/useDiscreet'
+import { useFocusTrap } from '@/composables/useFocusTrap'
+import { track } from '@/utils/analytics'
 
 const { state, close, setKind } = useWalletModal()
 const { mask } = useDiscreet()
 
+const dialogEl = ref<HTMLElement | null>(null)
+useFocusTrap(dialogEl, computed(() => state.open))
+
 const isDeposit = computed(() => state.kind === 'deposit')
 const methods = computed<PayMethod[]>(() => (isDeposit.value ? DEPOSIT : WITHDRAW))
+
+/** Prototype has no transaction to submit — this records the intent, which is
+ *  the last measurable step of the funnel that exists today. */
+function onSubmit() {
+  track(isDeposit.value ? 'deposit_complete' : 'withdraw_complete', {
+    method: selected.value?.name ?? 'unknown',
+  })
+}
 
 const methodName = ref('')
 const selected = computed(() => methods.value.find((m) => m.name === methodName.value) ?? methods.value[0])
@@ -41,8 +54,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
       leave-to-class="opacity-0"
     >
       <div
+        ref="dialogEl"
         v-if="state.open"
-        class="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
+        class="fixed inset-0 z-modal grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         :aria-label="isDeposit ? 'Deposit' : 'Withdraw'"
@@ -63,7 +77,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           <div class="px-6 py-7 sm:px-8">
             <!-- Brand -->
             <div class="flex flex-col items-center text-center">
-              <img src="/assets/images/crown-duke.png" alt="" class="h-7 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" />
+              <img src="/assets/images/crown-duke.png" alt="" class="h-7 w-auto drop-shadow-[0_3px_12px_rgba(212,175,55,0.45)]" loading="lazy" decoding="async" />
               <h2 class="mt-2 font-display text-xl font-bold tracking-[0.14em] text-gold-gradient">The Treasury</h2>
             </div>
 
@@ -108,7 +122,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                   />
                   <select
                     v-model="methodName"
-                    class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-9 text-sm text-ink focus:border-gold focus:outline-none"
+                    class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 pl-11 pr-9 text-sm text-ink focus:border-gold"
                   >
                     <option v-for="m in methods" :key="m.name" :value="m.name">{{ m.name }}</option>
                   </select>
@@ -121,7 +135,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 <label class="block">
                   <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Bank</span>
                   <span class="relative block">
-                    <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold focus:outline-none">
+                    <select class="h-12 w-full appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink-muted focus:border-gold">
                       <option v-for="b in WITHDRAW_BANKS" :key="b">{{ b }}</option>
                     </select>
                     <AppIcon name="chevronDown" :size="15" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted" />
@@ -129,7 +143,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 </label>
                 <label class="block">
                   <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">IBAN</span>
-                  <input placeholder="GB00 XXXX 0000 0000 0000 00" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+                  <input placeholder="GB00 XXXX 0000 0000 0000 00" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold" />
                 </label>
               </template>
 
@@ -139,11 +153,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 <input
                   :placeholder="selected ? `${selected.min} – ${selected.max}` : '0.00'"
                   inputmode="decimal"
-                  class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none"
+                  class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold"
                 />
               </label>
 
-              <GoldButton variant="solid" size="lg" block>{{ isDeposit ? 'Deposit' : 'Withdraw' }}</GoldButton>
+              <GoldButton variant="solid" size="lg" block @click="onSubmit">{{ isDeposit ? 'Deposit' : 'Withdraw' }}</GoldButton>
             </form>
 
             <p class="mt-4 text-center font-sans text-[10px] uppercase tracking-[0.18em] text-ink-dim">

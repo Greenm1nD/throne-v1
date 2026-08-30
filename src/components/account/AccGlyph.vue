@@ -16,6 +16,8 @@ withDefaults(defineProps<{ icon?: string; font?: string; img?: string; size?: nu
     v-if="img"
     :src="img"
     alt=""
+    loading="lazy"
+    decoding="async"
     class="object-contain"
     :style="{ width: `${size}px`, height: `${size}px` }"
   />

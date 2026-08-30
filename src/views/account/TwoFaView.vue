@@ -31,7 +31,7 @@ const enabled = ref(false)
           <div v-if="!enabled" class="mt-5 grid gap-4 sm:grid-cols-[1fr_auto]">
             <label class="block">
               <span class="mb-1.5 block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">Password</span>
-              <input type="password" placeholder="••••••••" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input type="password" placeholder="••••••••" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm text-ink placeholder:text-ink-dim focus:border-gold" />
             </label>
             <div class="flex items-end">
               <GoldButton variant="solid" size="md" @click="enabled = true">Activate</GoldButton>
@@ -48,7 +48,7 @@ const enabled = ref(false)
               </div>
             </div>
             <div class="grid gap-4 sm:grid-cols-[1fr_auto]">
-              <input placeholder="6-digit code" inputmode="numeric" maxlength="6" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-center text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold focus:outline-none" />
+              <input placeholder="6-digit code" inputmode="numeric" maxlength="6" class="h-12 w-full rounded-lg border border-border-gold/60 bg-black/40 px-4 text-center text-sm tabular-nums text-ink placeholder:text-ink-dim focus:border-gold" />
               <div class="flex gap-3">
                 <GoldButton variant="solid" size="md">Confirm</GoldButton>
                 <GoldButton variant="outline" size="md" @click="enabled = false">Disable</GoldButton>

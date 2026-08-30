@@ -1,41 +1,22 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import PageHero from '@/components/page/PageHero.vue'
 import FeatureBand from '@/components/page/FeatureBand.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { rewardsPage as page, vipPage } from '@/data/pages'
+import { rewardsPage as page } from '@/data/pages'
+import ProgressionWidget from '@/components/progression/ProgressionWidget.vue'
 import { useRevealEach } from '@/composables/useReveal'
 import { useAuth } from '@/composables/useAuth'
 import { useEnter } from '@/composables/useEnter'
-import { polishEnabled } from '@/composables/usePolish'
 import { useRouter } from 'vue-router'
 
 const { isLoggedIn } = useAuth()
 const { enter } = useEnter()
 const router = useRouter()
 
-// Rewards Wallet (polish): progress toward the next redeemable privilege.
-const unlockPct = computed(() =>
-  Math.min(100, Math.round((page.summary.points / page.summary.nextUnlock.cost) * 100)),
-)
-const toUnlock = computed(() =>
-  Math.max(0, page.summary.nextUnlock.cost - page.summary.points).toLocaleString(),
-)
-
-// Loyalty tiers reuse the VIP tier ladder (same levels, same crowns).
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
-
-const ranks = vipPage.tiers
-// Guests see a neutral ladder (no current tier, no progress fill); members see
-// their position. Personal progress must not be implied for logged-out visitors.
-const activeIndex = computed(() => (isLoggedIn.value ? ranks.findIndex((r) => r.featured) : -1))
-const fillWidth = computed(() =>
-  isLoggedIn.value ? (activeIndex.value / (ranks.length - 1)) * 100 : 0,
-)
-
-const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 100))
 </script>
 
 <template>
@@ -54,31 +35,9 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
           <p class="mt-2 font-sans text-[11px] leading-snug text-ink-dim">{{ page.tiers.sub }}</p>
         </div>
 
-        <div class="relative overflow-x-auto py-2 [scrollbar-width:none] lg:overflow-visible">
-          <div class="pointer-events-none absolute inset-x-2 top-[78px] hidden h-px bg-white/10 lg:block" />
-          <div
-            class="pointer-events-none absolute left-2 top-[78px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] lg:block"
-            :style="{ width: `${fillWidth}%` }"
-          />
-          <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-4">
-            <li v-for="(r, i) in ranks" :key="r.name" class="flex flex-col items-center gap-2">
-              <div class="relative z-10 flex h-[72px] items-end">
-                <img
-                  :src="r.crown"
-                  :alt="`${r.name} crown`"
-                  class="w-auto object-contain transition-all"
-                  :class="i === activeIndex ? 'h-16 drop-shadow-[0_0_18px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-12' : 'h-12 opacity-60'"
-                />
-              </div>
-              <span
-                class="font-sans text-[11px] font-bold uppercase tracking-[0.18em]"
-                :class="i === activeIndex ? 'text-gold-bright' : 'text-ink-muted'"
-              >
-                {{ r.name }}
-              </span>
-              <span class="font-sans text-[10px] tabular-nums text-ink-dim">{{ r.range }}</span>
-            </li>
-          </ol>
+        <div class="min-w-0">
+          <!-- Guests see the ladder with no personal position. -->
+          <ProgressionWidget placement="Bar" :anonymous="!isLoggedIn" />
         </div>
 
         <div class="flex shrink-0 flex-col items-center gap-3 text-center lg:max-w-[190px]">
@@ -137,107 +96,17 @@ const xpPct = computed(() => Math.round((page.summary.xp / page.summary.next) * 
         </div>
       </div>
 
-      <!-- Member + polish: Rewards Wallet -->
-      <div
-        v-if="isLoggedIn && polishEnabled"
-        class="card-lux flex flex-col gap-5 p-7 hover:translate-y-0 sm:p-8"
-        data-reveal
-      >
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="eyebrow">Rewards Wallet</p>
-            <p class="mt-1 font-display text-3xl font-bold tabular-nums text-gold-gradient">
-              {{ page.summary.points.toLocaleString() }}<span class="ml-1 align-baseline text-base text-champagne">pts</span>
-            </p>
-          </div>
-          <img src="/assets/images/crown-duke.png" alt="" class="h-12 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
-        </div>
-
-        <!-- Next unlock -->
-        <div>
-          <div class="mb-1.5 flex items-center justify-between font-sans text-[11px] text-ink-dim">
-            <span>Next unlock · <span class="text-champagne">{{ page.summary.nextUnlock.name }}</span></span>
-            <span class="tabular-nums">{{ unlockPct }}%</span>
-          </div>
-          <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
-            <div
-              class="h-full rounded-full bg-gold-gradient shadow-[0_0_12px_rgba(245,215,122,0.5)] transition-[width] duration-1000"
-              :style="{ width: `${unlockPct}%` }"
-            />
-          </div>
-          <p class="mt-1.5 font-sans text-[10px] uppercase tracking-[0.08em] text-ink-dim">{{ toUnlock }} pts to go</p>
-        </div>
-
-        <!-- Recent activity -->
-        <div>
-          <p class="eyebrow mb-2">Recent Activity</p>
-          <ul class="divide-y divide-border-gold/12">
-            <li
-              v-for="a in page.summary.activity"
-              :key="a.detail"
-              class="flex items-center justify-between gap-3 py-2"
-            >
-              <span class="min-w-0 truncate font-sans text-[12px] text-ink-muted">
-                <span class="font-semibold text-gold-bright">{{ a.label }}</span> · {{ a.detail }}
-              </span>
-              <span class="shrink-0 font-sans text-[10px] uppercase tracking-[0.12em] text-ink-dim">{{ a.when }}</span>
-            </li>
-          </ul>
-        </div>
-
+      <!-- Member: rank, Standing Order and Weekly Purse — one source, one meter. -->
+      <div v-if="isLoggedIn" class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
+        <ProgressionWidget placement="Hero" />
         <GoldButton variant="outline" size="md" block class="mt-auto" @click="router.push('/account/rewards')">
-          {{ page.summary.cta }} <AppIcon name="arrowRight" :size="14" />
-        </GoldButton>
-      </div>
-
-      <!-- Member: personal rewards summary (stable / non-polish) -->
-      <div v-else-if="isLoggedIn" class="card-lux flex flex-col gap-4 p-7 hover:translate-y-0 sm:p-8" data-reveal>
-        <div class="flex items-center gap-4">
-          <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
-          <div class="flex-1">
-            <p class="eyebrow">Your Rewards Summary</p>
-            <p class="font-display text-2xl font-bold tracking-[0.12em] text-gold-gradient">
-              {{ page.summary.level }}
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
-            <div
-              class="h-full rounded-full bg-gold-gradient shadow-[0_0_12px_rgba(245,215,122,0.5)] transition-[width] duration-1000"
-              :style="{ width: `${xpPct}%` }"
-            />
-          </div>
-          <p class="mt-1.5 font-sans text-[10px] uppercase tracking-[0.08em] text-ink-dim">
-            {{ page.summary.toNext }}
-          </p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-border-gold/10 bg-white/[0.03]">
-          <div
-            v-for="s in page.summary.stats"
-            :key="s.label"
-            class="flex flex-col items-center gap-1.5 bg-card/70 px-2 py-4 text-center"
-          >
-            <AppIcon :name="s.icon" :size="18" class="text-gold/80" />
-            <span class="font-sans text-[9px] font-semibold uppercase leading-tight tracking-[0.1em] text-ink-dim">
-              {{ s.label }}
-            </span>
-            <span class="font-display text-base font-bold tabular-nums text-gold-gradient">
-              {{ s.value }}
-            </span>
-          </div>
-        </div>
-
-        <GoldButton variant="outline" size="md" block class="mt-auto">
-          {{ page.summary.cta }} <AppIcon name="arrowRight" :size="14" />
+          Go to Rewards Wallet <AppIcon name="arrowRight" :size="14" />
         </GoldButton>
       </div>
 
       <!-- Guest: join-to-earn teaser (no personal data) -->
       <div v-else class="card-lux flex flex-col items-center justify-center gap-4 p-7 text-center hover:translate-y-0 sm:p-8" data-reveal>
-        <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" />
+        <img src="/assets/images/crown-duke.png" alt="" class="h-14 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.55)]" loading="lazy" decoding="async" />
         <div>
           <p class="eyebrow">Your Treasury Awaits</p>
           <p class="mt-2 max-w-xs font-sans text-[13px] leading-relaxed text-ink-muted">

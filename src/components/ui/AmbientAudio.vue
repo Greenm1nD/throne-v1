@@ -83,7 +83,7 @@ onBeforeUnmount(() => audio?.pause())
 <template>
   <button
     v-if="!missing && !noAudio"
-    class="group fixed bottom-5 left-5 z-[90] grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
+    class="group fixed bottom-5 left-5 z-40 grid h-12 w-12 place-items-center rounded-full border border-border-gold bg-black/70 backdrop-blur transition-all duration-300 hover:border-gold hover:shadow-gold-soft"
     :class="playing ? 'border-gold/70 text-gold-bright' : 'text-ink-muted hover:text-champagne'"
     :aria-pressed="playing"
     :aria-label="playing ? 'Mute ambience' : 'Play ambience'"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AccountNav from '@/components/account/AccountNav.vue'
@@ -6,6 +7,9 @@ import { balances, user } from '@/data/account'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { useWalletModal } from '@/composables/useWalletModal'
 import { useAccountMenu } from '@/composables/useAccountMenu'
+import { useProgression } from '@/composables/useProgression'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 /**
  * Global mobile account menu (phones, < md). Opens from the top-bar profile
@@ -19,6 +23,19 @@ function wallet(kind: 'deposit' | 'withdraw') {
   open.value = false
   openWallet(kind)
 }
+
+const { rank } = useProgression()
+
+const menuEl = ref<HTMLElement | null>(null)
+const { lock, unlock } = useScrollLock()
+
+// Watch rather than a call at each `open = false` site (scrim, close button,
+// wallet, every nav link): a watch fires only on a real change, so re-opening
+// an already-open drawer cannot take a second lock the single close would
+// never release.
+watch(open, (on) => (on ? lock() : unlock()))
+// Escape rides the trap, so only the innermost open overlay closes.
+useFocusTrap(menuEl, open, { onEscape: () => (open.value = false) })
 </script>
 
 <template>
@@ -26,24 +43,27 @@ function wallet(kind: 'deposit' | 'withdraw') {
     <Transition name="ma-scrim">
       <div
         v-if="open"
-        class="fixed inset-0 z-[95] bg-black/65 backdrop-blur-md md:hidden"
+        class="fixed inset-0 z-drawer-scrim bg-black/65 backdrop-blur-md md:hidden"
         @click="open = false"
       />
     </Transition>
     <Transition name="ma-drawer">
       <aside
         v-if="open"
-        class="fixed inset-y-0 right-0 z-[96] flex w-[86%] max-w-[330px] flex-col border-l border-border-gold/40 bg-surface/95 backdrop-blur-xl md:hidden"
+        ref="menuEl"
+        class="fixed inset-y-0 right-0 z-drawer flex w-[86%] max-w-[330px] flex-col border-l border-border-gold/40 bg-surface/95 backdrop-blur-xl md:hidden"
+        role="dialog"
+        aria-modal="true"
         aria-label="Account menu"
       >
         <!-- Member + balance (static header — does not scroll) -->
         <div class="shrink-0 border-b border-border-gold/25 p-5">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <img :src="user.avatar" alt="" class="h-11 w-11 rounded-full border border-border-gold object-cover" />
+              <img :src="user.avatar" alt="" class="h-11 w-11 rounded-full border border-border-gold object-cover" loading="lazy" decoding="async" />
               <div class="min-w-0">
                 <p class="truncate font-sans text-[13px] font-semibold text-ink">{{ user.name }}</p>
-                <p class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold-bright">{{ user.tier }}</p>
+                <p class="font-sans text-[9px] font-bold uppercase tracking-[0.2em] text-gold-bright">{{ rank?.name }}</p>
               </div>
             </div>
             <button class="grid h-9 w-9 place-items-center rounded-full border border-border-gold/40 text-ink-muted transition-colors hover:border-gold hover:text-gold-bright" aria-label="Close" @click="open = false">

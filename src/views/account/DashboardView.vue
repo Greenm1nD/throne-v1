@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import StatCard from '@/components/account/StatCard.vue'
 import AccountPanel from '@/components/account/AccountPanel.vue'
 import AccGlyph from '@/components/account/AccGlyph.vue'
@@ -7,14 +6,16 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import { useRouter } from 'vue-router'
 import { user, balances, transactions, quickActions } from '@/data/account'
-import { vipLevels } from '@/data/vipLevels'
+import ProgressionWidget from '@/components/progression/ProgressionWidget.vue'
+import { useProgression } from '@/composables/useProgression'
+import { formatBp } from '@/data/progression'
 import { useDiscreet } from '@/composables/useDiscreet'
 import { polishEnabled } from '@/composables/usePolish'
 
 const { mask } = useDiscreet()
 const router = useRouter()
-const activeIndex = computed(() => vipLevels.findIndex((l) => l.name === user.tier))
-const xpPct = computed(() => Math.round((user.xp / user.xpNext) * 100))
+// Rank comes from the one progression source; this view computes nothing.
+const { rank } = useProgression()
 const recent = transactions.slice(0, 5)
 </script>
 
@@ -25,11 +26,11 @@ const recent = transactions.slice(0, 5)
       <p class="font-sans text-[13px] text-ink-dim">Welcome back,</p>
       <div class="mt-1 flex items-center gap-3">
         <h1 class="font-display text-3xl font-bold tracking-[0.06em] text-gold-gradient">{{ user.name }}</h1>
-        <img src="/assets/images/crown-duke.png" alt="" class="h-7 w-auto" />
+        <img v-if="rank" :src="rank.crown" alt="" class="h-7 w-auto" />
       </div>
       <p class="mt-1 font-sans text-[12px] text-ink-dim">{{ user.handle }} · Member since {{ user.memberSince }}</p>
       <span class="mt-2 inline-flex items-center gap-2 rounded-full border border-border-gold px-3.5 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-gold-bright">
-        <AppIcon name="crown" :size="12" /> {{ user.tier }}
+        <AppIcon name="crown" :size="12" /> {{ rank?.name }}
       </span>
     </div>
 
@@ -39,14 +40,11 @@ const recent = transactions.slice(0, 5)
         :rows="[{ k: 'Total Deposits', v: balances.totalDeposits }, { k: 'Total Withdrawals', v: balances.totalWithdrawals }]" />
       <StatCard label="Bonus" :value="balances.bonus" icon="gift" accent
         :rows="[{ k: 'Active Bonuses', v: String(balances.activeBonuses) }, { k: 'Active Balance', v: balances.activeBonusBalance }]" />
-      <StatCard label="VIP Level" :value="user.tier" icon="crown" accent>
-        <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-          <div class="h-full rounded-full bg-gold-gradient" :style="{ width: `${xpPct}%` }" />
-        </div>
-        <p class="mt-2 font-sans text-[11px] tabular-nums text-ink-dim">
-          {{ user.xp.toLocaleString() }} / {{ user.xpNext.toLocaleString() }} XP · Next: {{ user.nextTier.toUpperCase() }}
-        </p>
-      </StatCard>
+      <StatCard label="Rank" :value="rank?.name ?? '—'" icon="crown" accent
+        :rows="rank ? [
+          { k: 'Standing Order', v: formatBp(rank.standingOrderBp) },
+          { k: 'Weekly Purse', v: rank.weeklyPurseBp ? formatBp(rank.weeklyPurseBp) : '—' },
+        ] : []" />
       <StatCard label="Account Status" value="Not Verified" icon="shield"
         :rows="polishEnabled ? [] : [{ k: 'Member since', v: user.memberSince }, { k: 'Two-Factor Auth', v: 'Disabled' }]">
         <template #value><span class="text-[#e89a7c]">Not Verified</span></template>
@@ -71,27 +69,9 @@ const recent = transactions.slice(0, 5)
           </RouterLink>
         </template>
 
-        <div class="relative px-2 pt-2">
-          <div class="pointer-events-none absolute inset-x-4 top-[56px] hidden h-px bg-white/10 md:block" />
-          <div class="pointer-events-none absolute left-4 top-[56px] hidden h-px bg-gold-gradient shadow-[0_0_8px_rgba(245,215,122,0.6)] md:block"
-            :style="{ width: `${(activeIndex / (vipLevels.length - 1)) * 100}%` }" />
-          <ol class="relative grid auto-cols-fr grid-flow-col justify-items-center gap-2 overflow-x-auto [scrollbar-width:none]">
-            <li v-for="(lvl, i) in vipLevels" :key="lvl.name" class="flex flex-col items-center gap-1.5">
-              <div class="relative z-10 flex h-12 items-end">
-                <img :src="lvl.crown" :alt="lvl.name"
-                  class="w-auto object-contain"
-                  :class="i === activeIndex ? 'h-11 drop-shadow-[0_0_14px_rgba(245,215,122,0.8)]' : i < activeIndex ? 'h-8' : 'h-8 opacity-50'" />
-              </div>
-              <span class="font-sans text-[10px] font-bold uppercase tracking-[0.14em]" :class="i === activeIndex ? 'text-gold-bright' : 'text-ink-muted'">{{ lvl.name }}</span>
-              <span class="whitespace-nowrap font-sans text-[9px] tabular-nums text-ink-dim">{{ lvl.threshold.toLocaleString() }}+ XP</span>
-            </li>
-          </ol>
-        </div>
+        <ProgressionWidget placement="Card" />
 
-        <p class="mt-6 border-t border-border-gold/20 pt-4 font-sans text-[12px] text-ink-dim">
-          You're doing great — keep playing to reach {{ user.nextTier }}.
-        </p>
-        <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="mt-6 grid grid-cols-2 gap-3 border-t border-border-gold/20 pt-5 sm:grid-cols-4">
           <div v-for="b in [
               { icon: 'star', t: 'Higher Bonuses' },
               { icon: 'bolt', t: 'Faster Withdrawals' },

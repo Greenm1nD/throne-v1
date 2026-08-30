@@ -50,7 +50,7 @@ function search() {
         <span class="relative block">
           <select
             v-model="pending"
-            class="h-12 w-[120px] appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink focus:border-gold focus:outline-none"
+            class="h-12 w-[120px] appearance-none rounded-lg border border-border-gold/60 bg-black/40 px-4 pr-9 text-sm text-ink focus:border-gold"
           >
             <option v-for="o in options" :key="o">{{ o }}</option>
           </select>
@@ -63,7 +63,7 @@ function search() {
         <input
           v-model="start"
           type="date"
-          class="h-12 w-[160px] rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink [color-scheme:dark] focus:border-gold focus:outline-none"
+          class="h-12 w-[160px] rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink [color-scheme:dark] focus:border-gold"
         />
       </label>
 
@@ -72,7 +72,7 @@ function search() {
         <input
           v-model="end"
           type="date"
-          class="h-12 w-[160px] rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink [color-scheme:dark] focus:border-gold focus:outline-none"
+          class="h-12 w-[160px] rounded-lg border border-border-gold/60 bg-black/40 px-4 text-sm tabular-nums text-ink [color-scheme:dark] focus:border-gold"
         />
       </label>
 

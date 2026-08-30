@@ -23,7 +23,7 @@ const initials = (name: string) => name.replace(/[^a-zA-Z]/g, '').slice(0, 2).to
         data-reveal
       >
         <span class="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-dim">{{ c.season }} Champion</span>
-        <img :src="c.crown" alt="" class="h-12 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.6)]" />
+        <img :src="c.crown" alt="" class="h-12 w-auto drop-shadow-[0_0_16px_rgba(245,215,122,0.6)]" loading="lazy" decoding="async" />
         <span class="grid h-12 w-12 place-items-center rounded-full border border-border-gold/50 font-display text-[14px] font-bold text-champagne" style="background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%)">
           {{ initials(c.name) }}
         </span>
