@@ -1,16 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRevealEach } from '@/composables/useReveal'
+import PageHero from '@/components/page/PageHero.vue'
 import GamesLobby from '@/components/page/GamesLobby.vue'
 import RoyalPicks from '@/components/casino/RoyalPicks.vue'
 import GoldButton from '@/components/ui/GoldButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { casinoPage as page } from '@/data/pages'
 import { lobbyGames, lobbyProviders } from '@/data/casinoGames'
+import { RANKS } from '@/data/progression'
 import { useEnter } from '@/composables/useEnter'
 import { polishEnabled } from '@/composables/usePolish'
 
 const { enter } = useEnter()
+
+// Casino highlights — same strip as always, every figure real. Counts come
+// from the catalogue, RTP is its average, the rakeback range is the published
+// ladder. No players-online, no biggest-win: nothing here is fabricated.
+const avgRtp = (
+  lobbyGames.reduce((s, g) => s + parseFloat(g.rtp ?? '0'), 0) / lobbyGames.length
+).toFixed(1)
+const rateRange = `${RANKS[0].standingOrderBp / 100}–${RANKS[RANKS.length - 1].standingOrderBp / 100}%`
+const highlights = [
+  { icon: 'chip', value: `${lobbyGames.length}`, label: 'Games' },
+  { icon: 'shield', value: `${lobbyProviders.length}`, label: 'Providers' },
+  { icon: 'sparkle', value: `${avgRtp}%`, label: 'Average RTP' },
+  { icon: 'crown', value: rateRange, label: 'Rakeback · Published' },
+]
 
 const root = ref<HTMLElement | null>(null)
 useRevealEach(root)
@@ -18,41 +34,26 @@ useRevealEach(root)
 
 <template>
   <main ref="root" class="pb-4">
-    <!-- Slim brand band — the catalogue is the hero; games sit one glance away -->
-    <section class="relative flex min-h-[220px] items-end overflow-hidden">
-      <div
-        class="absolute inset-0 bg-cover"
-        :style="{
-          backgroundImage: `linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.6) 40%, rgba(5,5,5,0.25) 70%), url('${page.hero.image}'), url('${page.hero.fallback}')`,
-          backgroundColor: '#07070a',
-          backgroundPosition: `center ${page.hero.posY}`,
-        }"
-      />
-      <div class="container-royal relative z-10 pb-7 pt-14">
-        <div class="flex items-end gap-4">
-          <img
-            src="/assets/images/crown-duke.png"
-            alt=""
-            class="h-9 w-auto drop-shadow-[0_4px_14px_rgba(212,175,55,0.45)]"
-          />
-          <div>
-            <h1 class="font-display text-3xl font-bold tracking-[0.12em] text-gold-gradient sm:text-4xl">
-              {{ page.hero.title }}
-            </h1>
-            <!-- Real counts, computed from the catalogue -->
-            <p class="mt-1.5 font-sans text-[12px] text-ink-muted">
-              {{ lobbyGames.length }} games · {{ lobbyProviders.length }} providers
-            </p>
-          </div>
+    <PageHero v-bind="page.hero" :cta="page.hero.cta" />
+
+    <!-- Casino highlights (the game-type categories live in the main nav) -->
+    <section class="container-royal pt-5">
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div v-for="h in highlights" :key="h.label"
+          class="flex items-center gap-3 rounded-2xl border border-border-gold/15 bg-card/70 px-5 py-4">
+          <AppIcon :name="h.icon" :size="22" class="shrink-0 text-gold/80" />
+          <span class="min-w-0">
+            <span class="block font-sans text-lg font-bold tabular-nums text-gold-gradient">{{ h.value }}</span>
+            <span class="block truncate font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">{{ h.label }}</span>
+          </span>
         </div>
       </div>
     </section>
 
-    <!-- The catalogue comes first -->
-    <GamesLobby flush class="pt-8 sm:pt-10" data-reveal />
-
     <!-- Royal Picks — curated editorial row (polish flag) -->
     <RoyalPicks v-if="polishEnabled" />
+
+    <GamesLobby data-reveal />
 
     <!-- Progressive jackpot banner -->
     <section class="container-royal pt-12 sm:pt-16">
