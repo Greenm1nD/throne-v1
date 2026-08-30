@@ -160,3 +160,130 @@ This is a Figma task, not a generation task — add to the design-system file `L
 
 **Reminder:** never overwrite the two founder-replaced images in `public/assets/images/` —
 new assets get new filenames.
+
+---
+
+# ChatGPT (GPT-4o) version
+
+GPT-4o images take natural-language instructions, have no separate negative field (exclusions go
+inline), and hold style best when a series is generated **in one conversation**. Sizes: ask for
+"square", "landscape", or "portrait" explicitly. If results drift bright, reply "much darker —
+the background must be almost pure black".
+
+## Step 0 — paste this once at the start of the conversation
+
+```
+We are creating brand artwork for THRONE, a dark-luxury royal brand. Keep this exact style for
+every image in this conversation: near-black background (#050505), antique gold accents (#D4AF37)
+with champagne highlights (#F5D77A), cinematic rim lighting, matte surfaces, subtle film grain,
+baroque detail only at the edges with a calm center. Never include any text, letters, numbers,
+watermarks, logos, or human faces. Never include gambling imagery: no slot reels, playing cards,
+dice, roulette wheels, poker chips, or falling coins. Mood: monumental, quiet, expensive.
+Confirm, then wait for my asset requests.
+```
+
+## 01 · Casino slim brand band (priority 1)
+
+```
+Widest landscape format. A dark royal treasury hall viewed straight-on: polished black marble
+floor reflecting warm candlelight, tall gilded columns receding into darkness at the left and
+right edges, the center third calm and almost empty so interface text can sit over it later.
+The bottom third fades to pure black for seamless blending into a webpage. Faint gold dust in
+the air. Keep it very dark overall.
+```
+*(მიღებულს ზემოდან/ქვემოდან მოვჭრით ~220px ზოლამდე — შუა მესამედი დარჩეს სუფთა.)*
+
+## 03 · Rank crests — sequential chain (priority 2)
+
+```
+[1/6] Square format. A minimal heraldic emblem: a single thin-line gold laurel ring, centered on
+a pure black background, engraved-metal texture, flat front view, crisp enough to read as an
+icon at small sizes. This is the first of six rank emblems — each next one will ADD one element
+to this exact design, so keep the composition simple and centered.
+```
+```
+[2/6] Same emblem, same style, same framing — add a small keystone shield at the base of the ring.
+[3/6] Keep everything — add two crossed ceremonial swords behind the ring.
+[4/6] Keep everything — add a slim five-point coronet resting on top of the ring.
+[5/6] Keep everything — the coronet becomes a closed-arc crown, and the ring becomes two
+      concentric thin lines.
+[6/6] Keep everything — the crown becomes a full closed crown with an orb, and the ring becomes
+      a sunburst of fine engraved rays. Add champagne-gold highlights on the crown only.
+```
+
+## 06 · Campaign lander heroes (priority 3)
+
+```
+[affiliate-review] Landscape. A dark archive wall of gilded ledger spines in shadow; one book
+pulled out and open under a single warm beam of light, its gold page edges glowing. Library
+silence, factual calm. Bottom half darker and calm for interface overlay.
+```
+```
+[streamer] Landscape. An empty royal theatre at night seen from the stage: rows of dark velvet
+seats, gold balcony rails catching rim light, one spotlight pooling on the floor front-center.
+Anticipation without people. Bottom half calm for interface overlay.
+```
+```
+[push-latam] Landscape. Massive dark bronze doors slightly ajar, warm gold light spilling
+through the gap onto black marble; fine engraved patterns visible only where the light touches.
+Minimal and inviting, no figures. Bottom half calm for interface overlay.
+```
+
+## 02 · Mobile home band
+
+```
+Portrait format. A dark throne hall seen from below: a single empty gold throne silhouette high
+in the frame, lit by one warm shaft of light from the left. The entire lower half dissolves into
+pure black — that area will hold interface elements. Monumental and minimal; gold rim light on
+the throne edges only, no ornament in the lower half.
+```
+
+## 05 · Rakeback calculator backdrop
+
+```
+Landscape, top-down view of a dark writing desk: black leather inlay, the corner of an open
+ledger book with empty ruled pages (no writing on them), a brass fountain pen resting at the
+edge of the frame, warm candlelight from the right, deep shadows. Gold reflections only on the
+pen and page edges. The central 60% must stay dark and calm for interface overlay.
+```
+
+## 04 · Trust panel texture
+
+```
+Landscape, extremely subtle: an almost-black surface like aged ledger leather with a faint
+embossed grid of hairline gold lines, barely visible, and one soft warm gradient from the
+top-left corner. This must read as a background texture, not a picture — if in doubt, darker
+and subtler.
+```
+
+## 07 · Hall of Kings backdrop
+
+```
+Landscape. A long dark gallery with three empty stone pedestals arranged as a podium (center
+tallest), each lit by its own narrow warm shaft from above, gold laurel details on the pedestal
+rims, black marble floor with faint reflections, background dissolving into darkness. No statues
+and no people — the pedestals are waiting for this season's champions.
+```
+
+## 08 · Season XII seal
+
+```
+Square. A circular seal emblem: an engraved gold ring with twelve small notches around the rim,
+holding a minimal crown-over-hourglass mark in the center. Antique gold on pure black, the depth
+of a pressed wax seal, crisp at small sizes.
+```
+
+## 09 · Game tile covers (8, run as a chain in one conversation)
+
+```
+Square game-cover artwork, one engraved gold object floating on a near-black background, single
+warm key light, fine metal texture, shallow depth of field, the lower fifth of the frame calm.
+First object: a gilded falcon in mid-flight. The next seven requests will swap only the object —
+keep everything else identical.
+```
+Then, one line each:
+`Same style — a royal signet ring.` · `…crossed ceremonial keys.` · `…an astrolabe.` ·
+`…a chalice set with gems.` · `…a war-horn with gold bands.` · `…an ornate hand mirror.` ·
+`…a mechanical songbird.`
+
+*(10 · სალაროს იკონები აქაც გამოტოვებულია — SVG-ით, დიზაინ-სისტემაში.)*
