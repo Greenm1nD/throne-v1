@@ -43,8 +43,9 @@ const filtered = computed(() => {
   if (sort.value === 'az') return [...list].sort((a, b) => a.name.localeCompare(b.name))
   if (sort.value === 'rtp')
     return [...list].sort((a, b) => parseFloat(b.rtp ?? '0') - parseFloat(a.rtp ?? '0'))
-  // Default: curated popularity rank from the catalogue (1 = most popular).
-  return [...list].sort((a, b) => (a.popular ?? 99) - (b.popular ?? 99))
+  // Default: the catalogue's own order. The data file IS the curation — the
+  // founder arranges games by editing it, and the default view never re-sorts.
+  return list
 })
 
 /** Favorited games within THIS catalogue — the chip count stays honest per lobby. */

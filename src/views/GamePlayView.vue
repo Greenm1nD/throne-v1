@@ -33,11 +33,9 @@ watch(() => route.params.slug, () => {
   playing.value = false
 })
 
+// Catalogue order — the data file is the curation, the rail never re-sorts.
 const popular = computed(() =>
-  [...lobbyGames]
-    .sort((a, b) => (a.popular ?? 99) - (b.popular ?? 99))
-    .filter((g) => g !== game.value)
-    .slice(0, 6),
+  lobbyGames.filter((g) => g !== game.value).slice(0, 6),
 )
 
 function launch() {

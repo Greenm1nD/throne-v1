@@ -7,8 +7,6 @@ export interface LobbyGame {
   hot?: boolean
   isNew?: boolean
   rtp?: string
-  /** Curated popularity rank (1 = most popular) — drives the default lobby sort */
-  popular?: number
   /** Provider game-launch URL — when set, the play page embeds it */
   src?: string
 }
@@ -23,22 +21,22 @@ export const findGame = (slug: string) =>
   lobbyGames.find((g) => gameSlug(g) === slug)
 
 export const lobbyGames: LobbyGame[] = [
-  { name: 'Gates of Olympus', provider: 'Pragmatic Play', image: img('gates-of-olympus'), rtp: '96.5', popular: 1, hot: true },
-  { name: 'Sugar Rush', provider: 'Pragmatic Play', image: img('sugar-rush'), rtp: '96.5', popular: 4 },
-  { name: 'Starlight Princess', provider: 'Pragmatic Play', image: img('starlight-princess'), rtp: '96.5', popular: 5 },
-  { name: 'Zeus vs Hades', provider: 'Pragmatic Play', image: img('zeus-vs-hades'), rtp: '96.1', popular: 2, hot: true },
-  { name: 'Bounty Gold', provider: 'Pragmatic Play', image: img('bounty-gold'), rtp: '96.4', popular: 9 },
-  { name: 'Release the Kraken', provider: 'Pragmatic Play', image: img('release-the-kraken'), rtp: '96.7', popular: 6, isNew: true },
-  { name: 'Candy Blitz', provider: 'Pragmatic Play', image: img('candy-blitz'), rtp: '96.2', popular: 8 },
-  { name: 'Fruit Rainbow', provider: 'Pragmatic Play', image: img('fruit-rainbow'), rtp: '96.5', popular: 14 },
-  { name: 'Pyramid Treasure', provider: 'Platin Gaming', image: img('pyramid-treasure'), rtp: '95.9', popular: 15 },
-  { name: 'Octobeer Fortunes', provider: 'Platin Gaming', image: img('octobeer'), rtp: '96.0', popular: 16, isNew: true },
-  { name: 'Fishin Reels', provider: 'Pragmatic Play', image: img('fishin-reels'), rtp: '96.3', popular: 7 },
-  { name: 'The Wild Gang', provider: 'Pragmatic Play', image: img('the-wild-gang'), rtp: '96.5', popular: 11 },
-  { name: 'Great Stick-Up', provider: 'Pragmatic Play', image: img('great-stick-up'), rtp: '96.3', popular: 13 },
-  { name: 'Empty the Bank', provider: 'Pragmatic Play', image: img('empty-the-bank'), rtp: '96.5', popular: 12 },
-  { name: 'The Ultimate 5', provider: 'Pragmatic Play', image: img('the-ultimate-5'), rtp: '96.6', popular: 3, hot: true },
-  { name: 'Smugglers Cove', provider: 'Pragmatic Play', image: img('smugglers-cove'), rtp: '96.4', popular: 10 },
+  { name: 'Gates of Olympus', provider: 'Pragmatic Play', image: img('gates-of-olympus'), rtp: '96.5', hot: true },
+  { name: 'Sugar Rush', provider: 'Pragmatic Play', image: img('sugar-rush'), rtp: '96.5' },
+  { name: 'Starlight Princess', provider: 'Pragmatic Play', image: img('starlight-princess'), rtp: '96.5' },
+  { name: 'Zeus vs Hades', provider: 'Pragmatic Play', image: img('zeus-vs-hades'), rtp: '96.1', hot: true },
+  { name: 'Bounty Gold', provider: 'Pragmatic Play', image: img('bounty-gold'), rtp: '96.4' },
+  { name: 'Release the Kraken', provider: 'Pragmatic Play', image: img('release-the-kraken'), rtp: '96.7', isNew: true },
+  { name: 'Candy Blitz', provider: 'Pragmatic Play', image: img('candy-blitz'), rtp: '96.2' },
+  { name: 'Fruit Rainbow', provider: 'Pragmatic Play', image: img('fruit-rainbow'), rtp: '96.5' },
+  { name: 'Pyramid Treasure', provider: 'Platin Gaming', image: img('pyramid-treasure'), rtp: '95.9' },
+  { name: 'Octobeer Fortunes', provider: 'Platin Gaming', image: img('octobeer'), rtp: '96.0', isNew: true },
+  { name: 'Fishin Reels', provider: 'Pragmatic Play', image: img('fishin-reels'), rtp: '96.3' },
+  { name: 'The Wild Gang', provider: 'Pragmatic Play', image: img('the-wild-gang'), rtp: '96.5' },
+  { name: 'Great Stick-Up', provider: 'Pragmatic Play', image: img('great-stick-up'), rtp: '96.3' },
+  { name: 'Empty the Bank', provider: 'Pragmatic Play', image: img('empty-the-bank'), rtp: '96.5' },
+  { name: 'The Ultimate 5', provider: 'Pragmatic Play', image: img('the-ultimate-5'), rtp: '96.6', hot: true },
+  { name: 'Smugglers Cove', provider: 'Pragmatic Play', image: img('smugglers-cove'), rtp: '96.4' },
 ]
 
 export const lobbyProviders = [...new Set(lobbyGames.map((g) => g.provider))]
