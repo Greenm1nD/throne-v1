@@ -1,85 +1,112 @@
-# გეგმა v2 — „გაშვების ნაკადი" Figma-ფაილის ბლუპრინტი
+# გეგმა v3 — „გაშვების ნაკადი" Figma-ფაილის ბლუპრინტი
 
-**თარიღი:** 2026-08-31 · **ვერსია:** 2.2 (v2.1-რევიუს 5 ნარჩენი შესწორება შეტანილია)
+**თარიღი:** 2026-08-31 · **ვერსია:** 3.0 (cross-border მოდელზე გადაწყობილი)
 **სტატუსი:** ⏳ დასადასტურებელი — Figma იწყება მხოლოდ შენი OK-ს შემდეგ
-**ეს ვერსია ანაცვლებს** ბაზრების კლასიფიკაციებს 01 §2.6-ში, 03 §1.1-სა და 06-ში — ისინი counsel-სპრინტის შემდეგ ჰარმონიზდება (ორივეს გაფრთხილების ბანერი დაედო).
+**ეს ვერსია ანაცვლებს** ბაზრების კლასიფიკაციებს 01 §2.6-ში, 03 §1.1-სა და 06-ში — ისინი counsel-სპრინტის შემდეგ ჰარმონიზდება.
 
 ---
 
-## 0. პასუხი რევიუზე — რა შეიცვალა
+## 0. ცვლილებების ისტორია
 
-| რევიუს პუნქტი | სტატუსი v2-ში |
+| ვერსია | რა შეიცვალა |
 |---|---|
-| ბაზრების რუკა (2/10) | ✅ თავიდან აწყობილი: market-cell gate მოდელი; CL/JP → 🔴 (გადამოწმებული პირველწყაროებით); **PE / MX / DR / BO → 🟡 Licensing Track · EC → 🟡 Legal Opinion · PY / GT / CR → ⚪ Verify**; **GREEN დღეს ცარიელია** |
-| „ბიუჯეტი ≠ launch budget" | ✅ სამფენიანი მოდელი: Operating + Acquisition + Liquidity/Reserve = **Total Capital Requirement** |
-| Acquisition-ციფრების შეუთავსებლობა | ✅ თითო სცენარს საკუთარი თვიური ცხრილი აქვს + scale-start KPI-gate; $45–70k/თვე მხოლოდ Aggressive-შია |
-| 2.5×-ის არითმეტიკა + NGR≠LTV | ✅ ცხრილი გასწორდა; gate გადავიდა **Contribution LTV / CAC**-ზე; CPA-ჭერი გამკაცრდა |
-| KPI-ს profitability-ძრავა | ✅ definitions-სვეტი + 12 ახალი მეტრიკა |
-| Launch Gate არასრული | ✅ 4 დამოუკიდებელი gate + 10-პუნქტიანი jurisdiction readiness თითო ქვეყანაზე |
-| T-ღერძი | ✅ T = **პირველი ბაზრის Production Readiness Date** (არა ბექენდის დღე) |
-| RACI პერსონალიზებული | ✅ ფუნქციებზე აგებული (11 ფუნქცია), ადამიანები role-ზე ებმიან |
-| **v2-რევიუს 5 პუნქტი** | ✅ v2.1: Bolivia → 🟡 · Japan „prohibited" (არა „criminal") · DR ≈$690k შესვლა · paid-ჯამები $62/199/399k · Capital-სათაური → „ინდიკატიური, ლიცენზირებამდე" + TBD-ხაზი |
-| **v2.1-რევიუს 5 ნარჩენი** | ✅ v2.2: Chile-ს 2026-04 mirror-მტკიცება მოხსნილია (SUBTEL 2026-06: სრული ბლოკირება ტექნიკურად არასრულყოფილია) · DR bond ამოღებულია ფენა C-დან → მთლიანად Regulatory Capital-ში · EC summary → Legal Opinion · ბოლო კითხვის ციფრები = ცხრილის · Peru → priority diligence |
-
-**შენარჩუნებული ~80%:** 10-გვერდიანი სტრუქტურა · Pre→Gate→Soft→Public→Scale ნაკადი · Soft Launch = ეკონომიკის აღმოჩენა და არა მოცულობა · vendor-independence · საკუთარი ატრიბუცია · კონცენტრაციის ლიმიტები · demo-data gate · RG day-1 · რისკების გვერდის მიდგომა.
+| v2 | market-cell gate · სამფენიანი კაპიტალი · Contribution LTV/CAC · 4-gate T · ფუნქციური RACI |
+| v2.1 | Bolivia→🟡 · Japan „prohibited" · DR ≈$690k · paid-ჯამები $62/199/399k · Capital „ინდიკატიური, ლიცენზირებამდე" |
+| v2.2 | Chile mirror-თარიღი მოხსნილი · DR მთლიანად Regulatory Capital-ში · EC=Legal Opinion · Peru→priority diligence |
+| **v3.0** | **მთელი მოდელი cross-border-ზე:** GREEN = „cross-border acquisition allowed" და არა „ბიზნესის გახსნა" · 7-შემოწმებიანი Market Gate · local-entity-მოთხოვნა = blocker · Bolivia→NO-GO · DR→LOW PRIORITY/NO-GO · Mexico→Legal Diligence · ლიცენზირება conditional add-on · counsel-სპრინტის მიზანი გადაწერილი · Acquisition Gate-ში traffic-clearance წესი · ტერმინოლოგია გაწმენდილი „market entry"-დან |
 
 ---
 
-## ახალი მთავარი თეზისი (გვერდი 1)
+## გვერდი 1 · 📖 მთავარი თეზისი — Cross-Border მოდელი
 
-> გაშვების გეგმა არ იწყება კითხვით „სად ვიყიდოთ ტრაფიკი?" — ის იწყება კითხვით:
-> **„რომელი market-cell არის ერთდროულად legal + payable + operable + measurable + profitable?"**
-> რუკა ცარიელი იწყება. ქვეყანა GREEN-ს **იმსახურებს** 10-პუნქტიანი gate-ის გავლით — და მხოლოდ ამის შემდეგ ხვდება acquisition-ბიუჯეტში.
+> **ერთიანი საერთაშორისო ოპერატორი (Curaçao) · ერთი ვებსაიტი → სხვადასხვა ქვეყნიდან მომხმარებლების acquisition.**
+>
+> GREEN აღარ ნიშნავს „ამ ქვეყანაში ვხსნით ბიზნესს". ნიშნავს:
+> **არსებულ საერთაშორისო ოპერატორს შეუძლია ამ ქვეყნის მომხმარებლის მიღება და მიზნობრივი მოზიდვა.**
 
----
+**მთავარი sequence:**
+```
+Curaçao operator → country legal access review → approved geos
+→ payment/provider validation → acquisition
+→ local authorization მხოლოდ საჭიროების (და ეკონომიკური გამართლების) შემთხვევაში
+```
+
+სამი მმართველი წესი (06-დან, უცვლელი): ფასიანი მოცულობამდე არა · ატრიბუცია ჩვენია · პროგრესიის ბირთვი vendor-independent.
 
 ## გვერდი 2 · ✅ ინვენტარი
-(უცვლელი v1-დან — 15-პუნქტიანი ცხრილი სტატუსებით; ემატება ხაზი: „ბაზრების იურიდიული დოსიეები — ❌ დასაწყები, counsel-სპრინტი T−30-ის პირველი ამოცანაა")
+(უცვლელი — 15-პუნქტიანი ცხრილი; counsel-სპრინტის ხაზის ფორმულირება ახალია: „ბაზრების cross-border access დოსიეები — ❌ დასაწყები, T−30-ის პირველი ამოცანა")
 
-## გვერდი 3 · 🌍 ბაზრები v2 — Market-Cell Gate
+## გვერდი 3 · 🌍 ბაზრები v3 — Market Gate 7 შემოწმებით
 
-**ხუთი პირობა GREEN-ისთვის:** Legal · Payable · Operable · Measurable · Profitable — ხუთივე ერთდროულად.
+**სტატუსების განმარტება:**
 
-| ბაზარი | v2 სტატუსი | საფუძველი |
+| სტატუსი | ნიშნავს |
+|---|---|
+| 🟢 GREEN | **Cross-border acquisition allowed** — არსებული ოპერატორით ამ ქვეყნის რეზიდენტების მომსახურება და მიზნობრივი მოზიდვა დასაშვებია |
+| 🟡 YELLOW | **Legal/licensing clarification required** |
+| 🔴 RED | **Targeting/service prohibited** ან შეუთავსებელია მიმდინარე operator-მოდელთან |
+| ⚪ GREY | **Insufficient legal evidence** |
+
+**Market Gate — 7 შემოწმება ყოველ ქვეყანაზე:**
+1. **Access legal?** — შეუძლია რეზიდენტს legally ითამაშოს ჩვენს საიტზე / ჩვენ მოვემსახუროთ?
+2. **Local licence required?** — ითხოვს თუ არა targeting/service ადგილობრივ ავტორიზაციას?
+3. **Foreign entity eligible?** — თუ ითხოვს, უცხოური იურ. პირი დაიშვება local branch-ის გარეშე?
+4. **Marketing legal?** — paid/affiliate მიზნობრივი მარკეტინგი დასაშვებია?
+5. **Payments work?** — დეპოზიტი და გატანა რეალურად მუშაობს?
+6. **Games allowed?** — პროვაიდერების კონტენტი ამ ბაზარზე დაშვებულია?
+7. **Economics work?** — Contribution LTV/CAC gate-ს აბარებს?
+
+**Blocker-წესი:** თუ ბაზარი **local domiciled entity-ს ითხოვს** და ჩვენ მის გახსნას არ ვგეგმავთ → ქვეყანა ავტომატურად **NO-GO / HOLD**-ში გადადის, დანარჩენი შემოწმებების მიუხედავად.
+
+| ბაზარი | v3 სტატუსი | საფუძველი |
 |---|---|---|
-| **Chile** | 🔴 დახურული | ონლაინ-თამაში უკანონოა expressly authorized-ის გარდა (SCJ); სასამართლოს დადგენილი ISP-ბლოკირება; აღსრულება 2026-შიც გრძელდება, თუმცა mirror-საიტების მუდმივი სრული ბლოკირება ტექნიკურად არასრულყოფილი რჩება (SUBTEL, 2026-06) |
-| **Japan** | 🔴 დახურული | 2025-09-25: პრომო/რეკლამა/აფილიატ-ლინკები/recommendation-საიტები **აკრძალულია (prohibited)**; NPA-აღსრულება. **Japan-მიმართული აფილიატ/ინფლუენსერ პრომო — აკრძალულია იაპონური კანონით.** ქვეყანა = $0 |
-| Brazil | 🔴 | SPA-ლიცენზია + ANATEL (უცვლელი) |
-| Colombia | 🔴 | Coljuegos (უცვლელი) |
-| Bolivia | 🟡 **Licensing track — ლოკალური ერთეული სავალდებულო** | AJ-ს აქვს მოქმედი ონლაინ-ლიცენზიის ჩარჩო, მაგრამ მხოლოდ ბოლივიაში დაფუძნებული/domiciled იურ. პირებისთვის; არაავტორიზებული ოპერაცია უკანონოა. **Curaçao-only მოდელით ვერ შევა** |
-| აზია-კრიმინალი / EU-ლიცენზირებული | 🔴 | უცვლელი |
-| **Peru** | 🟡 **Licensing track** | MINCETUR-ს აქვს პირდაპირი authorization-პროცედურა, უცხოური კომპანიებისთვისაც — **რეგულირებული შესაძლებლობაა**, არა grey |
-| **Mexico** | 🟡 Licensing track | SEGOB-permit აუცილებელია; Curaçao ≠ ავტორიზაცია; 2026-08 გამკაცრება განიხილება |
-| **Dominican Rep.** | 🟡 Licensing track — **ძვირი შესვლა** | ონლაინ-ლიცენზია: **ღირებულება RD$20.47m ≈ $347k + performance bond RD$20m ≈ $339k → შესვლის ქეში ≈ $690k** implementation/ოპერაციულ ხარჯებამდე; ლოკალური ოფისი/call-center, .do დომენი, Commercial Registry/RNC-რეგისტრაცია. **„სწრაფი ბაზრის" სტატუსს კარგავს** |
-| Ecuador | 🟡 opinion | ცალკე casino/sportsbook legal opinion |
-| Argentina | 🟡 პროვინციული | CABA/PBA ლიცენზიები |
-| Paraguay · Guatemala · Costa Rica | ⚪ VERIFY | ადგილობრივი counsel-დოსიე კლასიფიკაციამდე |
+| **Chile** | 🔴 RED | ონლაინ-თამაში უკანონოა expressly authorized-ის გარდა (SCJ); სასამართლოს დადგენილი ISP-ბლოკირება; აღსრულება 2026-შიც გრძელდება, თუმცა mirror-საიტების მუდმივი სრული ბლოკირება ტექნიკურად არასრულყოფილი რჩება (SUBTEL, 2026-06) |
+| **Japan** | 🔴 RED | 2025-09-25: პრომო/რეკლამა/აფილიატ-ლინკები/recommendation-საიტები აკრძალულია (prohibited); NPA-აღსრულება. **Foreign website-ის არსებობა ვერაფერს ცვლის მიზნობრივი acquisition-ის აკრძალვაში.** $0 |
+| Brazil | 🔴 RED | SPA-ლიცენზია + ANATEL |
+| Colombia | 🔴 RED | Coljuegos |
+| **Bolivia** | 🔴 **პრაქტიკული NO-GO** | AJ-ს ჩარჩო მხოლოდ ბოლივიაში დაფუძნებულ/domiciled იურ. პირებს უშვებს → **local-entity blocker-წესი ირთვება**: ჩვენს მოდელში მისი გახსნა არ იგეგმება — shortlist-იდან ამოღებულია |
+| **Dominican Rep.** | 🔴/🟡 **LOW PRIORITY / NO-GO** | მაღალი regulatory entry (ლიცენზია ≈$347k + bond ≈$339k ≈ $690k) **+ local operational requirements** (ოფისი/call-center, .do, Registry/RNC) — cross-border მოდელს ცუდად ერგება. განიხილება მხოლოდ თუ ეკონომიკა ოდესმე გაამართლებს |
+| აზია-კრიმინალი / EU-ლიცენზირებული | 🔴 RED | უცვლელი |
+| **Peru** | 🟡 **Priority diligence** | აქცენტი: **უცხოურ იურ. პირს შეუძლია MINCETUR-authorization local branch-ის გარეშე** (ადმ. ვადა ≤30 სამუშაო დღე), თუ დანარჩენ მოთხოვნებსაც აკმაყოფილებს — homologation, ტექ. სერტიფიკაცია, გარანტიები, 12% Net-Win tax, გადახდები |
+| **Mexico** | 🟡 **Legal Diligence / Licensing Required** | გასარკვევია: **შეუძლია თუ არა არსებულ საერთაშორისო ოპერატორს legally target/serve residents** — არა „local partner expansion". SEGOB-permit რეჟიმი მოქმედებს; 2026-08 ცვლილებები ჯერ ინიციატივებია |
+| Ecuador | 🟡 Legal Opinion | ცალკე casino/sportsbook opinion cross-border access-ზე |
+| Argentina | 🟡 Clarification | პროვინციული რეჟიმები — cross-border targeting-ის დასაშვებობა პროვინციების მიხედვით |
+| Paraguay · Guatemala · Costa Rica | ⚪ GREY | Insufficient legal evidence — counsel-დოსიე კლასიფიკაციამდე |
 | **GREEN დღეს** | **∅ ცარიელი** | პირველი GREEN = counsel-სპრინტის შედეგი |
 
-**Soft Launch-ის ბაზარი დღეს უცნობია** — ის counsel-სპრინტიდან გამოვა. **Peru — priority diligence კანდიდატი:** მკაფიო რეგულატორული გზა და უცხოური ერთეულის დაშვება (authorization-ის ადმინისტრაციული ვადა ≤30 სამუშაო დღე), მაგრამ ლონჩის დრო დამოკიდებულია პლატფორმის/თამაშების homologation-ზე, ტექნიკურ სერტიფიკაციაზე, გარანტიებზე, 12% Net-Win გადასახადსა და გადახდების მზადყოფნაზე. Mexico — ლოკალური პარტნიორის permit-გზა. ეს გეგმის ყველაზე მნიშვნელოვანი ცვლილებაა.
+**Counsel-სპრინტის მიზანი (გადაწერილი):** არა „რომელ ქვეყნებში გავხსნათ ოპერაცია", არამედ —
+**„რომელი ქვეყნების მომხმარებლების cross-border acquisition არის დასაშვები არსებული operator setup-ით."**
 
-## გვერდი 4 · 🗺 ნაკადი v2 — T-ღერძი ოთხი gate-ით
+**Jurisdiction dossier — თითო ქვეყანაზე 6 კონკრეტული პასუხი:**
+1. Foreign operator access — დასაშვებია?
+2. Local licence necessity — საჭიროა თუ არა targeting/service-სთვის?
+3. Foreign entity eligibility — local branch-ის გარეშე?
+4. Paid/affiliate marketing legality
+5. Payment restrictions
+6. Provider/content restrictions
 
-**T = პირველი ბაზრის Production Readiness Date.** T დგება მხოლოდ მაშინ, როცა ოთხივე დამოუკიდებელი gate PASS-ია:
+## გვერდი 4 · 🗺 ნაკადი v3 — T-ღერძი ოთხი gate-ით
+
+**T = პირველი legally cleared ბაზრის Production Readiness Date.** ოთხივე gate PASS → T:
 
 ```
 Product Ready ──┐
-Payments Ready ─┼─→ ოთხივე PASS → T · Soft Launch (1 ბაზარი)
-Compliance Ready┤
+Payments Ready ─┼─→ ოთხივე PASS → T · Soft Launch (ერთი ან რამდენიმე
+Compliance Ready┤        legally cleared cross-border ბაზარი)
 Acquisition Rdy─┘
 ```
 
 - **Product:** launch-gate ჩეკლისტი (დემო→რეალური, ატრიბუცია, ანალიტიკა)
-- **Payments:** ≥2 ლოკალური მეთოდი ცოცხალი · გატანის ტესტი რეალური თანხით · rolling-reserve პირობები ცნობილი · float საკმარისი
-- **Compliance:** ბაზრის 10-პუნქტიანი jurisdiction gate (გვ. 8) · T&C/RG/AML ვიზირებული
-- **Acquisition:** ≥5 seed-პარტნიორი ხელმოწერილი · კრეატივები compliance-რევიუთი · ტრეკინგი E2E გატესტილი
+- **Payments:** ≥2 ლოკალური მეთოდი ცოცხალი მიზნობრივ გეოში · გატანის ტესტი რეალური თანხით · rolling-reserve პირობები ცნობილი · float საკმარისი
+- **Compliance:** ბაზრის dossier-ის 6 პასუხი + 7-შემოწმებიანი gate PASS · T&C/RG/AML ვიზირებული
+- **Acquisition:** ≥5 seed-პარტნიორი ხელმოწერილი · კრეატივები compliance-რევიუთი · ტრეკინგი E2E გატესტილი · **„No paid/affiliate traffic before legal market-access clearance"** — არც ერთი ფასიანი/აფილიატ-კლიკი გეოზე, სანამ მისი access-clearance არ დადასტურდა
 
-ბექენდის მიბმა ამ მოდელში Product-gate-ის **წინაპირობაა** და არა თავად T.
+**Soft Launch = ერთი ან რამდენიმე legally cleared cross-border ბაზარი** — არა „ერთი ქვეყანა, სადაც local licence ავიღეთ". ბექენდის მიბმა Product-gate-ის წინაპირობაა და არა თავად T.
 
 ## გვერდი 5 · 📣 არხები
-(v1-ის სტრუქტურა რჩება; ცვლილებები:) Scale-ის ტემპები სცენარზეა მიბმული და არა საერთო · იაპონია ამოღებულია ყველგან · „რა არ მუშაობს" ბლოკს ემატება: **Japan-მიმართული აფილიატ/ინფლუენსერ პრომო — აკრძალულია (prohibited) 2025-09-25-დან**.
+(უცვლელი v2.2-დან: სცენარზე მიბმული ტემპები; Japan ამოღებული ყველგან; „რა არ მუშაობს" + Japan-პრომოს აკრძალვა. ემატება:) ყოველი არხის გეო-სია იკვებება **მხოლოდ GREEN-სიიდან** — არხს საკუთარი გეო-გადაწყვეტილება არ აქვს.
 
-## გვერდი 6 · 💰 ბიუჯეტი v2 — სამი ფენა
+## გვერდი 6 · 💰 ბიუჯეტი v3 — სამი ფენა
 
 ### 6.1 ფენა A · Operating Platform Cost (წლიური, ინდიკატიური)
 
@@ -90,84 +117,39 @@ Acquisition Rdy─┘
 | პროვაიდერების მინიმუმები* | $30k | $55k | $90k |
 | Support (LatAm, ES) | $35k | $60k | $90k |
 | Security/pentest/DDoS | $15k | $25k | $35k |
-| Legal/compliance retainer + 6–8 country-opinion | $45k | $65k | $90k |
-| ლიცენზირების განაცხადები (PE/MX/DR — რომელსაც ავირჩევთ) | TBD² | TBD² | TBD² |
+| Legal/compliance retainer + 6–8 ქვეყნის **cross-border access opinion** | $45k | $65k | $90k |
 | Ops/სხვა | $20k | $35k | $50k |
 | **ჯამი A** | **~$170k** | **~$280k** | **~$415k** |
 
-\* rev-share GGR-დანაა (COGS), აქ მხოლოდ ფიქსირებული მინიმუმებია · ² counsel-სპრინტი დააზუსტებს — ლიცენზია+bond მთლიანად 6.4-ის Regulatory Capital-ხაზშია (DR-მაგალითი იქვე); Peru-ს ფასები გამოქვეყნებადია
+\* rev-share GGR-დანაა (COGS), აქ ფიქსირებული მინიმუმებია.
+**ლიცენზირების განაცხადები ფენა A-დან ამოღებულია** — local authorization წინასწარ დაგეგმილი ხარჯი აღარ არის; ის conditional add-on-ია (იხ. 6.4).
 
 ### 6.2 ფენა B · Acquisition — თითო სცენარს საკუთარი timeline
-
-**Scale-start KPI-gate (სამივესთვის საერთო):** scale იწყება მხოლოდ თუ blended CPA ≤ ჭერი **და** FTD→2nd-deposit ≥30% **და** deposit-approval ≥85% **და** contribution-payback ტრენდი ≤6 თვე.
-
-| Paid media | Lean | Base | Aggressive |
-|---|---:|---:|---:|
-| Discovery (თვე 1–2) | $3k/თვე | $9k → $16k | $12k → $25k |
-| Validation (თვე 3–5) | $7k/თვე | $16k/თვე | $25k/თვე |
-| Scale (თვე 6–12) | **capped $5k/თვე** | $18k/თვე | $41k/თვე |
-| **Paid წლიური** | **$62k** | **$199k** | **$399k** |
-
-| სტრიმერები (Kick/TG) | Lean | Base | Aggressive |
-|---|---:|---:|---:|
-| თვე 1–3 (CPA-only ტრიალები) | ~$1.5k/თვე | $4.5k→$9k | $4.5k→$16k |
-| პიკი (თვე 6+) | $4k/თვე | **$15k/თვე** | **$30k/თვე** |
-| **წლიური** | **~$40k** | **~$150k** | **~$280k** |
-
-(02-ის „$54k/თვე" მრუდი = ზედა ზღვარი, არა Base — 02 შესაბამისად შესწორდება)
-
-| სხვა acquisition | Lean | Base | Aggr |
-|---|---:|---:|---:|
-| აფილიატ-CPA ავანსები/პრიზები | $25k | $80k | $180k |
-| SEO/კონტენტი ES-419 | $24k | $42k | $60k |
-| **ჯამი B** | **~$151k** | **~$471k** | **~$919k** |
+(უცვლელი v2.2-დან — ჯამები $62/199/399k paid · $40/150/280k streamers · **B: $151k / $471k / $919k**; scale-start KPI-gate უცვლელი. Acquisition-ხარჯი მიემართება **მხოლოდ GREEN გეოებს**.)
 
 ### 6.3 ფენა C · Liquidity & Reserve (კაპიტალი, არა P&L)
+(უცვლელი v2.2-დან — PSP rolling reserve / float / affiliate float / chargeback: **$80–160k / $225–440k / $460–900k**. Regulatory ბონდები აქ **არ** შედის — ისინი 6.4-ის conditional ხაზშია.)
 
-| მუხლი | Lean | Base | Aggressive |
-|---|---:|---:|---:|
-| PSP rolling reserve (5–10% დეპოზიტების, 90–180დ) | $30–60k | $80–160k | $180–350k |
-| მოთამაშეთა float + გატანის ლიკვიდობა | $30–50k | $80–150k | $150–300k |
-| აფილიატების payment float (~1 თვე) | $10–30k | $40–80k | $80–150k |
-| Chargeback/fraud რეზერვი | $10–20k | $25–50k | $50–100k |
-| **ჯამი C** | **~$80–160k** | **~$225–440k** | **~$460–900k** |
-
-### 6.4 **ინდიკატიური კაპიტალის მოთხოვნა — selected-market ლიცენზირებამდე** (A+B+C+ვენდორები 06-დან)
+### 6.4 **ინდიკატიური კაპიტალის მოთხოვნა** (A+B+C+ვენდორები 06-დან)
 
 | | Lean | Base | Aggressive |
 |---|---:|---:|---:|
-| **ინდიკატიური კაპიტალი წელი-1 (ლიცენზირებამდე)** | **~$440–540k** | **~$1.0–1.25M** | **~$1.85–2.4M** |
-| **+ Selected-market ლიცენზია/რეგულატორული კაპიტალი** | **TBD¹** | **TBD¹** | **TBD¹** |
+| **ინდიკატიური კაპიტალი წელი-1 (cross-border მოდელი)** | **~$440–540k** | **~$1.0–1.25M** | **~$1.85–2.4M** |
+| **+ Conditional: selected-market local authorization** | $0 default¹ | $0 default¹ | $0 default¹ |
 
-¹ counsel-სპრინტის შემდეგ ივსება — **ორივე რეგულატორული მოთხოვნა (ლიცენზიაც და bond-იც) ამ ხაზშია, არა ფენა C-ში.**
-**Selected-market Regulatory Capital — DR-ის მაგალითი:** ლიცენზია ≈$347k + performance bond ≈$339k = **რეგულატორული შესვლის ქეში ≈$686–690k**, + implementation/ოპერაციული ხარჯები ცალკე. ხაზი ბაზრის არჩევანზეა დამოკიდებული და ასეულობით ათას $-ს შეიძლება შეადგენდეს.
+¹ **Cross-border მოდელში local authorization default-ხარჯი აღარ არის.** ის ირთვება მხოლოდ იმ ბაზარზე, სადაც (ა) local authorization აუცილებელია targeting-ისთვის და (ბ) მისი აღება ეკონომიკურად გამართლდება (Contribution-მოდელით). მასშტაბის მაგალითი, რატომ არის ეს გადაწყვეტილება ძვირი: **DR = ლიცენზია ≈$347k + bond ≈$339k ≈ $690k** + implementation — სწორედ ამიტომ არის DR LOW PRIORITY/NO-GO.
 
-> ეს ემთხვევა ადრეულ GTM-დასკვნას („~€600k-ზე დაბლა პატიოსანი გზა brand-first ან skin-ია") — v1-ის „$196k Lean" იყო **growth envelope** და არა ბიზნესის დაფინანსება. ყველა ციფრი ინდიკატიურია და Soft Launch-ის რეალური ძაბრით/counsel-ის ფასებით ზუსტდება.
-
-## გვერდი 6ბ · Unit Economics v2 — Contribution gate
-
-**ძველი შეცდომა გასწორებულია:** 2.5×-ზე CPA $85 ითხოვს $212.5-ს (და არა $180-ს).
-
-**ახალი gate — Contribution LTV:**
-```
-12M NGR/FTD
-− provider rev-share − ბონუსები − payment fees − ლოკალური გადასახადები
-− chargeback/fraud − ცვლადი CRM/support
-= Contribution LTV (LTV_c)          [ტიპურად NGR-ის ~55–65%]
-
-წესი:  LTV_c / CAC ≥ 2.0 (M12-ზე)  და  contribution-payback ≤ 6 თვე
-```
-
-**შედეგი, პირდაპირ:** თუ Soft Launch-ის NGR/FTD ≈ $200 → LTV_c ≈ $110–130 → **CAC-ჭერი ≈ $55–65**, ანუ ძველი „CPA ≤$75" მკაცრდება, თუ NGR/FTD ≥$230–250 არ დადასტურდა. KPI-ცხრილები ამ ლოგიკას მიჰყვება.
+### 6ბ · Unit Economics — Contribution gate
+(უცვლელი v2.2-დან: LTV_c/CAC ≥ 2.0 · payback ≤ 6 თვე · CPA-ჭერი ~$55–65 სანამ NGR/FTD ≥$230–250 არ დადასტურდა.)
 
 ## გვერდი 7 · ⚠️ რისკები
-(v1-ის მატრიცა რჩება; ცვლილებები:) CL/JP გადადის „რეალიზებული რისკებიდან" → ისინი ახლა ფაქტია და არა რისკი · ემატება: **jurisdiction-შეცდომის რისკი თავად გეგმაში** (შერბილება: market-cell gate + კვარტალური counsel-განახლება) · ლიკვიდობის რისკი (reserve-ფენა C ამისთვისაა) · Japan-მიმართული პრომოს აკრძალვა → გეო-ფილტრი პარტნიორების ტრაფიკზეც.
+(უცვლელი + ერთი ცვლილება:) „jurisdiction-შეცდომის რისკი" შერბილება ახლა 7-შემოწმებიანი gate + კვარტალური counsel-განახლება + **traffic-clearance წესი** (არც ერთი კლიკი clearance-მდე).
 
-## გვერდი 8 · 📋 Launch Gate v2
+## გვერდი 8 · 📋 Launch Gate v3
 
-**Gate 1–4** (გვ. 4-ის ოთხეული) **+ Jurisdiction Readiness — ქვეყანა GREEN-დება მხოლოდ 10/10-ზე:**
+**Gate 1–4** (გვ. 4) **+ Jurisdiction Readiness — GREEN-ის ჩართვა acquisition-ში მხოლოდ 10/10-ზე:**
 
-1. Local legal clearance / licence
+1. **Cross-border legal clearance** (dossier-ის 6 პასუხი დადებითი) — ან, არჩეულ ბაზარზე, local authorization
 2. Local payment availability (დეპოზიტი და გატანა)
 3. Provider games permitted ამ ბაზარზე
 4. AML/KYC/RG mapping ლოკალურ მოთხოვნებზე
@@ -178,25 +160,26 @@ Acquisition Rdy─┘
 9. Support/complaints პროცესი (ენა, ვადები)
 10. Production security/incident readiness
 
-## გვერდი 9 · 🎯 KPI v2 — definitions + profitability
+## გვერდი 9 · 🎯 KPI v3
+(უცვლელი v2.2-დან — definitions + profitability-მეტრიკები; ემატება გეო-ჭრილი: ყველა KPI იზომება per-GREEN-market-ზეც.)
 
-ყველა მეტრიკას ემატება **definition-სვეტი** (მაგ.: D30 = **depositing-player retention**; ROAS = **NGR/spend**; ცალკე contribution-ROAS). ემატება:
+## გვერდი 10 · 👤 RACI v3 — ფუნქციებით
 
-FTD→2nd deposit (D14) · deposit approval rate · KYC completion · ARPU/ARPPU · NGR/FTD (M1/M3/M12) · bonus/NGR ≤25% · contribution margin · CAC payback (დღეები) · D90/D180 cohort value · withdrawal p95 · chargeback rate ≤1% · market & channel concentration.
-
-## გვერდი 10 · 👤 RACI v2 — ფუნქციებით
-
-11 ფუნქცია: Management · Product-Tech · Compliance-Legal · Payments-Treasury · Acquisition · Affiliates · CRM · BI · Support · Security · Creative. ადამიანები role-ზე ებმიან; დღევანდელი რეალობა (თითქმის ყველა → შენ/მე) ცხრილშივე ჩანს როგორც key-man რისკის ვიზუალიზაცია, **პირველი დაქირავების პრიორიტეტებით:** 1) Compliance-Legal officer, 2) Payments/PSP ops, 3) Support lead (ES).
+11 ფუნქცია უცვლელი. **Compliance-Legal-ის მთავარი ამოცანა შეცვლილია:**
+**cross-border market access opinions** — და არა local entity setup. Local authorization-ის საკითხი Compliance-Legal-თან მხოლოდ მაშინ ბრუნდება, როცა კონკრეტულ ბაზარზე conditional-გადაწყვეტილება (6.4¹) დადგება. დაქირავების პრიორიტეტები უცვლელი: 1) Compliance-Legal, 2) Payments/PSP ops, 3) Support lead (ES).
 
 ---
 
+## ტერმინოლოგიის წესი (მთელ ფაილზე და Figma-ზე)
+„local partner path" · „local business" · „market entry" ტიპის ფორმულირებები აღარ გამოიყენება იქ, სადაც რეალურად მომხმარებლის მოზიდვაზეა საუბარი — ნაცვლად: **cross-border access · targeting · acquisition · resident service legality**. „Regulatory entry" რჩება მხოლოდ ნამდვილ local-authorization კონტექსტში (მაგ. DR).
+
 ## აშენების მეთოდი — უცვლელი
-`create_new_file` → 10 გვერდი პარალელური აგენტებით → დამოუკიდებელი აუდიტი → სქრინშოტ-ვერიფიკაცია. Noto Sans Georgian; ციფრები Inter-ით; confidence-ეტიკეტი ყველა ფინანსურ დაფაზე.
+`create_new_file` → 10 გვერდი პარალელური აგენტებით → დამოუკიდებელი აუდიტი → სქრინშოტ-ვერიფიკაცია. Noto Sans Georgian; ციფრები Inter; confidence-ეტიკეტები.
 
 ## ღია კითხვები დადასტურებამდე
 
-1. **Counsel-სპრინტი:** 6–8 ქვეყნის დოსიე (~$25–50k) — ვამტკიცებთ როგორც T−30-ის პირველ ხარჯს? ამის გარეშე Soft Launch-ბაზარი ვერ დგინდება.
-2. **სცენარი:** ინდიკატიური კაპიტალის სამი დონიდან (**$440–540k / $1.0–1.25M / $1.85–2.4M + licensing**) რომელზე ვაკალიბრებ Figma-ს დეტალებს?
-3. **DR:** შესვლა ≈$690k-ია (ლიცენზია ~$347k + bond ~$339k) — ვტოვებთ licensing-track-ზე „ძვირი/ნელი" ეტიკეტით თუ ვხსნით რუკიდან?
+1. **Counsel-სპრინტი (~$25–50k):** მიზანი — „რომელი ქვეყნების მომხმარებლების cross-border acquisition არის დასაშვები არსებული operator setup-ით" — ვამტკიცებთ T−30-ის პირველ ხარჯად?
+2. **სცენარი:** $440–540k / $1.0–1.25M / $1.85–2.4M (local authorization = $0 default, conditional) — რომელზე ვაკალიბრებ Figma-ს დეტალებს?
+3. **GREY-სამეული (PY/GT/CR):** counsel-სპრინტშივე შედის თუ მეორე ტალღად?
 
 **შემდეგი ნაბიჯი:** შენი „დაადასტურე" (ან შესწორებები) → Figma.
