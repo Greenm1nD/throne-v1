@@ -57,4 +57,24 @@ describe('loadEnv', () => {
     expect(() => loadEnv({ ...required, NODE_ENV: 'production', LOG_LEVEL: 'silent' })).toThrow(/LOG_LEVEL/)
     expect(loadEnv({ ...required, NODE_ENV: 'production', LOG_LEVEL: 'warn' }).LOG_LEVEL).toBe('warn')
   })
+
+  describe('TRUST_PROXY', () => {
+    it('defaults to false when unset', () => {
+      expect(loadEnv(required).TRUST_PROXY).toBe(false)
+    })
+
+    it('coerces "false" and "true" to booleans', () => {
+      expect(loadEnv({ ...required, TRUST_PROXY: 'false' }).TRUST_PROXY).toBe(false)
+      expect(loadEnv({ ...required, TRUST_PROXY: 'true' }).TRUST_PROXY).toBe(true)
+      expect(loadEnv({ ...required, TRUST_PROXY: 'TRUE' }).TRUST_PROXY).toBe(true)
+    })
+
+    it('coerces a bare integer to a hop count number', () => {
+      expect(loadEnv({ ...required, TRUST_PROXY: '2' }).TRUST_PROXY).toBe(2)
+    })
+
+    it('passes a comma-separated IP/CIDR allowlist through as a string', () => {
+      expect(loadEnv({ ...required, TRUST_PROXY: '10.0.0.1,10.0.0.2' }).TRUST_PROXY).toBe('10.0.0.1,10.0.0.2')
+    })
+  })
 })

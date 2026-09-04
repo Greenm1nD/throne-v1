@@ -5,6 +5,31 @@ const secret = z.string().min(32, 'must be at least 32 characters')
 const port = z.coerce.number().int().min(1).max(65535)
 const ms = z.coerce.number().int().positive()
 
+/**
+ * Mirrors what Fastify's `trustProxy` option accepts (boolean | number |
+ * comma-separated IPs/CIDRs | function — the function form isn't
+ * env-expressible, so it's not offered here): `false`/unset → don't trust
+ * any `X-Forwarded-For` hop; `true` → trust the nearest hop unconditionally;
+ * a bare integer → trust that many hops; anything else → passed through
+ * verbatim as Fastify's own IP/CIDR allowlist string.
+ *
+ * The number this produces is not handed to Fastify as-is: Fastify's own
+ * numeric `trustProxy` handling fails closed in the pinned fastify version
+ * (see the comment on `resolveTrustProxy` in app.ts), so app.ts turns it
+ * into an equivalent hand-written trust function instead.
+ */
+const trustProxy = z
+  .string()
+  .optional()
+  .transform((v) => (v ?? '').trim())
+  .transform((v): boolean | number | string => {
+    const lower = v.toLowerCase()
+    if (v === '' || lower === 'false') return false
+    if (lower === 'true') return true
+    if (/^\d+$/.test(v)) return Number(v)
+    return v
+  })
+
 export const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']),
@@ -14,6 +39,12 @@ export const envSchema = z
     APP_URL: z.url(),
     API_URL: z.url(),
     CORS_ORIGINS: csv,
+    // Defaults to not trusting X-Forwarded-For: with no guarantee about what
+    // sits in front of the API, trusting it by default would let any client
+    // set its own request.ip and bypass a future per-IP rate limit from day
+    // one. Set explicitly once a reverse proxy that overwrites (not appends)
+    // this header is confirmed in front of the API.
+    TRUST_PROXY: trustProxy,
 
     DATABASE_URL: z.string().min(1),
     DATABASE_URL_TEST: z.string().min(1).optional(),
