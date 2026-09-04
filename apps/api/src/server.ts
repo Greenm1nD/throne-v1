@@ -1,10 +1,12 @@
 import { loadEnv } from './config/env.js'
 import { createApp } from './app.js'
+import { buildContainer } from './container.js'
 import { createDb } from './db/client.js'
 
 const env = loadEnv()
 const { db, pool } = createDb(env.DATABASE_URL)
-const app = createApp({ env, db })
+const container = buildContainer(env, db)
+const app = createApp({ env, db, container })
 
 for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.on(signal, () => {
