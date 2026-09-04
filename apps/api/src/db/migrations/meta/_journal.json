@@ -8,6 +8,13 @@
       "when": 1788522925011,
       "tag": "0000_shocking_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788532392855,
+      "tag": "0001_famous_carnage",
+      "breakpoints": true
     }
   ]
 }

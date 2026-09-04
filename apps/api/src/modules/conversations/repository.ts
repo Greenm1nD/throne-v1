@@ -1,5 +1,5 @@
-import { and, asc, eq, inArray, lt, sql } from 'drizzle-orm'
-import type { ConversationStatus } from '@throne/shared'
+import { and, asc, eq, inArray, sql } from 'drizzle-orm'
+import { VISIBLE_MESSAGE_ROLES, type ConversationStatus } from '@throne/shared'
 import type { Db } from '../../db/client.js'
 import { conversations, messages } from '../../db/schema/index.js'
 
@@ -20,8 +20,17 @@ export interface ConversationStatusPatch {
   summary?: string | null
 }
 
-/** Only these roles are ever shown to a visitor or end user. */
-const VISIBLE_MESSAGE_ROLES = ['user', 'assistant'] as const
+/**
+ * The pagination cursor is the pair, not just the timestamp: `created_at`
+ * alone is not a total order because `defaultNow()` compiles to Postgres
+ * `now()` (`transaction_timestamp()`), so every row written inside one
+ * transaction — e.g. a user message and its assistant placeholder in Phase 3
+ * — shares an identical `created_at`. `id` breaks the tie.
+ */
+export interface MessageCursor {
+  createdAt: Date
+  id: string
+}
 
 export class ConversationRepository {
   constructor(private readonly db: Db) {}
@@ -41,20 +50,29 @@ export class ConversationRepository {
     return row ?? null
   }
 
-  async setStatus(id: string, status: ConversationStatus, patch: ConversationStatusPatch = {}): Promise<ConversationRow> {
+  /**
+   * `from` is a precondition, not just a label: the `WHERE status = from`
+   * clause makes this a compare-and-swap, so two concurrent calls starting
+   * from the same observed status cannot both succeed — the loser's `UPDATE`
+   * matches zero rows and this returns `null` rather than silently applying
+   * a transition the caller's `from` no longer describes. The caller
+   * (ConversationService.transition) is responsible for turning a `null`
+   * into the right response; this layer only enforces the precondition.
+   */
+  async setStatus(id: string, from: ConversationStatus, to: ConversationStatus, patch: ConversationStatusPatch = {}): Promise<ConversationRow | null> {
     const [row] = await this.db
       .update(conversations)
       .set({
         ...patch,
-        status,
+        status: to,
         updatedAt: new Date(),
         // The machine allows closed -> closed as a no-op (see status.ts), so a
         // second close must not stamp over the original closedAt.
-        ...(status === 'closed' ? { closedAt: sql`coalesce(${conversations.closedAt}, now())` } : {}),
+        ...(to === 'closed' ? { closedAt: sql`coalesce(${conversations.closedAt}, now())` } : {}),
       })
-      .where(eq(conversations.id, id))
+      .where(and(eq(conversations.id, id), eq(conversations.status, from)))
       .returning()
-    return row!
+    return row ?? null
   }
 
   async touchLastMessageAt(id: string, at: Date): Promise<void> {
@@ -62,21 +80,32 @@ export class ConversationRepository {
   }
 
   /**
-   * Rows are always oldest-first (`ORDER BY created_at ASC`), and only
-   * user/assistant roles are ever returned — the SQL filter, not a JS
+   * Rows are always oldest-first (`ORDER BY created_at ASC, id ASC`), and
+   * only user/assistant roles are ever returned — the SQL filter, not a JS
    * `.filter()` afterward, so `LIMIT` counts only rows a caller can see.
-   * `before` filters to messages created strictly earlier than the given
-   * timestamp, which — combined with ascending order — pages forward from the
-   * start of the conversation, not backward from the end: the first page is
-   * already the oldest `limit` messages, and a `before` cursor set to that
-   * page's own oldest timestamp returns nothing. A long conversation's most
-   * recent tail is not reachable through this cursor shape; redesigning it is
-   * Phase 3's decision, not this task's.
+   * `cursor` filters to messages strictly before the given (created_at, id)
+   * pair using a row-value comparison, which — combined with the matching
+   * ascending order — pages forward from the start of the conversation, not
+   * backward from the end: the first page is already the oldest `limit`
+   * messages, and a cursor set to that page's own oldest row returns nothing.
+   * A long conversation's most recent tail is not reachable through this
+   * cursor shape; redesigning it is Phase 3's decision, not this task's.
+   *
+   * The pair, not just `created_at`, is required: rows written in the same
+   * transaction (Phase 3's user message + assistant placeholder) share a
+   * `created_at`, so `created_at` alone cannot total-order or page between
+   * them — `id` breaks the tie, matching the composite index on
+   * (conversation_id, created_at, id).
    */
-  async listMessages(conversationId: string, limit: number, before?: Date): Promise<MessageRow[]> {
+  async listMessages(conversationId: string, limit: number, cursor?: MessageCursor): Promise<MessageRow[]> {
     const conditions = [eq(messages.conversationId, conversationId), inArray(messages.role, VISIBLE_MESSAGE_ROLES)]
-    if (before) conditions.push(lt(messages.createdAt, before))
-    return this.db.select().from(messages).where(and(...conditions)).orderBy(asc(messages.createdAt)).limit(limit)
+    if (cursor) conditions.push(sql`(${messages.createdAt}, ${messages.id}) < (${cursor.createdAt}, ${cursor.id})`)
+    return this.db
+      .select()
+      .from(messages)
+      .where(and(...conditions))
+      .orderBy(asc(messages.createdAt), asc(messages.id))
+      .limit(limit)
   }
 
   /**

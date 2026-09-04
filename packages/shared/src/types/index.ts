@@ -1,4 +1,4 @@
-import type { ConversationStatus, ErrorCode, MessageStatus } from '../constants/index.js'
+import type { ConversationStatus, ErrorCode, MessageStatus, VisibleMessageRole } from '../constants/index.js'
 
 export interface UserClaims {
   externalId: string
@@ -34,7 +34,7 @@ export interface ConversationDto {
 
 export interface MessageDto {
   id: string
-  role: 'user' | 'assistant'
+  role: VisibleMessageRole
   content: string
   status: MessageStatus
   createdAt: string

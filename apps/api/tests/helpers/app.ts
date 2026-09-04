@@ -56,5 +56,26 @@ export async function buildTestApp() {
         })
       }
     },
+    /**
+     * Unlike testSeedMessages, every row shares the exact same `created_at` —
+     * mimicking rows written inside one transaction (Phase 3's user message +
+     * assistant placeholder), where Postgres `now()` returns the same
+     * transaction timestamp for each insert. This is the only seeding path
+     * that can prove the history endpoint's ordering and cursor are total
+     * even when created_at alone is not.
+     */
+    testSeedMessagesSameTimestamp: async (conversationId: string, contents: string[], at: Date = new Date()) => {
+      const rows: { id: string; content: string }[] = []
+      for (const [index, content] of contents.entries()) {
+        const [row] = await ctx.db.insert(messages).values({
+          conversationId,
+          role: index % 2 === 0 ? 'user' : 'assistant',
+          content,
+          createdAt: at,
+        }).returning({ id: messages.id })
+        rows.push({ id: row!.id, content })
+      }
+      return rows
+    },
   })
 }

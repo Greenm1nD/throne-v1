@@ -20,5 +20,13 @@ export const messages = pgTable(
     metadata: jsonb('metadata').$type<Record<string, unknown>>().notNull().default({}),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('messages_conversation_created_idx').on(t.conversationId, t.createdAt)],
+  // Replaces the old (conversation_id, created_at) index rather than sitting
+  // alongside it: `defaultNow()` compiles to Postgres `now()` (transaction
+  // timestamp), so every row written in one transaction shares a created_at,
+  // and created_at alone cannot order or page between them. This composite
+  // index is what the keyset cursor in ConversationRepository.listMessages
+  // actually needs to stay an index scan, and its (conversation_id,
+  // created_at) prefix already serves every query the old 2-column index did
+  // — there is nothing left for that index to do that this one doesn't.
+  (t) => [index('messages_conversation_created_id_idx').on(t.conversationId, t.createdAt, t.id)],
 )

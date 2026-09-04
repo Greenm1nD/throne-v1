@@ -158,4 +158,66 @@ describe('conversations', () => {
     expect(res.statusCode).toBe(404)
     expect(res.json().error.code).toBe('NOT_FOUND')
   })
+
+  it('orders and pages messages that share the same created_at using id as a stable tiebreaker', async () => {
+    // `defaultNow()` compiles to Postgres `now()` (transaction_timestamp()),
+    // so every row written inside one transaction — Phase 3's user message +
+    // assistant placeholder — gets an identical created_at. This seeds that
+    // scenario directly, unlike testSeedMessages which deliberately spaces
+    // rows a second apart and so can never exercise a tie.
+    const conversation = (await app!.inject({
+      method: 'POST', url: '/api/chat/conversations', headers: auth(token), payload: {},
+    })).json()
+    await app!.testSeedMessagesSameTimestamp(conversation.id, ['a', 'b', 'c', 'd', 'e'])
+
+    // Full history: all 5 rows come back, with no duplicates, in one
+    // deterministic total order — not whatever physical order Postgres
+    // happens to return for a created_at tie.
+    const full = await app!.inject({
+      method: 'GET', url: `/api/chat/conversations/${conversation.id}/messages`, headers: auth(token),
+    })
+    const fullIds = full.json().messages.map((m: { id: string }) => m.id as string)
+    expect(fullIds).toHaveLength(5)
+    expect(new Set(fullIds).size).toBe(5)
+
+    // Repeating the query returns the identical order — proof this is a real
+    // total order (created_at, id), not an accident of storage order.
+    const again = await app!.inject({
+      method: 'GET', url: `/api/chat/conversations/${conversation.id}/messages`, headers: auth(token),
+    })
+    expect(again.json().messages.map((m: { id: string }) => m.id)).toEqual(fullIds)
+
+    // A cursor on a row inside the tied group must resolve by the full
+    // (created_at, id) tuple, not created_at alone. If it fell back to
+    // created_at alone, `created_at < cursor.createdAt` would be false for
+    // every row in the tie (they're all equal) — so the entire earlier
+    // portion of the group would silently vanish (a skip), even though those
+    // rows are provably earlier in total order.
+    const midId = fullIds[2]!
+    const before = await app!.inject({
+      method: 'GET',
+      url: `/api/chat/conversations/${conversation.id}/messages?before=${midId}&limit=10`,
+      headers: auth(token),
+    })
+    const beforeIds = before.json().messages.map((m: { id: string }) => m.id as string)
+    expect(beforeIds).toEqual(fullIds.slice(0, 2)) // exactly the two earlier rows — no more, no fewer
+    expect(beforeIds).not.toContain(midId) // strictly earlier: the cursor row is never duplicated back
+
+    // Paging with a small limit through that earlier portion: no duplicates,
+    // no gaps, and walking past the start returns empty rather than looping.
+    const page1 = await app!.inject({
+      method: 'GET',
+      url: `/api/chat/conversations/${conversation.id}/messages?before=${midId}&limit=1`,
+      headers: auth(token),
+    })
+    const page1Ids = page1.json().messages.map((m: { id: string }) => m.id as string)
+    expect(page1Ids).toEqual(fullIds.slice(0, 1))
+
+    const page2 = await app!.inject({
+      method: 'GET',
+      url: `/api/chat/conversations/${conversation.id}/messages?before=${page1Ids[0]}&limit=1`,
+      headers: auth(token),
+    })
+    expect(page2.json().messages).toEqual([])
+  })
 })

@@ -4,6 +4,16 @@ export type ConversationStatus = (typeof CONVERSATION_STATUS)[number]
 export const MESSAGE_ROLE = ['user', 'assistant', 'system', 'tool'] as const
 export type MessageRole = (typeof MESSAGE_ROLE)[number]
 
+/**
+ * The single source for "which roles a visitor or end user is ever shown" —
+ * `ConversationRepository.listMessages` filters to exactly this tuple in
+ * SQL, and `MessageDto['role']` is derived from it below, so the two can
+ * never drift apart the way a hand-typed literal union and a hand-typed SQL
+ * filter tuple could.
+ */
+export const VISIBLE_MESSAGE_ROLES = ['user', 'assistant'] as const
+export type VisibleMessageRole = (typeof VISIBLE_MESSAGE_ROLES)[number]
+
 export const MESSAGE_STATUS = ['complete', 'streaming', 'failed', 'cancelled'] as const
 export type MessageStatus = (typeof MESSAGE_STATUS)[number]
 

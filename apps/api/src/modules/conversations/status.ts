@@ -1,5 +1,5 @@
 import { ERROR_CODE, type ConversationStatus } from '@throne/shared'
-import { AppError } from '../../lib/errors.js'
+import { conflict } from '../../lib/errors.js'
 
 /**
  * The transitions in docs/architecture.md section 12. `closed` is terminal:
@@ -20,6 +20,6 @@ export function canTransition(from: ConversationStatus, to: ConversationStatus):
 
 export function assertTransition(from: ConversationStatus, to: ConversationStatus): void {
   if (!canTransition(from, to)) {
-    throw new AppError(ERROR_CODE.INVALID_TRANSITION, 409, `Cannot move a conversation from ${from} to ${to}`)
+    throw conflict(ERROR_CODE.INVALID_TRANSITION, `Cannot move a conversation from ${from} to ${to}`)
   }
 }
