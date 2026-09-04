@@ -5,3 +5,7 @@ dist/
 *.jpeg
 *.log
 .vercel
+*.tsbuildinfo
+pnpm-debug.log
+.env
+!apps/web/.env

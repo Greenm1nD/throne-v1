@@ -1,12 +1,14 @@
 # THRONE · VIP Gaming Club
 
+Monorepo: the site lives in `apps/web`; the support-agent API is in `apps/api` (see `docs/architecture.md`).
+
 Premium dark-royal casino dashboard prototype — Vue 3 · Vite · TypeScript · Tailwind CSS · GSAP.
 Frontend only: no backend, no real payments, no gambling logic.
 
 ```bash
-npm install
-npm run dev    # http://localhost:5173
-npm run build
+pnpm install
+pnpm dev       # THRONE site → http://localhost:5173
+pnpm build     # every workspace package
 ```
 
 ## Credits

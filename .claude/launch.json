@@ -3,23 +3,14 @@
   "configurations": [
     {
       "name": "throne",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev"
-      ],
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@throne/web", "dev"],
       "port": 5173
     },
     {
       "name": "throne-preview",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "preview",
-        "--",
-        "--port",
-        "4173"
-      ],
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@throne/web", "preview", "--port", "4173"],
       "port": 4173
     }
   ]
