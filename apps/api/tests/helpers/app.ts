@@ -1,3 +1,4 @@
+import type { MessageRole } from '@throne/shared'
 import { createApp } from '../../src/app.js'
 import { loadEnv, type Env } from '../../src/config/env.js'
 import { buildContainer } from '../../src/container.js'
@@ -35,6 +36,21 @@ export async function buildTestApp() {
         await ctx.db.insert(messages).values({
           conversationId,
           role: index % 2 === 0 ? 'user' : 'assistant',
+          content,
+          createdAt: new Date(Date.now() + index * 1000),
+        })
+      }
+    },
+    /**
+     * Like testSeedMessages, but lets a test pick each row's role — needed to
+     * prove the history endpoint filters out system/tool rows at the query
+     * level (Phase 3 writes tool-call rows into this same table).
+     */
+    testSeedMessagesWithRoles: async (conversationId: string, rows: { role: MessageRole; content: string }[]) => {
+      for (const [index, { role, content }] of rows.entries()) {
+        await ctx.db.insert(messages).values({
+          conversationId,
+          role,
           content,
           createdAt: new Date(Date.now() + index * 1000),
         })

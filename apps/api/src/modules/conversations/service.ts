@@ -3,7 +3,7 @@ import type {
   AuthContext, ConversationDto, ConversationStatus, CreateConversationBody, ListMessagesQuery, MessageDto,
 } from '@throne/shared'
 import { notFound } from '../../lib/errors.js'
-import type { ConversationRepository, ConversationRow, MessageRow } from './repository.js'
+import type { ConversationRepository, ConversationRow, ConversationStatusPatch, MessageRow } from './repository.js'
 import { assertTransition } from './status.js'
 
 export class ConversationService {
@@ -34,12 +34,21 @@ export class ConversationService {
 
   async listMessages(auth: AuthContext, id: string, query: ListMessagesQuery): Promise<MessageDto[]> {
     await this.getOwned(auth, id)
-    const before = query.before ? (await this.repo.findMessage(query.before))?.createdAt : undefined
-    const rows = await this.repo.listMessages(id, query.limit, before ?? undefined)
-    return rows.filter((r) => r.role === 'user' || r.role === 'assistant').map(this.toMessageDto)
+    let before: Date | undefined
+    if (query.before) {
+      // Scoped to this conversation (see repository.findMessage): an unowned
+      // or nonexistent cursor must be indistinguishable, for the same reason
+      // an unowned conversation is 404 and not 403 — so this always throws
+      // notFound() rather than silently falling back to "no cursor".
+      const cursor = await this.repo.findMessage(id, query.before)
+      if (!cursor) throw notFound('Message not found')
+      before = cursor.createdAt
+    }
+    const rows = await this.repo.listMessages(id, query.limit, before)
+    return rows.map((r) => this.toMessageDto(r))
   }
 
-  async transition(id: string, from: ConversationStatus, to: ConversationStatus, patch = {}): Promise<ConversationRow> {
+  async transition(id: string, from: ConversationStatus, to: ConversationStatus, patch: ConversationStatusPatch = {}): Promise<ConversationRow> {
     assertTransition(from, to)
     return this.repo.setStatus(id, to, patch)
   }

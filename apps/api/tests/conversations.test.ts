@@ -47,14 +47,29 @@ describe('conversations', () => {
     expect(res.json().error.code).toBe('UNAUTHORIZED')
   })
 
-  it('returns 404 for another visitor’s conversation', async () => {
+  it('lets the owner see 200 and a stranger see 404 on both endpoints, for the same conversation', async () => {
+    // The positive half matters as much as the negative: without it, a route
+    // that was never registered would also answer 404 to the stranger below,
+    // and the test would pass for the wrong reason (see the fix-round-1 note
+    // on this file for how that bit the original version of this test).
     const mine = (await app!.inject({
       method: 'POST', url: '/api/chat/conversations', headers: auth(token), payload: {},
     })).json()
+
+    const ownerGet = await app!.inject({ method: 'GET', url: `/api/chat/conversations/${mine.id}`, headers: auth(token) })
+    expect(ownerGet.statusCode).toBe(200)
+    expect(ownerGet.json().id).toBe(mine.id)
+
     const stranger = await newVisitor()
-    const res = await app!.inject({ method: 'GET', url: `/api/chat/conversations/${mine.id}`, headers: auth(stranger) })
-    expect(res.statusCode).toBe(404)
-    expect(res.json().error.code).toBe('NOT_FOUND')
+    const strangerGet = await app!.inject({ method: 'GET', url: `/api/chat/conversations/${mine.id}`, headers: auth(stranger) })
+    expect(strangerGet.statusCode).toBe(404)
+    expect(strangerGet.json().error.code).toBe('NOT_FOUND')
+
+    const strangerMessages = await app!.inject({
+      method: 'GET', url: `/api/chat/conversations/${mine.id}/messages`, headers: auth(stranger),
+    })
+    expect(strangerMessages.statusCode).toBe(404)
+    expect(strangerMessages.json().error.code).toBe('NOT_FOUND')
   })
 
   it('returns 404 for an unknown id and 400 for a non-uuid id', async () => {
@@ -87,5 +102,60 @@ describe('conversations', () => {
       method: 'GET', url: `/api/chat/conversations/${conversation.id}/messages?limit=500`, headers: auth(token),
     })
     expect(rejected.statusCode).toBe(400)
+  })
+
+  it('excludes tool/system rows from both the page contents and the LIMIT count', async () => {
+    // Tool rows interleaved with the visible ones, ascending by insertion
+    // order: tool, user, tool, assistant, user. Requesting limit=3 must come
+    // back with exactly the three visible messages — if the role filter ran
+    // in JS after a SQL LIMIT (the pre-fix behavior), the SQL layer would
+    // hand back only the first 3 rows by created_at (tool, user, tool), and
+    // filtering afterward would leave just one visible message instead of
+    // three.
+    const conversation = (await app!.inject({
+      method: 'POST', url: '/api/chat/conversations', headers: auth(token), payload: {},
+    })).json()
+    await app!.testSeedMessagesWithRoles(conversation.id, [
+      { role: 'tool', content: 'tool-call-1' },
+      { role: 'user', content: 'first' },
+      { role: 'tool', content: 'tool-call-2' },
+      { role: 'assistant', content: 'second' },
+      { role: 'user', content: 'third' },
+    ])
+
+    const res = await app!.inject({
+      method: 'GET', url: `/api/chat/conversations/${conversation.id}/messages?limit=3`, headers: auth(token),
+    })
+    const body = res.json().messages as { role: string; content: string }[]
+    expect(body).toHaveLength(3)
+    expect(body.every((m) => m.role === 'user' || m.role === 'assistant')).toBe(true)
+    expect(body.map((m) => m.content)).toEqual(['first', 'second', 'third'])
+  })
+
+  it('resolves a `before` cursor only within the same conversation, not any message in the database', async () => {
+    const mine = (await app!.inject({
+      method: 'POST', url: '/api/chat/conversations', headers: auth(token), payload: {},
+    })).json()
+    await app!.testSeedMessages(mine.id, ['first', 'second'])
+
+    const otherToken = await newVisitor()
+    const other = (await app!.inject({
+      method: 'POST', url: '/api/chat/conversations', headers: auth(otherToken), payload: {},
+    })).json()
+    await app!.testSeedMessages(other.id, ['other-first', 'other-second'])
+    const [otherMessage] = (await app!.inject({
+      method: 'GET', url: `/api/chat/conversations/${other.id}/messages`, headers: auth(otherToken),
+    })).json().messages as { id: string }[]
+
+    // A cursor naming a real message, just not one in *this* conversation,
+    // must 404 — not silently resolve and truncate the page against a
+    // cutoff time that has nothing to do with this conversation's history.
+    const res = await app!.inject({
+      method: 'GET',
+      url: `/api/chat/conversations/${mine.id}/messages?before=${otherMessage!.id}`,
+      headers: auth(token),
+    })
+    expect(res.statusCode).toBe(404)
+    expect(res.json().error.code).toBe('NOT_FOUND')
   })
 })
