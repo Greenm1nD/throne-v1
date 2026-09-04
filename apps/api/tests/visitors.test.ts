@@ -64,4 +64,30 @@ describe('POST /api/visitors/session', () => {
     expect(res.statusCode).toBe(200)
     expect(res.json().visitorId).toMatch(/^[0-9a-f-]{36}$/)
   })
+
+  it('resolves the same visitor from the X-Visitor-Token header alone when the body has no token', async () => {
+    const first = (await session()).json()
+    // No body token at all — the only credential is the header, exactly
+    // like every other /api/chat/* call. Without the header fallback this
+    // would silently mint a brand-new visitor and orphan the first one's
+    // conversations.
+    const res = await app!.inject({
+      method: 'POST', url: '/api/visitors/session', payload: {}, headers: { 'x-visitor-token': first.visitorToken },
+    })
+    expect(res.statusCode).toBe(200)
+    expect(res.json().visitorId).toBe(first.visitorId)
+  })
+
+  it('prefers a body token over the header when both are present', async () => {
+    const header = (await session()).json()
+    const body = (await session()).json()
+    const res = await app!.inject({
+      method: 'POST',
+      url: '/api/visitors/session',
+      payload: { visitorToken: body.visitorToken },
+      headers: { 'x-visitor-token': header.visitorToken },
+    })
+    expect(res.json().visitorId).toBe(body.visitorId)
+    expect(res.json().visitorId).not.toBe(header.visitorId)
+  })
 })
