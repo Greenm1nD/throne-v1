@@ -7,9 +7,6 @@ declare module 'fastify' {
   interface FastifyRequest {
     auth: AuthContext | null
   }
-  interface FastifyInstance {
-    requireVisitor: (request: FastifyRequest) => Promise<void>
-  }
 }
 
 export interface UserAuthVerifier {
@@ -23,6 +20,16 @@ export class NoneVerifier implements UserAuthVerifier {
   }
 }
 
+/**
+ * A preHandler, not a decorator. Reading `app.requireVisitor` at route-definition
+ * time silently yields undefined if registerAuth has not run yet, and Fastify
+ * treats an undefined preHandler as "no preHandler" — an authorization check that
+ * quietly becomes a no-op. An imported function cannot be undefined.
+ */
+export async function requireVisitor(request: FastifyRequest): Promise<void> {
+  if (!request.auth) throw unauthorized('A valid visitor token is required')
+}
+
 export function registerAuth(app: FastifyInstance, visitorService: VisitorService): void {
   app.decorateRequest('auth', null)
 
@@ -30,9 +37,5 @@ export function registerAuth(app: FastifyInstance, visitorService: VisitorServic
     const header = request.headers['x-visitor-token']
     const token = Array.isArray(header) ? header[0] : header
     request.auth = await visitorService.resolve(token)
-  })
-
-  app.decorate('requireVisitor', async (request: FastifyRequest) => {
-    if (!request.auth) throw unauthorized('A valid visitor token is required')
   })
 }

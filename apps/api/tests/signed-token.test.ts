@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { signToken, verifyToken } from '../src/lib/signed-token.js'
 
@@ -31,9 +32,17 @@ describe('signed token', () => {
     }
   })
 
-  it('rejects a genuinely-signed token with a non-finite exp', () => {
-    const infinite = { ...payload, exp: Infinity }
-    expect(verifyToken(signToken(infinite, secret), secret, new Date(payload.iat * 1000))).toBeNull()
+  it('rejects a signed token whose exp overflows to Infinity', () => {
+    // JSON.stringify cannot emit Infinity (it serializes to null, which the
+    // guard already rejected before this fix), so this builds the body by
+    // hand: JSON.parse overflows 1e400 to Infinity while typeof stays
+    // 'number' -- the exact shape the old guard let through. Signed with the
+    // real secret so the signature genuinely passes and the payload guard is
+    // what's actually under test.
+    const raw = '{"vid":"11111111-1111-4111-8111-111111111111","iat":1760000000,"exp":1e400}'
+    const body = Buffer.from(raw, 'utf8').toString('base64url')
+    const signature = createHmac('sha256', secret).update(body).digest('base64url')
+    expect(verifyToken(`${body}.${signature}`, secret, new Date(1_760_000_000_000))).toBeNull()
   })
 
   it('rejects a genuinely-signed token whose vid is not UUID-shaped', () => {
