@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createConversationBody, escalateBody, listMessagesQuery, sendMessageBody } from './index.js'
+import { createConversationBody, escalateBody, listMessagesQuery, sendMessageBody, visitorSessionBody } from './index.js'
 
 describe('sendMessageBody', () => {
   it('trims and accepts a non-empty message', () => {
@@ -37,5 +37,13 @@ describe('createConversationBody', () => {
     expect(createConversationBody.parse({})).toEqual({})
     expect(createConversationBody.parse({ metadata: { pageUrl: 'https://throne.example/casino', evil: 1 } }))
       .toEqual({ metadata: { pageUrl: 'https://throne.example/casino' } })
+  })
+})
+
+describe('visitorSessionBody', () => {
+  it('accepts an absent, empty or present token', () => {
+    expect(visitorSessionBody.parse({})).toEqual({})
+    expect(visitorSessionBody.parse({ visitorToken: '' })).toEqual({ visitorToken: '' })
+    expect(visitorSessionBody.parse({ visitorToken: 'abc.def' })).toEqual({ visitorToken: 'abc.def' })
   })
 })

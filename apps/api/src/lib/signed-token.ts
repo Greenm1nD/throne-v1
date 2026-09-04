@@ -8,6 +8,7 @@ export interface TokenPayload {
 
 const b64url = (value: string) => Buffer.from(value, 'utf8').toString('base64url')
 const sign = (body: string, secret: string) => createHmac('sha256', secret).update(body).digest('base64url')
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export function signToken(payload: TokenPayload, secret: string): string {
   const body = b64url(JSON.stringify(payload))
@@ -29,7 +30,8 @@ export function verifyToken(token: string, secret: string, now: Date = new Date(
 
   try {
     const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8')) as TokenPayload
-    if (typeof payload.vid !== 'string' || typeof payload.exp !== 'number' || typeof payload.iat !== 'number') return null
+    if (typeof payload.vid !== 'string' || !UUID_RE.test(payload.vid)) return null
+    if (!Number.isFinite(payload.exp) || !Number.isFinite(payload.iat)) return null
     if (payload.exp * 1000 <= now.getTime()) return null
     return payload
   } catch {

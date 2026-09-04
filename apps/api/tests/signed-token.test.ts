@@ -30,4 +30,14 @@ describe('signed token', () => {
       expect(verifyToken(bad, secret)).toBeNull()
     }
   })
+
+  it('rejects a genuinely-signed token with a non-finite exp', () => {
+    const infinite = { ...payload, exp: Infinity }
+    expect(verifyToken(signToken(infinite, secret), secret, new Date(payload.iat * 1000))).toBeNull()
+  })
+
+  it('rejects a genuinely-signed token whose vid is not UUID-shaped', () => {
+    const notAUuid = { ...payload, vid: 'not-a-uuid' }
+    expect(verifyToken(signToken(notAUuid, secret), secret, new Date(payload.iat * 1000))).toBeNull()
+  })
 })

@@ -2,7 +2,10 @@ import { z } from 'zod'
 import { HANDOFF_REASON, LIMITS } from '../constants/index.js'
 
 export const visitorSessionBody = z.object({
-  visitorToken: z.string().min(1).optional(),
+  // An empty token is exactly the mint case, not a validation failure: a client
+  // that lost its token must be able to ask for a new one. min(1) would send it
+  // a permanent 400 instead.
+  visitorToken: z.string().optional(),
 })
 
 export const conversationMetadata = z.object({
