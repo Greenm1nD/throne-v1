@@ -786,6 +786,8 @@ Each phase ends with a check that can be run, not a feeling.
 5. Visitor sessions and conversations: token, `POST /visitors/session`, conversation CRUD with
    ownership. Check: integration tests — foreign visitor gets 404; tampered token gets 401.
 
+Status: complete (see docs/api.md for the endpoints that exist).
+
 **Phase 3 — Basic chat.**
 1. `LlmProvider` + OpenAI implementation, prompt loader, context builder, orchestrator without
    tools, SSE endpoint, message persistence. Check: unit test of the orchestrator with

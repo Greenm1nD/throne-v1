@@ -11,6 +11,17 @@ pnpm dev       # THRONE site → http://localhost:5173
 pnpm build     # every workspace package
 ```
 
+## Workspace
+
+| Package | What it is |
+|---|---|
+| `@throne/web` | the THRONE site (Vue 3, Vite) — `pnpm dev` |
+| `@throne/api` | the support-agent API (Fastify, PostgreSQL) — `pnpm --filter @throne/api dev` |
+| `@throne/shared` | enums, request schemas and types both sides import |
+
+The API needs PostgreSQL running locally and `apps/api/.env` filled from
+`apps/api/.env.example`. See `docs/architecture.md` and `docs/api.md`.
+
 ## Credits
 
 - Background ambience: **"Frozen Star" — Kevin MacLeod (incompetech.com)**,

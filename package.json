@@ -1,12 +1,24 @@
 {
   "name": "throne",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@9.15.9",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "pnpm --filter @throne/web dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-plugin-vue": "^10.10.0",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.69.0"
   }
 }
