@@ -1,6 +1,7 @@
 import { createApp } from '../../src/app.js'
 import { loadEnv, type Env } from '../../src/config/env.js'
 import { buildContainer } from '../../src/container.js'
+import { messages } from '../../src/db/schema/index.js'
 import { withTestDb } from './db.js'
 
 export const testEnv = (overrides: Partial<NodeJS.ProcessEnv> = {}): Env =>
@@ -26,5 +27,18 @@ export async function buildTestApp() {
   const container = buildContainer(env, ctx.db)
   const app = createApp({ env, db: ctx.db, container })
   await app.ready()
-  return Object.assign(app, { testDb: ctx.db, closeAll: async () => { await app.close(); await ctx.close() } })
+  return Object.assign(app, {
+    testDb: ctx.db,
+    closeAll: async () => { await app.close(); await ctx.close() },
+    testSeedMessages: async (conversationId: string, contents: string[]) => {
+      for (const [index, content] of contents.entries()) {
+        await ctx.db.insert(messages).values({
+          conversationId,
+          role: index % 2 === 0 ? 'user' : 'assistant',
+          content,
+          createdAt: new Date(Date.now() + index * 1000),
+        })
+      }
+    },
+  })
 }

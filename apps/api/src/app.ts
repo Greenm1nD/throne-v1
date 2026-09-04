@@ -9,6 +9,7 @@ import { registerSecurity } from './plugins/security.js'
 import { registerAuth } from './plugins/auth.js'
 import { registerHealthRoutes } from './modules/health/routes.js'
 import { registerVisitorRoutes } from './modules/visitors/routes.js'
+import { registerConversationRoutes } from './modules/conversations/routes.js'
 
 export interface AppDeps {
   env: Env
@@ -42,6 +43,7 @@ export function createApp({ env, db, container }: AppDeps): FastifyInstance {
     registerAuth(instance, container.visitors)
     registerHealthRoutes(instance, db)
     registerVisitorRoutes(instance, container.visitors)
+    registerConversationRoutes(instance, container.conversations)
   })
 
   return app
