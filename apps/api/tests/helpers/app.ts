@@ -1,5 +1,6 @@
 import { createApp } from '../../src/app.js'
 import { loadEnv, type Env } from '../../src/config/env.js'
+import { withTestDb } from './db.js'
 
 export const testEnv = (overrides: Partial<NodeJS.ProcessEnv> = {}): Env =>
   loadEnv({
@@ -19,7 +20,8 @@ export const testEnv = (overrides: Partial<NodeJS.ProcessEnv> = {}): Env =>
   } as NodeJS.ProcessEnv)
 
 export async function buildTestApp() {
-  const app = createApp({ env: testEnv() })
+  const ctx = await withTestDb()
+  const app = createApp({ env: testEnv(), db: ctx.db })
   await app.ready()
-  return app
+  return Object.assign(app, { testDb: ctx.db, closeAll: async () => { await app.close(); await ctx.close() } })
 }

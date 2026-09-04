@@ -1,13 +1,15 @@
 import { loadEnv } from './config/env.js'
 import { createApp } from './app.js'
+import { createDb } from './db/client.js'
 
 const env = loadEnv()
-const app = createApp({ env })
+const { db, pool } = createDb(env.DATABASE_URL)
+const app = createApp({ env, db })
 
 for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.on(signal, () => {
     app.log.info({ signal }, 'shutting down')
-    void app.close().then(() => process.exit(0))
+    void app.close().then(() => pool.end()).then(() => process.exit(0))
   })
 }
 

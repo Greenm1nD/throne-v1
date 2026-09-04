@@ -1,0 +1,12 @@
+import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres'
+import pg from 'pg'
+import * as schema from './schema/index.js'
+
+export type Db = NodePgDatabase<typeof schema>
+
+export function createDb(connectionString: string): { db: Db; pool: pg.Pool } {
+  const pool = new pg.Pool({ connectionString, max: 10, idleTimeoutMillis: 30_000 })
+  return { db: drizzle(pool, { schema }), pool }
+}
+
+export { schema }

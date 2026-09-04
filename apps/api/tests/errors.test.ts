@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from '../src/app.js'
 import { testEnv } from './helpers/app.js'
+import { withTestDb } from './helpers/db.js'
 
 describe('error handler', () => {
   it('reports a native Fastify 4xx with its own status, not 500', async () => {
     // Routes must be registered before ready(), so this builds its own app
     // instance instead of reusing buildTestApp() (already ready()'d).
-    const app = createApp({ env: testEnv() })
+    const ctx = await withTestDb()
+    const app = createApp({ env: testEnv(), db: ctx.db })
     app.post('/api/test-echo', async () => ({ ok: true }))
     await app.ready()
 
@@ -20,5 +22,6 @@ describe('error handler', () => {
     expect(res.statusCode).toBeLessThan(500)
     expect(res.json().error.requestId).toBeTruthy()
     await app.close()
+    await ctx.close()
   })
 })
