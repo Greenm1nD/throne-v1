@@ -1,5 +1,10 @@
 # THRONE · VIP Gaming Club
 
+> **Before merging `concept-v2` to `main`:** the Vercel project's Root Directory setting must be
+> changed to `apps/web`. It currently still points at the repository root. Merging without this
+> change breaks the live site's routing — the SPA rewrite to `shell.html` disappears and every
+> deep URL 404s.
+
 Monorepo: the site lives in `apps/web`; the support-agent API is in `apps/api` (see `docs/architecture.md`).
 
 Premium dark-royal casino dashboard prototype — Vue 3 · Vite · TypeScript · Tailwind CSS · GSAP.

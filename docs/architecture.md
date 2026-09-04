@@ -700,6 +700,7 @@ list of problems and exits with code 1.
 | `APP_URL` | yes | — | THRONE site origin (used in links inside tickets) |
 | `API_URL` | yes | — | public API origin |
 | `CORS_ORIGINS` | yes | — | comma-separated allowlist |
+| `TRUST_PROXY` | no | `false` | Fastify `trustProxy`: `false`, `true`, a hop count, or a comma-separated IP/CIDR allowlist. Defaults to `false` so `request.ip` cannot be spoofed via `X-Forwarded-For` until a proxy that overwrites (not appends) it is confirmed in front of the API — needed before a per-IP rate limit is trustworthy. |
 | `DATABASE_URL` | yes | — | PostgreSQL connection string |
 | `DATABASE_URL_TEST` | no | — | integration tests |
 | `REDIS_URL` | no | — | when set: rate-limit store and turn lock |

@@ -34,14 +34,20 @@ deliberate, not an oversight:**
 ## Endpoints
 
 ### POST /api/visitors/session
-No auth. Body: `{ "visitorToken"?: string }` (Zod: `z.string().optional()`, no minimum
-length — an empty string is accepted and treated as absent).
+No auth required, but the `X-Visitor-Token` header is still read: if the body has no token
+(absent or empty string), the header — the credential every other `/api/chat/*` endpoint
+sends — is used as a fallback before falling through to minting a new visitor. Body:
+`{ "visitorToken"?: string }` (Zod: `z.string().optional()`, no minimum length — an empty
+string is accepted and treated as absent).
 
 200 → `{ visitorToken, visitorId, expiresAt }`.
 
-As above, this endpoint cannot fail on the token: absent, empty, or unresolvable all mint a
-fresh visitor and return 200. It can still 400 (`VALIDATION`) if the body isn't valid JSON or
-`visitorToken` isn't a string.
+As above, this endpoint cannot fail on the token: an absent or empty body token falls back to
+the header, and if that is also absent or unresolvable, the caller gets a fresh visitor — 200
+either way. It can still 400 (`VALIDATION`) if the body isn't valid JSON or `visitorToken`
+isn't a string. This matters for a client that only ever sends its token by header (as it does
+on every other endpoint): without the fallback it would silently mint a new visitor on every
+call to this endpoint and lose its previous conversations.
 
 ### POST /api/chat/conversations
 Auth: visitor (`X-Visitor-Token`, required).
@@ -99,6 +105,13 @@ the database and reports the outcome in the body rather than the status code —
 `apps/api/src/modules/health/routes.ts`. Anything that health-checks on status code alone
 (a load balancer, an uptime monitor configured for "2xx = healthy") will read a database-less
 API as healthy. Check the `db` field, not the status code.
+
+## Merge prerequisite
+
+**Before this branch is merged to `main`:** the Vercel project's Root Directory setting must be
+changed to `apps/web` (see `docs/architecture.md` section 15). It currently still points at the
+repository root, from before the monorepo move. Merging without that dashboard change breaks the
+live site's routing — the SPA rewrite to `shell.html` disappears and every deep URL 404s.
 
 ## Not yet implemented
 
