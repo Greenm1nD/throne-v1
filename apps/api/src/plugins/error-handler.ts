@@ -13,8 +13,18 @@ export function registerErrorHandler(app: FastifyInstance): void {
       reply.code(error.status).send({ error: { code: error.code, message: error.message, requestId: request.id } })
       return
     }
-    if ((error as { statusCode?: number }).statusCode === 429) {
+    const status = (error as { statusCode?: number }).statusCode
+    if (status === 429) {
       reply.code(429).send({ error: { code: ERROR_CODE.RATE_LIMITED, message: 'Too many requests', requestId: request.id } })
+      return
+    }
+    // Fastify raises its own 4xx for oversized bodies, malformed JSON and bad
+    // media types. Those are the caller's fault, not ours — reporting them as
+    // 500 would send a client hunting a server bug that does not exist. Their
+    // messages are Fastify's own and safe to pass on; 5xx messages are not.
+    if (typeof status === 'number' && status >= 400 && status < 500) {
+      request.log.warn({ err: error, statusCode: status }, 'client error')
+      reply.code(status).send({ error: { code: ERROR_CODE.VALIDATION, message: (error as Error).message, requestId: request.id } })
       return
     }
     request.log.error({ err: error }, 'unhandled error')

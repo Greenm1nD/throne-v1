@@ -51,4 +51,10 @@ describe('loadEnv', () => {
   it('rejects a short signing secret', () => {
     expect(() => loadEnv({ ...required, VISITOR_TOKEN_SECRET: 'short' })).toThrow(/VISITOR_TOKEN_SECRET/)
   })
+
+  it('allows LOG_LEVEL=silent only under NODE_ENV=test', () => {
+    expect(loadEnv({ ...required, LOG_LEVEL: 'silent' }).LOG_LEVEL).toBe('silent')
+    expect(() => loadEnv({ ...required, NODE_ENV: 'production', LOG_LEVEL: 'silent' })).toThrow(/LOG_LEVEL/)
+    expect(loadEnv({ ...required, NODE_ENV: 'production', LOG_LEVEL: 'warn' }).LOG_LEVEL).toBe('warn')
+  })
 })

@@ -58,6 +58,15 @@ export const envSchema = z
         if (!env[key]) ctx.addIssue({ code: 'custom', path: [key], message: 'required when USER_AUTH_PROVIDER is jwks' })
       }
     }
+    if (env.LOG_LEVEL === 'silent' && env.NODE_ENV !== 'test') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['LOG_LEVEL'],
+        // A silent logger hides server.ts's fatal startup log, turning a listen
+        // failure into a wordless exit(1). Tests need it; nothing else should have it.
+        message: "'silent' is only allowed when NODE_ENV is test",
+      })
+    }
   })
 
 export type Env = z.infer<typeof envSchema>
